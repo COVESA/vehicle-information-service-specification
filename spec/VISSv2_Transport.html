@@ -6,35 +6,57 @@
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
     <script class='remove'>
       var respecConfig = {
-        specStatus: "ED",
-        group: "auto",
-        github: "https://github.com/w3c/automotive",	
+        group: "CVI",
+        latestVersion: null,
+        github: "https://github.com/COVESA/vehicle-information-service-specification",
+        specStatus: "base",
+	logos: [{
+	  src: "https://wiki.covesa.global/download/attachments/94699539/COVESA%20logo.jpg",
+          url: "https://covesa.global",
+          alt: "COVESA",
+          height: 50,
+          id: "covesa-logo",
+        },],
         editors: [{
           name: "Ulf Bjorkengren",
-          company: "Geotab (formerly Volvo Cars)",
-          companyURL: "https://www.geotab.com",
-          w3cid: 103092	  
+          company: "Ford",
+          companyURL: "https://www.ford.com",
+        },
+        {
+          name: "Isaac Agudo",
+          company: "NICS Lab / University of Malaga",
+          companyURL: "https://www.nics.uma.es",
         },
         {
           name: "이원석(Wonsuk Lee)", company: "한국전자통신연구원(ETRI)",
           url: "mailto:wonsuk.lee@etri.re.kr",
-	  companyURL: "https://etri.re.kr/eng/main/main.etri",
-	  w3cid: 34457
+          companyURL: "https://etri.re.kr/eng/main/main.etri",
         }],
-	formerEditors: [{
+        formerEditors: [{
+          name: "Ulf Bjorkengren",
+          company: "Geotab",
+          companyURL: "https://www.geotab.com",
+          },
+	{
           name: "Ulf Bjorkengren",
           company: "Volvo Cars",
           companyURL: "https://www.volvo.com",
-          w3cid: 103092	  
         },
-	{
+        {
           name: "Patrick Lünnemann",
           company: "Volkswagen Group",
           companyURL: "https://www.volkswagenag.com",
-          w3cid: 95844
-        }],	  
-        edDraftURI: "https://github.com/w3c/automotive/blob/gh-pages/spec/VISSv2_Transport.html",
-        shortName: "viss2-transport"
+        }],
+        edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Transport.html",
+        shortName: "viss2-transport",
+        localBiblio: {
+          "SemVer": {
+            title: "Semantic Versioning 2.0.0",
+            href: "https://semver.org/spec/v2.0.0.html",
+            status: "published",
+            publisher: "Tom Preston-Werner"
+          }
+        }
       };
     </script>
     <style>
@@ -97,6 +119,7 @@
   </style>    
   </head>
   <body>
+    <p class="copyright">Copyright © 2023 COVESA®. This document includes material copied from or derived from <a href="https://www.w3.org/TR/viss2-core/">W3C VISS version 2 - Core</a>.</p>
     <section id='abstract'>
       <p>The Vehicle Information Service Specification (VISS) is a
       service for accessing vehicle information, signals from sensors
