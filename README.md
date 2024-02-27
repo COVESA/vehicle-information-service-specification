@@ -3,8 +3,8 @@
 
 To see the most recent HTML rendered version of the specifications from this repository can be found at the following:
 
-- [Vehicle Information Service Specification version 2 - CORE](https://raw.githack.com/covesa/vehicle-information-service-specification/gh-pages/spec/VISSv2_Core.html) (git)
-- [Vehicle Information Service Specification version 2 - TRANSPORT](https://raw.githack.com/covesa/vehicle-information-service-specification/gh-pages/spec/VISSv2_Transport.html) (git)
+- [Vehicle Information Service Specification version 2 - CORE](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Core.html) (git)
+- [Vehicle Information Service Specification version 2 - TRANSPORT](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html) (git)
 
 ## Previous version
 [VISS version 1](https://www.w3.org/TR/vehicle-information-service/)
