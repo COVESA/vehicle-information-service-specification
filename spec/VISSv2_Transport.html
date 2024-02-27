@@ -118,7 +118,7 @@
   </style>    
   </head>
   <body>
-    <p class="copyright">Copyright © 2023 COVESA®. This document includes material copied from or derived from <a href="https://www.w3.org/TR/viss2-core/">W3C VISS version 2 - Core</a>.</p>
+    <p class="copyright">Copyright © 2023 COVESA®. This document includes material copied from or derived from <a href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html">VISS version 2 - Core</a>.</p>
     <section id='abstract'>
       <p>The Vehicle Information Service Specification (VISS) is a
       service for accessing vehicle information, signals from sensors
@@ -442,7 +442,7 @@
           <section id="https-search-read">
             <h2>Search Read</h2>
             <p>
-              The search read request uses the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-core/#paths-filter-operation">paths filter operation</a> described in the [[viss2-core]] document to provide one or more path expressions, 
+              The search read request uses the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#paths-filter-operation">paths filter operation</a> described in the [[viss2-core]] document to provide one or more path expressions, 
               relative to the path in the GET URL.<br>
               <b>Example:</b>
               Request:
@@ -480,7 +480,7 @@
           <section id="https-history-read">
             <h2>History Read</h2>
             <p>
-              The history read request uses the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-core/#history-filter-operation">history filter operation</a> described in the [[viss2-core]] document to read recorded values 
+              The history read request uses the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#history-filter-operation">history filter operation</a> described in the [[viss2-core]] document to read recorded values 
               for a given period backwards in time.<br>
               <b>Example:</b>
               Request:
@@ -536,7 +536,7 @@
             <p>
               The dynamic metadata, i. e. any other metadata kept by the vehicle system, 
               is retrieved by the setting the "type" to  "dynamic-metadata".
-              The value MUST be set to one of the domain names as specified in the [[viss2-core]], <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-core/#dynamic-metadata-request">Dynamic Metadata Filter Operation</a> chapter.
+              The value MUST be set to one of the domain names as specified in the [[viss2-core]], <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#dynamic-metadata-request">Dynamic Metadata Filter Operation</a> chapter.
               <br>
               <b>Example:</b>
               Request:
@@ -841,7 +841,7 @@
           <section id="wss-search-read">
             <h2>Search Read</h2>
             <p>A client may issue a search read request to access multiple values in one request message. 
-               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-core/#paths-filter-operation">paths filter operation</a> described in the [[viss2-core]].
+               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#paths-filter-operation">paths filter operation</a> described in the [[viss2-core]].
             </p>
             <p>
               <b>Example:</b><br>
@@ -872,7 +872,7 @@
           <section id="wss-history-read">
             <h2>History Read</h2>
             <p>A client may issue a history read request to access recorded data points. 
-               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-core/#history-filter-operation">history filter operation</a> described in the [[viss2-core]].
+               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#history-filter-operation">history filter operation</a> described in the [[viss2-core]].
             </p>
             <p>
               <b>Example:</b><br>
@@ -1043,7 +1043,7 @@
             The client may send a <a href="#dfn-subscriberequest" class="internalDFN" data-link-type="dfn">subscribeRequest</a> message 
             to request a subscription to one or more signals, 
             thereby requesting the server to repeatedly return subscription event messages, as specified by 
-	    the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-core/#filter-request">filter request</a> described in the [[viss2-core]]. 
+	    the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#filter-request">filter request</a> described in the [[viss2-core]]. 
             The server <em class="rfc2119" title="MAY">MAY</em> reduce the number of 
             <a href="#dfn-subscriptionevent" class="internalDFN" data-link-type="dfn">subcriptionEvent</a> 
             messages sent to the client in order to reduce processing demands.<br>
@@ -1225,7 +1225,7 @@
             <p>
             Curve logging data compression by eliminating data points that are within a set error margin is activated via a subscription request. 
             Event messages will be issued when the buffer becomes full, after insignificant data points have been eliminated, 
-            refer the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-core/#curvelog-filter-operation">Curve logging Filter Operation</a> chapter in the [[viss2-core]] documentation.
+            refer the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#curvelog-filter-operation">Curve logging Filter Operation</a> chapter in the [[viss2-core]] documentation.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1265,7 +1265,7 @@
             <h2>Range Subscribe</h2>
             <p>
             Subscription to a range of values, that can have either a single boundary, or multipe boundaries as in the example below. 
-            For a more information how to use range of values, refer the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-core/#range-filter-operation">Range Filter Operation</a> chapter in the [[viss2-core]] documentation.
+            For a more information how to use range of values, refer the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#range-filter-operation">Range Filter Operation</a> chapter in the [[viss2-core]] documentation.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1304,7 +1304,7 @@
             <h2>Change Subscribe</h2>
             <p>
             Subscription to when a signal has changed between two sequential captures. 
-            For a more information how to use change of values, refer the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-core/#change-filter-operation">Change Filter Operation</a> chapter in the [[viss2-core]] documentation.
+            For a more information how to use change of values, refer the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#change-filter-operation">Change Filter Operation</a> chapter in the [[viss2-core]] documentation.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1427,7 +1427,7 @@
         <section id="application-level-protocol">
           <h2>Application Level Protocol</h2>
           <p>
-            For MQTT to support the complete VISSv2 interface, as decribed in the <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-core/#interface">interface</a> chapter of the [[viss2-core]] specification, 
+            For MQTT to support the complete VISSv2 interface, as decribed in the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#interface">interface</a> chapter of the [[viss2-core]] specification, 
             an application level protocol that runs on top of MQTT is added. 
             It is described in the following, please also see the sequence diagram below. 
             To emulate the client-server pattern that is described in the [[viss2-core]] specification, the vehicle server, via its vehicle client, 
@@ -1550,7 +1550,7 @@
     <tr>
       <td> <dfn data-dfn-type="dfn" id="dfn-filter">filter</dfn> </td>
       <td> string </td>
-      <td>Provides a filtering mechanism to reduce the demands of a subscription on the server. Query format, see [[viss2-core]], <a data-link-type="dfn" href="https://www.w3.org/TR/viss2-core/#filter-request">Filter Request</a> chapter.</td>
+      <td>Provides a filtering mechanism to reduce the demands of a subscription on the server. Query format, see [[viss2-core]], <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#filter-request">Filter Request</a> chapter.</td>
     </tr>
     <tr>
       <td> <b>metadata</b> </td>
