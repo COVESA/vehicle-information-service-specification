@@ -1,7 +1,8 @@
 # vehicle-information-service-specification
 >Vehicle Information Service Specification (VISS) is an API for accessing the COVESA Vehicle Signal Specification (VSS) data. The work started at [The World Wide Web Consortium (W3C)](https://www.w3.org) in collaboration with GENIVI and its successor COVESA. The W3C Automotive Working Group closed in February of 2024 and the work is continuing at COVESA.
 
-The specifications in this repository are as follows:
+To see the most recent HTML rendered version of the specifications from this repository can be found at the following:
+
 - [Vehicle Information Service Specification version 2 - CORE](https://raw.githack.com/covesa/vehicle-information-service-specification/gh-pages/spec/VISSv2_Core.html) (git)
 - [Vehicle Information Service Specification version 2 - TRANSPORT](https://raw.githack.com/covesa/vehicle-information-service-specification/gh-pages/spec/VISSv2_Transport.html) (git)
 
