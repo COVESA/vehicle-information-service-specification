@@ -1,0 +1,41 @@
+# Copyright (c) 2024 Contributors to COVESA
+#
+# This program and the accompanying materials are made available under the
+# terms of the Mozilla Public License 2.0 which is available at
+# https://www.mozilla.org/en-US/MPL/2.0/
+#
+# SPDX-License-Identifier: MPL-2.0
+
+name: viss_build
+
+on:
+  push:
+  pull_request:
+  workflow_call:
+  workflow_dispatch:
+
+concurrency:
+      group: ${{ github.ref }}-${{ github.workflow }}
+      cancel-in-progress: true
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Building
+      run: |
+        sudo apt-get install htmldoc -y
+        htmldoc --webpage -f VISSv2_Core.pdf spec/VISSv2_Core.html
+        htmldoc --webpage -f VISSv2_Transport.pdf spec/VISSv2_Transport.html
+
+    - name: "Upload PDFs"
+      uses: actions/upload-artifact@v4
+      with:
+        name: viss-pdfs
+        path: '*.pdf'
+
