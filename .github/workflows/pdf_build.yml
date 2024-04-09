@@ -29,9 +29,10 @@ jobs:
 
     - name: Building
       run: |
-        sudo apt-get install htmldoc -y
-        htmldoc --webpage -f VISSv2_Core.pdf spec/VISSv2_Core.html
-        htmldoc --webpage -f VISSv2_Transport.pdf spec/VISSv2_Transport.html
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo dpkg -i google-chrome-stable_current_amd64.deb 
+        google-chrome-stable --headless --print-to-pdf=VISSv2_Core.pdf spec/VISSv2_Core.html
+        google-chrome-stable --headless --print-to-pdf=VISSv2_Transport.pdf spec/VISSv2_Transport.html
 
     - name: "Upload PDFs"
       uses: actions/upload-artifact@v4
