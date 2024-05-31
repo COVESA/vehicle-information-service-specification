@@ -7,7 +7,9 @@
 ### Maintainers
 
 Ulf Björkengren - Ford Motor Company
+
 Ted Guild - Geotab Inc.
+
 Peter Winzell - Volvo Cars
 
  
