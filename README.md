@@ -1,4 +1,25 @@
+![Status - Active](https://img.shields.io/static/v1?label=Status&message=Active&color=3FFF3A&style=for-the-badge)
+
 # vehicle-information-service-specification
+
+[![License](https://img.shields.io/badge/License-MPL%202.0-blue.svg)](https://opensource.org/licenses/MPL-2.0)
+
+### Maintainers
+
+Ulf Björkengren - Ford Motor Company
+
+Ted Guild - Geotab Inc.
+
+Peter Winzell - Volvo Cars
+
+ 
+### Lead editors
+
+Ulf Björkengren - Ford Motor Company
+ 
+
+## Overview
+
 >Vehicle Information Service Specification (VISS) is an API for accessing the COVESA Vehicle Signal Specification (VSS) data. The work started at [The World Wide Web Consortium (W3C)](https://www.w3.org) in collaboration with GENIVI and its successor COVESA. The W3C Automotive Working Group closed in February of 2024 and the work is continuing at COVESA.
 
 To see the most recent HTML rendered version of the specifications from this repository can be found at the following:
