@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>COVESA VISS version 2-Transport</title>
+    <title>COVESA VISS version 2-Transport Examples</title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
     <script class='remove'>
       var respecConfig = {
@@ -18,40 +18,15 @@
         },],
         editors: [{
           name: "Ulf Bjorkengren",
-          company: "Ford",
+          company: "Ford Motor Company",
           companyURL: "https://www.ford.com",
-        },
-        {
-          name: "Isaac Agudo",
-          company: "NICS Lab / University of Malaga",
-          companyURL: "https://www.nics.uma.es",
-        },
-        {
-          name: "이원석(Wonsuk Lee)", company: "한국전자통신연구원(ETRI)",
-          url: "mailto:wonsuk.lee@etri.re.kr",
-          companyURL: "https://etri.re.kr/eng/main/main.etri",
         }],
-        formerEditors: [{
-          name: "Ulf Bjorkengren",
-          company: "Geotab",
-          companyURL: "https://www.geotab.com",
-          },
-	{
-          name: "Ulf Bjorkengren",
-          company: "Volvo Cars",
-          companyURL: "https://www.volvo.com",
-        },
-        {
-          name: "Patrick Lünnemann",
-          company: "Volkswagen Group",
-          companyURL: "https://www.volkswagenag.com",
-        }],
-        edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Transport.html",
-        shortName: "viss2-transport",
+        edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2.x_TransportExamples.html",
+        shortName: "viss2-transport-examples",
         localBiblio: {
           "SemVer": {
-            title: "Semantic Versioning 2.0.0",
-            href: "https://semver.org/spec/v2.0.0.html",
+            title: "Semantic Versioning 2.x.0",
+            href: "https://semver.org/spec/v2.x.0.html",
             status: "published",
             publisher: "Tom Preston-Werner"
           }
@@ -125,26 +100,24 @@
       on control units within a vehicle's network. It exposes this
       information using a hierarchical tree like taxonomy defined in
       COVESA Vehicle Signal Specification (VSS). The service provides
-      this information in JSON format ([[RFC8259]]). The service may reside in the vehicle, 
-      or on servers in the internet with information already brought off the vehicle.
-      </p>
+      this information in JSON format. The service may reside in the
+      vehicle, or on servers in the internet with information
+      already brought off the vehicle.</p>
 
-      <p>This specification describes a second version of VISS which
-      has been implemented and deployed on production vehicles. It
-      adds major new capabilities and improvements to the earlier
-      version. The first version of VISS only supported WebSocket as a
+      <p>This specification describes a third version of VISS which
+      has been implemented and deployed on production vehicles. 
+      The first version of VISS only supported WebSocket as a
       transport protocol, the second version is generalized to work
       across different protocols as some are better suited for
-      different use cases. HTTP and MQTT are now supported with additional
-      protocols used within the automotive industry being evaluated
-      for inclusion. Subscription capabilities have been improved and
-      access control has been added.
-      </p>
+      different use cases. 
+      The second version added support for the HTTP and MQTT transport
+      protocols, subscription capabilities was improved and an
+      access control solution was added.</p>
       
       <p>
-        There are two parts to this specification, [[viss2-core]] and TRANSPORT. This document, the VISS version 2 TRANSPORT specification, 
+        There are three parts to this specification, [[viss2-core]], [[viss2-payload-encoding]], and TRANSPORT-EXAMPLES. This document, the VISS version 2.x TRANSPORT-EXAMPLES specification, 
         describes the VISSv2 transport protocols, and the mapping of the message layer on these transports. 
-        The companion specification [[viss2-core]] describes the messaging layer.
+        The companion specification [[viss2-core]] describes the messaging layer, and [[viss2-payload-encoding]] describes payload encodings to/from the primary JSON payload format.
       </p>
     </section>
     <section id='sotd'></section>

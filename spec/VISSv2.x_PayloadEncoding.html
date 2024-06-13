@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>COVESA VISS version 2.x-Payload Encoding</title>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
+    <script class='remove'>
+      var respecConfig = {
+        latestVersion: null,
+        github: "https://github.com/COVESA/vehicle-information-service-specification",
+        specStatus: "base",
+	logos: [{
+	  src: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/images/covesa.jpg",
+          url: "https://covesa.global",
+          alt: "COVESA",
+          height: 50,
+          id: "covesa-logo",
+        },],
+        editors: [{
+          name: "Ulf Bjorkengren",
+          company: "Ford Motor Company",
+          companyURL: "https://www.ford.com",
+        }],
+        edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2.x_PayloadEncoding.html",
+        shortName: "viss2.x-payload-encoding",
+        localBiblio: {
+          "SemVer": {
+            title: "Semantic Versioning 2.x.0",
+            href: "https://semver.org/spec/v2.x.0.html",
+            status: "published",
+            publisher: "Tom Preston-Werner"
+          }
+        }
+      };
+    </script>
+    <style>
+      table.parameters, table.exceptions {
+          border-spacing: 0;
+          border-collapse:    collapse;
+          margin: 0.5em 0;
+          width:  100%;
+      }
+      table.parameters { border-bottom:  1px solid #90b8de; }
+      table.exceptions { border-bottom:  1px solid #deb890; }
+
+      .parameters th, .exceptions th {
+          color:  inherit;
+          padding:    3px 5px;
+          text-align: left;
+          font-weight:    normal;
+      }
+      .parameters th { color: #fff; background: #005a9c; }
+      .exceptions th { background: #deb890; }
+
+      .parameters td, .exceptions td {
+          padding:    3px 10px;
+          border-top: 1px solid #ddd;
+          vertical-align: top;
+      }
+
+      .parameters tr:first-child td, .exceptions tr:first-child td {
+          border-top: none;
+      }
+
+      .parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {
+          width:  100px;
+      }
+
+      .parameters td.prmType {
+          width:  120px;
+      }
+
+      table.exceptions table {
+          border-spacing: 0;
+          border-collapse:    collapse;
+          width:  100%;
+      }
+
+      .simple {
+        width:100%;
+      }
+
+      thead th{
+        border-bottom: 1px solid black;
+      }
+
+      .simple tbody th{
+        width:33%;
+        background: white;
+        color: black;        
+      }
+      pre { white-space: pre-wrap;}
+  </style>    
+  </head>
+  <body>
+    <p class="copyright">Copyright © 2024 COVESA®. This document includes material copied from or derived from <a href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html">W3C VISS version 2 - Core</a>.</p>
+    <section id='abstract'>
+      <p>The Vehicle Information Service Specification (VISS) is a
+      service for accessing vehicle information, signals from sensors
+      on control units within a vehicle's network. It exposes this
+      information using a hierarchical tree like taxonomy defined in
+      COVESA Vehicle Signal Specification (VSS). The service provides
+      this information in JSON format. The service may reside in the
+      vehicle, or on servers in the internet with information
+      already brought off the vehicle.</p>
+
+      <p>This specification describes a third version of VISS which
+      has been implemented and deployed on production vehicles. 
+      The first version of VISS only supported WebSocket as a
+      transport protocol, the second version is generalized to work
+      across different protocols as some are better suited for
+      different use cases. 
+      The second version added support for the HTTP and MQTT transport
+      protocols, subscription capabilities was improved and an
+      access control solution was added.</p>
+      
+      <p>
+        There are three parts to this specification, [[viss2-core]], [[viss2-transport-examples]], and PAYLOAD ENCODING. This document, the VISS version 2.x PAYLOAD ENCODING specification, 
+        describes the VISSv2.x payload encodings that is used in some cases. 
+        The companion specifications [[viss2-core]] describes the messaging layer,
+        and [[viss2-transport-examples]] describes the deviations form the CORE specification that are used by some transport protocols.
+      </p>
+    </section>
+    <section id='sotd'></section>
+
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p>This document describes the payload encodings that is used by some transport protocols.
+      </p>
+    </section>
+
+    <section id="conformance"></section>
+
+    <section id="terminology">
+      <h2>Terminology</h2>
+      <p>The acronym 'VISSv2.x' is used to refer to this document, the VISS version 2.x specification.
+         The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the COVESA Alliance.
+         The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.
+      </p>
+    </section>
+
+      <section id="transport-payload">
+        <h2>Transport Payload</h2>
+        <p>The payload primary format is JSON. This means that the payloads received by a client SHALL have the JSON format,
+        unless an implementation deliberately deviates from this.
+        See <a href='#json-def'></a> for the JSON payload format of the messages for the different transport protocols.
+        </p>
+      </section>
+
+      <section id="protobuf-encoding">
+        <h2>Protobuf encoding</h2>
+          <p>xxxxxx
+          </p>
+      </section>
+    </section>
+
+
+        <section id="json-def">
+          <h2>JSON Schema Definitions</h2>
+          <p>
+          The payload that is sent over the supported transport protocols SHALL use the JSON definitions in this appendix, 
+          unless otherwise specified in the VISSv2 TRANSPORT specification.<br>
+          The definitions within this section describe the datatypes referenced within the JSON Schema ([[json-schema]]) for the VISSv2 WebSocket interfaces, 
+          and for the VISSv2 HTTP payloads.
+          </p>
+              <pre><code>
+{
+    "definitions": {
+        "action": {
+            "enum": [ "get", "set", "subscribe", "subscription", "unsubscribe"],
+            "description": "The type of action requested by the client and/or delivered by the server"
+        },
+        "path": {
+            "description": "The path to the desired vehicle signal(s). It may require synthesis with additional path data, see [[viss2-core]], Paths Filter Operation chapter.",
+            "type": "string"
+        },
+        "ts": {
+            "description": "The time of the issuance of the message. For its format, see [[viss2-core]], Timestamps chapter.",
+            "type": "string"
+        },
+        "filter": {
+            "description": "May be specified in order to throttle the demands of subscriptions on the server. See [[viss2-core]], Filter Request chapter.",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "The different filter types.",
+                    "type": "string"
+                },
+                "parameter": {
+                    "description": "Parameter(s) for the different filter types",
+                    "type": "object"
+                }
+            }
+        },
+        "data": {
+            "description": "Data including path(s) and one or more data point(s).",
+            "type": "object",
+            "properties": {
+                "path": {
+                    "description": "The path to the vehicle signal.",
+                    "type": "string"
+                },
+                "dp": {
+                    "description": "Data point including one or more value and time samp",
+                    "type": "object",
+                    "properties": {
+                        "value": {
+                            "description": "The value related to the associated path.",
+                            "type": "object"                    
+                        },
+                        "ts": {
+                            "description": "Time of the value capture. For its format, see [[viss2-core]], Timestamps chapter.",
+                            "type": "string"                    
+                        }
+                    }
+                }
+            }   
+        },
+        "subscriptionId":{
+            "description": "Integer handle value which is used to uniquely identify a subscription session.",
+            "type": "string"
+        },
+        "metadata":{
+            "description": "Static or dynamic metadata.",
+            "type": "object"
+        },
+        "requestId": {
+            "description": "Returned by the server in the response and used by the client to link the request and response messages.",
+            "type": "string"
+        },
+        "error": {
+            "description": "Server response for error cases",
+            "type": "object",
+            "properties": {
+                "number": {
+                    "description": "HTTP Status Code Number",
+                    "type": "integer"                   
+                },
+                "reason": {
+                    "description": "Pre-defined string value that can be used to distinguish between errors that have the same code",
+                    "type": "string"                    
+                },
+                "message": {
+                    "description": "Message text describing the cause in more detail",
+                    "type": "string"                    
+                }
+            }   
+        }
+    }
+}
+               </code></pre>
+        </section>
+
+    <div id="tof" class="appendix"></div>
+  </body>
+</html>
