@@ -12,6 +12,7 @@ Ted Guild - Geotab Inc.
 
 Peter Winzell - Volvo Cars
 
+Wonsuk Lee - ETRI
  
 ### Lead editors
 
