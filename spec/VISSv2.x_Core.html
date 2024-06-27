@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>COVESA VISS version 2 - Core</title>
+    <title>COVESA VISS version 2.x - Core</title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
     <script class='remove'>
       var respecConfig = {
@@ -19,40 +19,15 @@
         },],
         editors: [{
           name: "Ulf Bjorkengren",
-          company: "Ford",
+          company: "Ford Motor Company",
           companyURL: "https://www.ford.com",
-        },
-        {
-          name: "Isaac Agudo",
-          company: "NICS Lab / University of Malaga",
-          companyURL: "https://www.nics.uma.es",
-        },
-        {
-          name: "이원석(Wonsuk Lee)", company: "한국전자통신연구원(ETRI)",
-          url: "mailto:wonsuk.lee@etri.re.kr",
-          companyURL: "https://etri.re.kr/eng/main/main.etri",
         }],
-        formerEditors: [{
-          name: "Ulf Bjorkengren",
-          company: "Geotab",
-          companyURL: "https://www.geotab.com",
-          },
-	{
-          name: "Ulf Bjorkengren",
-          company: "Volvo Cars",
-          companyURL: "https://www.volvo.com",
-        },
-        {
-          name: "Patrick Lünnemann",
-          company: "Volkswagen Group",
-          companyURL: "https://www.volkswagenag.com",
-        }],
-        edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html",
-        shortName: "viss2-core",
+        edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2.x_Core.html",
+        shortName: "viss2.x-core",
         localBiblio: {
           "SemVer": {
-            title: "Semantic Versioning 2.0.0",
-            href: "https://semver.org/spec/v2.0.0.html",
+            title: "Semantic Versioning 2.x.0",
+            href: "https://semver.org/spec/v2.x.0.html",
             status: "published",
             publisher: "Tom Preston-Werner"
           }
@@ -131,23 +106,21 @@
       vehicle, or on servers in the internet with information
       already brought off the vehicle.</p>
 
-      <p>This specification describes a second version of VISS which
-      has been implemented and deployed on production vehicles. It
-      adds major new capabilities and improvements to the earlier
-      version. The first version of VISS only supported WebSocket as a
+      <p>This specification describes a third version of VISS which
+      has been implemented and deployed on production vehicles. 
+      The first version of VISS only supported WebSocket as a
       transport protocol, the second version is generalized to work
       across different protocols as some are better suited for
-      different use cases. HTTP and MQTT are now supported with additional
-      protocols used within the automotive industry being evaluated
-      for inclusion. Subscription capabilities have been improved and
-      access control has been added.</p>
+      different use cases. 
+      The second version added support for the HTTP and MQTT transport
+      protocols, subscription capabilities was improved and an
+      access control solution was added.</p>
       
       <p>
-        There are two parts to this specification, CORE and [[viss2-transport]]. This document, the VISS version 2 CORE specification, 
-        describes the VISSv2 messaging layer. 
-        The companion specification for the VISSv2 transport protocols detail the mapping of the messaging layer to selected transports.
-        The ontologies based on the VISSv2 core specification are defined in documents for each specific domain
-        (e.g. navigation, media, vehicle data). 
+        There are three parts to this specification, CORE, [[viss2-transport-examples]], and [[viss2-payload-encoding]]. This document, the VISS version 2.x CORE specification, 
+        describes the VISSv2.x messaging layer.<br>
+        The VISSv2.x transport protocol examples document describe the deviations from the CORE definitions that are used in some transport protocols.<br>
+        The VISSv2.x payload encoding document describes paylod encoding designs that may be applied e. g. for payloads in transit.<br>
       </p>
     </section>
     <section id='sotd'></section>
@@ -155,20 +128,24 @@
     <section id="introduction">
       <h2>Introduction</h2>
       <p>
-        This document describes the messaging API for VISS protocol. 
-        This includes the messaging layer and set of rules for structuring data.
-        The separation between payload encoding ([[viss2-transport]]) and messaging API (CORE) improves adaptability. 
-        Extending and describing multiple transport protocols becomes possible.
+        This document describes the messaging API for the VISS protocol. 
+        This includes the messaging layer and set of rules for structuring data.<br>
+        The specification is agnostic to which transport protocol that is used as long as it conforms to this messaging API and data rule set.
+        Transport protocols that cannot conform to the entire CORE specification can still be conformant to by describing their deviations in the
+        [[viss2-transport-examples]] specification.<br>
+        The primary payload data format is JSON. If a transport protocol uses a different payload encoding, such as gRPC,
+        or a more bandwidth efficient data representation is desired, then this encoding may be defined in the [[viss2-payload-encoding]] document.
+        This encoding must contain a solution for both encoding of the JSON payloads and decoding back to the JSON format.
       </p>     
       <p>
         The messages are exchanged between a server implementation holding the representation of data 
         and a client using the data.
       </p>
       <p>
-        The VISSv2 messaging layer uses a RESTful design for all methods exchanged via the interface (<a href="#interface"></a>).
+        The VISSv2.x messaging layer uses a RESTful design for all methods exchanged via the interface (<a href="#interface"></a>).
       </p>
       <p>
-        The VISSv2 data structuring rules (<a href="https://covesa.github.io/vehicle_signal_specification/rule_set/">VSS Rule set</a>) 
+        The VISSv2.x data structuring rules (<a href="https://covesa.github.io/vehicle_signal_specification/rule_set/">VSS Rule set</a>) 
         are the same through all transport protocols.
         The basis for structuring data hold by a server is a tree.
       </p>
@@ -178,7 +155,7 @@
 
     <section id="terms">
       <h2>Terminology</h2>
-      <p>The acronym 'VISSv2' is used to refer to this document, the VISS version 2 specification. 
+      <p>The acronym 'VISSv2.x' is used to refer to this document, the VISS version 2.x specification. 
       The acronym 'VSS' is used to refer to the <a href="https://github.com/COVESA/vehicle_signal_specification">'Vehicle Signal Specification'</a> 
       which is hosted by COVESA. 
       The term 'WebSocket' when used in this document, is as defined in the 
@@ -247,7 +224,7 @@
         <p>Addressing of resources is done using URIs as defined in [[RFC3987]].<br>
         <blockquote><a>scheme</a>://<a>authority</a>/<a>path</a>?<a>query</a></blockquote>
         The <dfn>scheme</dfn> describes the protocol to use to reach the addressed resource.
-        For supported protocols, see the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#transport-protocols">transport protocols</a> in [[viss2-transport]] specification.<br>
+        For supported protocols, see the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#transport-protocols">transport protocols</a> in [[viss2-transport-examples]] specification.<br>
         The <dfn>authority</dfn> describes where to reach the resource, for more details see <a href="#authority-component"></a>.<br>
         The <dfn>path</dfn> addresses a specific service within the resource, for more details see <a href="#path-component"></a>.<br>
         The <dfn>query</dfn> contains further information related to the addressed service, see <a href="#filter-request"></a>.<br>
@@ -487,9 +464,9 @@
           <p>The error information has three components - a number, a reason, and a message. 
           The number MUST always be part of the error information, while the reason and message components MAY be a part of it.
             <ul>
-              <li><b>number</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html/#status-codes">status codes</a> as defined in [[viss2-transport]].</li>
-              <li><b>reason</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#status-codes">status codes</a> as defined in [[viss2-transport]].</li>
-              <li><b>message</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#status-codes">status codes</a> as defined in [[viss2-transport]].</li>
+              <li><b>number</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html/#status-codes">status codes</a> as defined in [[viss2-transport-examples]].</li>
+              <li><b>reason</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#status-codes">status codes</a> as defined in [[viss2-transport-examples]].</li>
+              <li><b>message</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#status-codes">status codes</a> as defined in [[viss2-transport-examples]].</li>
             </ul>
           </p>
           </section>
@@ -649,7 +626,7 @@
                 Different elements of the value array may address the same node, 
                 in which case it is the responsibility of the server to resolve this to a singleton in the event messages.<br>
                 Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#https-search-read">search read on HTTPS</a> and 
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#wss-search-read">search read on WebSocket</a> in [[viss2-transport]] specification.
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#wss-search-read">search read on WebSocket</a> in [[viss2-transport-examples]] specification.
                 </p>
         </section>
 
@@ -671,7 +648,7 @@
                 and second data, i. e. "parameter": "PdddDThhHmmMssS".
                 The number of days shall be less than 999. Only a single period can be expressed.<br>
                 Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#https-history-read">history read on HTTPS</a> and 
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#wss-history-read">history read on WebSocket</a> in [[viss2-transport]] specification.
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#wss-history-read">history read on WebSocket</a> in [[viss2-transport-examples]] specification.
                 </p>
         </section>
 
@@ -680,7 +657,7 @@
                 <p>
                 The parameter object contains the period time X in between captures, {"period":"X"}.
                 X is an integer and represents the period time in milliseconds.
-                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#subscribe">subscribe section</a> in [[viss2-transport]] specification.
+                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#subscribe">subscribe section</a> in [[viss2-transport-examples]] specification.
                </p>
         </section>
  
@@ -719,7 +696,7 @@
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than", 
                 "lte" is "less than or equal".<br>
                 Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#authorized-subscribe">authorized subscribe</a> and 
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#range-subscribe">range subscribe</a> in [[viss2-transport]] specification.
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#range-subscribe">range subscribe</a> in [[viss2-transport-examples]] specification.
                </p>
         </section>
  
@@ -737,7 +714,7 @@
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", 
                 "lt" is "less than", "lte" is "less than or equal".<br>
                 Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#change-subscribe">Change Subscribe</a>
-                 in [[viss2-transport]] specification.
+                 in [[viss2-transport-examples]] specification.
                </p>
         </section>
  
@@ -749,7 +726,7 @@
                 and Y is the number of buffer elements. Data is processed when the buffer becomes full, 
                 and the essential data points are returned as a time series per signal.<br>
                 Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#curve-logging-subscribe">curve logging subscribe</a>
-                 in [[viss2-transport]] specification.
+                 in [[viss2-transport-examples]] specification.
                </p>
         </section>
  
@@ -770,7 +747,7 @@
         but cannot be combined with any other filter type.<br>
         The response is a JSON formatted object with corresponding key-value pairs per addressed node. 
         The server MAY support the static metadata request.<br>
-        Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#https-service-discovery-read">signal discovery read on HTTPS</a> in [[viss2-transport]] specification.
+        Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#https-service-discovery-read">signal discovery read on HTTPS</a> in [[viss2-transport-examples]] specification.
         </p>
     </section>
  
@@ -800,7 +777,7 @@
         The server capabilities request MUST be supported, the others on the list are optional. 
         For the server capabilities request the vsspath SHALL be set to "Vehicle", and the paths filter MUST not be used.<br>
         Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#https-dynamic-metadata-read">dynamic metadata read on HTTPS</a> 
-        and <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#wss-service-discovery-read">signal discovery read on WebSocket</a> in [[viss2-transport]] specification.
+        and <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#wss-service-discovery-read">signal discovery read on WebSocket</a> in [[viss2-transport-examples]] specification.
         </p>
     </section>
  
@@ -1169,7 +1146,7 @@
           This is a VISSv2 request including an <a href="#access-token-def">access token</a> as described in general in the 
           <a href="#methods"></a> chapter, 
           and for different <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#transport-protocols">
-          transport protocols</a> in the [[viss2-transport]] document.
+          transport protocols</a> in the [[viss2-transport-examples]] document.
           The first time a token is submitted in a request it must be provided in its entirety. If a server supports caching of access tokens and returns a token hanle to the client,
           then any following requests may provide the token handle instead of the complete access token.
           </p>
@@ -1179,7 +1156,7 @@
           <h2>Protected Resource Response</h2>
           <p>
           This is a VISSv2 response as described in general in the <a href="#methods"></a> chapter, 
-          and for different <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#transport-protocols">transport protocols</a> in the [[viss2-transport]] document.
+          and for different <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#transport-protocols">transport protocols</a> in the [[viss2-transport-examples]] document.
           It does not differ from the response to an unprotected resource request.
           </p>
         </section>
@@ -1892,7 +1869,11 @@
           </tr>
           <tr>
             <td>transport_protocol</td>
-            <td>[[viss2-transport]], <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#transport-protocols">Transport Protocols</a> chapter</td>
+            <td>[[viss2-transport-examples]], <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2.x_TransportExamples.html">Transport Protocol Examples</a> chapter</td>
+          </tr>
+          <tr>
+            <td>payload_encoding</td>
+            <td>[[viss2-payload-encoding]], <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2.x_PayloadEncoding.html">Payload Encoding</a> chapter</td>
           </tr>
         </table><br>
         <table  style="width:50%">
@@ -1958,15 +1939,15 @@
           </tr>
           <tr>
             <td><u>https</u></td>
-            <td>[[viss2-transport]], Transport Protocols:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#https">HTTPS</a> chapter</td>
+            <td>[[viss2-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#https">HTTPS</a> chapter</td>
           </tr>
           <tr>
             <td><u>wss</u></td>
-            <td>[[viss2-transport]], Transport Protocols:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#secure-websockets">Secure Websocket</a> chapter</td>
+            <td>[[viss2-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#secure-websockets">Secure Websocket</a> chapter</td>
           </tr>
           <tr>
             <td>mqtts</td>
-            <td>[[viss2-transport]], Transport Protocols:MQTT chapter</td>
+            <td>[[viss2-transport-examples]], Transport Protocols:MQTT chapter</td>
           </tr>
         </table>
 
