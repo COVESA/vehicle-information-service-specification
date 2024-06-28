@@ -12,6 +12,7 @@ Ted Guild - Geotab Inc.
 
 Peter Winzell - Volvo Cars
 
+Wonsuk Lee - ETRI
  
 ### Lead editors
 
@@ -29,8 +30,12 @@ Minutes of meetings is found [here](https://wiki.covesa.global/display/WIK4/VISS
 
 To see the most recent HTML rendered version of the specifications from this repository can be found at the following:
 
-- [Vehicle Information Service Specification version 2 - CORE](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Core.html) (git)
-- [Vehicle Information Service Specification version 2 - TRANSPORT](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html) (git)
+- [COVESA VISS version 2.x - Core](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2.x_Core.html)
+- [COVESA VISS version 2.x-Payload Encoding](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2.x_PayloadEncoding.html)
+- [COVESA VISS version 2.x-Transport Examples](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2.x_TransportExamples.html)
+
+The VISS official publication
+- [Release of VISS version 2.0 (09 April 2024)](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v2.0)
 
 The [VISS explainer](./VISS-explainer.md) gives some background and rationale to this interface.
 
