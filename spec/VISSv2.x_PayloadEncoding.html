@@ -15,11 +15,18 @@
           alt: "COVESA",
           height: 50,
           id: "covesa-logo",
-        },],
+        }],
         editors: [{
           name: "Ulf Bjorkengren",
           company: "Ford Motor Company",
           companyURL: "https://www.ford.com",
+        },
+        {
+          name: "이원석(Wonsuk Lee)",
+          company: "한국전자통신연구원(ETRI)",
+          url: "mailto:wonsuk.lee@etri.re.kr",
+          companyURL: "https://etri.re.kr/eng/main/main.etri",
+          w3cid: 34457
         }],
         edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2.x_PayloadEncoding.html",
         shortName: "viss2.x-payload-encoding",
@@ -29,6 +36,11 @@
             href: "https://semver.org/spec/v2.x.0.html",
             status: "published",
             publisher: "Tom Preston-Werner"
+          },
+          "viss2-transport-examples": {
+            title: "COVESA VISS version 2.x-Transport Examples",
+            href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2.x_TransportExamples.html",
+            publisher: "Ulf Bjorkengren"
           }
         }
       };
@@ -149,8 +161,27 @@
 
       <section id="protobuf-encoding">
         <h2>Protobuf encoding</h2>
-          <p>xxxxxx
+          <p>Protobuf, short for Protocol Buffers, is a language-neutral, platform-neutral, extensible mechanism for serializing structured data, developed by Google. 
+            This encoding method is particularly beneficial for efficient data serialization and deserialization, ensuring low latency and reduced payload size, 
+            which are crucial for vehicle information services.
           </p>
+          <p>The Vehicle Information Service Specification (VISS) defines a protocol for accessing vehicle data in a standardized manner. 
+            As vehicles become more connected and data-driven, the need for efficient data exchange methods becomes paramount. 
+            Protobuf encoding serves as an optimal solution within VISS due to its compact binary format and schema evolution capabilities.
+          </p>
+          <p>In this chapter, we outline the integration of Protobuf encoding with VISS version 2.x, providing comprehensive details on schema definitions, 
+            encoding and decoding processes, and practical examples. This will enable seamless implementation and interoperability across different systems and 
+            platforms within the automotive ecosystem.
+          </p>
+          <section id="protobuf-Schema-definition">
+            <h2>Protobuf Schema Definition</h2>
+            <p>xxxxx<br>
+          </section>
+          <section id="encoding-and-decoding-with-protobuf">
+            <h2>Encoding and Decoding with Protobuf</h2>
+            <p>xxxxx<br>
+          </section>   
+     
       </section>
     </section>
 
