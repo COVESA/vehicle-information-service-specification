@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>COVESA VISS version 2.x - Core</title>
+    <title>COVESA VISS version 3.0 - Core</title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
     <script class='remove'>
       var respecConfig = {
@@ -29,23 +29,23 @@
           companyURL: "https://etri.re.kr/eng/main/main.etri",
           w3cid: 34457
         }],
-        edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2.x_Core.html",
-        shortName: "viss2.x-core",
+        edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html",
+        shortName: "viss3.0-core",
         localBiblio: {
           "SemVer": {
-            title: "Semantic Versioning 2.x.0",
-            href: "https://semver.org/spec/v2.x.0.html",
+            title: "Semantic Versioning 2.0.0",
+            href: "https://semver.org/spec/v2.0.0.html",
             status: "published",
             publisher: "Tom Preston-Werner"
           },
-          "viss2-payload-encoding": {
-            title: "COVESA VISS version 2.x-Payload Encoding",
-            href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2.x_PayloadEncoding.html",
+          "viss3-payload-encoding": {
+            title: "COVESA VISS version 3.0-Payload Encoding",
+            href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_PayloadEncoding.html",
             publisher: "Ulf Bjorkengren"
           },
-          "viss2-transport-examples": {
-            title: "COVESA VISS version 2.x-Transport Examples",
-            href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2.x_TransportExamples.html",
+          "viss3-transport-examples": {
+            title: "COVESA VISS version 3.0-Transport Examples",
+            href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html",
             publisher: "Ulf Bjorkengren"
           }                           
         }
@@ -134,10 +134,10 @@
       access control solution was added.</p>
       
       <p>
-        There are three parts to this specification, CORE, [[viss2-transport-examples]], and [[viss2-payload-encoding]]. This document, the VISS version 2.x CORE specification, 
-        describes the VISSv2.x messaging layer.<br>
-        The VISSv2.x transport protocol examples document describe the deviations from the CORE definitions that are used in some transport protocols.<br>
-        The VISSv2.x payload encoding document describes paylod encoding designs that may be applied e. g. for payloads in transit.<br>
+        There are three parts to this specification, CORE, [[viss3-transport-examples]], and [[viss3-payload-encoding]]. This document, the VISS version 3.0 CORE specification, 
+        describes the VISSv3.0 messaging layer.<br>
+        The VISSv3.0 transport protocol examples document describe the deviations from the CORE definitions that are used in some transport protocols.<br>
+        The VISSv3.0 payload encoding document describes paylod encoding designs that may be applied e. g. for payloads in transit.<br>
       </p>
     </section>
     <section id='sotd'></section>
@@ -149,9 +149,9 @@
         This includes the messaging layer and set of rules for structuring data.<br>
         The specification is agnostic to which transport protocol that is used as long as it conforms to this messaging API and data rule set.
         Transport protocols that cannot conform to the entire CORE specification can still be conformant to by describing their deviations in the
-        [[viss2-transport-examples]] specification.<br>
+        [[viss3-transport-examples]] specification.<br>
         The primary payload data format is JSON. If a transport protocol uses a different payload encoding, such as gRPC,
-        or a more bandwidth efficient data representation is desired, then this encoding may be defined in the [[viss2-payload-encoding]] document.
+        or a more bandwidth efficient data representation is desired, then this encoding may be defined in the [[viss3-payload-encoding]] document.
         This encoding must contain a solution for both encoding of the JSON payloads and decoding back to the JSON format.
       </p>     
       <p>
@@ -159,10 +159,10 @@
         and a client using the data.
       </p>
       <p>
-        The VISSv2.x messaging layer uses a RESTful design for all methods exchanged via the interface (<a href="#interface"></a>).
+        The VISSv3.0 messaging layer uses a RESTful design for all methods exchanged via the interface (<a href="#interface"></a>).
       </p>
       <p>
-        The VISSv2.x data structuring rules (<a href="https://covesa.github.io/vehicle_signal_specification/rule_set/">VSS Rule set</a>) 
+        The VISSv3.0 data structuring rules (<a href="https://covesa.github.io/vehicle_signal_specification/rule_set/">VSS Rule set</a>) 
         are the same through all transport protocols.
         The basis for structuring data hold by a server is a tree.
       </p>
@@ -172,7 +172,7 @@
 
     <section id="terms">
       <h2>Terminology</h2>
-      <p>The acronym 'VISSv2.x' is used to refer to this document, the VISS version 2.x specification. 
+      <p>The acronym 'VISSv3.0' is used to refer to this document, the VISS version 3.0 specification. 
       The acronym 'VSS' is used to refer to the <a href="https://github.com/COVESA/vehicle_signal_specification">'Vehicle Signal Specification'</a> 
       which is hosted by COVESA. 
       The term 'WebSocket' when used in this document, is as defined in the 
@@ -241,13 +241,13 @@
         <p>Addressing of resources is done using URIs as defined in [[RFC3987]].<br>
         <blockquote><a>scheme</a>://<a>authority</a>/<a>path</a>?<a>query</a></blockquote>
         The <dfn>scheme</dfn> describes the protocol to use to reach the addressed resource.
-        For supported protocols, see the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#transport-protocols">transport protocols</a> in [[viss2-transport-examples]] specification.<br>
+        For supported protocols, see the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#transport-protocols">transport protocols</a> in [[viss3-transport-examples]] specification.<br>
         The <dfn>authority</dfn> describes where to reach the resource, for more details see <a href="#authority-component"></a>.<br>
         The <dfn>path</dfn> addresses a specific service within the resource, for more details see <a href="#path-component"></a>.<br>
         The <dfn>query</dfn> contains further information related to the addressed service, see <a href="#filter-request"></a>.<br>
         There are potentially three resources for which a client needs a URI, see <a href="#architecture"></a>:<br>
         <ul>
-            <li>VISSv2 server.</li>
+            <li>VISSv3 server.</li>
             <li>Access grant token server.</li>
             <li>Access token server.</li>
         </ul>
@@ -272,7 +272,7 @@
           <h2>Port number</h2>
           <em>This section is non-normative.</em><br>
           <p>
-          The VISSv2 server shall use the following port numbers for the different transport protocols.
+          The VISSv3 server shall use the following port numbers for the different transport protocols.
           <ul>
             <li>HTTP port number = 443.</li>
             <li>Websocket port number = 6443.</li>
@@ -290,7 +290,7 @@
         <h2>Path URI Component</h2>
         <p>
           The path URI component definition differs between the three resources.<br>
-          For the <b>VISSv2 server</b> the definition is as follows.<br>
+          For the <b>VISSv3 server</b> the definition is as follows.<br>
           The path consists a sequence of VSS node names separated by a delimiter. VSS specifies the dot (.) as delimiter, 
           which therefore is the recommended choice also in this specification. 
           However, in HTTP URLs the conventional delimiter is slash (/), therefore also this delimiter is supported. 
@@ -434,7 +434,6 @@
           </p>
           <p>Success response:
             <ul>  
-              <li><a>subscriptionId</a> Handle identifying the subscription.</li>
               <li><a>timestamp</a> The stop time for the subscription period.</li>
             </ul>
           </p>
@@ -481,9 +480,9 @@
           <p>The error information has three components - a number, a reason, and a message. 
           The number MUST always be part of the error information, while the reason and message components MAY be a part of it.
             <ul>
-              <li><b>number</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html/#status-codes">status codes</a> as defined in [[viss2-transport-examples]].</li>
-              <li><b>reason</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#status-codes">status codes</a> as defined in [[viss2-transport-examples]].</li>
-              <li><b>message</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#status-codes">status codes</a> as defined in [[viss2-transport-examples]].</li>
+              <li><b>number</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html/#status-codes">status codes</a> as defined in [[viss3-transport-examples]].</li>
+              <li><b>reason</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#status-codes">status codes</a> as defined in [[viss3-transport-examples]].</li>
+              <li><b>message</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#status-codes">status codes</a> as defined in [[viss3-transport-examples]].</li>
             </ul>
           </p>
           </section>
@@ -578,11 +577,11 @@
           The JSON expression has the object format as shown below. For the case of an optional second object of this type, 
           these are enclosed in an array expression.<br>
           <ul>
-          <li>{"type":"&lt;x&gt;", "parameter":"&lt;y&gt;"}</li>
+          <li>{"variant":"&lt;x&gt;", "parameter":"&lt;y&gt;"}</li>
           </ul>
           where<br>
           <ul>
-          <li><b>type</b>: the key name for the filter operation type, which can have one of the values:
+          <li><b>variant</b>: the key name for the filter operation variant, which can have one of the values:
           <ul>
           <li><u>paths</u>:
           <ul>
@@ -618,14 +617,14 @@
           </ul></li>
           </ul></li>
           <li><b>parameter</b>: the key name for the optional configuration data that the filter operation requires. 
-          The parameter data varies depending on the type, 
+          The parameter data varies depending on the variant, 
           is enclosed in one object, or optionally an array of two objects, and is described in the following chapters.</li>
           </ul>
-          The server MUST support the timebased and change types, the other types are optional.<br>
-          In the JSON object, the key-value pairs "type" and "parameter" must always be present.
-          The JSON expression may consist of maximum one object with type "paths", plus maximum one object with any other supported type, 
+          The server MUST support the timebased and change variants, the other variants are optional.<br>
+          In the JSON object, the key-value pairs "variant" and "parameter" must always be present.
+          The JSON expression may consist of maximum one object with variant "paths", plus maximum one object with any other supported variant, 
           which are then logically combined as with an AND operator.<br>
-          The types timebased, range, change, and curvelog are only applicable for subscription requests. 
+          The variants timebased, range, change, and curvelog are only applicable for subscription requests. 
           Subscription requests are supported by the websocket and the MQTT transport protocols.<br>
           The restriction on how many objects that can be combined is also set by the URL size restriction on 1k characters (*).<br>
           (*) 1k is the "conservative limit, which should always be supported, a more liberal limit is 2k, which is supported in most cases.
@@ -642,8 +641,8 @@
                 Every path element in an value array must address at least one node in the tree, or else an error response is returned.<br>
                 Different elements of the value array may address the same node, 
                 in which case it is the responsibility of the server to resolve this to a singleton in the event messages.<br>
-                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#https-search-read">search read on HTTPS</a> and 
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#wss-search-read">search read on WebSocket</a> in [[viss2-transport-examples]] specification.
+                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https-search-read">search read on HTTPS</a> and 
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#wss-search-read">search read on WebSocket</a> in [[viss3-transport-examples]] specification.
                 </p>
         </section>
 
@@ -654,7 +653,7 @@
                 However, it may for various reasons at least temporarily have access to also older data points. 
                 A scenario where this could occur is when a vehicle temporarily loses its connectivity, 
                 maybe because it enters into a tunnel. Assuming that the vehicle detects the loss of connectivity, it may then start to record data. 
-                If recorded, this data may then be accessed using the history type. 
+                If recorded, this data may then be accessed using the history variant. 
                 The vehicle system makes its own decision whether to record any data, and for how long this data will be kept in storage. 
                 The period in the filter expression goes from current time, excluding the current value, and backwards in time. 
                 The number of data points in the response depends on the period size, and the sample frequency. 
@@ -664,8 +663,8 @@
                 The period must conform to the [[ISO8601]] duration format, expressed with days, hour, minute, 
                 and second data, i. e. "parameter": "PdddDThhHmmMssS".
                 The number of days shall be less than 999. Only a single period can be expressed.<br>
-                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#https-history-read">history read on HTTPS</a> and 
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#wss-history-read">history read on WebSocket</a> in [[viss2-transport-examples]] specification.
+                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https-history-read">history read on HTTPS</a> and 
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#wss-history-read">history read on WebSocket</a> in [[viss3-transport-examples]] specification.
                 </p>
         </section>
 
@@ -674,7 +673,7 @@
                 <p>
                 The parameter object contains the period time X in between captures, {"period":"X"}.
                 X is an integer and represents the period time in milliseconds.
-                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#subscribe">subscribe section</a> in [[viss2-transport-examples]] specification.
+                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#subscribe">subscribe section</a> in [[viss3-transport-examples]] specification.
                </p>
         </section>
  
@@ -712,8 +711,8 @@
                 (**)The supported boundary operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than", 
                 "lte" is "less than or equal".<br>
-                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#authorized-subscribe">authorized subscribe</a> and 
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#range-subscribe">range subscribe</a> in [[viss2-transport-examples]] specification.
+                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#authorized-subscribe">authorized subscribe</a> and 
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#range-subscribe">range subscribe</a> in [[viss3-transport-examples]] specification.
                </p>
         </section>
  
@@ -730,8 +729,8 @@
                 (**)The supported logic operators are ["eq", "ne", "gt", "gte", "lt", "lte"], 
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", 
                 "lt" is "less than", "lte" is "less than or equal".<br>
-                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#change-subscribe">Change Subscribe</a>
-                 in [[viss2-transport-examples]] specification.
+                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#change-subscribe">Change Subscribe</a>
+                 in [[viss3-transport-examples]] specification.
                </p>
         </section>
  
@@ -742,8 +741,8 @@
                 where X is a float value setting the max allowed error between any data sample and the simplified curve, 
                 and Y is the number of buffer elements. Data is processed when the buffer becomes full, 
                 and the essential data points are returned as a time series per signal.<br>
-                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#curve-logging-subscribe">curve logging subscribe</a>
-                 in [[viss2-transport-examples]] specification.
+                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#curve-logging-subscribe">curve logging subscribe</a>
+                 in [[viss3-transport-examples]] specification.
                </p>
         </section>
  
@@ -753,7 +752,7 @@
         The static metadata request is used when the client instead of the data associated to VSS node(s) 
         wants to retrieve meta data associated to the VSS node(s).<br>
         The metadata is retrieved from the VSS tree that is deployed in the vehicle.
-        This type of request is sometimes referred to as a signal discovery request.
+        This request variant is sometimes referred to as a signal discovery request.
         If the "parameter" object contains an empty string, then all metadata that the server can retrieve for the for the addressed node(s) are returned, 
         while if it contains a metadata key name, or an array of key names, then only the selected metadata is returned.<br>
         For the set of static metadata key names, 
@@ -761,10 +760,10 @@
         The vsspath in the request may point to either a leaf node, or to a branch node. 
         In the latter case then the response will contain static metadata from the entire sub-tree having this branch as the root.<br>
         A static metadata request can be combined with a paths filter operation to address multiple nodes, 
-        but cannot be combined with any other filter type.<br>
+        but cannot be combined with any other filter variant.<br>
         The response is a JSON formatted object with corresponding key-value pairs per addressed node. 
         The server MAY support the static metadata request.<br>
-        Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#https-service-discovery-read">signal discovery read on HTTPS</a> in [[viss2-transport-examples]] specification.
+        Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https-service-discovery-read">signal discovery read on HTTPS</a> in [[viss3-transport-examples]] specification.
         </p>
     </section>
  
@@ -790,11 +789,11 @@
         See <a href="#server-capabilities">B. Server Capabilities</a> for how this is expressed in the response.</li>
         </ul>
         A dynamic metadata request can be combined with a paths filter operation to address multiple nodes, 
-        but not with any other filter type.<br>
+        but not with any other filter variant.<br>
         The server capabilities request MUST be supported, the others on the list are optional. 
         For the server capabilities request the vsspath SHALL be set to "Vehicle", and the paths filter MUST not be used.<br>
-        Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#https-dynamic-metadata-read">dynamic metadata read on HTTPS</a> 
-        and <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#wss-service-discovery-read">signal discovery read on WebSocket</a> in [[viss2-transport-examples]] specification.
+        Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https-dynamic-metadata-read">dynamic metadata read on HTTPS</a> 
+        and <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#wss-service-discovery-read">signal discovery read on WebSocket</a> in [[viss3-transport-examples]] specification.
         </p>
     </section>
  
@@ -916,7 +915,7 @@
             <p>
             A subscription request must always contain a filter operation that describes the trigger event that leads to 
             that the server dispatches an asynchronous event message.
-            For the filter types "range" or "change", the triggering is dependent on the signal value. 
+            For the filter variants "range" or "change", the triggering is dependent on the signal value. 
             When the request addresses multiple signals, the triggering condition shall only be evaluated on one of the signals, 
             which is the first signal in the parameter array of paths. 
             The first path in the array must therefore not contain wildcards to address multiple signals. 
@@ -932,7 +931,7 @@
       <h2>Access Control Model</h2>
       <p>
       Access control MUST be supported. However, in this chapter only the sections that describe the interactions between the 
-      <a href="#client-def">client</a> and the VISSv2 server are mandatory.<br>
+      <a href="#client-def">client</a> and the VISSv3 server are mandatory.<br>
       Access control SHALL not be applied to the VSS nodes containing the VSS version data, 
       and not to client requests for dynamic metadata about the server capabilities, 
       or about the access control selection tags applied to the VSS tree.
@@ -942,7 +941,7 @@
         <h2>Architecture</h2>
         <p>
         <em>This section is non-normative.</em><br>
-        The VISSv2 access control model is inspired by the concepts of OAuth2.0 [[RFC6749]], 
+        The VISSv3 access control model is inspired by the concepts of OAuth2.0 [[RFC6749]], 
         but some deviations exist as is described in the following chapters.<br><br>
         Four actors are defined:<br>
         <b>Client</b><br>
@@ -953,12 +952,12 @@
         <b>Access token server</b><br>
         The server issuing the <a href="#access-token-def">access token</a> to the <a href="#client-def">client</a> 
         after successfully validating the request and obtaining authorization.<br>
-        <b>VISSv2 server</b><br>
+        <b>VISSv3 server</b><br>
         The server hosting the protected resources, capable of accepting and responding to protected resource requests using 
         <a href="#access-token-def">access tokens</a>.<br><br>
         The abstract protocol flow illustrated in the figure below describes the interaction between the four actors.<br>
         <figure id="fig-oauth2.0-flow">
-          <img src="images/VISSv2-abstract-flow.jpg" alt="VISSv2 abstract protocol flow.">
+          <img src="images/VISSv3-abstract-flow.jpg" alt="VISSv3 abstract protocol flow.">
           <figcaption> <span class="fig-title">The abstract protocol flow.</span></figcaption>
         </figure>
         Besides the four actors directly involved in the abstract flow, there are two more actors.<br>
@@ -1111,7 +1110,7 @@
           an immediate response is possible, and in the case of a successful response it shall contain the parameter:
           <ul>
             <li><a href="#access-token-def">Access token</a>: The token to be used in <a href="#client-def">client</a> 
-            requests to the VISSv2 server for Protected Resources.</li>
+            requests to the VISSv3 server for Protected Resources.</li>
           </ul> 
           An error response shall contain the parameter:
           <ul>
@@ -1149,7 +1148,7 @@
           In the case that there is a positive consent reply from the <a>ECF</a>, the response shall contain the parameters:
           <ul>
             <li><a href="#access-token-def">Access token</a>: The token to be used in <a href="#client-def">client</a> 
-            requests to the VISSv2 server for Protected Resources.</li>
+            requests to the VISSv3 server for Protected Resources.</li>
             <li>Consent status: The consent reply was positive, so consent status is set to YES.</li>
           </ul> 
           </p>
@@ -1160,10 +1159,10 @@
         <section id="protected-resource-request">
           <h2>Protected Resource Request</h2>
           <p>
-          This is a VISSv2 request including an <a href="#access-token-def">access token</a> as described in general in the 
+          This is a VISSv3 request including an <a href="#access-token-def">access token</a> as described in general in the 
           <a href="#methods"></a> chapter, 
-          and for different <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#transport-protocols">
-          transport protocols</a> in the [[viss2-transport-examples]] document.
+          and for different <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#transport-protocols">
+          transport protocols</a> in the [[viss3-transport-examples]] document.
           The first time a token is submitted in a request it must be provided in its entirety. If a server supports caching of access tokens and returns a token hanle to the client,
           then any following requests may provide the token handle instead of the complete access token.
           </p>
@@ -1172,8 +1171,8 @@
         <section id="protected-resource-response">
           <h2>Protected Resource Response</h2>
           <p>
-          This is a VISSv2 response as described in general in the <a href="#methods"></a> chapter, 
-          and for different <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#transport-protocols">transport protocols</a> in the [[viss2-transport-examples]] document.
+          This is a VISSv3 response as described in general in the <a href="#methods"></a> chapter, 
+          and for different <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#transport-protocols">transport protocols</a> in the [[viss3-transport-examples]] document.
           It does not differ from the response to an unprotected resource request.
           </p>
         </section>
@@ -1189,7 +1188,7 @@
         <em>This section is non-normative.</em><br>
           The client is an abstract representation of three sub-actors: 
           <ul>
-            <li>The <a href="#device-roles-def">device</a>. It is in charge of running the Apps that make requests to the VISSv2 server</li>
+            <li>The <a href="#device-roles-def">device</a>. It is in charge of running the Apps that make requests to the VISSv3 server</li>
             <li>The <a href="#application-roles-def">app. </a>It runs requests on behalf of the user.</li>
             <li>The <a href="#user-roles-def">user</a>. It delegates access rights to the app.</li>
           </ul> 
@@ -1305,7 +1304,7 @@
       <section id="access-control-server">
         <h2>Access Control Server</h2>
         <p>
-        The VISSv2 server MUST support validation of <a href="#access-token-def">access tokens</a>. 
+        The VISSv3 server MUST support validation of <a href="#access-token-def">access tokens</a>. 
         The functionality needed for this is decribed in this chapter.
         This includes validation of at least the following:
           <ul>
@@ -1318,7 +1317,7 @@
           if a secure communication link can be established.
           If not delegated, then a preprovisioned common secret may be shared with the <a href="#access-token-server-def">access token server</a>, 
           or other PKI based solutions may be used.<br>
-          The VISSv2 server SHALL have access to a secure system time, that cannot be modified by actors without system acknowledged credentials. 
+          The VISSv3 server SHALL have access to a secure system time, that cannot be modified by actors without system acknowledged credentials. 
           Time validation may allow for a time synchronization inaccuracy in the range of tens of seconds.<br>
           After a successful token validation, the server MUST check that the scope of the token is compatible with the request.
           If the scope claim of the <a href="#access-token-def">access token</a> contains a <a>purpose</a> short-name, successful validation requires that all the nodes addressed by the path in the request MUST 
@@ -1365,7 +1364,7 @@
           The server might decide to remove any token from the cache. In the case this token is then referred to with a token handle the client will get a "401, 
           missing_token" error and will be forced to send the whole <a href="#access-token-def">access token</a> again.
           For <a href="#client-def">client</a> requests that are not granted due to access control, 
-          the VISSv2 server MUST return one of the error codes shown in the table below.<br>
+          the VISSv3 server MUST return one of the error codes shown in the table below.<br>
         <table id="errorDefs" class="parameters">
           <tbody><tr>
             <th>Error&nbsp;Number&nbsp;(Code)</th>
@@ -1456,7 +1455,7 @@
             "iat": 1609452095,
             "exp": 1609459199,
             "clx": "user+app+dev",
-            "aud": "covesa.global/VISSv2",
+            "aud": "covesa.global/VISSv3",
             "jti": "5967e92e-40e8-5f39-892d-cc0da890db1d"
           }
           </pre>
@@ -1468,7 +1467,7 @@
           The expiry (exp) claim shall be set to the time when the token expires, in Unix time.<br>
           The <a href="#client-context-def">Client context</a> (clx) claim shall be set to the role triplet that the client has been assigned. 
           The delimiter separating the roles is a plus sign (+).<br>
-          The audience (aud) claim shall be set to the URL "covesa.global/VISSv2".<br>
+          The audience (aud) claim shall be set to the URL "covesa.global/VISSv3".<br>
           The JSON Web Token identity (jti) claim shall be set to a UUID that is unique within the domain controlled by the 
           <a href="#ecosystem-manager-def">ecosystem manager</a>.
             </p>
@@ -1490,7 +1489,7 @@
             "exp": 1609459199,
             "clx": "user+app+dev",
             "pub": client_pub_key,
-            "aud": "covesa.global/VISSv2",
+            "aud": "covesa.global/VISSv3",
             "jti": "5967e92e-40e8-5f39-892d-cc0da890db1d"
           }
           </pre>
@@ -1504,7 +1503,7 @@
           The delimiter separating the roles is a plus sign (+).<br>
           The public key (pub) claim shall be set to the public key that the <a href="#client-def">client</a> provided in the 
           <a href="#access-grant-request-def">access grant request</a>, using the JSON Web Key (JWK) data structure [[RFC7517]].<br>
-          The audience (aud) claim shall be set to the URL "covesa.global/VISSv2".<br>
+          The audience (aud) claim shall be set to the URL "covesa.global/VISSv3".<br>
           The JSON Web Token identity (jti) claim shall be set to a UUID that is unique within the domain controlled by the 
           <a href="#ecosystem-manager-def">ecosystem manager</a>.
             </p>
@@ -1528,7 +1527,7 @@
             "exp": 1609459199,
             "scp": "PurposeX" || signal-set,
             "clx": "user+app+dev",
-            "aud": "covesa.global/VISSv2",
+            "aud": "covesa.global/VISSv3",
             "jti": "5967e93f-40f9-5f39-893e-cc0da890db2e"
           }
           </pre>
@@ -1546,7 +1545,7 @@
           If the scope claim is set to a purpose, the client context claim MUST be present in the token.<br>
           The <a href="#client-context-def">Client context</a> (clx) claim shall be set to the role triplet that the client has been assigned. 
           The delimiter separating the roles is a plus sign (+).<br>
-          The audience (aud) claim shall be set to the URL "covesa.global/VISSv2".<br>
+          The audience (aud) claim shall be set to the URL "covesa.global/VISSv3".<br>
           The JSON Web Token identity (jti) claim shall be set to an unguessable UUID that is unique within the domain controlled by the 
           <a href="#ecosystem-manager-def">ecosystem manager</a>.
           </p>
@@ -1603,9 +1602,9 @@
           Each of these subactors is in turn characterized by a role, 
           building on the concept of a <a href="https://en.wikipedia.org/wiki/Role-based_access_control">Role Based Access Control (RBAC) model</a>. 
           The set of these three roles is called the Client context.<br>
-          VISSv2 specifies a rudimentary list of roles for each subactor, it is expected that these lists are augmented by the 
+          VISSv3 specifies a rudimentary list of roles for each subactor, it is expected that these lists are augmented by the 
           <a href="#ecosystem-manager-def">ecosystem manager</a>, hopefully in a cooperative effort.<br>
-          Using an RBAC model provides the following main purposes in the VISSv2 access control model:
+          Using an RBAC model provides the following main purposes in the VISSv3 access control model:
           <ul>
             <li>Input to the <a href="#access-grant-server-def">access grant token server</a> in the 
             <a href="#client-def">client</a> authentication process.</li>
@@ -1624,7 +1623,7 @@
         <section id="user-roles">
           <h2>User Roles</h2>
           <p>
-          VISSv2 specifies the following minimum set of roles for users:
+          VISSv3 specifies the following minimum set of roles for users:
           <ul>
             <li>OEM</li>
             <li>Dealer</li>
@@ -1646,7 +1645,7 @@
         <section id="application-roles">
           <h2>Application Roles</h2>
           <p>
-          VISSv2 specifies the following minimum set of roles for applications:
+          VISSv3 specifies the following minimum set of roles for applications:
           <ul>
             <li>OEM</li>
             <li>Third party</li>
@@ -1661,7 +1660,7 @@
         <section id="device-roles">
           <h2>Device Roles</h2>
           <p>
-          VISSv2 specifies the following minimum set of roles for devices:
+          VISSv3 specifies the following minimum set of roles for devices:
           <ul>
             <li>Vehicle</li>
             <li>Nomadic</li>
@@ -1784,12 +1783,12 @@
         makes possible a reduction of the number of nodes this metadata have to be added to.<br>
         This allows for example an entire VSS tree to be assigned an access-control-mode by merely applying it in the root of the tree.<br>
         The figure below shows an overview of the access control selection model, 
-        and a table showing the required access control tagging of a node for the VISSv2 server to grant the requested access. 
+        and a table showing the required access control tagging of a node for the VISSv3 server to grant the requested access. 
         <figure id="fig-access-control-selection-model">
           <img src="images/access-control-selection-model.jpg" alt="Access control selection model.">
           <figcaption> <span class="fig-title">Access control selection model.</span></figcaption>
         </figure>
-        If the VSS tree used by a VISSv2 server contains access control selection tags, 
+        If the VSS tree used by a VISSv3 server contains access control selection tags, 
         then the server MUST support their usage as described in this chapter.<br>
         If it is not used, then a server may implement access control for the entire tree.<br>
         </p>
@@ -1800,8 +1799,8 @@
       <h2>Consent support</h2>
       <em>This section is non-normative.</em><br>
       <p>
-      Handling of consent involves vehicle and cloud architectural subsystems that is out of scope in VISSv2.
-      However, a VISSv2 vehicle server has a capability to enforce consent results, i. e. to allow or block access to requested data.
+      Handling of consent involves vehicle and cloud architectural subsystems that is out of scope in VISSv3.
+      However, a VISSv3 vehicle server has a capability to enforce consent results, i. e. to allow or block access to requested data.
       This can be leveraged in a model where the server receives consent results from an <a>ECF</a> and uses that information to either grant client requests,
       or not, for data that is consent protected. How the <a>ECF</a> obtains the consent status is out-of-scope in this specification.
       A secure, local communication channel exists between the in-vehicle <a>ECF</a> and the server as shown in the figure below,
@@ -1864,6 +1863,667 @@
     <section id="tof" class="appendix"></section>
 
     <section id="server-capabilities" class="appendix">
+          <h2>JSON Schema</h2>
+          <p>
+          The payloads that are sent over any transport protocol SHALL conform with the JSON schema in this appendix, 
+          unless otherwise specified in the VISSv3 TRANSPORT-EXAMPLE or VISSv3 PAYLOAD-ENCODING specifications.<br>
+          </p>
+              <pre><code>
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://covesa.global/vissv2.0.bundled.schema.json",
+  "title": "VISSv2",
+  "description": "VISS version 2.0 bundled schema",
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string"
+    }
+  },
+  "required": ["action"],
+  "oneOf": [
+    {
+      "properties": {
+        "action": { "const": "get" }
+      },
+      "$ref": "/vissv2.0/get-message.schema.json"
+    },
+    {
+      "properties": {
+        "action": { "const": "set" }
+      },
+      "$ref": "/vissv2.0/set-message.schema.json"
+    },
+    {
+      "properties": {
+        "action": { "const": "subscribe" }
+      },
+      "$ref": "/vissv2.0/subscribe-message.schema.json"
+    },
+    {
+      "properties": {
+        "action": { "const": "unsubscribe" }
+      },
+      "$ref": "/vissv2.0/unsubscribe-message.schema.json"
+    },
+    {
+      "properties": {
+        "action": { "const": "subscription" }
+      },
+      "$ref": "/vissv2.0/subscription-event.schema.json"
+    }
+  ],
+  "$defs": {
+    "https://covesa.global/vissv2.0/get-message.schema.json": {
+  "$id": "https://covesa.global/vissv2.0/get-message.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VISSv2-get-message",
+  "description": "VISSv2 get request and response messages",
+  "type": "object",
+  "oneOf": [
+    {
+      "properties": {
+        "path": {
+          "description": "The path",
+          "type": "string"
+        },
+        "filter": {
+          "$ref": "https://covesa.global/vissv2.0/filter.schema.json"
+        },
+        "authorization": {
+          "description": "The access token",
+          "type": "string"
+        },
+        "requestId": {
+          "description": "The request id",
+          "type": "string"
+        }
+      },
+      "required": ["path"]
+    },
+    {
+      "properties": {
+        "data": {
+          "$ref": "https://covesa.global/vissv2.0/data.schema.json"
+        },
+        "ts": {
+          "description": "The time stamp",
+          "type": "string"
+        },
+        "requestId": {
+          "description": "The request id",
+          "type": "string"
+        }
+      },
+      "required": ["data", "ts"]
+    },
+    {
+      "properties": {
+        "metadata": {
+          "type": "object",
+          "description": "The metadata"
+        },
+        "ts": {
+          "description": "The time stamp",
+          "type": "string"
+        },
+        "requestId": {
+          "description": "The request id",
+          "type": "string"
+        }
+      },
+      "required": ["metadata", "ts"]
+    },
+    {
+      "properties": {
+        "error": {
+          "$ref": "https://covesa.global/vissv2.0/error.schema.json"
+        },
+        "ts": {
+          "description": "The time stamp",
+          "type": "string"
+        },
+        "requestId": {
+          "description": "The request id",
+          "type": "string"
+        }
+      },
+      "required": ["error", "ts"]
+    }
+  ]
+    },
+    "https://covesa.global/vissv2.0/set-message.schema.json": {
+  "$id": "https://covesa.global/vissv2.0/set-message.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VISSv2-set-message",
+  "description": "VISSv2 set request and response messages",
+  "type": "object",
+  "oneOf": [
+    {
+      "properties": {  
+        "path": {
+          "description": "The path",     
+          "type": "string"
+        },
+        "value": {
+          "description": "The value",     
+          "type": "string"
+        },
+       "authorization": {
+          "description": "The access token",     
+          "type": "string"
+        },
+        "requestId": {
+         "description": "The request id",     
+         "type": "string"
+        }
+      },
+      "required": ["path", "value"]
+    },
+    {
+      "properties": {
+        "ts": {
+          "description": "The time stamp",
+          "type": "string"
+        },
+        "requestId": {
+          "description": "The request id",
+          "type": "string"
+        }
+      },
+      "required": ["ts"]
+    },
+    {
+      "properties": {
+        "error": {
+          "$ref": "https://covesa.global/vissv2.0/error.schema.json"
+        },
+        "ts": {
+          "description": "The time stamp",
+          "type": "string"
+        },
+        "requestId": {
+          "description": "The request id",
+          "type": "string"
+        }
+      },
+      "required": ["error", "ts"]
+    }
+  ]
+    },
+    "https://covesa.global/vissv2.0/subscribe-message.schema.json": {
+  "$id": "https://covesa.global/vissv2.0/subscribe-message.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VISSv2-subscribe-message",
+  "description": "VISSv2 subscribe request and response messages",
+  "type": "object",
+  "oneOf": [
+    {
+      "properties": {
+        "path": {
+          "description": "The path",
+          "type": "string"
+        },
+        "filter": {
+          "$ref": "/vissv2.0/filter.schema.json"
+        },
+        "authorization": {
+          "description": "The access token",
+          "type": "string"
+        },
+        "requestId": {
+          "description": "The request id",
+          "type": "string"
+        }
+      },
+      "required": ["path", "filter"]
+    },
+    {
+      "properties": {
+        "authorization": {
+          "description": "The access token handle",
+          "type": "string"
+        },
+        "subscriptionId": {
+          "description": "The subscription Id",
+          "type": "string"
+        },
+        "ts": {
+          "description": "The time stamp",
+          "type": "string"
+        },
+        "requestId": {
+          "description": "The request id",
+          "type": "string"
+        }
+      },
+      "required": ["subscriptionId", "ts"]
+    },
+    {
+      "properties": {
+        "error": {
+          "$ref": "https://covesa.global/vissv2.0/error.schema.json"
+        },
+        "ts": {
+          "description": "The time stamp",
+          "type": "string"
+        },
+        "requestId": {
+          "description": "The request id",
+          "type": "string"
+        }
+      },
+      "required": ["error", "ts"]
+    }
+  ]
+    },
+    "https://covesa.global/vissv2.0/unsubscribe-message.schema.json": {
+  "$id": "https://covesa.global/vissv2.0/unsubscribe-message.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VISSv2-unsubscribe-message",
+  "description": "VISSv2 unsubscribe request and response messages",
+  "type": "object",
+  "oneOf": [
+    {
+      "properties": {
+        "subscriptionId": {
+          "description": "The subscription Id",
+          "type": "string"
+        },
+        "requestId": {
+          "description": "The request id",
+          "type": "string"
+        }
+      },
+      "required": ["subscriptionId"]
+    },
+    {
+      "properties": {
+        "ts": {
+          "description": "The time stamp",
+          "type": "string"
+        },
+        "requestId": {
+          "description": "The request id",
+          "type": "string"
+        }
+      },
+      "required": ["ts"]
+    },
+    {
+      "properties": {
+        "error": {
+          "$ref": "https://covesa.global/vissv2.0/error.schema.json"
+        },
+        "ts": {
+          "description": "The time stamp",
+          "type": "string"
+        },
+        "requestId": {
+          "description": "The request id",
+          "type": "string"
+        }
+      },
+      "required": ["error", "ts"]
+    }
+  ]
+    },
+    "https://covesa.global/vissv2.0/subscription-event.schema.json": {
+  "$id": "https://covesa.global/vissv2.0/subscription-event.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VISSv2-subscription-event",
+  "description": "VISSv2 subscription event",
+  "type": "object",
+  "oneOf": [
+    {
+      "properties": {
+        "subscriptionId": {
+          "description": "The subscription Id",
+          "type": "string"
+        },
+        "data": {
+          "$ref": "/vissv2.0/data.schema.json"
+        },
+        "ts": {
+          "description": "The time stamp",
+          "type": "string"
+        },
+        "requestId": {
+          "description": "The request id",
+          "type": "string"
+        }
+      },
+      "required": ["subscriptionId", "data", "ts"]
+    },
+    {
+      "properties": {
+        "subscriptionId": {
+          "description": "The subscription Id",
+          "type": "string"
+        },
+        "error": {
+          "$ref": "https://covesa.global/vissv2.0/error.schema.json"
+        },
+        "ts": {
+          "description": "The time stamp",
+          "type": "string"
+        },
+        "requestId": {
+          "description": "The request id",
+          "type": "string"
+        }
+      },
+      "required": ["subscriptionId", "error", "ts"]
+    }
+  ]
+    },
+    "https://covesa.global/vissv2.0/filter.schema.json": {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://covesa.global/vissv2.0/filter.schema.json",
+  "title": "VISSv2.0-filter",
+  "description": "VISS version 2.0 filter",
+  "type": "object",
+  "properties": {
+    "variant": {
+      "type": "string"
+    }
+  },
+  "required": ["variant"],
+  "oneOf": [
+    {
+      "properties": {
+        "variant": { "const": "paths" },
+        "parameter": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["parameter"]
+    },
+    {
+      "properties": {
+        "variant": { "const": "timebased" },
+        "parameter": {
+          "properties": {
+            "period": {
+              "type": "string"
+            }
+          },
+          "required": ["period"]
+        }
+      },
+      "required": ["parameter"]
+    },
+    {
+      "oneOf": [
+        {
+          "properties": {
+            "variant": { "const": "range" },
+            "parameter": {
+              "type": "object",
+              "properties": {
+                "boundary-op": {
+                  "type": "string",
+                  "enum": ["eq", "ne", "gt", "gte", "lt", "lte"]
+                },
+                "boundary": {
+                  "type": "string"
+                }
+              },
+              "required": ["boundary-op", "boundary"]
+            }
+          },
+          "required": ["parameter"]
+        },
+        {
+          "properties": {
+            "variant": { "const": "range" },
+            "parameter": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "boundary-op": {
+                    "type": "string",
+                    "enum": ["eq", "ne", "gt", "gte", "lt", "lte"]
+                  },
+                  "boundary": {
+                    "type": "string"
+                  },
+                  "combination-op": {
+                    "type": "string",
+                    "enum": ["AND", "OR"]
+                  }
+                },
+                "required": ["boundary-op", "boundary"]
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "required": ["parameter"]
+        }
+      ]
+    },
+    {
+      "properties": {
+        "variant": { "const": "change" },
+        "parameter": {
+          "properties": {
+            "logic-op": {
+              "type": "string",
+              "enum": ["eq", "ne", "gt", "gte", "lt", "lte"]
+            },
+            "diff": {
+              "type": "string"
+            }
+          },
+          "required": ["logic-op", "diff"]
+        }
+      },
+      "required": ["parameter"]
+    },
+    {
+      "properties": {
+        "variant": { "const": "curvelog" },
+        "parameter": {
+          "properties": {
+            "maxerr": {
+              "type": "string"
+            },
+            "bufsize": {
+              "type": "string"
+            }
+          },
+          "required": ["maxerr", "bufsize"]
+        }
+      },
+      "required": ["parameter"]
+    },
+    {
+      "properties": {
+        "variant": { "const": "history" },
+        "parameter": {
+          "type": "string"
+        }
+      },
+      "required": ["parameter"]
+    },
+    {
+      "oneOf": [
+        {
+          "properties": {
+            "variant": { "const": "static-metadata" },
+            "parameter": {
+              "type": "string"
+            }
+          },
+          "required": ["parameter"]
+        },
+        {
+          "properties": {
+            "variant": { "const": "static-metadata" },
+            "parameter": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": ["parameter"]
+        }
+      ]
+    },
+    {
+      "oneOf": [
+        {
+          "properties": {
+            "variant": { "const": "dynamic-metadata" },
+            "parameter": {
+              "type": "string"
+            }
+          },
+          "required": ["parameter"]
+        },
+        {
+          "properties": {
+            "variant": { "const": "dynamic-metadata" },
+            "parameter": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": ["parameter"]
+        }
+      ]
+    }
+  ]
+    },
+    "https://covesa.global/vissv2.0/data.schema.json": {
+  "$id": "https://covesa.global/vissv2.0/data.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VISSv2-data-representation",
+  "description": "VISSv2 data representation",
+  "oneOf": [
+    {
+      "type": "object",
+      "$ref": "/vissv2.0/datapoint-single.schema.json"
+    },
+    {
+      "type": "object",
+      "$ref": "/vissv2.0/datapoint-multiple.schema.json"
+    },
+    {
+      "type": "array",
+      "items": {
+        "$ref": "/vissv2.0/datapoint-single.schema.json"
+      }
+    },
+    {
+      "type": "array",
+      "items": {
+        "$ref": "/vissv2.0/datapoint-multiple.schema.json"
+      }
+    }
+  ],
+  "$defs": {
+    "https://covesa.global/vissv2.0/datapoint-single.schema.json": {
+      "$id": "https://covesa.global/vissv2.0/datapoint-single.schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "VISSv2-single-datapoint",
+      "description": "VISSv2 single datapoint",
+      "properties": {  
+        "path": {
+          "description": "The path",     
+          "type": "string"
+        },
+        "dp": {
+          "description": "The data point",     
+          "type": "object",
+          "properties": {  
+            "value": {
+              "description": "The value",     
+              "type": "string"
+            },
+            "ts": {
+              "description": "The time stamp",     
+              "type": "string"
+            }
+          },
+          "required": ["value", "ts"]
+        }
+      },
+      "required": ["path", "dp"]
+    },
+    "https://covesa.global/vissv2.0/datapoint-multiple.schema.json": {
+      "$id": "https://covesa.global/vissv2.0/datapoint-multiple.schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "VISSv2-multiple-datapoints",
+      "description": "VISSv2 multiple datapoints",
+      "properties": {  
+        "path": {
+          "description": "The path",     
+          "type": "string"
+        },
+        "dp": {
+          "description": "Array of data points",     
+          "type": "array",
+          "items": {
+            "properties": {  
+              "value": {
+                "description": "The value",     
+                "type": "string"
+              },
+              "ts": {
+                "description": "The time stamp",     
+                "type": "string"
+              }
+            },
+            "required": ["value", "ts"]
+          }
+        }
+      },
+      "required": ["path", "dp"]
+    }
+    }
+    },
+    "https://covesa.global/vissv2.0/error.schema.json": {
+  "$id": "https://covesa.global/vissv2.0/error.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VISSv2-error",
+  "description": "VISSv2 error data",
+  "type": "object",
+  "properties": {  
+    "number": {
+      "description": "The status code",     
+      "type": "integer",
+      "enum": [400, 401, 403, 404, 503]
+    },
+    "reason": {
+      "description": "The reason",     
+      "type": "string",
+      "enum": ["bad_request", "invalid_data", "expired_token", "invalid_token", "missing_token", "forbidden_request",
+               "unavailable_data", "service_unavailable"]
+    },
+   "message": {
+      "description": "The access token",     
+      "type": "string",
+      "enum": ["The request is malformed.", "Data present in the request is invalid.", "Access token has expired.",
+               "Access token is invalid.", "Access token is missing.", "The server refuses to carry out the request.",
+               "The requested data was not found.", "The server is temporarily unable to handle the request."]
+    }
+  },
+  "required": ["number", "reason", "message"]
+    }
+  }
+}              </code></pre>
+    </section>
+
+    <section id="server-capabilities" class="appendix">
         <h2>Server Capabilities</h2>
         <p>
         On receiving a dynamic-metadata request on server capabilities the server SHALL respond with a JSON object that for each of the keys
@@ -1886,11 +2546,11 @@
           </tr>
           <tr>
             <td>transport_protocol</td>
-            <td>[[viss2-transport-examples]], <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2.x_TransportExamples.html">Transport Protocol Examples</a> chapter</td>
+            <td>[[viss3-transport-examples]], <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html">Transport Protocol Examples</a> chapter</td>
           </tr>
           <tr>
             <td>payload_encoding</td>
-            <td>[[viss2-payload-encoding]], <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2.x_PayloadEncoding.html">Payload Encoding</a> chapter</td>
+            <td>[[viss3-payload-encoding]], <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_PayloadEncoding.html">Payload Encoding</a> chapter</td>
           </tr>
         </table><br>
         <table  style="width:50%">
@@ -1956,15 +2616,15 @@
           </tr>
           <tr>
             <td><u>https</u></td>
-            <td>[[viss2-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#https">HTTPS</a> chapter</td>
+            <td>[[viss3-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https">HTTPS</a> chapter</td>
           </tr>
           <tr>
             <td><u>wss</u></td>
-            <td>[[viss2-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2_Transport.html#secure-websockets">Secure Websocket</a> chapter</td>
+            <td>[[viss3-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#secure-websockets">Secure Websocket</a> chapter</td>
           </tr>
           <tr>
             <td>mqtts</td>
-            <td>[[viss2-transport-examples]], Transport Protocols:MQTT chapter</td>
+            <td>[[viss3-transport-examples]], Transport Protocols:MQTT chapter</td>
           </tr>
         </table>
 
