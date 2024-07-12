@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>COVESA VISS version 2.x-Payload Encoding</title>
+    <title>COVESA VISS version 3.0-Payload Encoding</title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
     <script class='remove'>
       var respecConfig = {
@@ -28,18 +28,18 @@
           companyURL: "https://etri.re.kr/eng/main/main.etri",
           w3cid: 34457
         }],
-        edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2.x_PayloadEncoding.html",
-        shortName: "viss2.x-payload-encoding",
+        edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_PayloadEncoding.html",
+        shortName: "viss3.0-payload-encoding",
         localBiblio: {
           "SemVer": {
-            title: "Semantic Versioning 2.x.0",
-            href: "https://semver.org/spec/v2.x.0.html",
+            title: "Semantic Versioning 2.0.0",
+            href: "https://semver.org/spec/v2.0.0.html",
             status: "published",
             publisher: "Tom Preston-Werner"
           },
-          "viss2-transport-examples": {
-            title: "COVESA VISS version 2.x-Transport Examples",
-            href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2.x_TransportExamples.html",
+          "viss3-transport-examples": {
+            title: "COVESA VISS version 3.0-Transport Examples",
+            href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html",
             publisher: "Ulf Bjorkengren"
           }
         }
@@ -105,7 +105,7 @@
   </style>    
   </head>
   <body>
-    <p class="copyright">Copyright © 2024 COVESA®. This document includes material copied from or derived from <a href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html">W3C VISS version 2 - Core</a>.</p>
+    <p class="copyright">Copyright © 2024 COVESA®. This document includes material copied from or derived from <a href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html">W3C VISS version 2 - Core</a>.</p>
     <section id='abstract'>
       <p>The Vehicle Information Service Specification (VISS) is a
       service for accessing vehicle information, signals from sensors
@@ -127,10 +127,10 @@
       access control solution was added.</p>
       
       <p>
-        There are three parts to this specification, [[viss2-core]], [[viss2-transport-examples]], and PAYLOAD ENCODING. This document, the VISS version 2.x PAYLOAD ENCODING specification, 
-        describes the VISSv2.x payload encodings that is used in some cases. 
-        The companion specifications [[viss2-core]] describes the messaging layer,
-        and [[viss2-transport-examples]] describes the deviations form the CORE specification that are used by some transport protocols.
+        There are three parts to this specification, [[viss3-core]], [[viss3-transport-examples]], and PAYLOAD ENCODING. This document, the VISS version 3.0 PAYLOAD ENCODING specification, 
+        describes the VISSv3.0 payload encodings that is used in some cases. 
+        The companion specifications [[viss3-core]] describes the messaging layer,
+        and [[viss3-transport-examples]] describes the deviations form the CORE specification that are used by some transport protocols.
       </p>
     </section>
     <section id='sotd'></section>
@@ -145,7 +145,7 @@
 
     <section id="terminology">
       <h2>Terminology</h2>
-      <p>The acronym 'VISSv2.x' is used to refer to this document, the VISS version 2.x specification.
+      <p>The acronym 'VISSv3.0' is used to refer to this document, the VISS version 3.0 specification.
          The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the COVESA Alliance.
          The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.
       </p>
@@ -167,9 +167,9 @@
           </p>
           <p>The Vehicle Information Service Specification (VISS) defines a protocol for accessing vehicle data in a standardized manner. 
             As vehicles become more connected and data-driven, the need for efficient data exchange methods becomes paramount. 
-            Protobuf encoding serves as an optimal solution within VISS due to its compact binary format and schema evolution capabilities.
+            Protobuf encoding serves as an efficient solution within VISS due to its compact binary format and schema evolution capabilities.
           </p>
-          <p>In this chapter, we outline the integration of Protobuf encoding with VISS version 2.x, providing comprehensive details on schema definitions, 
+          <p>In this chapter, we outline the integration of Protobuf encoding with VISS version 3.0, providing comprehensive details on schema definitions, 
             encoding and decoding processes, and practical examples. This will enable seamless implementation and interoperability across different systems and 
             platforms within the automotive ecosystem.
           </p>
@@ -377,104 +377,16 @@ message UnsubscribeResponseMessage {
             The implementation of the encoding and the decoding is out-of-scope in this specification.
             </p>
           </section>   
+        </section>
 
-      </section>
-    </section>
+          <section id="json-schema-based-encoding">
+            <h2>JSON schema based encoding</h2>
+            <p>
+            Several IDLs may take a JSON scheme representation of the interface description as input, e. g. OpenAPI and asyncAPI.
+            The JSON scheme representation of the VISS3.0 interface in the CORE specification can be used for such a purpose.
+            </p>
+          </section>
 
-        <section id="json-def">
-          <h2>JSON Schema Definitions</h2>
-          <p>
-          The payload that is sent over the supported transport protocols SHALL use the JSON definitions in this appendix, 
-          unless otherwise specified in the VISSv2 TRANSPORT specification.<br>
-          The definitions within this section describe the datatypes referenced within the JSON Schema ([[json-schema]]) for the VISSv2 WebSocket interfaces, 
-          and for the VISSv2 HTTP payloads.
-          </p>
-              <pre><code>
-{
-    "definitions": {
-        "action": {
-            "enum": [ "get", "set", "subscribe", "subscription", "unsubscribe"],
-            "description": "The type of action requested by the client and/or delivered by the server"
-        },
-        "path": {
-            "description": "The path to the desired vehicle signal(s). It may require synthesis with additional path data, see [[viss2-core]], Paths Filter Operation chapter.",
-            "type": "string"
-        },
-        "ts": {
-            "description": "The time of the issuance of the message. For its format, see [[viss2-core]], Timestamps chapter.",
-            "type": "string"
-        },
-        "filter": {
-            "description": "May be specified in order to throttle the demands of subscriptions on the server. See [[viss2-core]], Filter Request chapter.",
-            "type": "object",
-            "properties": {
-                "type": {
-                    "description": "The different filter types.",
-                    "type": "string"
-                },
-                "parameter": {
-                    "description": "Parameter(s) for the different filter types",
-                    "type": "object"
-                }
-            }
-        },
-        "data": {
-            "description": "Data including path(s) and one or more data point(s).",
-            "type": "object",
-            "properties": {
-                "path": {
-                    "description": "The path to the vehicle signal.",
-                    "type": "string"
-                },
-                "dp": {
-                    "description": "Data point including one or more value and time samp",
-                    "type": "object",
-                    "properties": {
-                        "value": {
-                            "description": "The value related to the associated path.",
-                            "type": "object"                    
-                        },
-                        "ts": {
-                            "description": "Time of the value capture. For its format, see [[viss2-core]], Timestamps chapter.",
-                            "type": "string"                    
-                        }
-                    }
-                }
-            }   
-        },
-        "subscriptionId":{
-            "description": "Integer handle value which is used to uniquely identify a subscription session.",
-            "type": "string"
-        },
-        "metadata":{
-            "description": "Static or dynamic metadata.",
-            "type": "object"
-        },
-        "requestId": {
-            "description": "Returned by the server in the response and used by the client to link the request and response messages.",
-            "type": "string"
-        },
-        "error": {
-            "description": "Server response for error cases",
-            "type": "object",
-            "properties": {
-                "number": {
-                    "description": "HTTP Status Code Number",
-                    "type": "integer"                   
-                },
-                "reason": {
-                    "description": "Pre-defined string value that can be used to distinguish between errors that have the same code",
-                    "type": "string"                    
-                },
-                "message": {
-                    "description": "Message text describing the cause in more detail",
-                    "type": "string"                    
-                }
-            }   
-        }
-    }
-}
-               </code></pre>
         </section>
 
     <div id="tof" class="appendix"></div>

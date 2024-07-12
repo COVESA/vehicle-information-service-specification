@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>COVESA VISS version 2-Transport Examples</title>
+    <title>COVESA VISS version 3.0-Transport Examples</title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
     <script class='remove'>
       var respecConfig = {
@@ -28,18 +28,18 @@
           companyURL: "https://etri.re.kr/eng/main/main.etri",
           w3cid: 34457
         }],
-        edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2.x_TransportExamples.html",
-        shortName: "viss2-transport-examples",
+        edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_TransportExamples.html",
+        shortName: "viss3-transport-examples",
         localBiblio: {
           "SemVer": {
-            title: "Semantic Versioning 2.x.0",
-            href: "https://semver.org/spec/v2.x.0.html",
+            title: "Semantic Versioning 2.0.0",
+            href: "https://semver.org/spec/v2.0.0.html",
             status: "published",
             publisher: "Tom Preston-Werner"
           },
-          "viss2-payload-encoding": {
-            title: "COVESA VISS version 2.x-Payload Encoding",
-            href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2.x_PayloadEncoding.html",
+          "viss3-payload-encoding": {
+            title: "COVESA VISS version 3.0-Payload Encoding",
+            href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_PayloadEncoding.html",
             publisher: "Ulf Bjorkengren"
           }          
         }
@@ -105,7 +105,7 @@
   </style>    
   </head>
   <body>
-    <p class="copyright">Copyright © 2024 COVESA®. This document includes material copied from or derived from <a href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html">W3C VISS version 2 - Core</a>.</p>
+    <p class="copyright">Copyright © 2024 COVESA®. This document includes material copied from or derived from <a href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html">W3C VISS version 2 - Core</a>.</p>
     <section id='abstract'>
       <p>The Vehicle Information Service Specification (VISS) is a
       service for accessing vehicle information, signals from sensors
@@ -127,16 +127,16 @@
       access control solution was added.</p>
       
       <p>
-        There are three parts to this specification, [[viss2-core]], [[viss2-payload-encoding]], and TRANSPORT-EXAMPLES. This document, the VISS version 2.x TRANSPORT-EXAMPLES specification, 
-        describes the VISSv2 transport protocols, and the mapping of the message layer on these transports. 
-        The companion specification [[viss2-core]] describes the messaging layer, and [[viss2-payload-encoding]] describes payload encodings to/from the primary JSON payload format.
+        There are three parts to this specification, [[viss3-core]], [[viss3-payload-encoding]], and TRANSPORT-EXAMPLES. This document, the VISS version 3.0 TRANSPORT-EXAMPLES specification, 
+        describes the VISSv3 transport protocols, and the mapping of the message layer on these transports. 
+        The companion specification [[viss3-core]] describes the messaging layer, and [[viss3-payload-encoding]] describes payload encodings to/from the primary JSON payload format.
       </p>
     </section>
     <section id='sotd'></section>
 
     <section id="introduction">
       <h2>Introduction</h2>
-      <p>This document describes the transport bindings of the Vehicle Information Service Specification, version 2. 
+      <p>This document describes the transport bindings of the Vehicle Information Service Specification, version 4.0. 
       The split between transport bindings and messaging layer specifications improves readability and simplifies 
       extending the specification to further transports in the future. 
       This specification supports multiple transport bindings, the secure versions of HTTP ([[RFC9112]]),
@@ -148,7 +148,7 @@
 
     <section id="terminology">
       <h2>Terminology</h2>
-      <p>The acronym 'VISSv2' is used to refer to this document, the VISS version 2 specification.
+      <p>The acronym 'VISSv3' is used to refer to this document, the VISS version 3 specification.
          The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the COVESA Alliance.
          The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.
       </p>
@@ -215,7 +215,7 @@
       <section id="transport-payload">
         <h2>Transport Payload</h2>
         <p>The payload SHALL have JSON format. 
-        See <a href='#json-def'></a> for the payload format of the messages for the different transport protocols.
+        See the JSON Schema chapter in the CORE document for the primary payload format.
         </p>
       </section>
 
@@ -223,7 +223,7 @@
         <h2>Authorization</h2>
           <p>If authorization is enabled on a signal requested by the client, 
           it MUST provide a token to the server in order to verify that it is correctly authorized for the service it requests 
-          (see [[viss2-core]] document).Tokens are integrated in HTTP requests in the <code>Authorization</code> header. 
+          (see [[viss3-core]] document).Tokens are integrated in HTTP requests in the <code>Authorization</code> header. 
           For WebSocket and MQTT requests an optional <code>authorization</code> property in the payload can be used.
           </p>
       </section>
@@ -239,7 +239,7 @@
 
       <section id="https">
         <h2>HTTPS</h2>
-        <p>The message data components described in the [[viss2-core]] document are in the first hand mapped to required HTTP parameters, 
+        <p>The message data components described in the [[viss3-core]] document are in the first hand mapped to required HTTP parameters, 
         and only when there is no appropriate mapping it is mapped to the payload. 
         The subscribe/unsubscribe messages are not supported by this transport protocol.
         </p>
@@ -297,8 +297,8 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                “data”:{“path”:”Vehicle.Cabin.SeatPosCount”, 
-                        “dp”:{“value”:[”2”, "3", "2"], “ts”:”2020-04-15T13:37:00Z”}
+                "data":{"path":"Vehicle.Cabin.SeatPosCount", 
+                        "dp":{"value":["2", "3", "2"], "ts":"2020-04-15T13:37:00Z"}
                        }
               }
               </code></pre>
@@ -337,8 +337,8 @@
             Content-Type: application/json; charset=utf-8
 	    ...
             {
-              “data”:{“path”:”Vehicle.Drivetrain.InternalCombustionEngine.RPM”, 
-                      “dp”:{“value”:”2372”, “ts”:”2020-04-15T13:37:00Z”}
+              "data":{"path":"Vehicle.Drivetrain.InternalCombustionEngine.RPM", 
+                      "dp":{"value":"2372", "ts":"2020-04-15T13:37:00Z"}
                      }
             }
             </code></pre>
@@ -361,12 +361,12 @@
           <section id="https-search-read">
             <h2>Search Read</h2>
             <p>
-              The search read request uses the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#paths-filter-operation">paths filter operation</a> described in the [[viss2-core]] document to provide one or more path expressions, 
+              The search read request uses the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#paths-filter-operation">paths filter operation</a> described in the [[viss3-core]] document to provide one or more path expressions, 
               relative to the path in the GET URL.<br>
               <b>Example:</b>
               Request:
               <pre><code>
-              GET /Vehicle/Cabin/Door?filter={"type":"paths", "parameter":"*/*/IsOpen"}   HTTP/1.1
+              GET /Vehicle/Cabin/Door?filter={"variant":"paths", "parameter":"*/*/IsOpen"}   HTTP/1.1
               Host: 127.0.0.1:1337
               Accept: application/json
 	      ...
@@ -377,9 +377,9 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                “data”:[{“path”:”Vehicle.Cabin.Door.Row1.Left.IsOpen”, “dp”:{“value”:”false”, “ts”:”2020-04-15T13:37:00Z”}}, 
+                "data":[{"path":"Vehicle.Cabin.Door.Row1.Left.IsOpen", "dp":{"value":"false", "ts":"2020-04-15T13:37:00Z"}}, 
                         {...},… 
-                        {“path”:”Vehicle.Cabin.Door.Row4.Right.IsOpen”, “dp”:{“value”:”true”, “ts”:”2020-04-15T13:37:00Z”}}
+                        {"path":"Vehicle.Cabin.Door.Row4.Right.IsOpen", "dp":{"value":"true", "ts":"2020-04-15T13:37:00Z"}}
                        ]
               }
               </code></pre>
@@ -399,12 +399,12 @@
           <section id="https-history-read">
             <h2>History Read</h2>
             <p>
-              The history read request uses the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#history-filter-operation">history filter operation</a> described in the [[viss2-core]] document to read recorded values 
+              The history read request uses the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#history-filter-operation">history filter operation</a> described in the [[viss3-core]] document to read recorded values 
               for a given period backwards in time.<br>
               <b>Example:</b>
               Request:
               <pre><code>
-              GET /Vehicle.Acceleration.Longitudinal?filter={"type":"history", "parameter":"P2DT12H"}   HTTP/1.1
+              GET /Vehicle.Acceleration.Longitudinal?filter={"variant":"history", "parameter":"P2DT12H"}   HTTP/1.1
               Host: 127.0.0.1:1337
               Accept: application/json
 	      ...
@@ -415,7 +415,7 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                “data”:{“path”:”Vehicle.Acceleration.Longitudinal”, “dp”:[{“value”:”0.123”, “ts”:”2020-04-15T13:00:00Z”}, ..., {“value”:”0.125”, “ts”:”2020-04-15T13:37:00Z”}]}
+                "data":{"path":"Vehicle.Acceleration.Longitudinal", "dp":[{"value":"0.123", "ts":"2020-04-15T13:00:00Z"}, ..., {"value":"0.125", "ts":"2020-04-15T13:37:00Z"}]}
               }
               </code></pre>
             </p>
@@ -424,7 +424,7 @@
           <section id="https-service-discovery-read">
             <h2>Signal Discovery Read</h2>
             <p>
-              The signal discovery request uses the static metadata filtering type as described in the [[viss2-core]] document to retrieve metadata in the VSS tree.
+              The signal discovery request uses the static metadata filtering type as described in the [[viss3-core]] document to retrieve metadata in the VSS tree.
               If the parameter object is set to an empty string, then all metadata in the addressed VSS nodes is returned. 
               If only specific metadata is desired, the value can be set to this, e. g. "parameter":["type", "datatype"]. 
               The values must be the names as defined in the VSS specification.<br>
@@ -432,7 +432,7 @@
               <b>Example:</b>
               Request:
               <pre><code>
-              GET /Vehicle/Drivetrain/FuelSystem?filter={"type":"static-metadata", "parameter":""}   HTTP/1.1
+              GET /Vehicle/Drivetrain/FuelSystem?filter={"variant":"static-metadata", "parameter":""}   HTTP/1.1
               Host: 127.0.0.1:1337
               Accept: application/json
 	      ...
@@ -455,12 +455,12 @@
             <p>
               The dynamic metadata, i. e. any other metadata kept by the vehicle system, 
               is retrieved by the setting the "type" to  "dynamic-metadata".
-              The value MUST be set to one of the domain names as specified in the [[viss2-core]], <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#dynamic-metadata-request">Dynamic Metadata Filter Operation</a> chapter.
+              The value MUST be set to one of the domain names as specified in the [[viss3-core]], <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#dynamic-metadata-request">Dynamic Metadata Filter Operation</a> chapter.
               <br>
               <b>Example:</b>
               Request:
               <pre><code>
-              GET /Vehicle?filter={"type":"dynamic-metadata", "parameter":"server_capabilities"}   HTTP/1.1
+              GET /Vehicle?filter={"variant":"dynamic-metadata", "parameter":"server_capabilities"}   HTTP/1.1
               Host: 127.0.0.1:1337
               Accept: application/json
 	      ...
@@ -548,7 +548,7 @@
         <h2>Secure WebSocket</h2>
         <p>
         As the WebSocket protocol does not implicitly provide a logical association between the request and response messages 
-        described here a key-value pair with the keyname "requestId" is added to the data components described in the [[viss2-core]] document.<br>
+        described here a key-value pair with the keyname "requestId" is added to the data components described in the [[viss3-core]] document.<br>
         As the WebSocket protocol neither specifies a set of explicit methods, 
         another key-value pair with the keyname "action" is also added. See <a href='#action-def'></a> for the declaration of these new key-value pairs. 
         All data components are mapped to the payload.
@@ -570,25 +570,25 @@
 	suitable standards compliant WebSocket library to request that a
 	WebSocket connection is opened on the server.</p>
 
-	<p>Implementations that support additional devices or multiple VISSv2 services
-        should provide discovery. Alternatively, the location of a particular VISSv2
+	<p>Implementations that support additional devices or multiple VISSv3 services
+        should provide discovery. Alternatively, the location of a particular VISSv3
         Server instance on the local vehicle network may be handled by
         configuration, either as part of a package manifest or by consulting a
-        registry on application install. The 'wwwVISSv2' hostname in this
+        registry on application install. The 'wwwVISSv3' hostname in this
         specification is used an example.
 	</p>
 	      
 	<p>A client running on the vehicle is able to connect to the
-	VISSv2 Server instance using the hostname e.g. 'wwwVISSv2' and uses the
-	default port 443. The hostname 'wwwVISSv2' may locally be mapped to the localhost
+	VISSv3 Server instance using the hostname e.g. 'wwwVISSv3' and uses the
+	default port 443. The hostname 'wwwVISSv3' may locally be mapped to the localhost
 	IP address 127.0.0.1 e.g. by adding an entry to the /etc/hosts file.</p>
 
-	<p>The sub-protocol name <em class="rfc2119" title="SHALL">SHALL</em> be 'VISSv2' with the digit 2 being the version number. 
+	<p>The sub-protocol name <em class="rfc2119" title="SHALL">SHALL</em> be 'VISSv3' with the digit 2 being the version number. 
 	The sub-protocol version will
 	be associated with exactly one VISS Server Specification version so that the client and server can 
 	correctly validate and parse request and response message packets.</p>
         <pre><code>
-	var vehicle  = new WebSocket("wss://wwwVISSv2:443", "VISSv2");
+	var vehicle  = new WebSocket("wss://wwwVISSv3:443", "VISSv3");
         </code></pre>
 	<p>The client <em class="rfc2119" title="SHALL">SHALL</em> connect to the server over HTTPS and request that
 	the server opens a WebSocket. All WebSocket communications between
@@ -631,12 +631,12 @@
 	the client:</p>
         <pre><code>
 	// Open the WebSocket</span>
-	var vehicle  = new WebSocket("wss://wwwVISSv2:443", "VISSv2");
+	var vehicle  = new WebSocket("wss://wwwVISSv3:443", "VISSv3");
 	…
 	// Close the WebSocket
 	vehicle.close();
         </code></pre>
-	<p>The VISSv2 Server may terminate the WebSocket connection if it has not received a request for a period determined by
+	<p>The VISSv3 Server may terminate the WebSocket connection if it has not received a request for a period determined by
 	the server. It is the client’s responsibility to handle this gracefully and to recover and request new subscriptions, where required.
 	</p>
         </section>
@@ -708,9 +708,10 @@
               {
                 "action": "get",
                 "requestId": "8756",
-                “data”:{“path”:”Vehicle.Drivetrain.InternalCombustionEngine/RPM”, 
-                        “dp”:{“value”:”2372”, “ts”:”2020-04-15T13:37:00Z”}
-                       }
+                "data":{"path":"Vehicle.Drivetrain.InternalCombustionEngine.RPM", 
+                        "dp":{"value":"2372", "ts":"2020-04-15T13:37:00Z"}
+                       },
+                       "ts":"2020-04-15T13:37:05Z"
               }
               </code></pre>
               Error response:
@@ -740,7 +741,7 @@
               {
                 "action": "get",
                 "path": "Vehicle.Drivetrain.InternalCombustionEngine.RPM",
-                "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds"
+                "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds",
                 "requestId": "8657"
               }
               </code></pre>
@@ -749,9 +750,10 @@
               {
                 "action": "get",
                 "requestId": "8657",
-                “data”:{“path”:”Vehicle.Drivetrain.InternalCombustionEngine.RPM”, 
-                        “dp”:{“value”:”2372”, “ts”:”2020-04-15T13:37:00Z”}
-                       }
+                "data":{"path":"Vehicle.Drivetrain.InternalCombustionEngine.RPM", 
+                        "dp":{"value":"2372", "ts":"2020-04-15T13:37:00Z"}
+                       },
+                "ts":"2020-04-15T13:37:01Z"
               }
               </code></pre>
             </p>
@@ -760,7 +762,7 @@
           <section id="wss-search-read">
             <h2>Search Read</h2>
             <p>A client may issue a search read request to access multiple values in one request message. 
-               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#paths-filter-operation">paths filter operation</a> described in the [[viss2-core]].
+               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#paths-filter-operation">paths filter operation</a> described in the [[viss3-core]].
             </p>
             <p>
               <b>Example:</b><br>
@@ -769,7 +771,7 @@
               {
                 "action": "get",
                 "path": "Vehicle.Cabin",
-                "filter": {"type":"paths", "parameter":["Door.*.*.IsOpen", "DriverPosition"]}value
+                "filter": {"variant":"paths", "parameter":["Door.*.*.IsOpen", "DriverPosition"]},
                 "requestId": "5688"
               }
               </code></pre>
@@ -777,12 +779,13 @@
               <pre><code>
               {
                 "action": "get",
-                “data”:[{“path”:”Vehicle.Cabin.Door.Row1.Left.IsOpen”, “dp”:{“value”:”false”, “ts”:”2020-04-15T13:37:00Z”}}, 
+                "data":[{"path":"Vehicle.Cabin.Door.Row1.Left.IsOpen", "dp":{"value":"false", "ts":"2020-04-15T13:37:00Z"}}, 
                         {...},… 
-                        {“path”:”Vehicle.Cabin.Door.Row4.Right.IsOpen”, “dp”:{“value”:”true”, “ts”:”2020-04-15T13:37:00Z”}},
-                        {“path”:”Vehicle.Cabin.DriverPosition”, “dp”:{“value”:”1”, “ts”:”2020-04-15T07:00:00Z”}}
-                       ]
+                        {"path":"Vehicle.Cabin.Door.Row4.Right.IsOpen", "dp":{"value":"true", "ts":"2020-04-15T13:37:01Z"}},
+                        {"path":"Vehicle.Cabin.DriverPosition", "dp":{"value":"1", "ts":"2020-04-15T07:00:01Z"}}
+                       ],
                 "requestId": "5688",
+                "ts":"2020-04-15T07:00:02Z"
               }
               </code></pre>
             </p>
@@ -791,7 +794,7 @@
           <section id="wss-history-read">
             <h2>History Read</h2>
             <p>A client may issue a history read request to access recorded data points. 
-               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#history-filter-operation">history filter operation</a> described in the [[viss2-core]].
+               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#history-filter-operation">history filter operation</a> described in the [[viss3-core]].
             </p>
             <p>
               <b>Example:</b><br>
@@ -800,7 +803,7 @@
               {
                 "action": "get",
                 "path": "Vehicle.Acceleration.Longitudinal",
-                "filter": {"type":"history", "parameter":"P2DT12H"},
+                "filter": {"variant":"history", "parameter":"P2DT12H"},
                 "requestId": "5688"
               }
               </code></pre>
@@ -808,8 +811,9 @@
               <pre><code>
               {
                 "action": "get",
-                “data”: {“path”: ”Vehicle.Acceleration.Longitudinal”, “dp”: [{“value”: ”0.123”, “ts”: ”2020-04-15T13:00:00Z”}, {“value”: ”0.125”, “ts”: ”2020-04-15T13:37:00Z”}]},
-                "requestId": "5688"
+                "data": {"path": "Vehicle.Acceleration.Longitudinal", "dp": [{"value": "0.123", "ts": "2020-04-15T13:00:00Z"}, {"value": "0.125", "ts": "2020-04-15T13:37:02Z"}]},
+                "requestId": "5688",
+                "ts": "2020-04-15T13:37:02Z"
               }
               </code></pre>
             </p>
@@ -830,7 +834,7 @@
               {
                 "action": "get",
                 "path": "Vehicle.Drivetrain.FuelSystem",
-                "filter":{"type":"dynamic-metadata", "parameter":["availability", "validate"]}
+                "filter":{"variant":"dynamic-metadata", "parameter":["availability", "validate"]},
                 "requestId": "5687"
               }
               </code></pre>
@@ -839,7 +843,7 @@
               {
                 "action": "get",
                 "requestId": "5687",
-                "metadata": {"FuelSystem":{"availability":"available","validate":"read-write","children":{"HybridType", ... }}}
+                "metadata": {"FuelSystem":{"availability":"available","validate":"read-write","children":["HybridType", ... ]}},
                 "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
@@ -940,7 +944,7 @@
                 "action": "set",
                 "path": "Vehicle.Drivetrain.Transmission.PerformanceMode",
                 "value": "sport",
-                "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds"
+                "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds",
                 "requestId": "5687"
               }
                </code></pre>
@@ -962,7 +966,7 @@
             The client may send a <a href="#dfn-subscriberequest" class="internalDFN" data-link-type="dfn">subscribeRequest</a> message 
             to request a subscription to one or more signals, 
             thereby requesting the server to repeatedly return subscription event messages, as specified by 
-	    the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#filter-request">filter request</a> described in the [[viss2-core]]. 
+	    the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#filter-request">filter request</a> described in the [[viss3-core]]. 
             The server <em class="rfc2119" title="MAY">MAY</em> reduce the number of 
             <a href="#dfn-subscriptionevent" class="internalDFN" data-link-type="dfn">subcriptionEvent</a> 
             messages sent to the client in order to reduce processing demands.<br>
@@ -972,7 +976,7 @@
             <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> message. 
             If an error occurs during the subscription session, the server shall return an 
             <a href="#dfn-subscriptionerrorevent" class="internalDFN" data-link-type="dfn">subscriptionErrorEvent</a> message.<br>
-            The subscription variants are, as described in the [[viss2-core]] document:
+            The subscription variants are, as described in the [[viss3-core]] document:
 	  <ul>
 	  <li>timebased: event messages are issued at a regular time interval,</li>
 	  <li>change: event messages are issued when the value has changed as specified,</li>
@@ -1049,7 +1053,7 @@
               {
                 "action": "subscribe",
                 "path": "Vehicle.Drivetrain.FuelSystem.Level",
-                "filter": {"type":"timebased", "parameter":{"period":"500"}}
+                "filter": {"variant":"timebased", "parameter":{"period":"500"}},
                 "requestId": "6578"
               }
                </code></pre>
@@ -1076,8 +1080,8 @@
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                “data”: {“path”: ”Vehicle.Drivetrain.FuelSystem.Level”, 
-                        “dp”: {“value”: ”50”, “ts”: ”2020-04-15T13:37:00Z”}
+                "data": {"path": "Vehicle.Drivetrain.FuelSystem.Level", 
+                        "dp": {"value": "50", "ts": "2020-04-15T13:37:00Z"}
                 },
                 "ts": "2020-04-15T13:37:00Z"
               }
@@ -1087,7 +1091,7 @@
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                "error": {"number": 401, "reason": "token_expired", "message": "Access token has expired."},
+                "error": {"number": 401, "reason": "expired_token", "message": "Access token has expired."},
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
@@ -1111,7 +1115,7 @@
               {
                 "action": "subscribe",
                 "path": "Vehicle.Drivetrain.FuelSystem.Level",
-                "filter": {"type":"range", "parameter":[{"boundary-op":"gt", "boundary":"49"}, {"boundary-op":"lt", "boundary":"51"}]},
+                "filter": {"variant":"range", "parameter":[{"boundary-op":"gt", "boundary":"49"}, {"boundary-op":"lt", "boundary":"51"}]},
                 "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds",
                 "requestId": "6578"
               }
@@ -1130,8 +1134,8 @@
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                “data”: {“path”: ”Vehicle.Drivetrain.FuelSystem.Level”, 
-                        “dp”: {“value”: ”50”, “ts”: ”2020-04-15T13:37:00Z”}
+                "data": {"path": "Vehicle.Drivetrain.FuelSystem.Level", 
+                        "dp": {"value": "50", "ts": "2020-04-15T13:37:00Z"}
                 },
                 "ts": "2020-04-15T13:37:00Z"
               }
@@ -1144,7 +1148,7 @@
             <p>
             Curve logging data compression by eliminating data points that are within a set error margin is activated via a subscription request. 
             Event messages will be issued when the buffer becomes full, after insignificant data points have been eliminated, 
-            refer the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#curvelog-filter-operation">Curve logging Filter Operation</a> chapter in the [[viss2-core]] documentation.
+            refer the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#curvelog-filter-operation">Curve logging Filter Operation</a> chapter in the [[viss3-core]] documentation.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1153,7 +1157,7 @@
               {
                 "action": "subscribe",
                 "path": "Vehicle.Drivetrain.FuelSystem.Level",
-                "filter": {"type":"curvelog", "parameter":{"maxerr":"0.5", "bufsize":"100"}},
+                "filter": {"variant":"curvelog", "parameter":{"maxerr":"0.5", "bufsize":"100"}},
                 "requestId": "6578"
               }
                </code></pre>
@@ -1171,8 +1175,8 @@
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                “data”:{“path”: ”Vehicle.Drivetrain.FuelSystem.Level”, 
-                        “dp”:[{“value”: ”50”, “ts”: ”2020-04-15T13:38:00Z”}, ..., {“value”: ”25”, “ts”: ”2020-04-15T13:39:30Z”}]
+                "data":{"path": "Vehicle.Drivetrain.FuelSystem.Level", 
+                        "dp":[{"value": "50", "ts": "2020-04-15T13:38:00Z"}, ..., {"value": "25", "ts": "2020-04-15T13:39:30Z"}]
                 },
                 "ts": "2020-04-15T13:37:00Z"
               }
@@ -1184,7 +1188,7 @@
             <h2>Range Subscribe</h2>
             <p>
             Subscription to a range of values, that can have either a single boundary, or multipe boundaries as in the example below. 
-            For a more information how to use range of values, refer the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#range-filter-operation">Range Filter Operation</a> chapter in the [[viss2-core]] documentation.
+            For a more information how to use range of values, refer the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#range-filter-operation">Range Filter Operation</a> chapter in the [[viss3-core]] documentation.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1193,7 +1197,7 @@
               {
                 "action": "subscribe",
                 "path": "Vehicle.Drivetrain.FuelSystem.Level",
-                "filter": "filter":{"type":"range","parameter":[{"boundary-op":"lt","boundary":"50","combination-op":"OR"},{"boundary-op":"gt","boundary":"55"}]},
+                "filter": "filter":{"variant":"range","parameter":[{"boundary-op":"lt","boundary":"50","combination-op":"OR"},{"boundary-op":"gt","boundary":"55"}]},
                 "requestId": "6578"
               }
                </code></pre>
@@ -1211,8 +1215,8 @@
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                “data”:{“path”: ”Vehicle.Drivetrain.FuelSystem.Level”, 
-                        “dp”:{“value”: ”51”, “ts”: ”2020-04-15T14:00:00Z”},
+                "data":{"path": "Vehicle.Drivetrain.FuelSystem.Level", 
+                        "dp":{"value": "51", "ts": "2020-04-15T14:00:00Z"}},
                 "ts": "2020-04-15T14:00:00Z"
               }
                </code></pre>
@@ -1223,7 +1227,7 @@
             <h2>Change Subscribe</h2>
             <p>
             Subscription to when a signal has changed between two sequential captures. 
-            For a more information how to use change of values, refer the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#change-filter-operation">Change Filter Operation</a> chapter in the [[viss2-core]] documentation.
+            For a more information how to use change of values, refer the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#change-filter-operation">Change Filter Operation</a> chapter in the [[viss3-core]] documentation.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1232,7 +1236,7 @@
               {
                 "action": "subscribe",
                 "path": "Vehicle.Drivetrain.FuelSystem.Level",
-                "filter": "filter":{"type":"change","parameter":{"logic-op":"gt","diff":"10"}},
+                "filter":{"variant":"change","parameter":{"logic-op":"gt","diff":"10"}},
                 "requestId": "6578"
               }
                </code></pre>
@@ -1250,8 +1254,8 @@
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                “data”:{“path”: ”Vehicle.Drivetrain.FuelSystem.Level”, 
-                        “dp”:{“value”: ”101”, “ts”: ”2020-04-15T14:00:00Z”},
+                "data":{"path": "Vehicle.Drivetrain.FuelSystem.Level", 
+                        "dp":{"value": "101", "ts": "2020-04-15T14:00:00Z"}},
                 "ts": "2020-04-15T14:00:00Z"
               }
                </code></pre>
@@ -1321,7 +1325,6 @@
               <pre><code>
               {
                 "action": "unsubscribe",
-                "subscriptionId": "12345",
                 "requestId": "5786",
                 "ts": "2020-04-15T13:37:00Z"
               }
@@ -1346,10 +1349,10 @@
         <section id="application-level-protocol">
           <h2>Application Level Protocol</h2>
           <p>
-            For MQTT to support the complete VISSv2 interface, as decribed in the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#interface">interface</a> chapter of the [[viss2-core]] specification, 
+            For MQTT to support the complete VISSv3 interface, as decribed in the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#interface">interface</a> chapter of the [[viss3-core]] specification, 
             an application level protocol that runs on top of MQTT is added. 
             It is described in the following, please also see the sequence diagram below. 
-            To emulate the client-server pattern that is described in the [[viss2-core]] specification, the vehicle server, via its vehicle client, 
+            To emulate the client-server pattern that is described in the [[viss3-core]] specification, the vehicle server, via its vehicle client, 
             issues a subscribe request to the broker on a topic named VID/Vehicle, 
             where VID is an identity that uniquely links to the vehicle in the access control ecosystem. 
             This vehicle identity is not necessarily the manufacturer's Vehicle Identification Number (VIN).<br>
@@ -1357,8 +1360,8 @@
             How it obtains it is out of scope for this specification. 
             When the cloud client wants to issue a request to the vehicle server it first generates a unique topic name, 
             which it subscribes to at the broker. It then generates a JSON formatted payload with the general structure<br>
-            {"topic":"aUniqueTopic", "request":"VISSv2Request"}<br>
-            where "aUniqueTopic" is the uniques topic name it just subscribed to, and "VISSv2Request" is the request for the vehicle server. 
+            {"topic":"aUniqueTopic", "request":"VISSv3Request"}<br>
+            where "aUniqueTopic" is the uniques topic name it just subscribed to, and "VISSv3Request" is the request for the vehicle server. 
             This request MUST follow the payload format that is specified in the Websocket chapter of this specification.
             This JSON message is then issued to the broker, associated to the topic VID/Vehicle. 
             This message will then be forwarded by the broker to the vehicle client, which forwards the string being the value of the 
@@ -1366,7 +1369,7 @@
             it publishes it to the broker associated with the topic name that was the string value of the "topic" key name in the 
             message it previously received from the broker.<br>
             The broker will then forward this message to the cloud side client that earlier subscribed to this topic name, 
-            which concludes the client-server based request-response as described in the [[viss2-core]] specification.<br>
+            which concludes the client-server based request-response as described in the [[viss3-core]] specification.<br>
             In the case of subscription requests the vehicle client needs to save the subscriptionId found in the subscribe response, 
             together with the topic name associated to the subscribe request. When the vehicle server later issues event messages, 
             the vehicle client must parse the subscriptionId from it, and retrieve the topic name associated to it. 
@@ -1382,9 +1385,9 @@
             using the topic name "VID/ATS". The Access Grant Token server may also do the same, with the topic name "VID/AGTS", 
             or if it is deployed in the cloud it may expose the HTTP interface that is defined in this specification.
           
-          <figure id="vissv2-over-mqtt">
-            <img src="images/mqtt_vissv2_protocol.jpg" alt="VISSv2 over MQTT">
-            <figcaption> <span class="fig-title">Message flow of VISSv2 over MQTT </span></figcaption>
+          <figure id="VISSv3-over-mqtt">
+            <img src="images/mqtt_VISSv3_protocol.jpg" alt="VISSv3 over MQTT">
+            <figcaption> <span class="fig-title">Message flow of VISSv3 over MQTT </span></figcaption>
           </figure>
           </p>
         </section>
@@ -1473,7 +1476,7 @@
     <tr>
       <td> <dfn data-dfn-type="dfn" id="dfn-filter">filter</dfn> </td>
       <td> string </td>
-      <td>Provides a filtering mechanism to reduce the demands of a subscription on the server. Query format, see [[viss2-core]], <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv2_Core.html#filter-request">Filter Request</a> chapter.</td>
+      <td>Provides a filtering mechanism to reduce the demands of a subscription on the server. Query format, see [[viss3-core]], <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#filter-request">Filter Request</a> chapter.</td>
     </tr>
     <tr>
       <td> <b>metadata</b> </td>
@@ -1486,102 +1489,6 @@
 	    <td> Returns an error code, reason and message.</td>
 	  </tr>
 	</tbody></table>
-        </section>
-
-        <section id="json-def">
-          <h2>JSON Schema Definitions</h2>
-          <p>
-          The payload that is sent over the supported transport protocols SHALL use the JSON definitions in this appendix, 
-          unless otherwise specified in the VISSv2 TRANSPORT specification.<br>
-          The definitions within this section describe the datatypes referenced within the JSON Schema ([[json-schema]]) for the VISSv2 WebSocket interfaces, 
-          and for the VISSv2 HTTP payloads.
-          </p>
-              <pre><code>
-{
-    "definitions": {
-        "action": {
-            "enum": [ "get", "set", "subscribe", "subscription", "unsubscribe"],
-            "description": "The type of action requested by the client and/or delivered by the server"
-        },
-        "path": {
-            "description": "The path to the desired vehicle signal(s). It may require synthesis with additional path data, see [[viss2-core]], Paths Filter Operation chapter.",
-            "type": "string"
-        },
-        "ts": {
-            "description": "The time of the issuance of the message. For its format, see [[viss2-core]], Timestamps chapter.",
-            "type": "string"
-        },
-        "filter": {
-            "description": "May be specified in order to throttle the demands of subscriptions on the server. See [[viss2-core]], Filter Request chapter.",
-            "type": "object",
-            "properties": {
-                "type": {
-                    "description": "The different filter types.",
-                    "type": "string"
-                },
-                "parameter": {
-                    "description": "Parameter(s) for the different filter types",
-                    "type": "object"
-                }
-            }
-        },
-        "data": {
-            "description": "Data including path(s) and one or more data point(s).",
-            "type": "object",
-            "properties": {
-                "path": {
-                    "description": "The path to the vehicle signal.",
-                    "type": "string"
-                },
-                "dp": {
-                    "description": "Data point including one or more value and time samp",
-                    "type": "object",
-                    "properties": {
-                        "value": {
-                            "description": "The value related to the associated path.",
-                            "type": "object"                    
-                        },
-                        "ts": {
-                            "description": "Time of the value capture. For its format, see [[viss2-core]], Timestamps chapter.",
-                            "type": "string"                    
-                        }
-                    }
-                }
-            }   
-        },
-        "subscriptionId":{
-            "description": "Integer handle value which is used to uniquely identify a subscription session.",
-            "type": "string"
-        },
-        "metadata":{
-            "description": "Static or dynamic metadata.",
-            "type": "object"
-        },
-        "requestId": {
-            "description": "Returned by the server in the response and used by the client to link the request and response messages.",
-            "type": "string"
-        },
-        "error": {
-            "description": "Server response for error cases",
-            "type": "object",
-            "properties": {
-                "number": {
-                    "description": "HTTP Status Code Number",
-                    "type": "integer"                   
-                },
-                "reason": {
-                    "description": "Pre-defined string value that can be used to distinguish between errors that have the same code",
-                    "type": "string"                    
-                },
-                "message": {
-                    "description": "Message text describing the cause in more detail",
-                    "type": "string"                    
-                }
-            }   
-        }
-    }
-}
-               </code></pre>
         </section>
 
         <section id="action-def">
