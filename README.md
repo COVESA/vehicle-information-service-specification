@@ -19,7 +19,7 @@ Wonsuk Lee - ETRI
 Ulf Björkengren - Ford Motor Company
  
 ### Working group meetings
-The CVIS working group meets every other Monday at 16.00 CET.
+The VISS working group meets every other Monday at 16.00 CET.
 The schedule and link to meeting can be found [here](https://wiki.covesa.global/display/WIK4/COVESA+Common+Meeting+Schedule).<br>
 Minutes of meetings is found [here](https://wiki.covesa.global/display/WIK4/VISS+Meeting+Topics+and+Meeting+Notes).
 
@@ -30,9 +30,9 @@ Minutes of meetings is found [here](https://wiki.covesa.global/display/WIK4/VISS
 
 To see the most recent HTML rendered version of the specifications from this repository can be found at the following:
 
-- [COVESA VISS version 2.x - Core](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2.x_Core.html)
-- [COVESA VISS version 2.x-Payload Encoding](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2.x_PayloadEncoding.html)
-- [COVESA VISS version 2.x-Transport Examples](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv2.x_TransportExamples.html)
+- [COVESA VISS version 3.0 - Core](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html)
+- [COVESA VISS version 3.0-Payload Encoding](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_PayloadEncoding.html)
+- [COVESA VISS version 3.0-Transport Examples](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html)
 
 The VISS official publication
 - [Release of VISS version 2.0 (09 April 2024)](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v2.0)
