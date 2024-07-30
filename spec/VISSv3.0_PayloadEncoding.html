@@ -212,7 +212,7 @@ message ErrorResponseMessage {
 
 message FilterExpressions {
   message FilterExpression {
-    enum FilterType {
+    enum FilterVariant {
         PATHS = 0;
         TIMEBASED = 1;
         RANGE = 2;
@@ -222,7 +222,7 @@ message FilterExpressions {
         STATIC_METADATA = 6;
         DYNAMIC_METADATA = 7;
     }
-    FilterType FType = 1;
+    FilterVariant Variant = 1;
 
     message FilterValue {
         message PathsValue {
@@ -359,11 +359,10 @@ message UnsubscribeRequestMessage {
 }
 
 message UnsubscribeResponseMessage {
-        string SubscriptionId = 1;
-        ResponseStatus Status = 2;
-        optional ErrorResponseMessage ErrorResponse = 3;
-        optional string RequestId = 4;
-        string Ts = 5;
+        ResponseStatus Status = 1;
+        optional ErrorResponseMessage ErrorResponse = 2;
+        optional string RequestId = 3;
+        string Ts = 4;
 }
             </code></pre>
             </p>
