@@ -1868,6 +1868,47 @@
 
     <section id="tof" class="appendix"></section>
 
+    <section id="file-tranfer" class="appendix">
+          <h2>File Transfer</h2>
+          <p>
+          File transfer from client to server, or in the other direction, follows the model shown in the two sequence diagrams below.
+          The server exposes two communication channels, a control channel and a data channel.
+          The control channel is the channel where the primary VISSv3.0 payloads are communicated, 
+          while the data channel is a channel over which the the file transfer data is communicated.
+          The file transfer data consists of the data from the file, split into appropriate size chunks, and prepended by a header.
+          The header consists of three fixed size parameters as shown in the list below.
+        <ul>
+            <li>uid: 8 bytes. A unique identifier for this file transfer session.</li>
+            <li>file chunk size: 4 bytes. The size in bytes of this message, including the header size.</li>
+            <li>lastMessage: 1 byte. Indiates whether this message is the last message in the transfer of this file.
+          The value zero indicates that this is not the last message, while a non-zero value indicates that it is the last message.</li>
+        </ul>
+        <figure id="fig-file-download">
+          <img src="images/file-download-sequence-diagram.png" alt="VISSv3 file download.">
+          <figcaption> <span class="fig-title">VISSv3 file download.</span></figcaption>
+        </figure>
+        If the SET request on the control channel receives an error message then the client shall not issue any SET requests on the data channel.
+        If the SET request on the data channel receives an error response then the client may send the same message again, or terminate the download session.
+        If this results in another error response the client shall terminate the download session.
+        <figure id="fig-file-upload">
+          <img src="images/file-upload-sequence-diagram.png" alt="VISSv3 file upload.">
+          <figcaption> <span class="fig-title">VISSv3 file upload.</span></figcaption>
+        </figure>
+        If the GET request on the control channel receives an error message then the client shall not issue any GET requests on the data channel.
+        If the GET request on the data channel receives an error response then the client shall terminate the upload session.
+        The client should calculate the file hash on the received file data after the session is concluded
+        and compare with the file hash value received in the GET on the control channel.
+        If they differ the received file is likely corrupt.<br>
+        A client terminates a file download session on the data channel by sending only the header with the file hash set to an empty string.
+        A file upload session is terminated by the client by not issuing any more GET requests.<br>
+        The node type for the file resource MUST be "file".
+        This node type has a fixed datatype,  a struct with the members "name", "hash", and "size",
+        c. f. the HIM specification for the "file" node type definition.<br>
+        How and if the control channel and data channel are realized may differ between different protocols.
+        Examples for Websockets and MQTT are found in the [[viss3-transport-examples]] specification.
+          </p>
+    </section>
+
     <section id="json-schema" class="appendix">
           <h2>JSON Schema</h2>
           <p>
