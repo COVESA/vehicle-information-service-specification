@@ -613,13 +613,9 @@
           <ul>
           <li>captured data from a time period from current time and backwards in time.</li>
           </ul></li>
-          <li><u>static-metadata</u>:
+          <li><u>metadata</u>:
           <ul>
           <li>the response contains the VSS metadata of the addressed sub-tree.</li>
-          </ul></li>
-          <li><u>dynamic-metadata</u>:
-          <ul>
-          <li>the response contains metadata additional to the VSS specification.</li>
           </ul></li>
           </ul></li>
           <li><b>parameter</b>: the key name for the optional configuration data that the filter operation requires.
@@ -752,54 +748,24 @@
                </p>
         </section>
 
-   <section id="static-metadata-request">
-     <h2>Static Metadata Filter Operation</h2>
+   <section id="metadata-request">
+     <h2>Metadata Filter Operation</h2>
         <p>
-        The static metadata request is used when the client instead of the data associated to VSS node(s)
+        The metadata request is used when the client instead of the data associated to VSS node(s)
         wants to retrieve meta data associated to the VSS node(s).<br>
         The metadata is retrieved from the VSS tree that is deployed in the vehicle.
         This request variant is sometimes referred to as a signal discovery request.
         If the "parameter" object contains an empty string, then all metadata that the server can retrieve for the for the addressed node(s) are returned,
         while if it contains a metadata key name, or an array of key names, then only the selected metadata is returned.<br>
-        For the set of static metadata key names,
+        For the set of metadata key names,
         see the <a href="https://github.com/COVESA/vehicle_signal_specification">Vehicle Signal Specification</a>.<br>
         The vsspath in the request may point to either a leaf node, or to a branch node.
-        In the latter case then the response will contain static metadata from the entire sub-tree having this branch as the root.<br>
-        A static metadata request can be combined with a paths filter operation to address multiple nodes,
+        In the latter case then the response will contain metadata from the entire sub-tree having this branch as the root.<br>
+        A metadata request can be combined with a paths filter operation to address multiple nodes,
         but cannot be combined with any other filter variant.<br>
         The response is a JSON formatted object with corresponding key-value pairs per addressed node.
-        The server MAY support the static metadata request.<br>
+        The server MAY support the metadata request.<br>
         Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https-service-discovery-read">signal discovery read on HTTPS</a> in [[viss3-transport-examples]] specification.
-        </p>
-    </section>
-
-   <section id="dynamic-metadata-request">
-     <h2>Dynamic Metadata Filter Operation</h2>
-        <p>
-        Dynamic metadata requests are used when the client instead of the data associated to VSS node(s) wants to
-        retrieve metadata that is additional to the VSS specification.<br>
-        The dynamic metadata may change over time.
-        The request filter "parameter" object MUST only contain one of the metadata key names from the list of dynamic metadata key names below.<br>
-        <ul>
-        <li><u>samplerate</u>: The native capture frequency in Hz that is used by the vehicle system.
-        The response uses the same syntax as for ordinary data responses, with "value" representing the sample rate.</li>
-        <li><u>availability</u>: The current availability of the signal(s). The possible values are ["available", "unavailable", "error"].
-        The unavailable status is returned when the signal is inaccessible due to the current vehicle state.
-        The error status is returned if the subsystem represented by the signal exists in the vehice, but is broken and requires repair.
-        The response uses the same syntax as for ordinary data responses, with "value" representing the availability.</li>
-        <li><u>validate</u>: The access control rule that is applied to the node and its sub-tree.
-        The possible values are ["write-only", "read-write"].
-        The response uses the same syntax as for ordinary data responses, with "value" representing the validate tag.
-        The server applies the validate data according to the inheritance rules described in the access control selection chapter.</li>
-        <li><u>server_capabilities</u>: The capabilities that the server supports.
-        See <a href="#server-capabilities">B. Server Capabilities</a> for how this is expressed in the response.</li>
-        </ul>
-        A dynamic metadata request can be combined with a paths filter operation to address multiple nodes,
-        but not with any other filter variant.<br>
-        The server capabilities request MUST be supported, the others on the list are optional.
-        For the server capabilities request the vsspath SHALL be set to "Vehicle", and the paths filter MUST not be used.<br>
-        Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https-dynamic-metadata-read">dynamic metadata read on HTTPS</a>
-        and <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#wss-service-discovery-read">signal discovery read on WebSocket</a> in [[viss3-transport-examples]] specification.
         </p>
     </section>
 
@@ -2361,7 +2327,7 @@
       "oneOf": [
         {
           "properties": {
-            "variant": { "const": "static-metadata" },
+            "variant": { "const": "metadata" },
             "parameter": {
               "type": "string"
             }
@@ -2370,32 +2336,7 @@
         },
         {
           "properties": {
-            "variant": { "const": "static-metadata" },
-            "parameter": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          "required": ["parameter"]
-        }
-      ]
-    },
-    {
-      "oneOf": [
-        {
-          "properties": {
-            "variant": { "const": "dynamic-metadata" },
-            "parameter": {
-              "type": "string"
-            }
-          },
-          "required": ["parameter"]
-        },
-        {
-          "properties": {
-            "variant": { "const": "dynamic-metadata" },
+            "variant": { "const": "metadata" },
             "parameter": {
               "type": "array",
               "items": {
@@ -2526,42 +2467,222 @@
   "required": ["number", "reason", "message"]
     }
   }
-}              </code></pre>
+}
+              </code></pre>
     </section>
 
     <section id="server-capabilities" class="appendix">
         <h2>Server Capabilities</h2>
         <p>
-        On receiving a dynamic-metadata request on server capabilities the server SHALL respond with a JSON object that for each of the keys
-        in the list below contains the associated values in the list that the server supports.
-        Both the keys and the values are represented as strings, if a key has more than one value, these are represented as an array.<br>
-        A key name refers to a functional domain of the specification, and the tables below contain the capabilities of these domains.
-        The ones marked as underlined are mandatory, the others are optional.
-        <table  style="width:60%">
+        A client that wants to connect to a server may be interested in what capabilities the server offers.
+        The server maintains a separate Server tree which the client can access for this purpose.
+        However, for the client to access this information it must have information about at least one transport protocol that the server supports.
+        The VISS API should not make any assumptions on the communication network topology.
+        Therefore it should not mandate any transport protocol, instead it should assume that a client can obtain necessary information via out-of-band means
+        to configure its communication in order to successfully connect to the vehicle server.
+        How that is done is out-of-scope for this specification,
+        but as an example a solution may be designed around a cloud based repository to which servers can register their capabilities,
+        and clients can inquire about obtaining this information.
+        When a client has obtained the information how to connect to the server, then the server MUST respond to read requests for data from the Server tree.
+        </p>
+
+        <h3>Server Tree Example</h3>
+        <p>
+        Below follows an example of a server capabilities tree.
+        The tree MUST contains the structures listed below, other parts are optional.
+        Server capabilities that extends this specification, or change anything defined in this specification SHALL be declared in the Server tree.
+        <ul>
+            <li>The root node name MUST be Server.</li>
+            <li>The Server node MUST have at least have two children named Support and Config.</li>
+            <li>The Support node MUST have at least one child named Protocol.</li>
+            <li>The Protocol node MUST be an attribute with a string array datatype with members defining the supported transport protocols.</li>
+        </ul>
+        <pre><code>
+#
+# The server capabilities declaration.
+#
+Server:
+  type: branch
+  description: Root for the server capabilities.
+
+Server.Support:
+  type: branch
+  description: Top branch declaring the server supported features.
+  
+Server.Support.Protocol:
+  type: attribute
+  datatype: string[]
+  description: List of supported transport protocols.
+
+Server.Support.Security:
+  type: attribute
+  datatype: string[]
+  description: List of supported security related features.
+
+Server.Support.Filter:
+  type: attribute
+  datatype: string[]
+  description: List of supported filter features.
+
+Server.Config:
+  type: branch
+  description: Top branch declaring the configuration of server supported features.
+  
+Server.Config.Protocol:
+  type: branch
+  description: Top branch declaring the configuration of server supported protocols.
+  
+Server.Config.Protocol.Http:
+  type: branch
+  description: Top branch for the server supported HTTP protocol.
+
+Server.Config.Protocol.Http.Primary:
+  type: branch
+  description: HTTP configuration for the primary payload format.
+
+Server.Config.Protocol.Http.Primary.PortNum:
+  type: attribute
+  datatype: uint32
+  description: HTTP port number for the primary payload format.
+
+Server.Config.Protocol.Websocket:
+  type: branch
+  description: Top branch for the server supported Websocket protocol.
+
+Server.Config.Protocol.Websocket.Primary:
+  type: branch
+  description: Websocket configuration for the primary payload format.
+
+Server.Config.Protocol.Websocket.Primary.PortNum:
+  type: attribute
+  datatype: uint32
+  description: Websocket protocol port number for the primary payload format.
+
+Server.Config.Protocol.Websocket.Protobuf:
+  type: branch
+  description: Websocket configuration for the protobuf encoded payload format.
+
+Server.Config.Protocol.Websocket.Protobuf.PortNum:
+  type: attribute
+  datatype: uint32
+  description: Websocket protocol port number for the protobuf encoded payload format.
+
+Server.Config.Protocol.Mqtt:
+  type: branch
+  description: Top branch for the server supported MQTT protocol.
+
+Server.Config.Protocol.Mqtt.PortNum:
+  type: attribute
+  datatype: uint32
+  description: MQTT port number.
+
+Server.Config.Protocol.Mqtt.Primary:
+  type: branch
+  description: MQTT configuration for the primary payload format.
+
+Server.Config.Protocol.Mqtt.Primary.Topic:
+  type: attribute
+  datatype: string
+  description: MQTT topic name for the primary payload format.
+
+Server.Config.Protocol.Mqtt.Protobuf:
+  type: branch
+  description: MQTT configuration for the protobuf encoded payload format.
+
+Server.Config.Protocol.Mqtt.Protobuf.Topic:
+  type: attribute
+  datatype: string
+  description: MQTT topic name for the protobuf encoded payload format.
+
+Server.Config.Protocol.Grpc:
+  type: branch
+  description: Top branch for the server supported gRPC protocol.
+
+Server.Config.Protocol.Grpc.Protobuf:
+  type: branch
+  description: gRPC configuration with the protobuf encoded payload format.
+
+Server.Config.Protocol.Grpc.Protobuf.PortNum:
+  type: attribute
+  datatype: uint32
+  description: gRPC port number for the protobuf encoded payload format.
+
+Server.Config.AccessControl:
+  type: branch
+  description: Access control configuration.
+
+Server.Config.AccessControl.AgtsUrl:
+  type: attribute
+  datatype: string
+  description: Access Grant Token Server URL including port number and path.
+
+Server.Config.AccessControl.AtsPortNum:
+  type: attribute
+  datatype: uint32
+  description: Access Token Server port number.
+
+Server.Config.AccessControl.Flow:
+  type: attribute
+  datatype: string
+  description: Supported access control flows.
+
+Server.Config.Consent:
+  type: branch
+  description: Consent configuration.
+
+Server.Config.Consent.Ecf:
+  type: attribute
+  datatype: string
+  description: External Consent Framework description.
+              </code></pre>
+        </p>
+
+        <h3>Server Feature Naming</h3>
+        <p>
+        The feature names that are used in the Server tree should for the features described in this specification use the names listed below.
+
+        <h4>Support Naming</h4>
+        <table  style="width:50%">
           <tr>
-            <th>Key name</th>
+            <th>Protocol</th>
             <th>Description</th>
           </tr>
           <tr>
-            <td>filter</td>
-            <td><a href="#filter-request"></a></td>
+            <td><u>http</u></td>
+            <td>[[viss3-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https">HTTPS</a> chapter</td>
           </tr>
           <tr>
-            <td>access_ctrl</td>
+            <td><u>ws</u></td>
+            <td>[[viss3-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#secure-websockets">Secure Websocket</a> chapter</td>
+          </tr>
+          <tr>
+            <td>mqtt</td>
+            <td>[[viss3-transport-examples]], Transport Protocols:MQTT chapter</td>
+          </tr>
+          <tr>
+            <td>grpc</td>
+            <td>[[viss3-transport-examples]], Transport Protocols:gRPC chapter</td>
+          </tr>
+        </table><br>
+
+        <table  style="width:60%">
+          <tr>
+            <th>Security</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>accesscontrol</td>
             <td><a href="#access-control-model"></a></td>
           </tr>
           <tr>
-            <td>transport_protocol</td>
-            <td>[[viss3-transport-examples]], <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html">Transport Protocol Examples</a> chapter</td>
-          </tr>
-          <tr>
-            <td>payload_encoding</td>
-            <td>[[viss3-payload-encoding]], <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_PayloadEncoding.html">Payload Encoding</a> chapter</td>
+            <td>consent</td>
+            <td><a href="#consent-support"></a></td>
           </tr>
         </table><br>
+
         <table  style="width:50%">
           <tr>
-            <th>filter</th>
+            <th>Filter</th>
             <th>Description</th>
           </tr>
           <tr>
@@ -2589,17 +2710,15 @@
             <td><a href="#history-filter-operation"></a></td>
           </tr>
           <tr>
-            <td>static_metadata</td>
-            <td><a href="#static-metadata-request"></a></td>
-          </tr>
-          <tr>
-            <td><u>dynamic_metadata</u></td>
-            <td><a href="#dynamic-metadata-request"></a></td>
+            <td>metadata</td>
+            <td><a href="#metadata-request"></a></td>
           </tr>
         </table><br>
+
+        <h4>Config Naming</h4>
         <table  style="width:50%">
           <tr>
-            <th>access_ctrl</th>
+            <th>Access Control Flow</th>
             <th>Description</th>
           </tr>
           <tr>
@@ -2615,24 +2734,6 @@
             <td><a href="#access-token"></a></td>
           </tr>
         </table><br>
-        <table  style="width:50%">
-          <tr>
-            <th>transport_protocol</th>
-            <th>Description</th>
-          </tr>
-          <tr>
-            <td><u>https</u></td>
-            <td>[[viss3-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https">HTTPS</a> chapter</td>
-          </tr>
-          <tr>
-            <td><u>wss</u></td>
-            <td>[[viss3-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#secure-websockets">Secure Websocket</a> chapter</td>
-          </tr>
-          <tr>
-            <td>mqtts</td>
-            <td>[[viss3-transport-examples]], Transport Protocols:MQTT chapter</td>
-          </tr>
-        </table>
 
         </p>
     </section>
