@@ -1971,6 +1971,29 @@
         How and if the control channel and data channel are realized may differ between different protocols.
         Examples for Websockets and MQTT are found in the [[viss3-transport-examples]] specification.
           </p>
+        <h3>Alternative based on well-known file transfer protocols</h3>
+        <p>
+        There exists a number of common file transfer protocols e. g. ftp, sftp, ftps,
+        and scp which are widely adopted and have been optimized over many years.
+        For larger files these may be a more efficient solution than the integrated VISS protocol.
+        The model for using any of these intead builds on that the client can access the needed informattion to connect to the end point
+        that is offering the use of the file transfer protocol to access the file.
+        This information is available as a struct data point of the tree node.
+        This struct should have members similar to what is shown below, depending on what is required to initiate he file transfer.
+          <pre><code>
+          struct {
+              schema string
+              port uint32
+              path string
+              filename string
+          }
+          </code></pre>
+          Schema is the file transfer protocol schema.<br>
+          Port is the port number for this service, at least for the initial setup.<br>
+          Path is the URL path for this service.<br>
+          Filename is the file name of the file to be transferred. It shall include a file extension that defines the format of the file.<br>
+          The node type of this tree node shall be "sensor" for files that can only be uploaded to a client, and "actuator" for the file download case.
+        </p>
     </section>
 
     <section id="json-schema" class="appendix">
