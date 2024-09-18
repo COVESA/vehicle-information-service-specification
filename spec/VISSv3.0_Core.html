@@ -1968,10 +1968,22 @@
         A file upload session is terminated by the client by not issuing a message with both the message number and the status set to 255.<br>
         The node type for the file resource MUST be "file".
         This node type has a fixed datatype,  a struct with the members "name", "hash", and "size",
-        c. f. the HIM specification for the "file" node type definition.<br>
-        How and if the control channel and data channel are realized may differ between different protocols.
-        Examples for Websockets and MQTT are found in the [[viss3-transport-examples]] specification.
+        c. f. the HIM specification for the "file" node type definition.
           </p>
+        <h3>Data channel realization</h3>
+        <p>
+        If file transfer is realized over any supported transport protocol, this must then be shown in the server capabilities tree,
+        together with the information needed for a client to access the data channel.
+        The default mechanism for realizing a data channel is to assign a port number for it.
+        The list below shows the recommended port numbers for the HTTP and WebSocket protocols.
+        <ul>
+            <li>HTTP port number: 445</li>
+            <li>WebSocket port number: 6445</li>
+        </ul>
+        The recommended mechanism for MQTT is to assing a separate topic name to the data channel.
+        The recommended topic name is created by appending "/datachannel" to the topic name of the control channel.
+        Examples for Websockets and MQTT are found in the [[viss3-transport-examples]] specification.
+        </p>
         <h3>Alternative based on well-known file transfer protocols</h3>
         <p>
         There exists a number of common file transfer protocols e. g. ftp, sftp, ftps,
