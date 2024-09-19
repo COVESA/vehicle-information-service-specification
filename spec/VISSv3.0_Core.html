@@ -2005,7 +2005,9 @@
           Port is the port number for this service, at least for the initial setup.<br>
           Path is the URL path for this service.<br>
           Filename is the file name of the file to be transferred. It shall include a file extension that defines the format of the file.<br>
-          The node type of this tree node shall be "sensor" for files that can only be uploaded to a client, and "actuator" for the file download case.
+          The node type of this tree node shall be "sensor" for files that can only be uploaded to a client, and "actuator" for the file download case.<br>
+          Information about the vehicle file system structure, such as the file path information, shall not be exposed to the client.
+          The server may use the VSS path as a key into a lookup table for accessing the file in the vehicle file system.
         </p>
     </section>
 
