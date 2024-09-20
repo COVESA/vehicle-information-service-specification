@@ -155,7 +155,7 @@
         <h2>Transport Payload</h2>
         <p>The payload primary format is JSON. This means that the payloads received by a client SHALL have the JSON format,
         unless an implementation deliberately deviates from this.
-        See <a href='#json-def'></a> for the JSON payload format of the messages for the different transport protocols.
+        See the [[viss3-core]] document for the JSON payload format of the messages for the different transport protocols.
         </p>
       </section>
 
@@ -366,6 +366,36 @@ message UnsubscribeResponseMessage {
 }
             </code></pre>
             </p>
+          </section>
+
+          <section id="transport-protocol-realizations">
+            <h2>Transport Protocol Realizations</h2>
+
+            <section id="grpc-realization">
+              <h2>gRPC Realization</h2>
+              <p>
+              The "service" clause in the protobuf code in the previous chapter is used by the protoc compiler uses to create a gRPC based communication framework.
+              </p>
+            </section>
+
+            <section id="websocket-realization">
+              <h2>Websocket Realization</h2>
+              <p>
+              If a server supports protobuf payload encoding over the Websocket protocol then it shall be shown in the server capabilities data
+              which port number that the server uses to listen for clients that want to issue requests with protobuf encoded payloads.
+              The recommended port number is 6444.
+              </p>
+            </section>
+
+            <section id="mqtt-realization">
+              <h2>MQTT Realization</h2>
+              <p>
+              If a server supports protobuf payload encoding over the MQTT protocol then it shall be shown in the server capabilities data
+              which topic name that the server uses to listen for clients that want to issue requests with protobuf encoded payloads.
+              The recommended topic name is the topic name used for the unencoded payload channel appended with the string "/protobuf".
+              </p>
+            </section>
+
           </section>
 
           <section id="encoding-and-decoding-with-protobuf">
