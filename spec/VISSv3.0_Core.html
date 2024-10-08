@@ -363,6 +363,7 @@
             <li><a>path</a> The path as defined in VSS to one or more nodes in the VSS tree.</li>
             <li><a>filter</a> Additional information defining the requested data.</li>
             <li><a>authorization</a> The authorization token.</li>
+            <li><a>data compression</a> The data compression scheme(s).</li>
           </ul>
           </p>
           <p>Success response, of which authorization is optional:
@@ -417,6 +418,7 @@
               <li><a>path</a> The path as defined in VSS to one or more nodes in the VSS tree.</li>
               <li><a>filter</a> The rule set describing triggering criterias for issuance of asynchronous event messages.</li>
               <li><a>authorization</a> The authorization token.</li>
+              <li><a>data compression</a> The data compression scheme(s).</li>
             </ul>
           </p>
           <p>Success response, of which authorization is optional:
@@ -501,15 +503,14 @@
            Time resolution SHALL at least be seconds, with subsecond resolution as an optional degree of precision when desired.
            The time and date format shall be as shown below, where the sub-second data and delimiter is optional.<br>
            YYYY-MM-DDTHH:MM:SS.ssssssZ<br>
-           The exception to this is timestamps within tokens, which MUST conform to Unix time.
+           The exceptions to this are timestamps within tokens which MUST conform to Unix time,
+           or if timestamp data compression is applied.
         </p>
       </section>
     </section>
 
       <section id="security">
         <h2>Security Considerations</h2>
-        <p>
-        </p>
 
       <section id="transport-security">
         <h2>Transport security</h2>
@@ -2636,5 +2637,81 @@
 
         </p>
     </section>
+
+    <section id="data-compression" class="appendix">
+        <h2><dfn data-dfn-type="dfn" id="dfn-dc">Data Compression</dfn></h2>
+        <p>
+        The primary payload format is JSON, which is text based and thus leads to large messages in terms of bytes.
+        Particularly for messages that are sent off-vehicle this is an undesireable feature as the transportation cost may be significant.
+        The payload encoding that is supported in this specification provides one possibility of compressing the message size,
+        but it does typically not take advantage of specific knowledge of the data being transported.
+        The data compression described here does so, as will be described in the following.
+        The compression can typically also be combined with a following payload compression step.
+        This compression scheme is assymmetric in that it is applied to the response data from the server,
+        but not to the client requests.
+        The assumption is that this is where it may have the largest impact, particularly in the case of multiple responses on a subscribe request.
+        It is also applied per request by an optional parameter that can be included in the Read or Subscribe requests,
+        having the following format.
+          <pre><code>
+          "dc": "X"
+          </code></pre>
+        The value X of this parameter instructs the server what compression scheme it shall apply to paths and/or timestamps in its response(s) to this request.
+        The value selected by the client shall be derived from the bit assignment described below where the three least significant bits are
+        asssigned to path compression schemes, and the two following bits to timestamp compression schemes. 
+        Any following bits are reserved for future usage.
+      <figure id="fig-data-compression-scheme-coding">
+        <img src="images/data-compression-scheme-coding.jpg" alt="Consent architecture.">
+        <figcaption> <span class="fig-title">Data compression scheme coding.</span></figcaption>
+      </figure>
+      The bits shown in the figure above are assigned to the data compression schemes shown in the list below and described in the following chapters.
+        <ul>
+            <li>Bit 0: Static UID path compression.</li>
+            <li>Bit 1: Request local path compression.</li>
+            <li>Bit 2: Reserved for path compression scheme.</li>
+            <li>Bit 3: Request relative timestamp compression.</li>
+            <li>Bit 4: Reserved for timestamp compression scheme.</li>
+        </ul>
+        See the following chapters for description of the supported compression schemes.<br>
+        If the server supports data compression it SHALL declare the compression schemes it supports in its server capabilities tree
+        with a value where the bits for all supported schemes are set to one.<br>
+        If a client request for data compression is not supported, or impossible to realize,
+        the server shall respond with an error message.
+        </p>
+
+        <h3>Static UID Path Compression</h3>
+        <p>
+        To enable the server to support this path compression the VSS tree must include the static UIDs for each node.
+        The VSS-Tools exporter tools can be used to assign a static UID to each tree node as described
+        <a data-link-type="dfn" href="https://github.com/COVESA/vss-tools/blob/master/docs/id.md">here</a>.<br>
+        The server will then in the response message(s) replace the VSS path with the static UID value.
+        The static UID is represented as a hex value string starting with the characters "0x" then followed by 8 hexadecimal values.
+        The client need to obtain means for decoding the static UIDs into corresponding VSS paths.
+        The server shall respond with an error message if the client applies the path compression in its request.
+        </p>
+
+        <h3>Request Local Path Compression</h3>
+        <p>
+        The principle for request local path compression is that the server will in the response message(s) replace the path(s) with an integer index.
+        In the case that the request only contains one path reference, then the index is always set to zero.
+        For requests that reference more than one path via the usage of the paths filter, the first response from the server will contain the paths uncompressed,
+        but any following responses will replace the paths with an index.
+        The value of the index is then assigned according to a sorted list of the paths included in the first response,
+        i. e. the first path in the sorted list is assigned the value zero, the second the value 1, and so on.
+        The index logically represent an integer value but it is in the message payload represented as a string.
+        </p>
+
+        <h3>Request Relative Timestamp Compression</h3>
+        <p>
+        The request relative time stamp compression builds on that response messages always contain a timestamp that represent
+        the time when the response message was issued by the server.
+        This timestamp will then be the base time that the timestamps for the signal(s) in the response will add an offset to.
+        This offset will be represented as an integer representing milliseconds, prepended with a plus (+) or minus (-) sign.
+        The uncompressed ISO8601 based timestamp contains 24 characters,
+        so for very large offset values with low compression rates the server may decide to keep the uncompressed timestamp.
+        The client will be able to analyze whether it is a compressed timestamp or not by examining the first character of the string.
+        If it is an integer it is an uncompressed timestamp, as the compressed timestamps starts with a plus or a minus character.
+        </p>
+    </section>
+
   </body>
 </html>
