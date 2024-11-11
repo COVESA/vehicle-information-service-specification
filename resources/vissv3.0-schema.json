@@ -484,7 +484,7 @@
       "oneOf": [
         {
           "properties": {
-            "variant": { "const": "static-metadata" },
+            "variant": { "const": "metadata" },
             "parameter": {
               "type": "string"
             }
@@ -493,32 +493,7 @@
         },
         {
           "properties": {
-            "variant": { "const": "static-metadata" },
-            "parameter": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          "required": ["parameter"]
-        }
-      ]
-    },
-    {
-      "oneOf": [
-        {
-          "properties": {
-            "variant": { "const": "dynamic-metadata" },
-            "parameter": {
-              "type": "string"
-            }
-          },
-          "required": ["parameter"]
-        },
-        {
-          "properties": {
-            "variant": { "const": "dynamic-metadata" },
+            "variant": { "const": "metadata" },
             "parameter": {
               "type": "array",
               "items": {

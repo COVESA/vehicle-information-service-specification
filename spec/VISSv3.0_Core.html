@@ -1876,8 +1876,8 @@
           }
           </code></pre>
           The FileDescriptor name member SHALL have a dot separated file extension that identifies the file format.<br>
-          The FileDescriptor hash member SHALL be a SHA-1 hash calculated on the content of the file.<br>
-          The FileDescriptor uid member SHALL be a base64 encoded random uint64 value.<br><br>
+          The FileDescriptor hash member SHALL be a SHA-1 hex string encoded hash calculated on the content of the file.<br>
+          The FileDescriptor uid member SHALL be a hex string encoded random uint32 value.<br><br>
           File transfer from client to server, or in the other direction, follows the model shown in the two sequence diagrams below.
           The server exposes two communication channels, a control channel and a data channel.
           The control channel is the channel where the primary VISSv3.0 payloads are communicated, 
@@ -1885,7 +1885,7 @@
           The file transfer data consists of the data from the file, split into appropriate size chunks, and prepended by a header.
           The header consists of three fixed size parameters as shown in the list below.
         <ul>
-            <li>uid: 8 bytes. A unique identifier for this file transfer session.</li>
+            <li>uid: 4 bytes. A unique identifier for this file transfer session.</li>
             <li>messageNo: 1 byte. Starting at zero and increasing by one for each file chunk that is transferred.
             Maximum value is 254.</li>
             <li>file chunk size: 4 bytes. The size in bytes of this message, including the header size.</li>
@@ -1905,7 +1905,7 @@
   "value": {
     "name": "privateMap.kml",
     "hash": "2aae6c35c94fcfb415dbe95f408b9ce91ee846ed",
-    "uid" "MTIzNDU2Nzg5MA=="
+    "uid" "2d878213"
   }
 }
           </code></pre>
@@ -1916,7 +1916,7 @@
         The client message on the data channel consists of a concatenation of the header and the file chunk.
         The server response on this contains a concatanation of the three parameters shown below.
         <ul>
-            <li>uid: 8 bytes. The identifier from the received message.</li>
+            <li>uid: 4 bytes. The identifier from the received message.</li>
             <li>messageNo: 1 byte. The message number from the received message.</li>
             <li>status: 1 byte. Indiates whether the message was correctly received or not.
           The value zero indicates that it was correctly received, while a non-zero value indicates that it was not.</li>
@@ -1939,7 +1939,7 @@
   "data": {
     "path": "Vehicle.Cabin.DashCam.Clip", 
     "dp" {
-      "value": {"name": "dashCamClip.mp4", "hash": "2aae6c35c94fcfb415dbe95f408b9ce91ee846ed", "uid" "MTIzNDU2Nzg5MA=="},
+      "value": {"name": "dashCamClip.mp4", "hash": "2aae6c35c94fcfb415dbe95f408b9ce91ee846ed", "uid" "2d878213"},
       "ts": "2024-08-20T11:30:00Z"
     }
   }
@@ -1948,7 +1948,7 @@
         If the GET request on the control channel receives an error message then the client shall not issue any messages on the data channel.
         Client messages has the same format as the server messages in the file download scenario,
         and as in that case it refers to the previously received message from the server.
-        The client must issue an initial message of this ype to trigger the server to respond,
+        The client must issue an initial message of this type to trigger the server to respond,
         in this first message the message number is set to 255 (all bits set to one).
         The client shall send a final message after receiving the last message from the server.
         If the status is set to zero the server shall respond with only the header from its last message.<br>
@@ -1958,10 +1958,9 @@
         If they differ the received file is likely corrupt.<br><br>
         A client may terminate a file download session on the data channel by sending only the header by setting the message number to 255, 
         the chunk size to zero, and the last message to non-zero, on which the server shall respond with status set to zero.<br>
-        A file upload session is terminated by the client by not issuing a message with both the message number and the status set to 255.<br>
-        The node type for the file resource MUST be "file".
-        This node type has a fixed datatype,  a struct with the members "name", "hash", and "size",
-        c. f. the HIM specification for the "file" node type definition.
+        A file upload session is terminated by the client by issuing a message with the message number set to 255 and the status set to non-zero.<br>
+        The node type for the file resource MUST be "actuator" for the download case and "sensor" for the upload case.
+        This node must have a fixed datatype,  a struct with the members "name", "hash", and "size".
           </p>
         <h3>Data channel realization</h3>
         <p>
