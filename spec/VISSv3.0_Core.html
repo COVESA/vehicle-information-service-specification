@@ -2653,29 +2653,33 @@
         It is also applied per request by an optional parameter that can be included in the Read or Subscribe requests,
         having the following format.
           <pre><code>
-          "dc": "X"
+          "dc": "A+B"
           </code></pre>
-        The value X of this parameter instructs the server what compression scheme it shall apply to paths and/or timestamps in its response(s) to this request.
-        The value selected by the client shall be derived from the bit assignment described below where the three least significant bits are
-        asssigned to path compression schemes, and the two following bits to timestamp compression schemes. 
-        Any following bits are reserved for future usage.
+        The expression A+B instructs the server what compression scheme it shall apply to paths and/or timestamps in its response(s) to this request.
+        This expression must consist of two values separated by a plus sign, "A + B",
+        where the first value A represents which path compression that is selected, and the second value B represents which timestamp compression that is selected.
+        The value 0 means that no compression scheme is selected,
+        values 1, 2, 4, or 8 represents the compression scheme associated with bits no 0, 1, 2, or 3 in the figure below.
       <figure id="fig-data-compression-scheme-coding">
         <img src="images/data-compression-scheme-coding.jpg" alt="Consent architecture.">
         <figcaption> <span class="fig-title">Data compression scheme coding.</span></figcaption>
       </figure>
-      The bits shown in the figure above are assigned to the data compression schemes shown in the list below and described in the following chapters.
+      The bits shown in the figure above are assigned to the data compression schemes shown in the list below and described in the following chapters.<br>
+      For path compression:
         <ul>
             <li>Bit 0: Static UID path compression.</li>
             <li>Bit 1: Request local path compression.</li>
-            <li>Bit 2: Reserved for path compression scheme.</li>
-            <li>Bit 3: Request relative timestamp compression.</li>
-            <li>Bit 4: Reserved for timestamp compression scheme.</li>
+            <li>Bit 2-3: Reserved for other path compression schemes.</li>
+        </ul>
+      For timestamp compression:
+        <ul>
+            <li>Bit 0: Request relative timestamp compression.</li>
+            <li>Bit 1-3: Reserved for other timestamp compression schemes.</li>
         </ul>
         See the following chapters for description of the supported compression schemes.<br>
         If the server supports data compression it SHALL declare the compression schemes it supports in its server capabilities tree
-        with a value where the bits for all supported schemes are set to one.<br>
-        If a client request for data compression is not supported, or impossible to realize,
-        the server shall respond with an error message.
+        with an expression A+B which is the sum of the values representing the supported schemes.<br>
+        If a client request for data compression is not supported, or impossible to realize, the server shall respond with an error message.
         </p>
 
         <h3>Static UID Path Compression</h3>
@@ -2710,6 +2714,18 @@
         so for very large offset values with low compression rates the server may decide to keep the uncompressed timestamp.
         The client will be able to analyze whether it is a compressed timestamp or not by examining the first character of the string.
         If it is an integer it is an uncompressed timestamp, as the compressed timestamps starts with a plus or a minus character.
+        </p>
+
+        <h3>equence Diagram Compression Scheme Examples</h3>
+        <p>
+        The sequence diagram below shows client Get requests for vehicle speed where different combinations of compression schemes are selected.
+        The responses mainy show the path a timestamp data that becomes compressed.
+        In the first request/response the client requests static UID path compression, in the second request local path compression,
+        and in the third and fourth request relative timestamp compression is added together with the respective path compression.
+      <figure id="data-compression-scheme-sequence-diagram">
+        <img src="images/data-compression-sequence-diagram.png" alt="Compression scheme sequence diagram.">
+        <figcaption> <span class="fig-title">Data compression scheme sequence diagram.</span></figcaption>
+      </figure>
         </p>
     </section>
 
