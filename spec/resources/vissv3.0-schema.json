@@ -63,6 +63,10 @@
           "description": "The access token",
           "type": "string"
         },
+        "dc": {
+          "description": "The data compression scheme",
+          "type": "string"
+        },
         "requestId": {
           "description": "The request id",
           "type": "string"
@@ -198,6 +202,10 @@
         },
         "authorization": {
           "description": "The access token",
+          "type": "string"
+        },
+        "dc": {
+          "description": "The data compression scheme",
           "type": "string"
         },
         "requestId": {

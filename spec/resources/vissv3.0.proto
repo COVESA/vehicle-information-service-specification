@@ -107,7 +107,8 @@ message GetRequestMessage {
         string Path = 1;
         optional FilterExpressions Filter = 2;
         optional string Authorization = 3;
-        optional string RequestId = 4;
+        optional string DataCompression = 4;
+        optional string RequestId = 5;
 }
 
 message GetResponseMessage {
@@ -142,7 +143,8 @@ message SubscribeRequestMessage {
         string Path = 1;
         optional FilterExpressions Filter = 2;
         optional string Authorization = 3;
-        string RequestId = 4;
+        optional string DataCompression = 4;
+        string RequestId = 5;
 }
 
 message SubscribeStreamMessage {
