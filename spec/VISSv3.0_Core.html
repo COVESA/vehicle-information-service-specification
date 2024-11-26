@@ -32,12 +32,6 @@
         edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html",
         shortName: "viss3.0-core",
         localBiblio: {
-          "SemVer": {
-            title: "Semantic Versioning 2.0.0",
-            href: "https://semver.org/spec/v2.0.0.html",
-            status: "published",
-            publisher: "Tom Preston-Werner"
-          },
           "viss3-payload-encoding": {
             title: "COVESA VISS version 3.0-Payload Encoding",
             href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_PayloadEncoding.html",
@@ -362,6 +356,7 @@
             <li><a>path</a> The path as defined in VSS to one or more nodes in the VSS tree.</li>
             <li><a>filter</a> Additional information defining the requested data.</li>
             <li><a>authorization</a> The authorization token.</li>
+            <li><a>data compression</a> The data compression scheme(s).</li>
           </ul>
           </p>
           <p>Success response, of which authorization is optional:
@@ -416,6 +411,7 @@
               <li><a>path</a> The path as defined in VSS to one or more nodes in the VSS tree.</li>
               <li><a>filter</a> The rule set describing triggering criterias for issuance of asynchronous event messages.</li>
               <li><a>authorization</a> The authorization token.</li>
+              <li><a>data compression</a> The data compression scheme(s).</li>
             </ul>
           </p>
           <p>Success response, of which authorization is optional:
@@ -500,15 +496,14 @@
            Time resolution SHALL at least be seconds, with subsecond resolution as an optional degree of precision when desired.
            The time and date format shall be as shown below, where the sub-second data and delimiter is optional.<br>
            YYYY-MM-DDTHH:MM:SS.ssssssZ<br>
-           The exception to this is timestamps within tokens, which MUST conform to Unix time.
+           The exceptions to this are timestamps within tokens which MUST conform to Unix time,
+           or if timestamp data compression is applied.
         </p>
       </section>
     </section>
 
       <section id="security">
         <h2>Security Considerations</h2>
-        <p>
-        </p>
 
       <section id="transport-security">
         <h2>Transport security</h2>
@@ -612,13 +607,9 @@
           <ul>
           <li>captured data from a time period from current time and backwards in time.</li>
           </ul></li>
-          <li><u>static-metadata</u>:
+          <li><u>metadata</u>:
           <ul>
           <li>the response contains the VSS metadata of the addressed sub-tree.</li>
-          </ul></li>
-          <li><u>dynamic-metadata</u>:
-          <ul>
-          <li>the response contains metadata additional to the VSS specification.</li>
           </ul></li>
           </ul></li>
           <li><b>parameter</b>: the key name for the optional configuration data that the filter operation requires.
@@ -751,54 +742,24 @@
                </p>
         </section>
 
-   <section id="static-metadata-request">
-     <h2>Static Metadata Filter Operation</h2>
+   <section id="metadata-request">
+     <h2>Metadata Filter Operation</h2>
         <p>
-        The static metadata request is used when the client instead of the data associated to VSS node(s)
+        The metadata request is used when the client instead of the data associated to VSS node(s)
         wants to retrieve meta data associated to the VSS node(s).<br>
         The metadata is retrieved from the VSS tree that is deployed in the vehicle.
         This request variant is sometimes referred to as a signal discovery request.
         If the "parameter" object contains an empty string, then all metadata that the server can retrieve for the for the addressed node(s) are returned,
         while if it contains a metadata key name, or an array of key names, then only the selected metadata is returned.<br>
-        For the set of static metadata key names,
+        For the set of metadata key names,
         see the <a href="https://github.com/COVESA/vehicle_signal_specification">Vehicle Signal Specification</a>.<br>
         The vsspath in the request may point to either a leaf node, or to a branch node.
-        In the latter case then the response will contain static metadata from the entire sub-tree having this branch as the root.<br>
-        A static metadata request can be combined with a paths filter operation to address multiple nodes,
+        In the latter case then the response will contain metadata from the entire sub-tree having this branch as the root.<br>
+        A metadata request can be combined with a paths filter operation to address multiple nodes,
         but cannot be combined with any other filter variant.<br>
         The response is a JSON formatted object with corresponding key-value pairs per addressed node.
-        The server MAY support the static metadata request.<br>
+        The server MAY support the metadata request.<br>
         Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https-service-discovery-read">signal discovery read on HTTPS</a> in [[viss3-transport-examples]] specification.
-        </p>
-    </section>
-
-   <section id="dynamic-metadata-request">
-     <h2>Dynamic Metadata Filter Operation</h2>
-        <p>
-        Dynamic metadata requests are used when the client instead of the data associated to VSS node(s) wants to
-        retrieve metadata that is additional to the VSS specification.<br>
-        The dynamic metadata may change over time.
-        The request filter "parameter" object MUST only contain one of the metadata key names from the list of dynamic metadata key names below.<br>
-        <ul>
-        <li><u>samplerate</u>: The native capture frequency in Hz that is used by the vehicle system.
-        The response uses the same syntax as for ordinary data responses, with "value" representing the sample rate.</li>
-        <li><u>availability</u>: The current availability of the signal(s). The possible values are ["available", "unavailable", "error"].
-        The unavailable status is returned when the signal is inaccessible due to the current vehicle state.
-        The error status is returned if the subsystem represented by the signal exists in the vehice, but is broken and requires repair.
-        The response uses the same syntax as for ordinary data responses, with "value" representing the availability.</li>
-        <li><u>validate</u>: The access control rule that is applied to the node and its sub-tree.
-        The possible values are ["write-only", "read-write"].
-        The response uses the same syntax as for ordinary data responses, with "value" representing the validate tag.
-        The server applies the validate data according to the inheritance rules described in the access control selection chapter.</li>
-        <li><u>server_capabilities</u>: The capabilities that the server supports.
-        See <a href="#server-capabilities">B. Server Capabilities</a> for how this is expressed in the response.</li>
-        </ul>
-        A dynamic metadata request can be combined with a paths filter operation to address multiple nodes,
-        but not with any other filter variant.<br>
-        The server capabilities request MUST be supported, the others on the list are optional.
-        For the server capabilities request the vsspath SHALL be set to "Vehicle", and the paths filter MUST not be used.<br>
-        Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https-dynamic-metadata-read">dynamic metadata read on HTTPS</a>
-        and <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#wss-service-discovery-read">signal discovery read on WebSocket</a> in [[viss3-transport-examples]] specification.
         </p>
     </section>
 
@@ -1865,7 +1826,150 @@
       </section>
     </section>
 
-    <section id="tof" class="appendix"></section>
+    <section id="file-transfer" class="appendix">
+          <h2>File Transfer</h2>
+          <em>This appendix is non-normative.</em><br>
+          <p>
+          File transfer use cases, where a client either sends or receives a file from the vehicle server,
+          can e. g. be a client that wants to push a map to the vehicle, or a client that wants to receive a video recording clip from the vehicle.<br>
+          File resources reprsented in the VSS tree can either be read-only, represented by the sensor node type,
+          or read-write, represented by the actuator node type. In either case the node datatype MUST be "filedescriptor",
+          which is a struct datatype with the following fixed definition:
+          <pre><code>
+          typedef FileDescriptor struct {
+              name string
+              hash string
+              uid string
+          }
+          </code></pre>
+          The FileDescriptor name member SHALL have a dot separated file extension that identifies the file format.<br>
+          The FileDescriptor hash member SHALL be a SHA-1 hash calculated on the content of the file.<br>
+          The FileDescriptor uid member SHALL be a base64 encoded random uint64 value.<br><br>
+          File transfer from client to server, or in the other direction, follows the model shown in the two sequence diagrams below.
+          The server exposes two communication channels, a control channel and a data channel.
+          The control channel is the channel where the primary VISSv3.0 payloads are communicated, 
+          while the data channel is a channel over which the the file transfer data is communicated.
+          The file transfer data consists of the data from the file, split into appropriate size chunks, and prepended by a header.
+          The header consists of three fixed size parameters as shown in the list below.
+        <ul>
+            <li>uid: 8 bytes. A unique identifier for this file transfer session.</li>
+            <li>messageNo: 1 byte. Starting at zero and increasing by one for each file chunk that is transferred.
+            Maximum value is 254.</li>
+            <li>file chunk size: 4 bytes. The size in bytes of this message, including the header size.</li>
+            <li>lastMessage: 1 byte. Indiates whether this message is the last message in the transfer of this file.
+          The value zero indicates that this is not the last message, while a non-zero value indicates that it is the last message.</li>
+
+        </ul>
+        <figure id="fig-file-download">
+          <img src="images/file-download-sequence-diagram.png" alt="VISSv3 file download.">
+          <figcaption> <span class="fig-title">VISSv3 file download.</span></figcaption>
+        </figure>
+        The client SET request on the control channel is exemplified below in the primary payload format.
+          <pre><code>
+{
+  "action": "set",
+  "path": "Vehicle.Cabin.Infotainment.privateMap",
+  "value": {
+    "name": "privateMap.kml",
+    "hash": "2aae6c35c94fcfb415dbe95f408b9ce91ee846ed",
+    "uid" "MTIzNDU2Nzg5MA=="
+  }
+}
+          </code></pre>
+        The Ok response would in primary payload format look like:
+          <pre><code>
+{"action": "set", "ts": "2024-08-20T11:30:00Z"}
+          </code></pre>
+        The client message on the data channel consists of a concatenation of the header and the file chunk.
+        The server response on this contains a concatanation of the three parameters shown below.
+        <ul>
+            <li>uid: 8 bytes. The identifier from the received message.</li>
+            <li>messageNo: 1 byte. The message number from the received message.</li>
+            <li>status: 1 byte. Indiates whether the message was correctly received or not.
+          The value zero indicates that it was correctly received, while a non-zero value indicates that it was not.</li>
+        </ul>
+        If the SET request on the control channel receives an error message then the client shall not issue any SET requests on the data channel.<br>
+        If the client message on the data channel receives an error response then the client hall send the same message again.
+        If this results in another error response the client shall terminate the download session.<br>
+        
+
+        <figure id="fig-file-upload">
+          <img src="images/file-upload-sequence-diagram.png" alt="VISSv3 file upload.">
+          <figcaption> <span class="fig-title">VISSv3 file upload.</span></figcaption>
+        </figure>
+        The server GET request and response on the control channel are exemplified below in the primary payload format.
+          <pre><code>
+{"action": "get", "path": "Vehicle.Cabin.DashCam.Clip"}
+
+{
+  "action": "get",
+  "data": {
+    "path": "Vehicle.Cabin.DashCam.Clip", 
+    "dp" {
+      "value": {"name": "dashCamClip.mp4", "hash": "2aae6c35c94fcfb415dbe95f408b9ce91ee846ed", "uid" "MTIzNDU2Nzg5MA=="},
+      "ts": "2024-08-20T11:30:00Z"
+    }
+  }
+}
+          </code></pre>
+        If the GET request on the control channel receives an error message then the client shall not issue any messages on the data channel.
+        Client messages has the same format as the server messages in the file download scenario,
+        and as in that case it refers to the previously received message from the server.
+        The client must issue an initial message of this ype to trigger the server to respond,
+        in this first message the message number is set to 255 (all bits set to one).
+        The client shall send a final message after receiving the last message from the server.
+        If the status is set to zero the server shall respond with only the header from its last message.<br>
+        If the GET request on the data channel receives an error response then the client shall terminate the upload session.
+        The client should calculate the file hash on the received file data after the session is concluded
+        and compare with the file hash value received in the GET on the control channel.
+        If they differ the received file is likely corrupt.<br><br>
+        A client may terminate a file download session on the data channel by sending only the header by setting the message number to 255, 
+        the chunk size to zero, and the last message to non-zero, on which the server shall respond with status set to zero.<br>
+        A file upload session is terminated by the client by not issuing a message with both the message number and the status set to 255.<br>
+        The node type for the file resource MUST be "file".
+        This node type has a fixed datatype,  a struct with the members "name", "hash", and "size",
+        c. f. the HIM specification for the "file" node type definition.
+          </p>
+        <h3>Data channel realization</h3>
+        <p>
+        If file transfer is realized over any supported transport protocol, this must then be shown in the server capabilities tree,
+        together with the information needed for a client to access the data channel.
+        The default mechanism for realizing a data channel is to assign a port number for it.
+        The list below shows the recommended port numbers for the HTTP and WebSocket protocols.
+        <ul>
+            <li>HTTP port number: 445</li>
+            <li>WebSocket port number: 6445</li>
+        </ul>
+        The recommended mechanism for MQTT is to assing a separate topic name to the data channel.
+        The recommended topic name is created by appending "/datachannel" to the topic name of the control channel.
+        Examples for Websockets and MQTT are found in the [[viss3-transport-examples]] specification.
+        </p>
+        <h3>Alternative based on well-known file transfer protocols</h3>
+        <p>
+        There exists a number of common file transfer protocols e. g. ftp, sftp, ftps,
+        and scp which are widely adopted and have been optimized over many years.
+        For larger files these may be a more efficient solution than the integrated VISS protocol.
+        The model for using any of these intead builds on that the client can access the needed informattion to connect to the end point
+        that is offering the use of the file transfer protocol to access the file.
+        This information is available as a struct data point of the tree node.
+        This struct should have members similar to what is shown below, depending on what is required to initiate he file transfer.
+          <pre><code>
+          struct {
+              schema string
+              port uint32
+              path string
+              filename string
+          }
+          </code></pre>
+          Schema is the file transfer protocol schema.<br>
+          Port is the port number for this service, at least for the initial setup.<br>
+          Path is the URL path for this service.<br>
+          Filename is the file name of the file to be transferred. It shall include a file extension that defines the format of the file.<br>
+          The node type of this tree node shall be "sensor" for files that can only be uploaded to a client, and "actuator" for the file download case.<br>
+          Information about the vehicle file system structure, such as the file path information, shall not be exposed to the client.
+          The server may use the VSS path as a key into a lookup table for accessing the file in the vehicle file system.
+        </p>
+    </section>
 
     <section id="json-schema" class="appendix">
           <h2>JSON Schema</h2>
@@ -1874,693 +1978,87 @@
           unless otherwise specified in the VISSv3 TRANSPORT-EXAMPLE or VISSv3 PAYLOAD-ENCODING specifications.<br>
           </p>
               <pre><code>
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://covesa.global/vissv2.0.bundled.schema.json",
-  "title": "VISSv2",
-  "description": "VISS version 2.0 bundled schema",
-  "type": "object",
-  "properties": {
-    "action": {
-      "type": "string"
-    }
-  },
-  "required": ["action"],
-  "oneOf": [
-    {
-      "properties": {
-        "action": { "const": "get" }
-      },
-      "$ref": "/vissv2.0/get-message.schema.json"
-    },
-    {
-      "properties": {
-        "action": { "const": "set" }
-      },
-      "$ref": "/vissv2.0/set-message.schema.json"
-    },
-    {
-      "properties": {
-        "action": { "const": "subscribe" }
-      },
-      "$ref": "/vissv2.0/subscribe-message.schema.json"
-    },
-    {
-      "properties": {
-        "action": { "const": "unsubscribe" }
-      },
-      "$ref": "/vissv2.0/unsubscribe-message.schema.json"
-    },
-    {
-      "properties": {
-        "action": { "const": "subscription" }
-      },
-      "$ref": "/vissv2.0/subscription-event.schema.json"
-    }
-  ],
-  "$defs": {
-    "https://covesa.global/vissv2.0/get-message.schema.json": {
-  "$id": "https://covesa.global/vissv2.0/get-message.schema.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv2-get-message",
-  "description": "VISSv2 get request and response messages",
-  "type": "object",
-  "oneOf": [
-    {
-      "properties": {
-        "path": {
-          "description": "The path",
-          "type": "string"
-        },
-        "filter": {
-          "$ref": "https://covesa.global/vissv2.0/filter.schema.json"
-        },
-        "authorization": {
-          "description": "The access token",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["path"]
-    },
-    {
-      "properties": {
-        "data": {
-          "$ref": "https://covesa.global/vissv2.0/data.schema.json"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["data", "ts"]
-    },
-    {
-      "properties": {
-        "metadata": {
-          "type": "object",
-          "description": "The metadata"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["metadata", "ts"]
-    },
-    {
-      "properties": {
-        "error": {
-          "$ref": "https://covesa.global/vissv2.0/error.schema.json"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["error", "ts"]
-    }
-  ]
-    },
-    "https://covesa.global/vissv2.0/set-message.schema.json": {
-  "$id": "https://covesa.global/vissv2.0/set-message.schema.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv2-set-message",
-  "description": "VISSv2 set request and response messages",
-  "type": "object",
-  "oneOf": [
-    {
-      "properties": {
-        "path": {
-          "description": "The path",
-          "type": "string"
-        },
-        "value": {
-          "description": "The value",
-          "type": "string"
-        },
-       "authorization": {
-          "description": "The access token",
-          "type": "string"
-        },
-        "requestId": {
-         "description": "The request id",
-         "type": "string"
-        }
-      },
-      "required": ["path", "value"]
-    },
-    {
-      "properties": {
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["ts"]
-    },
-    {
-      "properties": {
-        "error": {
-          "$ref": "https://covesa.global/vissv2.0/error.schema.json"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["error", "ts"]
-    }
-  ]
-    },
-    "https://covesa.global/vissv2.0/subscribe-message.schema.json": {
-  "$id": "https://covesa.global/vissv2.0/subscribe-message.schema.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv2-subscribe-message",
-  "description": "VISSv2 subscribe request and response messages",
-  "type": "object",
-  "oneOf": [
-    {
-      "properties": {
-        "path": {
-          "description": "The path",
-          "type": "string"
-        },
-        "filter": {
-          "$ref": "/vissv2.0/filter.schema.json"
-        },
-        "authorization": {
-          "description": "The access token",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["path", "filter"]
-    },
-    {
-      "properties": {
-        "authorization": {
-          "description": "The access token handle",
-          "type": "string"
-        },
-        "subscriptionId": {
-          "description": "The subscription Id",
-          "type": "string"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["subscriptionId", "ts"]
-    },
-    {
-      "properties": {
-        "error": {
-          "$ref": "https://covesa.global/vissv2.0/error.schema.json"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["error", "ts"]
-    }
-  ]
-    },
-    "https://covesa.global/vissv2.0/unsubscribe-message.schema.json": {
-  "$id": "https://covesa.global/vissv2.0/unsubscribe-message.schema.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv2-unsubscribe-message",
-  "description": "VISSv2 unsubscribe request and response messages",
-  "type": "object",
-  "oneOf": [
-    {
-      "properties": {
-        "subscriptionId": {
-          "description": "The subscription Id",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["subscriptionId"]
-    },
-    {
-      "properties": {
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["ts"]
-    },
-    {
-      "properties": {
-        "error": {
-          "$ref": "https://covesa.global/vissv2.0/error.schema.json"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["error", "ts"]
-    }
-  ]
-    },
-    "https://covesa.global/vissv2.0/subscription-event.schema.json": {
-  "$id": "https://covesa.global/vissv2.0/subscription-event.schema.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv2-subscription-event",
-  "description": "VISSv2 subscription event",
-  "type": "object",
-  "oneOf": [
-    {
-      "properties": {
-        "subscriptionId": {
-          "description": "The subscription Id",
-          "type": "string"
-        },
-        "data": {
-          "$ref": "/vissv2.0/data.schema.json"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["subscriptionId", "data", "ts"]
-    },
-    {
-      "properties": {
-        "subscriptionId": {
-          "description": "The subscription Id",
-          "type": "string"
-        },
-        "error": {
-          "$ref": "https://covesa.global/vissv2.0/error.schema.json"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["subscriptionId", "error", "ts"]
-    }
-  ]
-    },
-    "https://covesa.global/vissv2.0/filter.schema.json": {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://covesa.global/vissv2.0/filter.schema.json",
-  "title": "VISSv2.0-filter",
-  "description": "VISS version 2.0 filter",
-  "type": "object",
-  "properties": {
-    "variant": {
-      "type": "string"
-    }
-  },
-  "required": ["variant"],
-  "oneOf": [
-    {
-      "properties": {
-        "variant": { "const": "paths" },
-        "parameter": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "required": ["parameter"]
-    },
-    {
-      "properties": {
-        "variant": { "const": "timebased" },
-        "parameter": {
-          "properties": {
-            "period": {
-              "type": "string"
-            }
-          },
-          "required": ["period"]
-        }
-      },
-      "required": ["parameter"]
-    },
-    {
-      "oneOf": [
-        {
-          "properties": {
-            "variant": { "const": "range" },
-            "parameter": {
-              "type": "object",
-              "properties": {
-                "boundary-op": {
-                  "type": "string",
-                  "enum": ["eq", "ne", "gt", "gte", "lt", "lte"]
-                },
-                "boundary": {
-                  "type": "string"
-                }
-              },
-              "required": ["boundary-op", "boundary"]
-            }
-          },
-          "required": ["parameter"]
-        },
-        {
-          "properties": {
-            "variant": { "const": "range" },
-            "parameter": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "boundary-op": {
-                    "type": "string",
-                    "enum": ["eq", "ne", "gt", "gte", "lt", "lte"]
-                  },
-                  "boundary": {
-                    "type": "string"
-                  },
-                  "combination-op": {
-                    "type": "string",
-                    "enum": ["AND", "OR"]
-                  }
-                },
-                "required": ["boundary-op", "boundary"]
-              },
-              "minItems": 2,
-              "maxItems": 2
-            }
-          },
-          "required": ["parameter"]
-        }
-      ]
-    },
-    {
-      "properties": {
-        "variant": { "const": "change" },
-        "parameter": {
-          "properties": {
-            "logic-op": {
-              "type": "string",
-              "enum": ["eq", "ne", "gt", "gte", "lt", "lte"]
-            },
-            "diff": {
-              "type": "string"
-            }
-          },
-          "required": ["logic-op", "diff"]
-        }
-      },
-      "required": ["parameter"]
-    },
-    {
-      "properties": {
-        "variant": { "const": "curvelog" },
-        "parameter": {
-          "properties": {
-            "maxerr": {
-              "type": "string"
-            },
-            "bufsize": {
-              "type": "string"
-            }
-          },
-          "required": ["maxerr", "bufsize"]
-        }
-      },
-      "required": ["parameter"]
-    },
-    {
-      "properties": {
-        "variant": { "const": "history" },
-        "parameter": {
-          "type": "string"
-        }
-      },
-      "required": ["parameter"]
-    },
-    {
-      "oneOf": [
-        {
-          "properties": {
-            "variant": { "const": "static-metadata" },
-            "parameter": {
-              "type": "string"
-            }
-          },
-          "required": ["parameter"]
-        },
-        {
-          "properties": {
-            "variant": { "const": "static-metadata" },
-            "parameter": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          "required": ["parameter"]
-        }
-      ]
-    },
-    {
-      "oneOf": [
-        {
-          "properties": {
-            "variant": { "const": "dynamic-metadata" },
-            "parameter": {
-              "type": "string"
-            }
-          },
-          "required": ["parameter"]
-        },
-        {
-          "properties": {
-            "variant": { "const": "dynamic-metadata" },
-            "parameter": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          "required": ["parameter"]
-        }
-      ]
-    }
-  ]
-    },
-    "https://covesa.global/vissv2.0/data.schema.json": {
-  "$id": "https://covesa.global/vissv2.0/data.schema.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv2-data-representation",
-  "description": "VISSv2 data representation",
-  "oneOf": [
-    {
-      "type": "object",
-      "$ref": "/vissv2.0/datapoint-single.schema.json"
-    },
-    {
-      "type": "object",
-      "$ref": "/vissv2.0/datapoint-multiple.schema.json"
-    },
-    {
-      "type": "array",
-      "items": {
-        "$ref": "/vissv2.0/datapoint-single.schema.json"
-      }
-    },
-    {
-      "type": "array",
-      "items": {
-        "$ref": "/vissv2.0/datapoint-multiple.schema.json"
-      }
-    }
-  ],
-  "$defs": {
-    "https://covesa.global/vissv2.0/datapoint-single.schema.json": {
-      "$id": "https://covesa.global/vissv2.0/datapoint-single.schema.json",
-      "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "title": "VISSv2-single-datapoint",
-      "description": "VISSv2 single datapoint",
-      "properties": {
-        "path": {
-          "description": "The path",
-          "type": "string"
-        },
-        "dp": {
-          "description": "The data point",
-          "type": "object",
-          "properties": {
-            "value": {
-              "description": "The value",
-              "type": "string"
-            },
-            "ts": {
-              "description": "The time stamp",
-              "type": "string"
-            }
-          },
-          "required": ["value", "ts"]
-        }
-      },
-      "required": ["path", "dp"]
-    },
-    "https://covesa.global/vissv2.0/datapoint-multiple.schema.json": {
-      "$id": "https://covesa.global/vissv2.0/datapoint-multiple.schema.json",
-      "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "title": "VISSv2-multiple-datapoints",
-      "description": "VISSv2 multiple datapoints",
-      "properties": {
-        "path": {
-          "description": "The path",
-          "type": "string"
-        },
-        "dp": {
-          "description": "Array of data points",
-          "type": "array",
-          "items": {
-            "properties": {
-              "value": {
-                "description": "The value",
-                "type": "string"
-              },
-              "ts": {
-                "description": "The time stamp",
-                "type": "string"
-              }
-            },
-            "required": ["value", "ts"]
-          }
-        }
-      },
-      "required": ["path", "dp"]
-    }
-    }
-    },
-    "https://covesa.global/vissv2.0/error.schema.json": {
-  "$id": "https://covesa.global/vissv2.0/error.schema.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv2-error",
-  "description": "VISSv2 error data",
-  "type": "object",
-  "properties": {
-    "number": {
-      "description": "The status code",
-      "type": "integer",
-      "enum": [400, 401, 403, 404, 503]
-    },
-    "reason": {
-      "description": "The reason",
-      "type": "string",
-      "enum": ["bad_request", "invalid_data", "expired_token", "invalid_token", "missing_token", "forbidden_request",
-               "unavailable_data", "service_unavailable"]
-    },
-   "message": {
-      "description": "The access token",
-      "type": "string",
-      "enum": ["The request is malformed.", "Data present in the request is invalid.", "Access token has expired.",
-               "Access token is invalid.", "Access token is missing.", "The server refuses to carry out the request.",
-               "The requested data was not found.", "The server is temporarily unable to handle the request."]
-    }
-  },
-  "required": ["number", "reason", "message"]
-    }
-  }
-}              </code></pre>
+              <embed type="text/json" src="resources/vissv3.0-schema.json" width="700" height="500">
+              </code></pre>
     </section>
 
     <section id="server-capabilities" class="appendix">
         <h2>Server Capabilities</h2>
         <p>
-        On receiving a dynamic-metadata request on server capabilities the server SHALL respond with a JSON object that for each of the keys
-        in the list below contains the associated values in the list that the server supports.
-        Both the keys and the values are represented as strings, if a key has more than one value, these are represented as an array.<br>
-        A key name refers to a functional domain of the specification, and the tables below contain the capabilities of these domains.
-        The ones marked as underlined are mandatory, the others are optional.
-        <table  style="width:60%">
+        A client that wants to connect to a server may be interested in what capabilities the server offers.
+        The server maintains a separate Server tree which the client can access for this purpose.
+        However, for the client to access this information it must have information about at least one transport protocol that the server supports.
+        The VISS API should not make any assumptions on the communication network topology.
+        Therefore it should not mandate any transport protocol, instead it should assume that a client can obtain necessary information via out-of-band means
+        to configure its communication in order to successfully connect to the vehicle server.
+        How that is done is out-of-scope for this specification,
+        but as an example a solution may be designed around a cloud based repository to which servers can register their capabilities,
+        and clients can inquire about obtaining this information.
+        When a client has obtained the information how to connect to the server, then the server MUST respond to read requests for data from the Server tree.
+        </p>
+
+        <h3>Server Tree Example</h3>
+        <p>
+        Below follows an example of a server capabilities tree.
+        The tree MUST contains the structures listed below, other parts are optional.
+        Server capabilities that extends this specification, or change anything defined in this specification SHALL be declared in the Server tree.
+        </p>
+       <ul>
+            <li>The root node name MUST be Server.</li>
+            <li>The Server node MUST have at least have two children named Support and Config.</li>
+            <li>The Support node MUST have at least one child named Protocol.</li>
+            <li>The Protocol node MUST be an attribute with a string array datatype with members defining the supported transport protocols.</li>
+        </ul>
+          <pre><code>
+              <embed type="text/yaml" src="resources/server.txt" width="700" height="500">
+          </code></pre>
+ 
+        <h3>Server Feature Naming</h3>
+        <p>
+        The feature names that are used in the Server tree should for the features described in this specification use the names listed below.
+
+        <h4>Support Naming</h4>
+        <table  style="width:50%">
           <tr>
-            <th>Key name</th>
+            <th>Protocol</th>
             <th>Description</th>
           </tr>
           <tr>
-            <td>filter</td>
-            <td><a href="#filter-request"></a></td>
+            <td><u>http</u></td>
+            <td>[[viss3-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https">HTTPS</a> chapter</td>
           </tr>
           <tr>
-            <td>access_ctrl</td>
+            <td><u>ws</u></td>
+            <td>[[viss3-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#secure-websockets">Secure Websocket</a> chapter</td>
+          </tr>
+          <tr>
+            <td>mqtt</td>
+            <td>[[viss3-transport-examples]], Transport Protocols:MQTT chapter</td>
+          </tr>
+          <tr>
+            <td>grpc</td>
+            <td>[[viss3-transport-examples]], Transport Protocols:gRPC chapter</td>
+          </tr>
+        </table><br>
+
+        <table  style="width:60%">
+          <tr>
+            <th>Security</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>accesscontrol</td>
             <td><a href="#access-control-model"></a></td>
           </tr>
           <tr>
-            <td>transport_protocol</td>
-            <td>[[viss3-transport-examples]], <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html">Transport Protocol Examples</a> chapter</td>
-          </tr>
-          <tr>
-            <td>payload_encoding</td>
-            <td>[[viss3-payload-encoding]], <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_PayloadEncoding.html">Payload Encoding</a> chapter</td>
+            <td>consent</td>
+            <td><a href="#consent-support"></a></td>
           </tr>
         </table><br>
+
         <table  style="width:50%">
           <tr>
-            <th>filter</th>
+            <th>Filter</th>
             <th>Description</th>
           </tr>
           <tr>
@@ -2588,17 +2086,15 @@
             <td><a href="#history-filter-operation"></a></td>
           </tr>
           <tr>
-            <td>static_metadata</td>
-            <td><a href="#static-metadata-request"></a></td>
-          </tr>
-          <tr>
-            <td><u>dynamic_metadata</u></td>
-            <td><a href="#dynamic-metadata-request"></a></td>
+            <td>metadata</td>
+            <td><a href="#metadata-request"></a></td>
           </tr>
         </table><br>
+
+        <h4>Config Naming</h4>
         <table  style="width:50%">
           <tr>
-            <th>access_ctrl</th>
+            <th>Access Control Flow</th>
             <th>Description</th>
           </tr>
           <tr>
@@ -2614,26 +2110,100 @@
             <td><a href="#access-token"></a></td>
           </tr>
         </table><br>
-        <table  style="width:50%">
-          <tr>
-            <th>transport_protocol</th>
-            <th>Description</th>
-          </tr>
-          <tr>
-            <td><u>https</u></td>
-            <td>[[viss3-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https">HTTPS</a> chapter</td>
-          </tr>
-          <tr>
-            <td><u>wss</u></td>
-            <td>[[viss3-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#secure-websockets">Secure Websocket</a> chapter</td>
-          </tr>
-          <tr>
-            <td>mqtts</td>
-            <td>[[viss3-transport-examples]], Transport Protocols:MQTT chapter</td>
-          </tr>
-        </table>
 
         </p>
     </section>
+
+    <section id="data-compression" class="appendix">
+        <h2><dfn data-dfn-type="dfn" id="dfn-dc">Data Compression</dfn></h2>
+        <p>
+        The primary payload format is JSON, which is text based and thus leads to large messages in terms of bytes.
+        Particularly for messages that are sent off-vehicle this is an undesireable feature as the transportation cost may be significant.
+        The payload encoding that is supported in this specification provides one possibility of compressing the message size,
+        but it does typically not take advantage of specific knowledge of the data being transported.
+        The data compression described here does so, as will be described in the following.
+        The compression can typically also be combined with a following payload compression step.
+        This compression scheme is assymmetric in that it is applied to the response data from the server,
+        but not to the client requests.
+        The assumption is that this is where it may have the largest impact, particularly in the case of multiple responses on a subscribe request.
+        It is also applied per request by an optional parameter that can be included in the Read or Subscribe requests,
+        having the following format.
+          <pre><code>
+          "dc": "A+B"
+          </code></pre>
+        The expression A+B instructs the server what compression scheme it shall apply to paths and/or timestamps in its response(s) to this request.
+        This expression must consist of two values separated by a plus sign, "A + B",
+        where the first value A represents which path compression that is selected, and the second value B represents which timestamp compression that is selected.
+        The value 0 means that no compression scheme is selected,
+        values 1, 2, 4, or 8 represents the compression scheme associated with bits no 0, 1, 2, or 3 in the figure below.
+      <figure id="fig-data-compression-scheme-coding">
+        <img src="images/data-compression-scheme-coding.jpg" alt="Consent architecture.">
+        <figcaption> <span class="fig-title">Data compression scheme coding.</span></figcaption>
+      </figure>
+      The bits shown in the figure above are assigned to the data compression schemes shown in the list below and described in the following chapters.<br>
+      For path compression:
+        <ul>
+            <li>Bit 0: Static UID path compression.</li>
+            <li>Bit 1: Request local path compression.</li>
+            <li>Bit 2-3: Reserved for other path compression schemes.</li>
+        </ul>
+      For timestamp compression:
+        <ul>
+            <li>Bit 0: Request relative timestamp compression.</li>
+            <li>Bit 1-3: Reserved for other timestamp compression schemes.</li>
+        </ul>
+        See the following chapters for description of the supported compression schemes.<br>
+        If the server supports data compression it SHALL declare the compression schemes it supports in its server capabilities tree
+        with an expression A+B which is the sum of the values representing the supported schemes.<br>
+        If a client request for data compression is not supported, or impossible to realize, the server shall respond with an error message.
+        </p>
+
+        <h3>Static UID Path Compression</h3>
+        <p>
+        To enable the server to support this path compression the VSS tree must include the static UIDs for each node.
+        The VSS-Tools exporter tools can be used to assign a static UID to each tree node as described
+        <a data-link-type="dfn" href="https://github.com/COVESA/vss-tools/blob/master/docs/id.md">here</a>.<br>
+        The server will then in the response message(s) replace the VSS path with the static UID value.
+        The static UID is represented as a hex value string starting with the characters "0x" then followed by 8 hexadecimal values.
+        The client need to obtain means for decoding the static UIDs into corresponding VSS paths.
+        The server shall respond with an error message if the client applies the path compression in its request.
+        </p>
+
+        <h3>Request Local Path Compression</h3>
+        <p>
+        The principle for request local path compression is that the server will in the response message(s) replace the path(s) with an integer index.
+        In the case that the request only contains one path reference, then the index is always set to zero.
+        For requests that reference more than one path via the usage of the paths filter, the first response from the server will contain the paths uncompressed,
+        but any following responses will replace the paths with an index.
+        The value of the index is then assigned according to a sorted list of the paths included in the first response,
+        i. e. the first path in the sorted list is assigned the value zero, the second the value 1, and so on.
+        The index logically represent an integer value but it is in the message payload represented as a string.
+        </p>
+
+        <h3>Request Relative Timestamp Compression</h3>
+        <p>
+        The request relative time stamp compression builds on that response messages always contain a timestamp that represent
+        the time when the response message was issued by the server.
+        This timestamp will then be the base time that the timestamps for the signal(s) in the response will add an offset to.
+        This offset will be represented as an integer representing milliseconds, prepended with a plus (+) or minus (-) sign.
+        The uncompressed ISO8601 based timestamp contains 24 characters,
+        so for very large offset values with low compression rates the server may decide to keep the uncompressed timestamp.
+        The client will be able to analyze whether it is a compressed timestamp or not by examining the first character of the string.
+        If it is an integer it is an uncompressed timestamp, as the compressed timestamps starts with a plus or a minus character.
+        </p>
+
+        <h3>Sequence Diagram Compression Scheme Examples</h3>
+        <p>
+        The sequence diagram below shows client Get requests for vehicle speed where different combinations of compression schemes are selected.
+        The responses mainy show the path a timestamp data that becomes compressed.
+        In the first request/response the client requests static UID path compression, in the second request local path compression,
+        and in the third and fourth request relative timestamp compression is added together with the respective path compression.
+      <figure id="data-compression-scheme-sequence-diagram">
+        <img src="images/data-compression-sequence-diagram.png" alt="Compression scheme sequence diagram.">
+        <figcaption> <span class="fig-title">Data compression scheme sequence diagram.</span></figcaption>
+      </figure>
+        </p>
+    </section>
+
   </body>
 </html>

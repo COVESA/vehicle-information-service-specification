@@ -31,11 +31,10 @@
         edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_PayloadEncoding.html",
         shortName: "viss3.0-payload-encoding",
         localBiblio: {
-          "SemVer": {
-            title: "Semantic Versioning 2.0.0",
-            href: "https://semver.org/spec/v2.0.0.html",
-            status: "published",
-            publisher: "Tom Preston-Werner"
+          "viss3-core": {
+            title: "COVESA VISS version 3.0 - Core",
+            href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html",
+            publisher: "Ulf Bjorkengren"
           },
           "viss3-transport-examples": {
             title: "COVESA VISS version 3.0-Transport Examples",
@@ -154,7 +153,7 @@
         <h2>Transport Payload</h2>
         <p>The payload primary format is JSON. This means that the payloads received by a client SHALL have the JSON format,
         unless an implementation deliberately deviates from this.
-        See <a href='#json-def'></a> for the JSON payload format of the messages for the different transport protocols.
+        See the [[viss3-core]] document for the JSON payload format of the messages for the different transport protocols.
         </p>
       </section>
 
@@ -172,6 +171,7 @@
             encoding and decoding processes, and practical examples. This will enable seamless implementation and interoperability across different systems and 
             platforms within the automotive ecosystem.
           </p>
+
           <section id="protobuf-Schema-definition">
             <h2>Protobuf Schema Definition</h2>
             <p>
@@ -179,192 +179,40 @@
             Stored in a file e.g. named "viss.proto" the protbuf compiler (protoc) can be used to create helper functions that can be called to encode and decode
             between the JSON format and the protobuf format.
             The protobuf source code below also contains a "service" clause that the protoc compiler uses to create a gRPC based communication framework.
-            <pre><code>
-syntax = "proto3";
-package grpcProtobufMessages;
-
-enum ResponseStatus {
-    SUCCESS = 0;
-    ERROR = 1;
-}
-
-enum SubscribeResponseType {
-    RESPONSE = 0;
-    EVENT = 1;
-}
-
-service VISS {
-  rpc GetRequest (GetRequestMessage) returns (GetResponseMessage);
-
-  rpc SetRequest (SetRequestMessage) returns (SetResponseMessage);
-
-  rpc SubscribeRequest (SubscribeRequestMessage) returns (stream SubscribeStreamMessage);
-
-  rpc UnsubscribeRequest (UnsubscribeRequestMessage) returns (UnsubscribeResponseMessage);
-}
-
-message ErrorResponseMessage {
-    string Number = 1;
-    optional string Reason = 2;
-    optional string Message = 3;
-}
-
-message FilterExpressions {
-  message FilterExpression {
-    enum FilterVariant {
-        PATHS = 0;
-        TIMEBASED = 1;
-        RANGE = 2;
-        CHANGE = 3;
-        CURVELOG = 4;
-        HISTORY = 5;
-        STATIC_METADATA = 6;
-        DYNAMIC_METADATA = 7;
-    }
-    FilterVariant Variant = 1;
-
-    message FilterValue {
-        message PathsValue {
-            repeated string RelativePath = 1;
-        }
-        optional PathsValue ValuePaths = 1;
-
-        message TimebasedValue {
-            string Period = 1;
-        }
-        optional TimebasedValue ValueTimebased = 2;
-
-        message RangeValue {
-            string LogicOperator = 1;
-            string Boundary = 2;
-        }
-        repeated RangeValue ValueRange = 3;
-
-        message ChangeValue {
-            string LogicOperator = 1;
-            string Diff = 2;
-        }
-        optional ChangeValue ValueChange = 4;
-
-        message CurvelogValue {
-            string MaxErr = 1;
-            string BufSize = 2;
-        }
-        optional CurvelogValue ValueCurvelog = 5;
-
-        message HistoryValue {
-            string TimePeriod = 1;  //ISO8601 period expression
-        }
-        optional HistoryValue ValueHistory = 6;
-
-        message StaticMetadataValue {
-            string Tree = 1;
-        }
-        optional StaticMetadataValue ValueStaticMetadata = 7;
-
-        message DynamicMetadataValue {
-            string MetadataDomain = 1;
-        }
-        optional DynamicMetadataValue ValueDynamicMetadata = 8;
-    }
-    FilterValue Value = 2;
-  }
-  repeated FilterExpression FilterExp = 1;
-}
-
-message DataPackages {
-    message DataPackage {
-        string Path = 1;
-
-        message DataPoint {
-            string Value = 1;
-            string Ts = 2;
-        }
-        repeated DataPoint Dp = 2;
-    }
-    repeated DataPackage Data = 1;
-}
-
-message GetRequestMessage {
-        string Path = 1;
-        optional FilterExpressions Filter = 2;
-        optional string Authorization = 3;
-        optional string RequestId = 4;
-}
-
-message GetResponseMessage {
-        ResponseStatus Status = 1;
-        message SuccessResponseMessage {
-            optional DataPackages DataPack = 1;
-            optional string Metadata = 2; // replaces DataPack in static metadata and one dynamic metadata variant
-        }
-        optional SuccessResponseMessage SuccessResponse = 2;
-        optional ErrorResponseMessage ErrorResponse = 3;
-        optional string RequestId = 4;
-        string Ts = 5;
-        optional string Authorization = 6;
-}
-
-message SetRequestMessage {
-        string Path = 1;
-        string Value = 2;
-        optional string Authorization = 3;
-        optional string RequestId = 4;
-}
-
-message SetResponseMessage {
-        ResponseStatus Status = 1;
-        optional ErrorResponseMessage ErrorResponse = 2;
-        optional string RequestId = 3;
-        string Ts = 4;
-        optional string Authorization = 5;
-}
-
-message SubscribeRequestMessage {
-        string Path = 1;
-        optional FilterExpressions Filter = 2;
-        optional string Authorization = 3;
-        string RequestId = 4;
-}
-
-message SubscribeStreamMessage {
-    SubscribeResponseType MType = 1;
-    ResponseStatus Status = 2;
-
-    message SubscribeResponseMessage {
-        optional ErrorResponseMessage ErrorResponse = 1;
-        optional string SubscriptionId = 2;
-        string RequestId = 3;
-        string Ts = 4;
-        optional string Authorization = 5;
-    }
-    optional SubscribeResponseMessage Response = 3;
-
-    message SubscribeEventMessage {
-        string SubscriptionId = 1;
-        message SuccessResponseMessage {
-            DataPackages DataPack = 1;
-        }
-        optional SuccessResponseMessage SuccessResponse = 2;
-        optional ErrorResponseMessage ErrorResponse = 3;
-        string Ts = 4;
-    }
-    optional SubscribeEventMessage Event = 4;
-}
-
-message UnsubscribeRequestMessage {
-        string SubscriptionId = 1;
-        optional string RequestId = 2;
-}
-
-message UnsubscribeResponseMessage {
-        ResponseStatus Status = 1;
-        optional ErrorResponseMessage ErrorResponse = 2;
-        optional string RequestId = 3;
-        string Ts = 4;
-}
-            </code></pre>
             </p>
+            <pre><code>
+              <embed type="text/protobuf" src="resources/vissv3.0.proto" width="700" height="500">
+            </code></pre>
+          </section>
+
+          <section id="transport-protocol-realizations">
+            <h2>Transport Protocol Realizations</h2>
+
+            <section id="grpc-realization">
+              <h2>gRPC Realization</h2>
+              <p>
+              The "service" clause in the protobuf code in the previous chapter is used by the protoc compiler uses to create a gRPC based communication framework.
+              </p>
+            </section>
+
+            <section id="websocket-realization">
+              <h2>Websocket Realization</h2>
+              <p>
+              If a server supports protobuf payload encoding over the Websocket protocol then it shall be shown in the server capabilities data
+              which port number that the server uses to listen for clients that want to issue requests with protobuf encoded payloads.
+              The recommended port number is 6444.
+              </p>
+            </section>
+
+            <section id="mqtt-realization">
+              <h2>MQTT Realization</h2>
+              <p>
+              If a server supports protobuf payload encoding over the MQTT protocol then it shall be shown in the server capabilities data
+              which topic name that the server uses to listen for clients that want to issue requests with protobuf encoded payloads.
+              The recommended topic name is the topic name used for the unencoded payload channel appended with the string "/protobuf".
+              </p>
+            </section>
+
           </section>
 
           <section id="encoding-and-decoding-with-protobuf">
@@ -381,7 +229,7 @@ message UnsubscribeResponseMessage {
             <h2>JSON schema based encoding</h2>
             <p>
             Several IDLs may take a JSON scheme representation of the interface description as input, e. g. OpenAPI and asyncAPI.
-            The JSON scheme representation of the VISS3.0 interface in the CORE specification can be used for such a purpose.
+            The JSON scheme representation of the VISSv3.0 interface in the CORE specification can be used for such a purpose.
             </p>
           </section>
 

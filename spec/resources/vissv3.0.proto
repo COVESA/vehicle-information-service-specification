@@ -1,0 +1,185 @@
+syntax = "proto3";
+package grpcProtobufMessages;
+
+enum ResponseStatus {
+    SUCCESS = 0;
+    ERROR = 1;
+}
+
+enum SubscribeResponseType {
+    RESPONSE = 0;
+    EVENT = 1;
+}
+
+service VISS {
+  rpc GetRequest (GetRequestMessage) returns (GetResponseMessage);
+
+  rpc SetRequest (SetRequestMessage) returns (SetResponseMessage);
+
+  rpc SubscribeRequest (SubscribeRequestMessage) returns (stream SubscribeStreamMessage);
+
+  rpc UnsubscribeRequest (UnsubscribeRequestMessage) returns (UnsubscribeResponseMessage);
+}
+
+message ErrorResponseMessage {
+    string Number = 1;
+    optional string Reason = 2;
+    optional string Message = 3;
+}
+
+message FilterExpressions {
+  message FilterExpression {
+    enum FilterVariant {
+        PATHS = 0;
+        TIMEBASED = 1;
+        RANGE = 2;
+        CHANGE = 3;
+        CURVELOG = 4;
+        HISTORY = 5;
+        STATIC_METADATA = 6;
+        DYNAMIC_METADATA = 7;
+    }
+    FilterVariant Variant = 1;
+
+    message FilterValue {
+        message PathsValue {
+            repeated string RelativePath = 1;
+        }
+        optional PathsValue ValuePaths = 1;
+
+        message TimebasedValue {
+            string Period = 1;
+        }
+        optional TimebasedValue ValueTimebased = 2;
+
+        message RangeValue {
+            string LogicOperator = 1;
+            string Boundary = 2;
+        }
+        repeated RangeValue ValueRange = 3;
+
+        message ChangeValue {
+            string LogicOperator = 1;
+            string Diff = 2;
+        }
+        optional ChangeValue ValueChange = 4;
+
+        message CurvelogValue {
+            string MaxErr = 1;
+            string BufSize = 2;
+        }
+        optional CurvelogValue ValueCurvelog = 5;
+
+        message HistoryValue {
+            string TimePeriod = 1;  //ISO8601 period expression
+        }
+        optional HistoryValue ValueHistory = 6;
+
+        message StaticMetadataValue {
+            string Tree = 1;
+        }
+        optional StaticMetadataValue ValueStaticMetadata = 7;
+
+        message DynamicMetadataValue {
+            string MetadataDomain = 1;
+        }
+        optional DynamicMetadataValue ValueDynamicMetadata = 8;
+    }
+    FilterValue Value = 2;
+  }
+  repeated FilterExpression FilterExp = 1;
+}
+
+message DataPackages {
+    message DataPackage {
+        string Path = 1;
+
+        message DataPoint {
+            string Value = 1;
+            string Ts = 2;
+        }
+        repeated DataPoint Dp = 2;
+    }
+    repeated DataPackage Data = 1;
+}
+
+message GetRequestMessage {
+        string Path = 1;
+        optional FilterExpressions Filter = 2;
+        optional string Authorization = 3;
+        optional string DataCompression = 4;
+        optional string RequestId = 5;
+}
+
+message GetResponseMessage {
+        ResponseStatus Status = 1;
+        message SuccessResponseMessage {
+            optional DataPackages DataPack = 1;
+            optional string Metadata = 2; // replaces DataPack in static metadata and one dynamic metadata variant
+        }
+        optional SuccessResponseMessage SuccessResponse = 2;
+        optional ErrorResponseMessage ErrorResponse = 3;
+        optional string RequestId = 4;
+        string Ts = 5;
+        optional string Authorization = 6;
+}
+
+message SetRequestMessage {
+        string Path = 1;
+        string Value = 2;
+        optional string Authorization = 3;
+        optional string RequestId = 4;
+}
+
+message SetResponseMessage {
+        ResponseStatus Status = 1;
+        optional ErrorResponseMessage ErrorResponse = 2;
+        optional string RequestId = 3;
+        string Ts = 4;
+        optional string Authorization = 5;
+}
+
+message SubscribeRequestMessage {
+        string Path = 1;
+        optional FilterExpressions Filter = 2;
+        optional string Authorization = 3;
+        optional string DataCompression = 4;
+        string RequestId = 5;
+}
+
+message SubscribeStreamMessage {
+    SubscribeResponseType MType = 1;
+    ResponseStatus Status = 2;
+
+    message SubscribeResponseMessage {
+        optional ErrorResponseMessage ErrorResponse = 1;
+        optional string SubscriptionId = 2;
+        string RequestId = 3;
+        string Ts = 4;
+        optional string Authorization = 5;
+    }
+    optional SubscribeResponseMessage Response = 3;
+
+    message SubscribeEventMessage {
+        string SubscriptionId = 1;
+        message SuccessResponseMessage {
+            DataPackages DataPack = 1;
+        }
+        optional SuccessResponseMessage SuccessResponse = 2;
+        optional ErrorResponseMessage ErrorResponse = 3;
+        string Ts = 4;
+    }
+    optional SubscribeEventMessage Event = 4;
+}
+
+message UnsubscribeRequestMessage {
+        string SubscriptionId = 1;
+        optional string RequestId = 2;
+}
+
+message UnsubscribeResponseMessage {
+        ResponseStatus Status = 1;
+        optional ErrorResponseMessage ErrorResponse = 2;
+        optional string RequestId = 3;
+        string Ts = 4;
+}
