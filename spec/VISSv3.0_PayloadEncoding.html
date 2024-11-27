@@ -199,8 +199,11 @@
               <h2>Websocket Realization</h2>
               <p>
               If a server supports protobuf payload encoding over the Websocket protocol then it shall be shown in the server capabilities data
-              which port number that the server uses to listen for clients that want to issue requests with protobuf encoded payloads.
-              The recommended port number is 6444.
+              how the client configures this. Two mechanisms are defined:
+            <ul>
+              <li>Separate port number. The recommended port number is 6444.</li>
+              <li>A sub-protocol is specified when connecting to the server, The recommended sub-protocol name is "VISS-protoenc".</li>
+            </ul>
               </p>
             </section>
 
