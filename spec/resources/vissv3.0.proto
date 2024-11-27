@@ -36,8 +36,7 @@ message FilterExpressions {
         CHANGE = 3;
         CURVELOG = 4;
         HISTORY = 5;
-        STATIC_METADATA = 6;
-        DYNAMIC_METADATA = 7;
+        METADATA = 6;
     }
     FilterVariant Variant = 1;
 
@@ -75,15 +74,10 @@ message FilterExpressions {
         }
         optional HistoryValue ValueHistory = 6;
 
-        message StaticMetadataValue {
+        message MetadataValue {
             string Tree = 1;
         }
-        optional StaticMetadataValue ValueStaticMetadata = 7;
-
-        message DynamicMetadataValue {
-            string MetadataDomain = 1;
-        }
-        optional DynamicMetadataValue ValueDynamicMetadata = 8;
+        optional MetadataValue ValueMetadata = 7;
     }
     FilterValue Value = 2;
   }
@@ -115,7 +109,7 @@ message GetResponseMessage {
         ResponseStatus Status = 1;
         message SuccessResponseMessage {
             optional DataPackages DataPack = 1;
-            optional string Metadata = 2; // replaces DataPack in static metadata and one dynamic metadata variant
+            optional string Metadata = 2; // replaces DataPack in metadata variant
         }
         optional SuccessResponseMessage SuccessResponse = 2;
         optional ErrorResponseMessage ErrorResponse = 3;
