@@ -24,6 +24,21 @@ Server.Support.Filter:
   datatype: string[]
   description: List of supported filter features.
 
+Server.Support.Encoding:
+  type: attribute
+  datatype: string[]
+  description: List of supported payload encoding features.
+
+Server.Support.Filetransfer:
+  type: attribute
+  datatype: string[]
+  description: List of supported file transfer features.
+
+Server.Support.DataCompression:
+  type: attribute
+  datatype: string[]
+  description: List of supported data compression features.
+
 Server.Config:
   type: branch
   description: Top branch declaring the configuration of server supported features.
@@ -93,6 +108,11 @@ Server.Config.Protocol.Mqtt.Protobuf.Topic:
   type: attribute
   datatype: string
   description: MQTT topic name for the protobuf encoded payload format.
+
+Server.Config.Protocol.Mqtt.Protobuf.DataCompression:
+  type: attribute
+  datatype: string[]
+  description: List of supported data compression variants.
 
 Server.Config.Protocol.Grpc:
   type: branch
