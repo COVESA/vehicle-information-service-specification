@@ -1833,8 +1833,7 @@
           File transfer use cases, where a client either sends or receives a file from the vehicle server,
           can e. g. be a client that wants to push a map to the vehicle, or a client that wants to receive a video recording clip from the vehicle.<br>
           File resources reprsented in the VSS tree can either be read-only, represented by the sensor node type,
-          or read-write, represented by the actuator node type. In either case the node datatype MUST be "filedescriptor",
-          which is a struct datatype with the following fixed definition:
+          or read-write, represented by the actuator node type. In either case the node datatype MUST be a reference to a struct datatype with the following fixed definition:
           <pre><code>
           typedef FileDescriptor struct {
               name string
@@ -1927,7 +1926,20 @@
         the chunk size to zero, and the last message to non-zero, on which the server shall respond with status set to zero.<br>
         A file upload session is terminated by the client by issuing a message with the message number set to 255 and the status set to non-zero.<br>
         The node type for the file resource MUST be "actuator" for the download case and "sensor" for the upload case.
-        This node must have a fixed datatype,  a struct with the members "name", "hash", and "size".
+        This node must have a fixed datatype,  a struct with the members "name", "hash", and "size".<br>
+        Examples of tree nodes for file download and upload, respectively:
+        <pre><code>
+        DownloadFile:
+          type: actuator
+          datatype: Types.Resources.FileDescriptor
+          description: File that may be downloaded to the vehicle.
+
+        UploadFile:
+          type: sensor
+          datatype: Types.Resources.FileDescriptor
+          description: File stored at the vehicle that may be uploaded to a client.
+          </code></pre>
+        The Types.Resources.FileDescriptor definition in the Types tree must mirror the struct definition above.
           </p>
         <h3>Data channel realization</h3>
         <p>
@@ -1941,7 +1953,6 @@
         </ul>
         The recommended mechanism for MQTT is to assing a separate topic name to the data channel.
         The recommended topic name is created by appending "/datachannel" to the topic name of the control channel.
-        Examples for Websockets and MQTT are found in the [[viss3-transport-examples]] specification.
         </p>
         <h3>Alternative based on well-known file transfer protocols</h3>
         <p>
@@ -1985,7 +1996,7 @@
         <h2>Server Capabilities</h2>
         <p>
         A client that wants to connect to a server may be interested in what capabilities the server offers.
-        The server maintains a separate Server tree which the client can access for this purpose.
+        The server shall maintain a separate Server tree which the client can access for this purpose to find out about optional features.
         However, for the client to access this information it must have information about at least one transport protocol that the server supports.
         The VISS API should not make any assumptions on the communication network topology.
         Therefore it should not mandate any transport protocol, instead it should assume that a client can obtain necessary information via out-of-band means
@@ -2011,23 +2022,27 @@
           <pre><code>
               <embed type="text/yaml" src="resources/server.txt" width="700" height="500">
           </code></pre>
+          A feature that is supported in at least one configuration shall be registered on the Support branch.
+          The Config branch shall contain the information needed for a client to utilize the feature,
+          for all configurations that has the feature supported.
+          If a server e. g. supports file transfer upload and download then this shall be found at the Support branch,
+          and then on the Config branch it shall be registered for which transport protocol(s) it is supported, and e. g. which port number is then used.
  
         <h3>Server Feature Naming</h3>
         <p>
         The feature names that are used in the Server tree should for the features described in this specification use the names listed below.
 
-        <h4>Support Naming</h4>
         <table  style="width:50%">
           <tr>
             <th>Protocol</th>
             <th>Description</th>
           </tr>
           <tr>
-            <td><u>http</u></td>
+            <td>http</td>
             <td>[[viss3-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https">HTTPS</a> chapter</td>
           </tr>
           <tr>
-            <td><u>ws</u></td>
+            <td>ws</td>
             <td>[[viss3-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#secure-websockets">Secure Websocket</a> chapter</td>
           </tr>
           <tr>
@@ -2040,32 +2055,17 @@
           </tr>
         </table><br>
 
-        <table  style="width:60%">
-          <tr>
-            <th>Security</th>
-            <th>Description</th>
-          </tr>
-          <tr>
-            <td>accesscontrol</td>
-            <td><a href="#access-control-model"></a></td>
-          </tr>
-          <tr>
-            <td>consent</td>
-            <td><a href="#consent-support"></a></td>
-          </tr>
-        </table><br>
-
         <table  style="width:50%">
           <tr>
             <th>Filter</th>
             <th>Description</th>
           </tr>
           <tr>
-            <td><u>timebased</u></td>
+            <td>timebased</td>
             <td><a href="#timebased-filter-operation"></a></td>
           </tr>
           <tr>
-            <td><u>change</u></td>
+            <td>change</td>
             <td><a href="#change-filter-operation"></a></td>
           </tr>
           <tr>
@@ -2090,7 +2090,55 @@
           </tr>
         </table><br>
 
-        <h4>Config Naming</h4>
+        <table  style="width:50%">
+          <tr>
+            <th>File transfer</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>download</td>
+            <td>File download to vehicle</td>
+          </tr>
+          <tr>
+            <td>upload</td>
+            <td>File upload to client</td>
+          </tr>
+        </table><br>
+
+        <table  style="width:50%">
+          <tr>
+            <th>Data compression</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>pathuid</td>
+            <td>Static UID path compresion</td>
+          </tr>
+          <tr>
+            <td>pathlocal</td>
+            <td>Request local path compression</td>
+          </tr>
+          <tr>
+            <td>timestamplocal</td>
+            <td>Response local timestamp compression</td>
+          </tr>
+        </table>
+
+        <table  style="width:60%">
+          <tr>
+            <th>Security</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>accesscontrol</td>
+            <td><a href="#access-control-model"></a></td>
+          </tr>
+          <tr>
+            <td>consent</td>
+            <td><a href="#consent-support"></a></td>
+          </tr>
+        </table><br>
+
         <table  style="width:50%">
           <tr>
             <th>Access Control Flow</th>
