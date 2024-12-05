@@ -184,9 +184,10 @@
 
       <section id="status-codes">
         <h2>Status Codes</h2>
-	<p>The server implementation <em class="rfc2119" title="SHALL">SHALL</em> support the error numbers listed in the table below,
-	with the associated reason and message fields, for all supported transport protocols.</p>
-        <p>The client <em class="rfc2119" title="SHOULD">SHOULD</em> support any status code defined in [[RFC2616]].</p>
+	<p>A server implementing this specification <em class="rfc2119" title="SHALL">SHALL</em> support the error codes,
+	error reasons and error messages shown in the table below, for all supported transport protocols.
+	The server may choose to dynamically replace the error message as described in the sub-chapters<br>
+        The client <em class="rfc2119" title="MAY">MAY</em> support any status code defined in [[RFC2616]].</p>
         <table id="errorDefs" class="parameters">
 	  <tbody><tr>
 	    <th>Error&nbsp;Number&nbsp;(Code)</th>
@@ -196,44 +197,106 @@
 	  <tr>
 	    <td>400 (Bad Request)</td>
 	    <td>bad_request	</td>
-	    <td>The request is malformed.</td>
+	    <td>The request is malformed</td>
 	  </tr>
 	  <tr>
 	    <td>400 (Bad Request)</td>
 	    <td>invalid_data</td>
-	    <td>Data present in the request is invalid.</td>
-	  </tr>
-	  <tr>
-	    <td>401 (Unauthorized)</td>
-	    <td>expired_token</td>
-	    <td>Access token has expired.</td>
+	    <td>Data in the request is invalid</td>
 	  </tr>
 	  <tr>
 	    <td>401 (Unauthorized)</td>
 	    <td>invalid_token</td>
-	    <td>Access token is invalid.</td>
-	  </tr>
-	  <tr>
-	    <td>401 (Unauthorized)</td>
-	    <td>missing_token</td>
-	    <td>Access token is missing.</td>
+	    <td>Access token is invalid</td>
 	  </tr>
 	  <tr>
 	    <td>403 (Forbidden)</td>
 	    <td>forbidden_request</td>
-	    <td>The server refuses to carry out the request.</td>
+	    <td>The server refuses to carry out the request</td>
 	  </tr>
 	  <tr>
 	    <td>404 (Not Found)</td>
 	    <td>unavailable_data</td>
-	    <td>The requested data was not found.</td>
+	    <td>The requested data was not found</td>
+	  </tr>
+	  <tr>
+	    <td>408 (Request Timeout)</td>
+	    <td>request_timeout</td>
+	    <td>Subscribe duration limit exceeded</td>
+	  </tr>
+	  <tr>
+	    <td>429 (Too Many Requests)</td>
+	    <td>too_many_requests</td>
+	    <td>Rate-limiting due to too many requests</td>
+	  </tr>
+	  <tr>
+	    <td>502 (Bad Gateway)
+	    <td>bad_gateway</td>
+	    <td>The upsteam server response was invalid</td>
 	  </tr>
 	  <tr>
 	    <td>503 (Service Unavailable)</td>
 	    <td>service_unavailable</td>
-	    <td>The server is temporarily unable to handle the request.</td>
+	    <td>The server is temporarily unable to handle the request</td>
+	  </tr>
+	  <tr>
+	    <td>504 (Gateway Timeout)</td>
+	    <td>gateway_timeout</td>
+	    <td>The upsteam server took too long to respond</td>
 	  </tr>
 	</tbody></table>
+
+      <section id="400-bad-request">
+        <h2>400 Bad Request Error Messages</h2>
+        <p>
+        This error code and reason shall be used for JSON schema related errors.
+        The default error message is shown in the table above. The server may dynamically replace this by any of the error messages in the list below.
+        </p>
+        <ul>
+            <li>Missing or invalid action</li>
+            <li>Missing or invalid path</li>
+            <li>Missing or invalid filter</li>
+            <li>Missing or invalid value</li>
+        </ul>
+      </section>
+
+      <section id="400-invalid-data">
+        <h2>400 Invalid Data Error Messages</h2>
+        <p>
+        This error code and reason shall be used for errors that are not covered by the JSON schema but e. g. breaks a rule set by a VSS property.
+        The default error message is shown in the table above. The server may dynamically replace this by any of the error messages in the list below.
+        </p>
+        <ul>
+            <li>Update of a sensor is not supported</li>
+            <li>Requested action on a branch is not supported</li>
+            <li>Data value outside limit</li>
+            <li>Incorrect data type</li>
+        </ul>
+      </section>
+
+      <section id="401-unauthorized">
+        <h2>401 Unauthorized Error Messages</h2>
+        <p>
+        This error code and reason shall be used for errors related to access control validation.
+        The default error message is shown in the table above. The server may dynamically replace this by any of the error messages in the list below.
+        </p>
+        <ul>
+            <li>Access token has expired</li>
+            <li>Access token is missing</li>
+        </ul>
+      </section>
+
+      <section id="404-not-found">
+        <h2>404 Not Found Error Messages</h2>
+        <p>
+        This error code and reason shall be used when the server do not have access to the requested data.
+        The default error message is shown in the table above. The server may dynamically replace this by any of the error messages in the list below.
+        </p>
+        <ul>
+            <li>Data temporarily unaccessible</li>
+            <li>Data is unknown</li>
+        </ul>
+      </section>
       </section>
 
       <section id="transport-payload">
