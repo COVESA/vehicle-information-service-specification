@@ -32,12 +32,12 @@
         edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html",
         shortName: "viss3.0-core",
         localBiblio: {
-          "viss3-payload-encoding": {
+          "PAYLOAD ENCODING": {
             title: "COVESA VISS version 3.0-Payload Encoding",
             href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_PayloadEncoding.html",
             publisher: "Ulf Bjorkengren"
           },
-          "viss3-transport-examples": {
+          "TRANSPORT EXAMPLES": {
             title: "COVESA VISS version 3.0-Transport Examples",
             href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html",
             publisher: "Ulf Bjorkengren"
@@ -128,10 +128,11 @@
       access control solution was added.</p>
 
       <p>
-        There are three parts to this specification, CORE, [[viss3-transport-examples]], and [[viss3-payload-encoding]]. This document, the VISS version 3.0 CORE specification,
+        There are three parts to this specification, CORE, [[TRANSPORT EXAMPLES]], and [[PAYLOAD ENCODING]]. This document, the VISS version 3.0 CORE specification,
         describes the VISSv3.0 messaging layer.<br>
-        The VISSv3.0 transport protocol examples document describe the deviations from the CORE definitions that are used in some transport protocols.<br>
-        The VISSv3.0 payload encoding document describes paylod encoding designs that may be applied e. g. for payloads in transit.<br>
+        The VISSv3.0 transport protocol examples document describes the deviations from the CORE definitions that are used in some transport protocols.
+        It also examplifies the JSON primary payload format using the Websocket payloads.<br>
+        The VISSv3.0 payload encoding document describes payload encoding designs that may be applied e. g. for payloads in transit.
       </p>
     </section>
 
@@ -141,11 +142,11 @@
         This document describes the messaging API for the VISS protocol.
         This includes the messaging layer and set of rules for structuring data.<br>
         The specification is agnostic to which transport protocol that is used as long as it conforms to this messaging API and data rule set.
-        Transport protocols that cannot conform to the entire CORE specification can still be conformant to by describing their deviations in the
-        [[viss3-transport-examples]] specification.<br>
+        Transport protocols that cannot conform to the entire CORE specification can still be conformant by describing their deviations in the
+        [[TRANSPORT EXAMPLES]] specification.<br>
         The primary payload data format is JSON. The JSON schema (<a href="#json-schema"></a>) defines all of the payloads.
         If a transport protocol uses a different payload encoding, such as gRPC,
-        or a more bandwidth efficient data representation is desired, then this encoding may be defined in the [[viss3-payload-encoding]] document.
+        or a more bandwidth efficient data representation is desired, then this encoding may be defined in the [[PAYLOAD ENCODING]] document.
         This encoding must contain a solution for both encoding of the JSON payloads and decoding back to the JSON format.
         A client MUST be able to access the message payload in the JSON format.
       </p>
@@ -155,7 +156,7 @@
       </p>
         <figure id="fig-payload-encoding">
           <img src="images/VISSv3-payload-encoding.jpg" alt="VISSv3 paylod encoding overview.">
-          <figcaption> <span class="fig-title">VISSv3 paylod encoding overview.</span></figcaption>
+          <figcaption> <span class="fig-title">VISSv3 payload encoding overview.</span></figcaption>
         </figure>
       <p>
         The VISSv3.0 messaging layer builds on RESTful principles for the method exchange via the interface (<a href="#interface"></a>).
@@ -163,7 +164,7 @@
       <p>
         The VISSv3.0 data structuring rules (<a href="https://covesa.github.io/vehicle_signal_specification/rule_set/">VSS Rule set</a>)
         are the same through all transport protocols.
-        The basis for structuring data hold by a server is a tree.
+        The basis for structuring data hold by a server is a tree structure.
       </p>
     </section>
 
@@ -188,7 +189,7 @@
           <dt><b>server</b></dt>
           <dd>An entity that manages and offers access to data.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-success-response">success response</dfn></dt>
-          <dd>The message being returned by the server to the client when no error is encountered. These are specific per request type</dd>
+          <dd>The message being returned by the server to the client when no error is encountered. These are specific per request type.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-error-message">error message</dfn></dt>
           <dd>The message being returned by the server to the client when an error is encountered. It can be a synchronous response message,
           or an asynchrounous event message.</dd>
@@ -200,7 +201,7 @@
           <dt><dfn data-dfn-type="dfn" id="dfn-timestamp">timestamp</dfn></dt>
           <dd>A date and time representation. See chapter <a href="#timestamp"></a>.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-filter">filter</dfn></dt>
-          <dd>Additional to help the server in the selection of data for the client.</dd>
+          <dd>Additional information to help the server in the selection of data for the client.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-authorization">authorization</dfn></dt>
           <dd>A token providing a verifiable proof that the client may be authorized access to the requested data.
           This may be represented by a token handle provided by the server.</dd>
@@ -213,7 +214,7 @@
           <dt><dfn data-dfn-type="dfn" id="dfn-purpose">purpose</dfn></dt>
           <dd>A purpose is one of the short text entries from the <a href="#purpose-list"></a>.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-ecf">ECF</dfn></dt>
-          <dd>External Consent Framework. An agent that is responsible for inquiring a data owner about consent.</dd>
+          <dd>External Consent Framework. An agent that is responsible for inquiring a data owner about consent for client access to data.</dd>
         </dl>
       </section>
     </section>
@@ -240,7 +241,7 @@
         <p>Addressing of resources is done using URIs as defined in [[RFC3987]].<br>
         <blockquote><a>scheme</a>://<a>authority</a>/<a>path</a>?<a>query</a></blockquote>
         The <dfn>scheme</dfn> describes the protocol to use to reach the addressed resource.
-        For supported protocols, see the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#transport-protocols">transport protocols</a> in [[viss3-transport-examples]] specification.<br>
+        For supported protocols, see the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#transport-protocols">transport protocols</a> in [[TRANSPORT EXAMPLES]] specification.<br>
         The <dfn>authority</dfn> describes where to reach the resource, for more details see <a href="#authority-component"></a>.<br>
         The <dfn>path</dfn> addresses a specific service within the resource, for more details see <a href="#path-component"></a>.<br>
         The <dfn>query</dfn> contains further information related to the addressed service, see <a href="#filter-request"></a>.<br>
@@ -290,7 +291,7 @@
         <p>
           The path URI component definition differs between the three resources.<br>
           For the <b>VISSv3 server</b> the definition is as follows.<br>
-          The path consists a sequence of VSS node names separated by a delimiter. VSS specifies the dot (.) as delimiter,
+          The path consists of a sequence of VSS node names separated by a delimiter. VSS specifies the dot (.) as delimiter,
           which therefore is the recommended choice also in this specification.
           However, in HTTP URLs the conventional delimiter is slash (/), therefore also this delimiter is supported.
           To exemplify, the path expression from traversing the nodes Vehicle, Car, Engine, RPM can  be "Vehicle.Car.Engine.RPM",
@@ -322,8 +323,8 @@
           </code></pre>
           is represented by the following JSON object<br>
           {"field1":"X", "field2":"Y"}<br>
-          where X and Y are the actual values of respective datatype, here represented for simplicity as string values.
-          The datatype of a field of the struct may be any datatype suported by VSS, including a struct.<br>
+          where X and Y are the actual values of respective datatype.
+          The datatype of a field of the struct may be any datatype supported by VSS, including a struct.<br>
           For representation of multiple data points, see <a href="#response-syntax"></a>.<br>
           If data is represented incorrectly, then an error message with number 400, and reason "Bad data" MUST be returned.
           A specific case of this is if an array of data elements does not contain the number expected by the server.
@@ -353,7 +354,7 @@
              If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error response</a>.</p>
           <p>Arguments, of which path is mandatory:
           <ul>
-            <li><a>path</a> The path as defined in VSS to one or more nodes in the VSS tree.</li>
+            <li><a>path</a> The path as defined in VSS to a node in the VSS tree.</li>
             <li><a>filter</a> Additional information defining the requested data.</li>
             <li><a>authorization</a> The authorization token.</li>
             <li><a>data compression</a> The data compression scheme(s).</li>
@@ -375,7 +376,7 @@
 
         <section id="update">
           <h2>Update</h2>
-          <p>Purpose: Provide altered value to the vehicle signal addressed by the <a>path</a></p>
+          <p>Purpose: Provide an altered value to the vehicle signal addressed by the <a>path</a>.</p>
           <p>The client MAY have to obtain an authorization token before being able to update the vehicle signal.
           If the server is able to satisfy the request it MUST return a <a>success response</a>, else it MUST return an <a>error message</a>.
           Only actuator type signals can be updated.
@@ -384,7 +385,7 @@
           </p>
           <p>Arguments, of which path and value are mandatory:
             <ul>
-              <li><a>path</a> The path as defined in VSS to a single node in the VSS tree.</li>
+              <li><a>path</a> The path as defined in VSS to a leaf node in the VSS tree.</li>
               <li><a>value</a> The value by which the vehicle signal addressed by the path will be updated to.</li>
               <li><a>authorization</a> The authorization token.</li>
             </ul>
@@ -408,7 +409,7 @@
              If an error occurs during the subscription period, the server SHOULD return an <a href="#error-message">error event</a>.</p>
           <p>Arguments, of which path and filter are mandatory:
             <ul>
-              <li><a>path</a> The path as defined in VSS to one or more nodes in the VSS tree.</li>
+              <li><a>path</a> The path as defined in VSS to a node in the VSS tree.</li>
               <li><a>filter</a> The rule set describing triggering criterias for issuance of asynchronous event messages.</li>
               <li><a>authorization</a> The authorization token.</li>
               <li><a>data compression</a> The data compression scheme(s).</li>
@@ -441,11 +442,11 @@
         </section>
         <section id="subscription">
           <h2>Subscription</h2>
-          <p>Purpose: Asynchronous client event message according to the subscribe request trigger rules.</p>
+          <p>Purpose: Asynchronous client event message issued according to the subscribe request trigger rules.</p>
           <p>The server MUST issue an event message when a triggering rule associated with the subscription is met.
              If the server cannot fulfill the triggering rules it MUST issue an error event message and terminate the subscription.
           </p>
-          <p>Arguments:
+          <p>Arguments, of which all are mandatory:
             <ul>
               <li><a>subscriptionId</a> Handle identifying the subscription.</li>
               <li><a>data</a> The data structure contains one or more sets of a path and a data point structure.</li>
@@ -481,9 +482,9 @@
           <p>The error information has three components - a number, a reason, and a message.
           The number MUST always be part of the error information, while the reason and message components MAY be a part of it.
             <ul>
-              <li><b>number</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html/#status-codes">status codes</a> as defined in [[viss3-transport-examples]].</li>
-              <li><b>reason</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#status-codes">status codes</a> as defined in [[viss3-transport-examples]].</li>
-              <li><b>message</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#status-codes">status codes</a> as defined in [[viss3-transport-examples]].</li>
+              <li><b>number</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html/#status-codes">status codes</a> as defined in [[TRANSPORT EXAMPLES]].</li>
+              <li><b>reason</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#status-codes">status codes</a> as defined in [[TRANSPORT EXAMPLES]].</li>
+              <li><b>message</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#status-codes">status codes</a> as defined in [[TRANSPORT EXAMPLES]].</li>
             </ul>
           </p>
           </section>
@@ -522,30 +523,30 @@
 
       <section id="privacy">
         <h2>Privacy Considerations</h2>
-        <p>In addition to some privacy provisions within the
-        specification itself, COVESA and W3C have activities seeking
-	to establish systems and guidelines to provide further considerations for handling of
-        information. </p>
+        <p>
+        In addition to some privacy provisions within the specification itself, COVESA and W3C have activities seeking
+	to establish systems and guidelines to provide further considerations for handling of information.
+        </p>
 
-        <p>For some uses, such as when information is only referenced within the vehicle not sent
-        off nor persisting between restarts, there should be little to
-        no privacy concerns.</p>
+        <p>
+        For some uses, such as when information is only referenced within the vehicle not sent
+        off nor persisting between restarts, there should be little to no privacy concerns.
+        </p>
 
-        <p>This specification, unlike its predecessor, has granular
-        access control capabilities to limit what information an
-        application may access. All information sent from a VISS
-        service to client application must be transported over an
+        <p>
+        This specification has granular access control capabilities to limit what information an application may access.
+        All information sent from a VISS service to client application must be transported over an
         encrypted protocol to help protect privacy.
         </p>
 
-        <p>For an application to be installed and permitted to run on a vehicle it should
-        have consent from whoever is deemed authoritative for a given
-        jurisdiction and ownership situation. That consent should be
-        revocable. Consent and revoking it are outside the scope of
-        this specification, it is expected to be handled out of band
-        and in some cases by regulations and contractual commitments. Future version of this specification however may provide
-        mechanism for enabling and suspending application
-        authorization to access information.</p>
+        <p>
+        A client accessing vehicle data may require consent from whoever is deemed authoritative for a given
+        jurisdiction and ownership situation.
+        This specification enables an External Consent Framework to connect to a VISS server to realize this functionality,
+        see <a href="#consent-support"></a>.
+        That consent should be revocable. Revoking it is outside the scope of this specification,
+        it is expected to be handled out of band and in some cases by regulations and contractual commitments.
+        </p>
 
       </section>
       </section>
@@ -561,7 +562,7 @@
           <ul>
           <li>GET /&lt;vsspath&gt;?filter=&lt;filter-expression&gt;</li>
           </ul></li>
-          <li>for the Websocket protocol:
+          <li>for any protocol using the primary JSON payload format:
           <ul>
           <li>{"action":"get", "path":"&lt;vsspath&gt;", "filter":"&lt;filter-expression&gt;"}</li>
           </ul></li>
@@ -574,7 +575,7 @@
           <li>filter-expression contains the filter instructions.</li>
           </ul>
           </ul>
-          The JSON expression has the object format as shown below. For the case of an optional second object of this type,
+          The filter expression has the object format as shown below. For the case of an optional second object of this type,
           these are enclosed in an array expression.<br>
           <ul>
           <li>{"variant":"&lt;x&gt;", "parameter":"&lt;y&gt;"}</li>
@@ -601,7 +602,8 @@
           </ul></li>
           <li><u>curvelog</u>:
           <ul>
-          <li>captured data is processed according to the curve logging algorithm before being sent to client.</li>
+          <li>captured data is processed according to the
+          <a data-link-type="dfn" href="https://www.geotab.com/blog/gps-logging-curve-algorithm/">curve logging</a> algorithm before being sent to client.</li>
           </ul></li>
           <li><u>history</u>:
           <ul>
@@ -621,7 +623,7 @@
           The JSON expression may consist of maximum one object with variant "paths", plus maximum one object with any other supported variant,
           which are then logically combined as with an AND operator.<br>
           The variants timebased, range, change, and curvelog are only applicable for subscription requests.
-          Subscription requests are supported by the websocket and the MQTT transport protocols.<br>
+          Subscription requests are not supported by the HTTP transport protocol.<br>
           The restriction on how many objects that can be combined is also set by the URL size restriction on 1k characters (*).<br>
           (*) 1k is the "conservative limit, which should always be supported, a more liberal limit is 2k, which is supported in most cases.
           </p>
@@ -634,11 +636,11 @@
                 that start off from this node.
                 If the end point of a path in the filter value is a branch, then all leaf nodes in the sub-tree below this branch are addressed.
                 A path in the filter value may contain the wildcard character (*) as a representative for a single path segment.<br>
-                Every path element in an value array must address at least one node in the tree, or else an error response is returned.<br>
+                Every path element in a value array must address at least one node in the tree, or else an error response shall be returned.<br>
                 Different elements of the value array may address the same node,
                 in which case it is the responsibility of the server to resolve this to a singleton in the event messages.<br>
                 Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https-search-read">search read on HTTPS</a> and
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#wss-search-read">search read on WebSocket</a> in [[viss3-transport-examples]] specification.
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#wss-search-read">search read on WebSocket</a> in [[TRANSPORT EXAMPLES]] specification.
                 </p>
         </section>
 
@@ -660,7 +662,7 @@
                 and second data, i. e. "parameter": "PdddDThhHmmMssS".
                 The number of days shall be less than 999. Only a single period can be expressed.<br>
                 Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https-history-read">history read on HTTPS</a> and
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#wss-history-read">history read on WebSocket</a> in [[viss3-transport-examples]] specification.
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#wss-history-read">history read on WebSocket</a> in [[TRANSPORT EXAMPLES]] specification.
                 </p>
         </section>
 
@@ -669,7 +671,7 @@
                 <p>
                 The parameter object contains the period time X in between captures, {"period":"X"}.
                 X is an integer and represents the period time in milliseconds.
-                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#subscribe">subscribe section</a> in [[viss3-transport-examples]] specification.
+                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#subscribe">subscribe section</a> in [[TRANSPORT EXAMPLES]] specification.
                </p>
         </section>
 
@@ -708,7 +710,7 @@
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than",
                 "lte" is "less than or equal".<br>
                 Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#authorized-subscribe">authorized subscribe</a> and
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#range-subscribe">range subscribe</a> in [[viss3-transport-examples]] specification.
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#range-subscribe">range subscribe</a> in [[TRANSPORT EXAMPLES]] specification.
                </p>
         </section>
 
@@ -726,7 +728,7 @@
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal",
                 "lt" is "less than", "lte" is "less than or equal".<br>
                 Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#change-subscribe">Change Subscribe</a>
-                 in [[viss3-transport-examples]] specification.
+                 in [[TRANSPORT EXAMPLES]] specification.
                </p>
         </section>
 
@@ -738,7 +740,7 @@
                 and Y is the number of buffer elements. Data is processed when the buffer becomes full,
                 and the essential data points are returned as a time series per signal.<br>
                 Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#curve-logging-subscribe">curve logging subscribe</a>
-                 in [[viss3-transport-examples]] specification.
+                 in [[TRANSPORT EXAMPLES]] specification.
                </p>
         </section>
 
@@ -759,7 +761,7 @@
         but cannot be combined with any other filter variant.<br>
         The response is a JSON formatted object with corresponding key-value pairs per addressed node.
         The server MAY support the metadata request.<br>
-        Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https-service-discovery-read">signal discovery read on HTTPS</a> in [[viss3-transport-examples]] specification.
+        Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https-service-discovery-read">signal discovery read on HTTPS</a> in [[TRANSPORT EXAMPLES]] specification.
         </p>
     </section>
 
@@ -871,7 +873,7 @@
     }
   ]
         </pre></p>
-               In the case of a request for multiple values from multiple nodes, the datapoint for different paths may contain single or multiple objects,
+               In the case of a request for multiple values from multiple nodes, the data point for different paths may contain single or multiple objects,
                as the vehicle system may not have multiple values recorded for all requested signals.
             </p>
      </section>
@@ -1128,7 +1130,7 @@
           This is a VISSv3 request including an <a href="#access-token-def">access token</a> as described in general in the
           <a href="#methods"></a> chapter,
           and for different <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#transport-protocols">
-          transport protocols</a> in the [[viss3-transport-examples]] document.
+          transport protocols</a> in the [[TRANSPORT EXAMPLES]] document.
           The first time a token is submitted in a request it must be provided in its entirety. If a server supports caching of access tokens and returns a token hanle to the client,
           then any following requests may provide the token handle instead of the complete access token.
           </p>
@@ -1138,7 +1140,7 @@
           <h2>Protected Resource Response</h2>
           <p>
           This is a VISSv3 response as described in general in the <a href="#methods"></a> chapter,
-          and for different <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#transport-protocols">transport protocols</a> in the [[viss3-transport-examples]] document.
+          and for different <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#transport-protocols">transport protocols</a> in the [[TRANSPORT EXAMPLES]] document.
           It does not differ from the response to an unprotected resource request.
           </p>
         </section>
@@ -1769,7 +1771,7 @@
       However, a VISSv3 vehicle server has a capability to enforce consent results, i. e. to allow or block access to requested data.
       This can be leveraged in a model where the server receives consent results from an <a>ECF</a> and uses that information to either grant client requests,
       or not, for data that is consent protected. How the <a>ECF</a> obtains the consent status is out-of-scope in this specification.
-      A secure, local communication channel exists between the in-vehicle <a>ECF</a> and the server as shown in the figure below,
+      A secure, local communication channel shall exist between the <a>ECF</a> and the server as shown in the figure below,
       over which the server can inquire about the consent status for data requested by a client.
       <figure id="fig-consent-architecture">
         <img src="images/consent-architecture.jpg" alt="Consent architecture.">
@@ -1793,7 +1795,7 @@
         <ul>
             <li>The requested data.</li>
             <li>The purpose of the request.</li>
-            <li>The client context.</li>
+            <li>The <a href="#client-context-def">client context</a>.</li>
         </ul>
       The response from the <a>ECF</a> shall contain:
         <ul>
@@ -1815,7 +1817,7 @@
         <h2>External Consent Framework Interface</h2>
         <p>
          A server receiving a client request that involves obtaining a consent status shall send a request to the <a>ECF</a>
-         on which it shall receive a response cintaining the consent status.
+         on which it shall receive a response containing the consent status.
 
          The request shall contain the data from the list in the previous chapter.
 
@@ -1832,8 +1834,8 @@
           <p>
           File transfer use cases, where a client either sends or receives a file from the vehicle server,
           can e. g. be a client that wants to push a map to the vehicle, or a client that wants to receive a video recording clip from the vehicle.<br>
-          File resources reprsented in the VSS tree can either be read-only, represented by the sensor node type,
-          or read-write, represented by the actuator node type. In either case the node datatype MUST be a reference to a struct datatype with the following fixed definition:
+          File resources represented in the VSS tree can either be read-only, represented by the sensor node type,
+          or write-only, represented by the actuator node type. In either case the node datatype MUST be a reference to a struct datatype with the following fixed definition:
           <pre><code>
           typedef FileDescriptor struct {
               name string
@@ -1843,11 +1845,13 @@
           </code></pre>
           The FileDescriptor name member SHALL have a dot separated file extension that identifies the file format.<br>
           The FileDescriptor hash member SHALL be a SHA-1 hex string encoded hash calculated on the content of the file.<br>
-          The FileDescriptor uid member SHALL be a hex string encoded random uint32 value.<br><br>
+          The FileDescriptor uid member SHALL be a hex string encoded random uint32 value.
+          Its value shall be unique for each file transfer session, created by the client for download sessions,
+          and by the server for upload sessions.<br><br>
           File transfer from client to server, or in the other direction, follows the model shown in the two sequence diagrams below.
           The server exposes two communication channels, a control channel and a data channel.
           The control channel is the channel where the primary VISSv3.0 payloads are communicated, 
-          while the data channel is a channel over which the the file transfer data is communicated.
+          while the data channel is a channel over which the file transfer data is communicated.
           The file transfer data consists of the data from the file, split into appropriate size chunks, and prepended by a header.
           The header consists of three fixed size parameters as shown in the list below.
         <ul>
@@ -1880,7 +1884,7 @@
 {"action": "set", "ts": "2024-08-20T11:30:00Z"}
           </code></pre>
         The client message on the data channel consists of a concatenation of the header and the file chunk.
-        The server response on this contains a concatanation of the three parameters shown below.
+        The server response on this contains a concatenation of the three parameters shown below.
         <ul>
             <li>uid: 4 bytes. The identifier from the received message.</li>
             <li>messageNo: 1 byte. The message number from the received message.</li>
@@ -1908,7 +1912,8 @@
       "value": {"name": "dashCamClip.mp4", "hash": "2aae6c35c94fcfb415dbe95f408b9ce91ee846ed", "uid" "2d878213"},
       "ts": "2024-08-20T11:30:00Z"
     }
-  }
+  },
+  "ts": "2025-01-09T12:13:14Z"
 }
           </code></pre>
         If the GET request on the control channel receives an error message then the client shall not issue any messages on the data channel.
@@ -1917,7 +1922,8 @@
         The client must issue an initial message of this type to trigger the server to respond,
         in this first message the message number is set to 255 (all bits set to one).
         The client shall send a final message after receiving the last message from the server.
-        If the status is set to zero the server shall respond with only the header from its last message.<br>
+        If the status is set to zero the server shall respond with only the header from its last message,
+        with the chunk size set to zero.<br>
         If the GET request on the data channel receives an error response then the client shall terminate the upload session.
         The client should calculate the file hash on the received file data after the session is concluded
         and compare with the file hash value received in the GET on the control channel.
@@ -1926,7 +1932,7 @@
         the chunk size to zero, and the last message to non-zero, on which the server shall respond with status set to zero.<br>
         A file upload session is terminated by the client by issuing a message with the message number set to 255 and the status set to non-zero.<br>
         The node type for the file resource MUST be "actuator" for the download case and "sensor" for the upload case.
-        This node must have a fixed datatype,  a struct with the members "name", "hash", and "size".<br>
+        This node must have a fixed datatype,  a struct with the members "name", "hash", and "uid".<br>
         Examples of tree nodes for file download and upload, respectively:
         <pre><code>
         DownloadFile:
@@ -1959,7 +1965,7 @@
         There exists a number of common file transfer protocols e. g. ftp, sftp, ftps,
         and scp which are widely adopted and have been optimized over many years.
         For larger files these may be a more efficient solution than the integrated VISS protocol.
-        The model for using any of these intead builds on that the client can access the needed informattion to connect to the end point
+        The model for using any of these instead builds on that the client can access the needed informattion to connect to the end point
         that is offering the use of the file transfer protocol to access the file.
         This information is available as a struct data point of the tree node.
         This struct should have members similar to what is shown below, depending on what is required to initiate he file transfer.
@@ -1984,7 +1990,7 @@
     <section id="json-schema" class="appendix">
           <h2>JSON Schema</h2>
           <p>
-          The payloads that are sent over any transport protocol SHALL conform with the JSON schema in this appendix,
+          The primary payloads that are sent over any transport protocol SHALL conform with the JSON schema in this appendix,
           unless otherwise specified in the VISSv3 TRANSPORT-EXAMPLE or VISSv3 PAYLOAD-ENCODING specifications.<br>
           </p>
               <pre><code>
@@ -2027,6 +2033,7 @@
           for all configurations that has the feature supported.
           If a server e. g. supports file transfer upload and download then this shall be found at the Support branch,
           and then on the Config branch it shall be registered for which transport protocol(s) it is supported, and e. g. which port number is then used.
+          Configuration data that is given a value in the specification documents does not have to be present on the Config branch.
  
         <h3>Server Feature Naming</h3>
         <p>
@@ -2039,19 +2046,19 @@
           </tr>
           <tr>
             <td>http</td>
-            <td>[[viss3-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https">HTTPS</a> chapter</td>
+            <td>[[TRANSPORT EXAMPLES]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https">HTTPS</a> chapter</td>
           </tr>
           <tr>
             <td>ws</td>
-            <td>[[viss3-transport-examples]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#secure-websockets">Secure Websocket</a> chapter</td>
+            <td>[[TRANSPORT EXAMPLES]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#secure-websockets">Secure Websocket</a> chapter</td>
           </tr>
           <tr>
             <td>mqtt</td>
-            <td>[[viss3-transport-examples]], Transport Protocols:MQTT chapter</td>
+            <td>[[TRANSPORT EXAMPLES]], Transport Protocols:MQTT chapter</td>
           </tr>
           <tr>
             <td>grpc</td>
-            <td>[[viss3-transport-examples]], Transport Protocols:gRPC chapter</td>
+            <td>[[TRANSPORT EXAMPLES]], Transport Protocols:gRPC chapter</td>
           </tr>
         </table><br>
 
@@ -2164,13 +2171,14 @@
     <section id="data-compression" class="appendix">
         <h2><dfn data-dfn-type="dfn" id="dfn-dc">Data Compression</dfn></h2>
         <p>
-        The primary payload format is JSON, which is text based and thus leads to large messages in terms of bytes.
-        Particularly for messages that are sent off-vehicle this is an undesireable feature as the transportation cost may be significant.
+        The primary payload format is JSON, which is text based and thus may lead to large messages in terms of bytes.
+        Particularly in subscription scenarios with large number of event messages that are sent off-vehicle this is an undesireable
+        feature as the transportation cost may be significant.
         The payload encoding that is supported in this specification provides one possibility of compressing the message size,
         but it does typically not take advantage of specific knowledge of the data being transported.
         The data compression described here does so, as will be described in the following.
-        The compression can typically also be combined with a following payload compression step.
-        This compression scheme is assymmetric in that it is applied to the response data from the server,
+        This compression can typically also be combined with a following payload encoding compression step.
+        The compression scheme is assymmetric in that it is applied to the response data from the server,
         but not to the client requests.
         The assumption is that this is where it may have the largest impact, particularly in the case of multiple responses on a subscribe request.
         It is also applied per request by an optional parameter that can be included in the Read or Subscribe requests,
@@ -2212,7 +2220,7 @@
         <a data-link-type="dfn" href="https://github.com/COVESA/vss-tools/blob/master/docs/id.md">here</a>.<br>
         The server will then in the response message(s) replace the VSS path with the static UID value.
         The static UID is represented as a hex value string starting with the characters "0x" then followed by 8 hexadecimal values.
-        The client need to obtain means for decoding the static UIDs into corresponding VSS paths.
+        The client needs to obtain means for decoding the static UIDs into corresponding VSS paths.
         The server shall respond with an error message if the client applies the path compression in its request.
         </p>
 
@@ -2231,10 +2239,10 @@
         <p>
         The request relative time stamp compression builds on that response messages always contain a timestamp that represent
         the time when the response message was issued by the server.
-        This timestamp will then be the base time that the timestamps for the signal(s) in the response will add an offset to.
+        This timestamp will then be the base time that the timestamps for the data point(s) in the response will contain an offset to.
         This offset will be represented as an integer representing milliseconds, prepended with a plus (+) or minus (-) sign.
         The uncompressed ISO8601 based timestamp contains 24 characters,
-        so for very large offset values with low compression rates the server may decide to keep the uncompressed timestamp.
+        so for very large offset values leading to low compression rates the server may decide to keep the uncompressed timestamp.
         The client will be able to analyze whether it is a compressed timestamp or not by examining the first character of the string.
         If it is an integer it is an uncompressed timestamp, as the compressed timestamps starts with a plus or a minus character.
         </p>
@@ -2242,7 +2250,7 @@
         <h3>Sequence Diagram Compression Scheme Examples</h3>
         <p>
         The sequence diagram below shows client Get requests for vehicle speed where different combinations of compression schemes are selected.
-        The responses mainy show the path a timestamp data that becomes compressed.
+        The responses mainly show the paths or timestamps that becomes compressed.
         In the first request/response the client requests static UID path compression, in the second request local path compression,
         and in the third and fourth request relative timestamp compression is added together with the respective path compression.
       <figure id="data-compression-scheme-sequence-diagram">
