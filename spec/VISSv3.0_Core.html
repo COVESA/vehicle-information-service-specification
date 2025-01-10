@@ -164,7 +164,7 @@
       <p>
         The VISSv3.0 data structuring rules (<a href="https://covesa.github.io/vehicle_signal_specification/rule_set/">VSS Rule set</a>)
         are the same through all transport protocols.
-        The basis for structuring data hold by a server is a tree structure.
+        The basis for structuring data held by a server is a tree structure.
       </p>
     </section>
 
@@ -172,7 +172,8 @@
 
     <section id="terms">
       <h2>Terminology</h2>
-      <p>The acronym 'VISSv3.0' is used to refer to this document, the VISS version 3.0 specification.
+      <p>
+      The acronym 'VISSv3.0' is used to refer to this document, the VISS version 3.0 specification.
       The acronym 'VSS' is used to refer to the <a href="https://github.com/COVESA/vehicle_signal_specification">'Vehicle Signal Specification'</a>
       which is hosted by COVESA.
       The term 'WebSocket' when used in this document, is as defined in the
@@ -229,7 +230,7 @@
                 Depending on how VISS is being used, for instance to serve data already off-boarded and residing in the cloud,
                 it may make sense to allow sensor values to be updated by sending a 'set' request.
                 When VISS is directly on the vehicle, values reported by sensors are authoritative and should be read-only within VISS.
-                Implementations should handle set requests appropriately for their situation and give appropriate success or error responses accordingly.
+                Implementations should handle set requests appropriately for their situation and respond with appropriate success or error messages accordingly.
                 </p>
         <figure id="fig-example-vss-tree">
           <img src="images/vss-tree.jpg" alt="example-vss-tree">
@@ -308,21 +309,25 @@
         <p>
           A single data point is in the message payload represented by a value and an associated timestamp,
           in JSON represented by two key-value pairs with the key names "value" and "ts".<br>
-          The "ts" value MUST be a string as specified in <a href="#timestamp"></a>, while the "value" value MUST be a string,
-          an array of strings for array type signals, or an object for complex datatypes,
-          see <a href="https://covesa.github.io/vehicle_signal_specification/rule_set/data_entry/data_types/">VSS Data Types</a>.<br>
-          In the case of the value being a number, it MUST follow the number formats as specified in [[RFC8259]].
-          A boolean value is represented by "true" or "false".<br>
-          In the case of the value being a complex datatype represented by a struct, it is represented as a JSON object as shown below.
-          A struct with the following declaration<br>
+          The "ts" value MUST be a string as specified in <a href="#timestamp"></a>.<br>
+          The "value" value MUST be represented as a string for simple datatypes.
+          If the value is an array it MUST be represented as a JSON array of strings.
+          In the case the value is a struct complex datatype it MUST be represented as a JSON object, see below.
+          For supported datatypes see <a href="https://covesa.github.io/vehicle_signal_specification/rule_set/data_entry/data_types/">VSS Data Types</a>.<br>
+          Number values MUST follow the number formats as specified in [[RFC8259]], but as stated above represented as a string.
+          Boolean values MUST be represented by either of the strings "true" or "false".<br>
+          The struct complex datatype MUST be represented as a JSON object as shown below.
+          A struct with the following declaration
           <pre><code>
           struct {
               field1 datatype
               field2 datatype
           }
           </code></pre>
-          is represented by the following JSON object<br>
-          {"field1":"X", "field2":"Y"}<br>
+          is represented by the following JSON object
+          <pre><code>
+          {"field1":"X", "field2":"Y"}
+          </code></pre>
           where X and Y are the actual values of respective datatype.
           The datatype of a field of the struct may be any datatype supported by VSS, including a struct.<br>
           For representation of multiple data points, see <a href="#response-syntax"></a>.<br>
@@ -351,7 +356,7 @@
           <p>Purpose: Get one or more values addressed by the given path.</p>
           <p>The client MAY have to obtain an <a>authorization</a> token before being able to access the values.
              If the server is able to satisfy the request it MUST return a <a>success response</a>.
-             If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error response</a>.</p>
+             If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error message</a>.</p>
           <p>Arguments, of which path is mandatory:
           <ul>
             <li><a>path</a> The path as defined in VSS to a node in the VSS tree.</li>
@@ -405,8 +410,8 @@
           <p>The client MAY have to obtain an authorization token before being able to subscribe to the vehicle signal(s).
              The server MUST issue an event message if a trigger rule is fulfilled.
              If the server is able to satisfy the request it MUST return a <a>success response</a>.
-             If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error response</a>.
-             If an error occurs during the subscription period, the server SHOULD return an <a href="#error-message">error event</a>.</p>
+             If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error message</a>.
+             If an error occurs during the subscription period, the server SHOULD return an <a href="#error-message">error message</a>.</p>
           <p>Arguments, of which path and filter are mandatory:
             <ul>
               <li><a>path</a> The path as defined in VSS to a node in the VSS tree.</li>
@@ -428,7 +433,7 @@
           <p>Purpose: Termination of the subscription period started by a previous subscribe request.</p>
           <p>If the server is able to satisfy the request it MUST return a <a>success response</a>,
           and it MUST stop issuing event messages associated to the subscription handle.
-          If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error response</a>.</p>
+          If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error message</a>.</p>
           <p>Arguments, of which subscriptionId is mandatory:
             <ul>
               <li><a>subscriptionId</a> Handle identifying the subscription.</li>
@@ -444,7 +449,7 @@
           <h2>Subscription</h2>
           <p>Purpose: Asynchronous client event message issued according to the subscribe request trigger rules.</p>
           <p>The server MUST issue an event message when a triggering rule associated with the subscription is met.
-             If the server cannot fulfill the triggering rules it MUST issue an error event message and terminate the subscription.
+             If the server cannot fulfill the triggering rules it MUST issue an error message and terminate the subscription.
           </p>
           <p>Arguments, of which all are mandatory:
             <ul>
@@ -464,14 +469,15 @@
         <h2>Error Message</h2>
         <p>The server MUST inform a client about errors ocurring in interactions between the two, whether it is in a synchronous
         error response, or an asynchronous error event as a result of a previous subscribe.
-        For transport protocols which do not control the logical linking between request and response messages it may not be possible to link an error message to the correct client request.
+        For transport protocols which do not control the logical linking between request and response messages it may not be possible to link
+        an error message to the correct client request.
         In cases like this the server may omit sending an error message.
         The error message has three arguments, of which subscriptionId is mandatory only for error events.
         In the case of an error event being issued by the server, the associated subscription session SHALL thereafter be terminated by the server.
         </p>
           <p>Arguments:
             <ul>
-              <li><a>error message</a> <a href="#error-information"></a></li>
+              <li><a href="#error-information"></a></li>
               <li><a>subscriptionId</a> The reference to the subscribe session.</li>
               <li><a>timestamp</a> The time of the server execution leading to the error.</li>
             </ul>
@@ -479,12 +485,12 @@
 
         <section id="error-information">
           <h2>Error Information</h2>
-          <p>The error information has three components - a number, a reason, and a message.
-          The number MUST always be part of the error information, while the reason and message components MAY be a part of it.
+          <p>The error information has three components - a number, a reason, and a description.
+          The number MUST always be part of the error information, while the reason and description components MAY be a part of it.
             <ul>
               <li><b>number</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html/#status-codes">status codes</a> as defined in [[TRANSPORT EXAMPLES]].</li>
               <li><b>reason</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#status-codes">status codes</a> as defined in [[TRANSPORT EXAMPLES]].</li>
-              <li><b>message</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#status-codes">status codes</a> as defined in [[TRANSPORT EXAMPLES]].</li>
+              <li><b>description</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#status-codes">status codes</a> as defined in [[TRANSPORT EXAMPLES]].</li>
             </ul>
           </p>
           </section>
@@ -636,7 +642,7 @@
                 that start off from this node.
                 If the end point of a path in the filter value is a branch, then all leaf nodes in the sub-tree below this branch are addressed.
                 A path in the filter value may contain the wildcard character (*) as a representative for a single path segment.<br>
-                Every path element in a value array must address at least one node in the tree, or else an error response shall be returned.<br>
+                Every path element in a value array must address at least one node in the tree, or else an error message shall be returned.<br>
                 Different elements of the value array may address the same node,
                 in which case it is the responsibility of the server to resolve this to a singleton in the event messages.<br>
                 Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https-search-read">search read on HTTPS</a> and
@@ -679,6 +685,8 @@
           <h2>Range Filter Operation</h2>
                 <p>
                 The range filter operation supports two types of ranges, see the following sub chapters.<br>
+                The values must be of a number datatype.
+                </p>
                 <section id="single-boundary-range">
                   <h2>Single Boundary Range</h2>
                   <p>
@@ -717,6 +725,7 @@
      <section id="change-filter-operation">
           <h2>Change Filter Operation</h2>
                 <p>
+                The values must be of a number or boolean datatype.<br>
                 The parameter object contains the logical operator for comparison of previous and current values, {"logic-op":"X", "diff":"Y"},
                 where X is one of the supported logical operators (**), and Y is the value of the required change.<br>
                 For boolean values the following expressions shall be supported:<br>
@@ -778,7 +787,7 @@
             A request addressing multiple nodes may address both valid nodes, and invalid nodes.
             The latter case shall lead to a Forbidden error (403) response message part that contains information about which node, or nodes,
             that are invalid.
-            The error response shall not contain data from any of the validly addressed nodes.
+            The error message shall not contain data from any of the validly addressed nodes.
             </p>
      </section>
 
@@ -1013,7 +1022,7 @@
           <a href="#access-token-def">access tokens</a>.
         </p>
         <p>
-          An error response shall contain the parameter:
+          An error message shall contain the parameter:
           <ul>
             <li>Error code: The error code shall be informative in order for the <a href="#client-def">client</a>
             to understand what it needs to correct to become successful.</li>
@@ -1080,7 +1089,7 @@
             <li><a href="#access-token-def">Access token</a>: The token to be used in <a href="#client-def">client</a>
             requests to the VISSv3 server for Protected Resources.</li>
           </ul>
-          An error response shall contain the parameter:
+          An error message shall contain the parameter:
           <ul>
             <li>Error code: The error code shall be informative in order for the <a href="#client-def">client</a>
             to understand what it needs to correct to become successful.</li>
@@ -1337,7 +1346,7 @@
           <tbody><tr>
             <th>Error&nbsp;Number&nbsp;(Code)</th>
             <th>Error Reason</th>
-            <th>Error Message</th>
+            <th>Error Description</th>
           </tr>
           <tr>
             <td>401 (Unauthorized)</td>
@@ -2016,7 +2025,7 @@
         <h3>Server Tree Example</h3>
         <p>
         Below follows an example of a server capabilities tree.
-        The tree MUST contains the structures listed below, other parts are optional.
+        The tree MUST contain the structures listed below, other parts are optional.
         Server capabilities that extends this specification, or change anything defined in this specification SHALL be declared in the Server tree.
         </p>
        <ul>
@@ -2257,6 +2266,17 @@
         <img src="images/data-compression-sequence-diagram.png" alt="Compression scheme sequence diagram.">
         <figcaption> <span class="fig-title">Data compression scheme sequence diagram.</span></figcaption>
       </figure>
+      An example with the complete payloads for a subscribe on two signals with path and timestamp compression are shown below.
+      The first payload is the request, the second is the response, then follows the two first event messages.
+          <pre><code>
+{"action":"subscribe","path":"Vehicle.CurrentLocation","filter":[{"variant":"paths","parameter":["Latitude", "Longitude"]}, {"variant":"timebased","parameter":{"period":"3000"}}], "dc":"2+1","requestId":"286"}
+
+{"action":"subscribe","requestId":"286","subscriptionId":"1","ts":"2025-01-10T11:46:09.955Z"}
+
+{"action":"subscription","data":[{"dp":{"ts":"-123","value":"56.02"},"path":"Vehicle.CurrentLocation.Latitude"},{"dp":{"ts":"-123","value":"12.36"},"path":"Vehicle.CurrentLocation.Longitude"}],"subscriptionId":"1","ts":"2025-01-10T11:46:12.957Z"}
+
+{"action":"subscription","data":[{"dp":{"ts":"-15","value":"56.03"},"path":"0"},{"dp":{"ts":"-15","value":"12.37"},"path":"1"}],"subscriptionId":"1","ts":"2025-01-10T11:46:15.956Z"}
+          </code></pre>
         </p>
     </section>
 

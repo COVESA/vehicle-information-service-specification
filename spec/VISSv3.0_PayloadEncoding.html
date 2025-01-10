@@ -31,12 +31,12 @@
         edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_PayloadEncoding.html",
         shortName: "viss3.0-payload-encoding",
         localBiblio: {
-          "viss3-core": {
+          "CORE": {
             title: "COVESA VISS version 3.0 - Core",
             href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html",
             publisher: "Ulf Bjorkengren"
           },
-          "viss3-transport-examples": {
+          "TRANSPORT EXAMPLES": {
             title: "COVESA VISS version 3.0-Transport Examples",
             href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html",
             publisher: "Ulf Bjorkengren"
@@ -126,10 +126,10 @@
       access control solution was added.</p>
       
       <p>
-        There are three parts to this specification, [[viss3-core]], [[viss3-transport-examples]], and PAYLOAD ENCODING. This document, the VISS version 3.0 PAYLOAD ENCODING specification, 
+        There are three parts to this specification, [[CORE]], [[TRANSPORT EXAMPLES]], and PAYLOAD ENCODING. This document, the VISS version 3.0 PAYLOAD ENCODING specification, 
         describes the VISSv3.0 payload encodings that is used in some cases. 
-        The companion specifications [[viss3-core]] describes the messaging layer,
-        and [[viss3-transport-examples]] describes the deviations form the CORE specification that are used by some transport protocols.
+        The companion specifications [[CORE]] describes the messaging layer,
+        and [[TRANSPORT EXAMPLES]] describes the deviations form the CORE specification that are used by some transport protocols.
       </p>
     </section>
 
@@ -143,9 +143,12 @@
 
     <section id="terminology">
       <h2>Terminology</h2>
-      <p>The acronym 'VISSv3.0' is used to refer to this document, the VISS version 3.0 specification.
-         The acronym 'VSS' is used to refer to the 'Vehicle Signal Specification' which is defined by the COVESA Alliance.
-         The term 'WebSocket' when used in this document, is as defined in the W3C WebSocket API and the WebSocket Protocol.
+      <p>
+      The acronym 'VISSv3.0' is used to refer to this document, the VISS version 3.0 specification.
+      The acronym 'VSS' is used to refer to the <a href="https://github.com/COVESA/vehicle_signal_specification">'Vehicle Signal Specification'</a>
+      which is hosted by COVESA.
+      The term 'WebSocket' when used in this document, is as defined in the
+      <a href="https://www.w3.org/TR/websockets/">W3C WebSocket API</a> and [[RFC6455]], the WebSocket Protocol.
       </p>
     </section>
 
@@ -153,7 +156,7 @@
         <h2>Transport Payload</h2>
         <p>The payload primary format is JSON. This means that the payloads received by a client SHALL have the JSON format,
         unless an implementation deliberately deviates from this.
-        See the [[viss3-core]] document for the JSON payload format of the messages for the different transport protocols.
+        See the [[CORE]] document for the JSON payload format of the messages for the different transport protocols.
         </p>
       </section>
 
@@ -232,7 +235,7 @@
             <h2>JSON schema based encoding</h2>
             <p>
             Several IDLs may take a JSON scheme representation of the interface description as input, e. g. OpenAPI and asyncAPI.
-            The JSON scheme representation of the VISSv3.0 interface in the CORE specification can be used for such a purpose.
+            The JSON scheme representation of the VISSv3.0 interface in the [[CORE]] specification can be used for such a purpose.
             </p>
           </section>
 
