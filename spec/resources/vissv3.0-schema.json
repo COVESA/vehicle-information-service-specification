@@ -140,7 +140,15 @@
         },
         "value": {
           "description": "The value",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          ]
         },
        "authorization": {
           "description": "The access token",
@@ -198,7 +206,13 @@
           "type": "string"
         },
         "filter": {
-          "$ref": "/vissv2.0/filter.schema.json"
+          "anyOf": [
+            { "$ref": "/vissv2.0/filter.schema.json" },
+            {
+              "type": "array",
+              "items": { "$ref": "/vissv2.0/filter.schema.json" }
+            }
+          ]
         },
         "authorization": {
           "description": "The access token",
