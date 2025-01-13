@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://covesa.global/vissv2.0.bundled.schema.json",
-  "title": "VISSv2",
-  "description": "VISS version 2.0 bundled schema",
+  "$id": "https://covesa.global/vissv3.0.bundled.schema.json",
+  "title": "VISSv3",
+  "description": "VISS version 3.0 bundled schema",
   "type": "object",
   "properties": {
     "action": {
@@ -15,39 +15,39 @@
       "properties": {
         "action": { "const": "get" }
       },
-      "$ref": "/vissv2.0/get-message.schema.json"
+      "$ref": "/vissv3.0/get-message.schema.json"
     },
     {
       "properties": {
         "action": { "const": "set" }
       },
-      "$ref": "/vissv2.0/set-message.schema.json"
+      "$ref": "/vissv3.0/set-message.schema.json"
     },
     {
       "properties": {
         "action": { "const": "subscribe" }
       },
-      "$ref": "/vissv2.0/subscribe-message.schema.json"
+      "$ref": "/vissv3.0/subscribe-message.schema.json"
     },
     {
       "properties": {
         "action": { "const": "unsubscribe" }
       },
-      "$ref": "/vissv2.0/unsubscribe-message.schema.json"
+      "$ref": "/vissv3.0/unsubscribe-message.schema.json"
     },
     {
       "properties": {
         "action": { "const": "subscription" }
       },
-      "$ref": "/vissv2.0/subscription-event.schema.json"
+      "$ref": "/vissv3.0/subscription-event.schema.json"
     }
   ],
   "$defs": {
-    "https://covesa.global/vissv2.0/get-message.schema.json": {
-  "$id": "https://covesa.global/vissv2.0/get-message.schema.json",
+    "https://covesa.global/vissv3.0/get-message.schema.json": {
+  "$id": "https://covesa.global/vissv3.0/get-message.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv2-get-message",
-  "description": "VISSv2 get request and response messages",
+  "title": "VISSv3-get-message",
+  "description": "VISSv3 get request and response messages",
   "type": "object",
   "oneOf": [
     {
@@ -57,7 +57,7 @@
           "type": "string"
         },
         "filter": {
-          "$ref": "https://covesa.global/vissv2.0/filter.schema.json"
+          "$ref": "https://covesa.global/vissv3.0/filter.schema.json"
         },
         "authorization": {
           "description": "The access token",
@@ -77,7 +77,7 @@
     {
       "properties": {
         "data": {
-          "$ref": "https://covesa.global/vissv2.0/data.schema.json"
+          "$ref": "https://covesa.global/vissv3.0/data.schema.json"
         },
         "ts": {
           "description": "The time stamp",
@@ -110,7 +110,7 @@
     {
       "properties": {
         "error": {
-          "$ref": "https://covesa.global/vissv2.0/error.schema.json"
+          "$ref": "https://covesa.global/vissv3.0/error.schema.json"
         },
         "ts": {
           "description": "The time stamp",
@@ -125,11 +125,11 @@
     }
   ]
     },
-    "https://covesa.global/vissv2.0/set-message.schema.json": {
-  "$id": "https://covesa.global/vissv2.0/set-message.schema.json",
+    "https://covesa.global/vissv3.0/set-message.schema.json": {
+  "$id": "https://covesa.global/vissv3.0/set-message.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv2-set-message",
-  "description": "VISSv2 set request and response messages",
+  "title": "VISSv3-set-message",
+  "description": "VISSv3 set request and response messages",
   "type": "object",
   "oneOf": [
     {
@@ -140,15 +140,7 @@
         },
         "value": {
           "description": "The value",
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "array",
-              "items": { "type": "string" }
-            }
-          ]
+          "$ref": "https://covesa.global/vissv3.0/value.schema.json"
         },
        "authorization": {
           "description": "The access token",
@@ -177,7 +169,7 @@
     {
       "properties": {
         "error": {
-          "$ref": "https://covesa.global/vissv2.0/error.schema.json"
+          "$ref": "https://covesa.global/vissv3.0/error.schema.json"
         },
         "ts": {
           "description": "The time stamp",
@@ -192,11 +184,11 @@
     }
   ]
     },
-    "https://covesa.global/vissv2.0/subscribe-message.schema.json": {
-  "$id": "https://covesa.global/vissv2.0/subscribe-message.schema.json",
+    "https://covesa.global/vissv3.0/subscribe-message.schema.json": {
+  "$id": "https://covesa.global/vissv3.0/subscribe-message.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv2-subscribe-message",
-  "description": "VISSv2 subscribe request and response messages",
+  "title": "VISSv3-subscribe-message",
+  "description": "VISSv3 subscribe request and response messages",
   "type": "object",
   "oneOf": [
     {
@@ -206,11 +198,13 @@
           "type": "string"
         },
         "filter": {
-          "anyOf": [
-            { "$ref": "/vissv2.0/filter.schema.json" },
+          "oneOf": [
+            { "$ref": "/vissv3.0/filter.schema.json" },
             {
               "type": "array",
-              "items": { "$ref": "/vissv2.0/filter.schema.json" }
+              "items": { "$ref": "/vissv3.0/filter.schema.json" },
+              "minItems": 1,
+              "maxItems": 2
             }
           ]
         },
@@ -253,7 +247,7 @@
     {
       "properties": {
         "error": {
-          "$ref": "https://covesa.global/vissv2.0/error.schema.json"
+          "$ref": "https://covesa.global/vissv3.0/error.schema.json"
         },
         "ts": {
           "description": "The time stamp",
@@ -268,11 +262,11 @@
     }
   ]
     },
-    "https://covesa.global/vissv2.0/unsubscribe-message.schema.json": {
-  "$id": "https://covesa.global/vissv2.0/unsubscribe-message.schema.json",
+    "https://covesa.global/vissv3.0/unsubscribe-message.schema.json": {
+  "$id": "https://covesa.global/vissv3.0/unsubscribe-message.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv2-unsubscribe-message",
-  "description": "VISSv2 unsubscribe request and response messages",
+  "title": "VISSv3-unsubscribe-message",
+  "description": "VISSv3 unsubscribe request and response messages",
   "type": "object",
   "oneOf": [
     {
@@ -304,7 +298,7 @@
     {
       "properties": {
         "error": {
-          "$ref": "https://covesa.global/vissv2.0/error.schema.json"
+          "$ref": "https://covesa.global/vissv3.0/error.schema.json"
         },
         "ts": {
           "description": "The time stamp",
@@ -319,11 +313,11 @@
     }
   ]
     },
-    "https://covesa.global/vissv2.0/subscription-event.schema.json": {
-  "$id": "https://covesa.global/vissv2.0/subscription-event.schema.json",
+    "https://covesa.global/vissv3.0/subscription-event.schema.json": {
+  "$id": "https://covesa.global/vissv3.0/subscription-event.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv2-subscription-event",
-  "description": "VISSv2 subscription event",
+  "title": "VISSv3-subscription-event",
+  "description": "VISSv3 subscription event",
   "type": "object",
   "oneOf": [
     {
@@ -333,7 +327,7 @@
           "type": "string"
         },
         "data": {
-          "$ref": "/vissv2.0/data.schema.json"
+          "$ref": "/vissv3.0/data.schema.json"
         },
         "ts": {
           "description": "The time stamp",
@@ -353,7 +347,7 @@
           "type": "string"
         },
         "error": {
-          "$ref": "https://covesa.global/vissv2.0/error.schema.json"
+          "$ref": "https://covesa.global/vissv3.0/error.schema.json"
         },
         "ts": {
           "description": "The time stamp",
@@ -368,11 +362,11 @@
     }
   ]
     },
-    "https://covesa.global/vissv2.0/filter.schema.json": {
+    "https://covesa.global/vissv3.0/filter.schema.json": {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://covesa.global/vissv2.0/filter.schema.json",
-  "title": "VISSv2.0-filter",
-  "description": "VISS version 2.0 filter",
+  "$id": "https://covesa.global/vissv3.0/filter.schema.json",
+  "title": "VISSv3.0-filter",
+  "description": "VISS version 3.0 filter",
   "type": "object",
   "properties": {
     "variant": {
@@ -529,39 +523,39 @@
     }
   ]
     },
-    "https://covesa.global/vissv2.0/data.schema.json": {
-  "$id": "https://covesa.global/vissv2.0/data.schema.json",
+    "https://covesa.global/vissv3.0/data.schema.json": {
+  "$id": "https://covesa.global/vissv3.0/data.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv2-data-representation",
-  "description": "VISSv2 data representation",
+  "title": "VISSv3-data-representation",
+  "description": "VISSv3 data representation",
   "oneOf": [
     {
       "type": "object",
-      "$ref": "/vissv2.0/datapoint-single.schema.json"
+      "$ref": "/vissv3.0/datapoint-single.schema.json"
     },
     {
       "type": "object",
-      "$ref": "/vissv2.0/datapoint-multiple.schema.json"
+      "$ref": "/vissv3.0/datapoint-multiple.schema.json"
     },
     {
       "type": "array",
       "items": {
-        "$ref": "/vissv2.0/datapoint-single.schema.json"
+        "$ref": "/vissv3.0/datapoint-single.schema.json"
       }
     },
     {
       "type": "array",
       "items": {
-        "$ref": "/vissv2.0/datapoint-multiple.schema.json"
+        "$ref": "/vissv3.0/datapoint-multiple.schema.json"
       }
     }
   ],
   "$defs": {
-    "https://covesa.global/vissv2.0/datapoint-single.schema.json": {
-      "$id": "https://covesa.global/vissv2.0/datapoint-single.schema.json",
+    "https://covesa.global/vissv3.0/datapoint-single.schema.json": {
+      "$id": "https://covesa.global/vissv3.0/datapoint-single.schema.json",
       "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "title": "VISSv2-single-datapoint",
-      "description": "VISSv2 single datapoint",
+      "title": "VISSv3-single-datapoint",
+      "description": "VISSv3 single datapoint",
       "properties": {
         "path": {
           "description": "The path",
@@ -573,7 +567,7 @@
           "properties": {
             "value": {
               "description": "The value",
-              "type": "string"
+              "$ref": "https://covesa.global/vissv3.0/value.schema.json"
             },
             "ts": {
               "description": "The time stamp",
@@ -585,11 +579,11 @@
       },
       "required": ["path", "dp"]
     },
-    "https://covesa.global/vissv2.0/datapoint-multiple.schema.json": {
-      "$id": "https://covesa.global/vissv2.0/datapoint-multiple.schema.json",
+    "https://covesa.global/vissv3.0/datapoint-multiple.schema.json": {
+      "$id": "https://covesa.global/vissv3.0/datapoint-multiple.schema.json",
       "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "title": "VISSv2-multiple-datapoints",
-      "description": "VISSv2 multiple datapoints",
+      "title": "VISSv3-multiple-datapoints",
+      "description": "VISSv3 multiple datapoints",
       "properties": {
         "path": {
           "description": "The path",
@@ -602,7 +596,7 @@
             "properties": {
               "value": {
                 "description": "The value",
-                "type": "string"
+                "$ref": "https://covesa.global/vissv3.0/value.schema.json"
               },
               "ts": {
                 "description": "The time stamp",
@@ -617,11 +611,11 @@
     }
     }
     },
-    "https://covesa.global/vissv2.0/error.schema.json": {
-  "$id": "https://covesa.global/vissv2.0/error.schema.json",
+    "https://covesa.global/vissv3.0/error.schema.json": {
+  "$id": "https://covesa.global/vissv3.0/error.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv2-error",
-  "description": "VISSv2 error data",
+  "title": "VISSv3-error",
+  "description": "VISSv3 error data",
   "type": "object",
   "properties": {
     "number": {
@@ -644,6 +638,27 @@
     }
   },
   "required": ["number", "reason", "message"]
+    },
+    "https://covesa.global/vissv3.0/value.schema.json": {
+  "$id": "https://covesa.global/vissv3.0/value.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VISSv3-value",
+  "description": "VISSv3 value data",
+  "oneOf": [
+    {
+      "type": "string"
+    },
+    {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    {
+      "type": "object",
+      "patternProperties": {  ".*": { "type":"string" }  },
+      "minItems": 1
     }
+  ]
+  }
   }
 }
