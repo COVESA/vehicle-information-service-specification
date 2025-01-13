@@ -1,664 +1,808 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://covesa.global/vissv3.0.bundled.schema.json",
-  "title": "VISSv3",
-  "description": "VISS version 3.0 bundled schema",
-  "type": "object",
-  "properties": {
-    "action": {
-      "type": "string"
-    }
-  },
-  "required": ["action"],
-  "oneOf": [
-    {
-      "properties": {
-        "action": { "const": "get" }
-      },
-      "$ref": "/vissv3.0/get-message.schema.json"
-    },
-    {
-      "properties": {
-        "action": { "const": "set" }
-      },
-      "$ref": "/vissv3.0/set-message.schema.json"
-    },
-    {
-      "properties": {
-        "action": { "const": "subscribe" }
-      },
-      "$ref": "/vissv3.0/subscribe-message.schema.json"
-    },
-    {
-      "properties": {
-        "action": { "const": "unsubscribe" }
-      },
-      "$ref": "/vissv3.0/unsubscribe-message.schema.json"
-    },
-    {
-      "properties": {
-        "action": { "const": "subscription" }
-      },
-      "$ref": "/vissv3.0/subscription-event.schema.json"
-    }
-  ],
-  "$defs": {
-    "https://covesa.global/vissv3.0/get-message.schema.json": {
-  "$id": "https://covesa.global/vissv3.0/get-message.schema.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv3-get-message",
-  "description": "VISSv3 get request and response messages",
-  "type": "object",
-  "oneOf": [
-    {
-      "properties": {
-        "path": {
-          "description": "The path",
-          "type": "string"
-        },
-        "filter": {
-          "$ref": "https://covesa.global/vissv3.0/filter.schema.json"
-        },
-        "authorization": {
-          "description": "The access token",
-          "type": "string"
-        },
-        "dc": {
-          "description": "The data compression scheme",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["path"]
-    },
-    {
-      "properties": {
-        "data": {
-          "$ref": "https://covesa.global/vissv3.0/data.schema.json"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["data", "ts"]
-    },
-    {
-      "properties": {
-        "metadata": {
-          "type": "object",
-          "description": "The metadata"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["metadata", "ts"]
-    },
-    {
-      "properties": {
-        "error": {
-          "$ref": "https://covesa.global/vissv3.0/error.schema.json"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["error", "ts"]
-    }
-  ]
-    },
-    "https://covesa.global/vissv3.0/set-message.schema.json": {
-  "$id": "https://covesa.global/vissv3.0/set-message.schema.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv3-set-message",
-  "description": "VISSv3 set request and response messages",
-  "type": "object",
-  "oneOf": [
-    {
-      "properties": {
-        "path": {
-          "description": "The path",
-          "type": "string"
-        },
-        "value": {
-          "description": "The value",
-          "$ref": "https://covesa.global/vissv3.0/value.schema.json"
-        },
-       "authorization": {
-          "description": "The access token",
-          "type": "string"
-        },
-        "requestId": {
-         "description": "The request id",
-         "type": "string"
-        }
-      },
-      "required": ["path", "value"]
-    },
-    {
-      "properties": {
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["ts"]
-    },
-    {
-      "properties": {
-        "error": {
-          "$ref": "https://covesa.global/vissv3.0/error.schema.json"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["error", "ts"]
-    }
-  ]
-    },
-    "https://covesa.global/vissv3.0/subscribe-message.schema.json": {
-  "$id": "https://covesa.global/vissv3.0/subscribe-message.schema.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv3-subscribe-message",
-  "description": "VISSv3 subscribe request and response messages",
-  "type": "object",
-  "oneOf": [
-    {
-      "properties": {
-        "path": {
-          "description": "The path",
-          "type": "string"
-        },
-        "filter": {
-          "oneOf": [
-            { "$ref": "/vissv3.0/filter.schema.json" },
-            {
-              "type": "array",
-              "items": { "$ref": "/vissv3.0/filter.schema.json" },
-              "minItems": 1,
-              "maxItems": 2
-            }
-          ]
-        },
-        "authorization": {
-          "description": "The access token",
-          "type": "string"
-        },
-        "dc": {
-          "description": "The data compression scheme",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["path", "filter"]
-    },
-    {
-      "properties": {
-        "authorization": {
-          "description": "The access token handle",
-          "type": "string"
-        },
-        "subscriptionId": {
-          "description": "The subscription Id",
-          "type": "string"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["subscriptionId", "ts"]
-    },
-    {
-      "properties": {
-        "error": {
-          "$ref": "https://covesa.global/vissv3.0/error.schema.json"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["error", "ts"]
-    }
-  ]
-    },
-    "https://covesa.global/vissv3.0/unsubscribe-message.schema.json": {
-  "$id": "https://covesa.global/vissv3.0/unsubscribe-message.schema.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv3-unsubscribe-message",
-  "description": "VISSv3 unsubscribe request and response messages",
-  "type": "object",
-  "oneOf": [
-    {
-      "properties": {
-        "subscriptionId": {
-          "description": "The subscription Id",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["subscriptionId"]
-    },
-    {
-      "properties": {
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["ts"]
-    },
-    {
-      "properties": {
-        "error": {
-          "$ref": "https://covesa.global/vissv3.0/error.schema.json"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["error", "ts"]
-    }
-  ]
-    },
-    "https://covesa.global/vissv3.0/subscription-event.schema.json": {
-  "$id": "https://covesa.global/vissv3.0/subscription-event.schema.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv3-subscription-event",
-  "description": "VISSv3 subscription event",
-  "type": "object",
-  "oneOf": [
-    {
-      "properties": {
-        "subscriptionId": {
-          "description": "The subscription Id",
-          "type": "string"
-        },
-        "data": {
-          "$ref": "/vissv3.0/data.schema.json"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["subscriptionId", "data", "ts"]
-    },
-    {
-      "properties": {
-        "subscriptionId": {
-          "description": "The subscription Id",
-          "type": "string"
-        },
-        "error": {
-          "$ref": "https://covesa.global/vissv3.0/error.schema.json"
-        },
-        "ts": {
-          "description": "The time stamp",
-          "type": "string"
-        },
-        "requestId": {
-          "description": "The request id",
-          "type": "string"
-        }
-      },
-      "required": ["subscriptionId", "error", "ts"]
-    }
-  ]
-    },
-    "https://covesa.global/vissv3.0/filter.schema.json": {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://covesa.global/vissv3.0/filter.schema.json",
-  "title": "VISSv3.0-filter",
-  "description": "VISS version 3.0 filter",
-  "type": "object",
-  "properties": {
-    "variant": {
-      "type": "string"
-    }
-  },
-  "required": ["variant"],
-  "oneOf": [
-    {
-      "properties": {
-        "variant": { "const": "paths" },
-        "parameter": {
-          "type": "array",
-          "items": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://covesa.global/vissv3.0.bundled.schema.json",
+    "title": "VISSv3",
+    "description": "VISS version 3.0 bundled schema",
+    "type": "object",
+    "properties": {
+        "action": {
             "type": "string"
-          }
         }
-      },
-      "required": ["parameter"]
     },
-    {
-      "properties": {
-        "variant": { "const": "timebased" },
-        "parameter": {
-          "properties": {
-            "period": {
-              "type": "string"
-            }
-          },
-          "required": ["period"]
-        }
-      },
-      "required": ["parameter"]
-    },
-    {
-      "oneOf": [
+    "required": [
+        "action"
+    ],
+    "oneOf": [
         {
-          "properties": {
-            "variant": { "const": "range" },
-            "parameter": {
-              "type": "object",
-              "properties": {
-                "boundary-op": {
-                  "type": "string",
-                  "enum": ["eq", "ne", "gt", "gte", "lt", "lte"]
-                },
-                "boundary": {
-                  "type": "string"
+            "properties": {
+                "action": {
+                    "const": "get"
                 }
-              },
-              "required": ["boundary-op", "boundary"]
-            }
-          },
-          "required": ["parameter"]
+            },
+            "$ref": "/vissv3.0/get-message.schema.json"
         },
         {
-          "properties": {
-            "variant": { "const": "range" },
-            "parameter": {
-              "type": "array",
-              "items": {
+            "properties": {
+                "action": {
+                    "const": "set"
+                }
+            },
+            "$ref": "/vissv3.0/set-message.schema.json"
+        },
+        {
+            "properties": {
+                "action": {
+                    "const": "subscribe"
+                }
+            },
+            "$ref": "/vissv3.0/subscribe-message.schema.json"
+        },
+        {
+            "properties": {
+                "action": {
+                    "const": "unsubscribe"
+                }
+            },
+            "$ref": "/vissv3.0/unsubscribe-message.schema.json"
+        },
+        {
+            "properties": {
+                "action": {
+                    "const": "subscription"
+                }
+            },
+            "$ref": "/vissv3.0/subscription-event.schema.json"
+        }
+    ],
+    "$defs": {
+        "https://covesa.global/vissv3.0/get-message.schema.json": {
+            "$id": "https://covesa.global/vissv3.0/get-message.schema.json",
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "title": "VISSv3-get-message",
+            "description": "VISSv3 get request and response messages",
+            "type": "object",
+            "oneOf": [
+                {
+                    "properties": {
+                        "path": {
+                            "description": "The path",
+                            "type": "string"
+                        },
+                        "filter": {
+                            "$ref": "https://covesa.global/vissv3.0/filter.schema.json"
+                        },
+                        "authorization": {
+                            "description": "The access token",
+                            "type": "string"
+                        },
+                        "dc": {
+                            "description": "The data compression scheme",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "path"
+                    ]
+                },
+                {
+                    "properties": {
+                        "data": {
+                            "$ref": "https://covesa.global/vissv3.0/data.schema.json"
+                        },
+                        "ts": {
+                            "description": "The time stamp",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "data",
+                        "ts"
+                    ]
+                },
+                {
+                    "properties": {
+                        "metadata": {
+                            "type": "object",
+                            "description": "The metadata"
+                        },
+                        "ts": {
+                            "description": "The time stamp",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "metadata",
+                        "ts"
+                    ]
+                },
+                {
+                    "properties": {
+                        "error": {
+                            "$ref": "https://covesa.global/vissv3.0/error.schema.json"
+                        },
+                        "ts": {
+                            "description": "The time stamp",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "ts"
+                    ]
+                }
+            ]
+        },
+        "https://covesa.global/vissv3.0/set-message.schema.json": {
+            "$id": "https://covesa.global/vissv3.0/set-message.schema.json",
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "title": "VISSv3-set-message",
+            "description": "VISSv3 set request and response messages",
+            "type": "object",
+            "oneOf": [
+                {
+                    "properties": {
+                        "path": {
+                            "description": "The path",
+                            "type": "string"
+                        },
+                        "value": {
+                            "description": "The value",
+                            "$ref": "https://covesa.global/vissv3.0/value.schema.json"
+                        },
+                        "authorization": {
+                            "description": "The access token",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "path",
+                        "value"
+                    ]
+                },
+                {
+                    "properties": {
+                        "ts": {
+                            "description": "The time stamp",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "ts"
+                    ]
+                },
+                {
+                    "properties": {
+                        "error": {
+                            "$ref": "https://covesa.global/vissv3.0/error.schema.json"
+                        },
+                        "ts": {
+                            "description": "The time stamp",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "ts"
+                    ]
+                }
+            ]
+        },
+        "https://covesa.global/vissv3.0/subscribe-message.schema.json": {
+            "$id": "https://covesa.global/vissv3.0/subscribe-message.schema.json",
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "title": "VISSv3-subscribe-message",
+            "description": "VISSv3 subscribe request and response messages",
+            "type": "object",
+            "oneOf": [
+                {
+                    "properties": {
+                        "path": {
+                            "description": "The path",
+                            "type": "string"
+                        },
+                        "filter": {
+                            "oneOf": [
+                                {
+                                    "$ref": "/vissv3.0/filter.schema.json"
+                                },
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "/vissv3.0/filter.schema.json"
+                                    },
+                                    "minItems": 1,
+                                    "maxItems": 2
+                                }
+                            ]
+                        },
+                        "authorization": {
+                            "description": "The access token",
+                            "type": "string"
+                        },
+                        "dc": {
+                            "description": "The data compression scheme",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "path",
+                        "filter"
+                    ]
+                },
+                {
+                    "properties": {
+                        "authorization": {
+                            "description": "The access token handle",
+                            "type": "string"
+                        },
+                        "subscriptionId": {
+                            "description": "The subscription Id",
+                            "type": "string"
+                        },
+                        "ts": {
+                            "description": "The time stamp",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subscriptionId",
+                        "ts"
+                    ]
+                },
+                {
+                    "properties": {
+                        "error": {
+                            "$ref": "https://covesa.global/vissv3.0/error.schema.json"
+                        },
+                        "ts": {
+                            "description": "The time stamp",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "ts"
+                    ]
+                }
+            ]
+        },
+        "https://covesa.global/vissv3.0/unsubscribe-message.schema.json": {
+            "$id": "https://covesa.global/vissv3.0/unsubscribe-message.schema.json",
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "title": "VISSv3-unsubscribe-message",
+            "description": "VISSv3 unsubscribe request and response messages",
+            "type": "object",
+            "oneOf": [
+                {
+                    "properties": {
+                        "subscriptionId": {
+                            "description": "The subscription Id",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subscriptionId"
+                    ]
+                },
+                {
+                    "properties": {
+                        "ts": {
+                            "description": "The time stamp",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "ts"
+                    ]
+                },
+                {
+                    "properties": {
+                        "error": {
+                            "$ref": "https://covesa.global/vissv3.0/error.schema.json"
+                        },
+                        "ts": {
+                            "description": "The time stamp",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "ts"
+                    ]
+                }
+            ]
+        },
+        "https://covesa.global/vissv3.0/subscription-event.schema.json": {
+            "$id": "https://covesa.global/vissv3.0/subscription-event.schema.json",
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "title": "VISSv3-subscription-event",
+            "description": "VISSv3 subscription event",
+            "type": "object",
+            "oneOf": [
+                {
+                    "properties": {
+                        "subscriptionId": {
+                            "description": "The subscription Id",
+                            "type": "string"
+                        },
+                        "data": {
+                            "$ref": "https://covesa.global/vissv3.0/data.schema.json"
+                        },
+                        "ts": {
+                            "description": "The time stamp",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subscriptionId",
+                        "data",
+                        "ts"
+                    ]
+                },
+                {
+                    "properties": {
+                        "subscriptionId": {
+                            "description": "The subscription Id",
+                            "type": "string"
+                        },
+                        "error": {
+                            "$ref": "https://covesa.global/vissv3.0/error.schema.json"
+                        },
+                        "ts": {
+                            "description": "The time stamp",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subscriptionId",
+                        "error",
+                        "ts"
+                    ]
+                }
+            ]
+        },
+        "https://covesa.global/vissv3.0/filter.schema.json": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://covesa.global/vissv3.0/filter.schema.json",
+            "title": "VISSv3.0-filter",
+            "description": "VISS version 3.0 filter",
+            "type": "object",
+            "properties": {
+                "variant": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "variant"
+            ],
+            "oneOf": [
+                {
+                    "properties": {
+                        "variant": {
+                            "const": "paths"
+                        },
+                        "parameter": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": [
+                        "parameter"
+                    ]
+                },
+                {
+                    "properties": {
+                        "variant": {
+                            "const": "timebased"
+                        },
+                        "parameter": {
+                            "properties": {
+                                "period": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "period"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "parameter"
+                    ]
+                },
+                {
+                    "oneOf": [
+                        {
+                            "properties": {
+                                "variant": {
+                                    "const": "range"
+                                },
+                                "parameter": {
+                                    "type": "object",
+                                    "properties": {
+                                        "boundary-op": {
+                                            "type": "string",
+                                            "enum": [
+                                                "eq",
+                                                "ne",
+                                                "gt",
+                                                "gte",
+                                                "lt",
+                                                "lte"
+                                            ]
+                                        },
+                                        "boundary": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "boundary-op",
+                                        "boundary"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "parameter"
+                            ]
+                        },
+                        {
+                            "properties": {
+                                "variant": {
+                                    "const": "range"
+                                },
+                                "parameter": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "boundary-op": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "eq",
+                                                    "ne",
+                                                    "gt",
+                                                    "gte",
+                                                    "lt",
+                                                    "lte"
+                                                ]
+                                            },
+                                            "boundary": {
+                                                "type": "string"
+                                            },
+                                            "combination-op": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "AND",
+                                                    "OR"
+                                                ]
+                                            }
+                                        },
+                                        "required": [
+                                            "boundary-op",
+                                            "boundary"
+                                        ]
+                                    },
+                                    "minItems": 2,
+                                    "maxItems": 2
+                                }
+                            },
+                            "required": [
+                                "parameter"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "properties": {
+                        "variant": {
+                            "const": "change"
+                        },
+                        "parameter": {
+                            "properties": {
+                                "logic-op": {
+                                    "type": "string",
+                                    "enum": [
+                                        "eq",
+                                        "ne",
+                                        "gt",
+                                        "gte",
+                                        "lt",
+                                        "lte"
+                                    ]
+                                },
+                                "diff": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "logic-op",
+                                "diff"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "parameter"
+                    ]
+                },
+                {
+                    "properties": {
+                        "variant": {
+                            "const": "curvelog"
+                        },
+                        "parameter": {
+                            "properties": {
+                                "maxerr": {
+                                    "type": "string"
+                                },
+                                "bufsize": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "maxerr",
+                                "bufsize"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "parameter"
+                    ]
+                },
+                {
+                    "properties": {
+                        "variant": {
+                            "const": "history"
+                        },
+                        "parameter": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "parameter"
+                    ]
+                },
+                {
+                    "oneOf": [
+                        {
+                            "properties": {
+                                "variant": {
+                                    "const": "metadata"
+                                },
+                                "parameter": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "parameter"
+                            ]
+                        },
+                        {
+                            "properties": {
+                                "variant": {
+                                    "const": "metadata"
+                                },
+                                "parameter": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "required": [
+                                "parameter"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "https://covesa.global/vissv3.0/data.schema.json": {
+            "$id": "https://covesa.global/vissv3.0/data.schema.json",
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "title": "VISSv3-data-representation",
+            "description": "VISSv3 data representation",
+            "oneOf": [
+                {
+                    "type": "object",
+                    "$ref": "/vissv3.0/data-object.schema.json"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "$ref": "/vissv3.0/data-object.schema.json"
+                    }
+                }
+            ]
+        },
+            "https://covesa.global/vissv3.0/data-object.schema.json": {
+                "$id": "https://covesa.global/vissv3.0/data-object.schema.json",
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "title": "VISSv3-data-object",
+                "description": "VISSv3 data object",
+                "properties": {
+                    "path": {
+                        "description": "The path",
+                        "type": "string"
+                    },
+                    "dp": {
+                        "description": "The data point",
+                        "oneOf": [
+                            {
+                                "$ref": "/vissv3.0/datapoint.schema.json"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "/vissv3.0/datapoint.schema.json"
+                                },
+                                "minItems": 1
+                            }
+                        ]
+                    }
+                }
+            },
+            "https://covesa.global/vissv3.0/datapoint.schema.json": {
+                "$id": "https://covesa.global/vissv3.0/datapoint.schema.json",
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "title": "VISSv3-datapoint",
+                "description": "VISSv3 datapoint",
                 "type": "object",
                 "properties": {
-                  "boundary-op": {
-                    "type": "string",
-                    "enum": ["eq", "ne", "gt", "gte", "lt", "lte"]
-                  },
-                  "boundary": {
-                    "type": "string"
-                  },
-                  "combination-op": {
-                    "type": "string",
-                    "enum": ["AND", "OR"]
-                  }
+                    "value": {
+                        "description": "The value",
+                        "$ref": "https://covesa.global/vissv3.0/value.schema.json"
+                    },
+                    "ts": {
+                        "description": "The time stamp",
+                        "type": "string"
+                    }
                 },
-                "required": ["boundary-op", "boundary"]
-              },
-              "minItems": 2,
-              "maxItems": 2
-            }
-          },
-          "required": ["parameter"]
-        }
-      ]
-    },
-    {
-      "properties": {
-        "variant": { "const": "change" },
-        "parameter": {
-          "properties": {
-            "logic-op": {
-              "type": "string",
-              "enum": ["eq", "ne", "gt", "gte", "lt", "lte"]
+                "required": [
+                    "value",
+                    "ts"
+                  ]
             },
-            "diff": {
-              "type": "string"
-            }
-          },
-          "required": ["logic-op", "diff"]
-        }
-      },
-      "required": ["parameter"]
-    },
-    {
-      "properties": {
-        "variant": { "const": "curvelog" },
-        "parameter": {
-          "properties": {
-            "maxerr": {
-              "type": "string"
+            "https://covesa.global/vissv3.0/error.schema.json": {
+                "$id": "https://covesa.global/vissv3.0/error.schema.json",
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "title": "VISSv3-error",
+                "description": "VISSv3 error data",
+                "type": "object",
+                "properties": {
+                    "number": {
+                        "description": "The status code",
+                        "type": "integer",
+                        "enum": [
+                            400,
+                            401,
+                            403,
+                            404,
+                            503
+                        ]
+                    },
+                    "reason": {
+                        "description": "The reason",
+                        "type": "string",
+                        "enum": [
+                            "bad_request",
+                            "invalid_data",
+                            "expired_token",
+                            "invalid_token",
+                            "missing_token",
+                            "forbidden_request",
+                            "unavailable_data",
+                            "service_unavailable"
+                        ]
+                    },
+                    "description": {
+                        "description": "The access token",
+                        "type": "string",
+                        "enum": [
+                            "The request is malformed.",
+                            "Data present in the request is invalid.",
+                            "Access token has expired.",
+                            "Access token is invalid.",
+                            "Access token is missing.",
+                            "The server refuses to carry out the request.",
+                            "The requested data was not found.",
+                            "The server is temporarily unable to handle the request."
+                        ]
+                    }
+                },
+                "required": [
+                    "number",
+                    "reason",
+                    "description"
+                ]
             },
-            "bufsize": {
-              "type": "string"
+            "https://covesa.global/vissv3.0/value.schema.json": {
+                "$id": "https://covesa.global/vissv3.0/value.schema.json",
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "title": "VISSv3-value",
+                "description": "VISSv3 value data",
+                "oneOf": [
+                    {
+                        "type": "string"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "minItems": 1
+                    },
+                    {
+                        "type": "object",
+                        "patternProperties": {
+                            ".*": {
+                                "type": "string"
+                            }
+                        },
+                        "minItems": 1
+                    }
+                ]
             }
-          },
-          "required": ["maxerr", "bufsize"]
-        }
-      },
-      "required": ["parameter"]
-    },
-    {
-      "properties": {
-        "variant": { "const": "history" },
-        "parameter": {
-          "type": "string"
-        }
-      },
-      "required": ["parameter"]
-    },
-    {
-      "oneOf": [
-        {
-          "properties": {
-            "variant": { "const": "metadata" },
-            "parameter": {
-              "type": "string"
-            }
-          },
-          "required": ["parameter"]
-        },
-        {
-          "properties": {
-            "variant": { "const": "metadata" },
-            "parameter": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          "required": ["parameter"]
-        }
-      ]
     }
-  ]
-    },
-    "https://covesa.global/vissv3.0/data.schema.json": {
-  "$id": "https://covesa.global/vissv3.0/data.schema.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv3-data-representation",
-  "description": "VISSv3 data representation",
-  "oneOf": [
-    {
-      "type": "object",
-      "$ref": "/vissv3.0/datapoint-single.schema.json"
-    },
-    {
-      "type": "object",
-      "$ref": "/vissv3.0/datapoint-multiple.schema.json"
-    },
-    {
-      "type": "array",
-      "items": {
-        "$ref": "/vissv3.0/datapoint-single.schema.json"
-      }
-    },
-    {
-      "type": "array",
-      "items": {
-        "$ref": "/vissv3.0/datapoint-multiple.schema.json"
-      }
-    }
-  ],
-  "$defs": {
-    "https://covesa.global/vissv3.0/datapoint-single.schema.json": {
-      "$id": "https://covesa.global/vissv3.0/datapoint-single.schema.json",
-      "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "title": "VISSv3-single-datapoint",
-      "description": "VISSv3 single datapoint",
-      "properties": {
-        "path": {
-          "description": "The path",
-          "type": "string"
-        },
-        "dp": {
-          "description": "The data point",
-          "type": "object",
-          "properties": {
-            "value": {
-              "description": "The value",
-              "$ref": "https://covesa.global/vissv3.0/value.schema.json"
-            },
-            "ts": {
-              "description": "The time stamp",
-              "type": "string"
-            }
-          },
-          "required": ["value", "ts"]
-        }
-      },
-      "required": ["path", "dp"]
-    },
-    "https://covesa.global/vissv3.0/datapoint-multiple.schema.json": {
-      "$id": "https://covesa.global/vissv3.0/datapoint-multiple.schema.json",
-      "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "title": "VISSv3-multiple-datapoints",
-      "description": "VISSv3 multiple datapoints",
-      "properties": {
-        "path": {
-          "description": "The path",
-          "type": "string"
-        },
-        "dp": {
-          "description": "Array of data points",
-          "type": "array",
-          "items": {
-            "properties": {
-              "value": {
-                "description": "The value",
-                "$ref": "https://covesa.global/vissv3.0/value.schema.json"
-              },
-              "ts": {
-                "description": "The time stamp",
-                "type": "string"
-              }
-            },
-            "required": ["value", "ts"]
-          }
-        }
-      },
-      "required": ["path", "dp"]
-    }
-    }
-    },
-    "https://covesa.global/vissv3.0/error.schema.json": {
-  "$id": "https://covesa.global/vissv3.0/error.schema.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv3-error",
-  "description": "VISSv3 error data",
-  "type": "object",
-  "properties": {
-    "number": {
-      "description": "The status code",
-      "type": "integer",
-      "enum": [400, 401, 403, 404, 503]
-    },
-    "reason": {
-      "description": "The reason",
-      "type": "string",
-      "enum": ["bad_request", "invalid_data", "expired_token", "invalid_token", "missing_token", "forbidden_request",
-               "unavailable_data", "service_unavailable"]
-    },
-   "message": {
-      "description": "The access token",
-      "type": "string",
-      "enum": ["The request is malformed.", "Data present in the request is invalid.", "Access token has expired.",
-               "Access token is invalid.", "Access token is missing.", "The server refuses to carry out the request.",
-               "The requested data was not found.", "The server is temporarily unable to handle the request."]
-    }
-  },
-  "required": ["number", "reason", "message"]
-    },
-    "https://covesa.global/vissv3.0/value.schema.json": {
-  "$id": "https://covesa.global/vissv3.0/value.schema.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "VISSv3-value",
-  "description": "VISSv3 value data",
-  "oneOf": [
-    {
-      "type": "string"
-    },
-    {
-      "type": "array",
-      "items": { "type": "string" },
-      "minItems": 1
-    },
-    {
-      "type": "object",
-      "patternProperties": {  ".*": { "type":"string" }  },
-      "minItems": 1
-    }
-  ]
-  }
-  }
 }
