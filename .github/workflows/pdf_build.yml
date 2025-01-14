@@ -31,8 +31,9 @@ jobs:
       run: |
         wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
         sudo dpkg -i google-chrome-stable_current_amd64.deb 
-        google-chrome-stable --headless --print-to-pdf=VISSv2_Core.pdf spec/VISSv2_Core.html
-        google-chrome-stable --headless --print-to-pdf=VISSv2_Transport.pdf spec/VISSv2_Transport.html
+        google-chrome-stable --headless --print-to-pdf=VISSv3.0_Core.pdf spec/VISSv3.0_Core.html
+        google-chrome-stable --headless --print-to-pdf=VISSv3.0_TransportExamples.pdf spec/VISSv3.0_TransportExamples.html
+        google-chrome-stable --headless --print-to-pdf=VISSv3.0_PayloadEncoding.pdf spec/VISSv3.0_PayloadEncoding.html
 
     - name: "Upload PDFs"
       uses: actions/upload-artifact@v4
