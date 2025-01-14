@@ -183,18 +183,27 @@
             between the JSON format and the protobuf format.
             The protobuf source code below also contains a "service" clause that the protoc compiler uses to create a gRPC based communication framework.
             </p>
-            <pre><code>
-              <embed type="text/protobuf" src="resources/vissv3.0.proto" width="700" height="500">
-            </code></pre>
+
+            <figure>
+              <pre><code>
+                <embed type="text/protobuf" src="resources/vissv3.0.proto" width="800" height="500">
+              </code></pre>
+              <figcaption><span class="fig-title">Protobuf schema file for VISS version 3.0</span></figcaption>
+            </figure>
+
           </section>
 
           <section id="transport-protocol-realizations">
             <h2>Transport Protocol Realizations</h2>
+            <p> This part outlines how Protobuf encoding is realized across various transport protocols, including gRPC, WebSocket, and MQTT.
+            </p>
 
             <section id="grpc-realization">
               <h2>gRPC Realization</h2>
               <p>
-              The "service" clause in the protobuf code in the previous chapter is used by the protoc compiler uses to create a gRPC based communication framework.
+                The 'service' clause in the Protobuf schema is used by the Protobuf compiler(protoc) to automatically generate code for gRPC-based communication. 
+                This code simplifies the implementation of server and client interactions by handling the details of network communication, allowing developers 
+                to focus on the application logic.
               </p>
             </section>
 
@@ -241,6 +250,5 @@
 
         </section>
 
-    <div id="tof" class="appendix"></div>
   </body>
 </html>
