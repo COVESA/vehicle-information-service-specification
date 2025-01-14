@@ -1,0 +1,44 @@
+name: Create Draft Release
+
+on:
+  push:
+   tags:
+     - "*.*"
+
+# Needed if GITHUB_TOKEN by default do not have right to create release
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  call_pdf_build:
+    uses: ./.github/workflows/pdf_build.yml
+
+  create_release:
+    runs-on: ubuntu-latest
+    needs:
+      [
+        call_pdf_build
+      ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: build-artifacts
+          merge-multiple: true
+      - name: Display structure of downloaded files
+        run: |
+             ls -R build-artifacts
+
+      - name: Create release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          name: VISS ${{ github.ref_name }}
+          fail_on_unmatched_files: true
+          files: |
+            build-artifacts/*
