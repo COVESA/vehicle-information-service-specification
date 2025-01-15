@@ -37,6 +37,15 @@ To see the most recent HTML rendered version of the specifications from this rep
 The VISS official publication
 - [Release of VISS version 2.0 (09 April 2024)](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v2.0)
 
+The Adaptive AUTOSAR R24-11 official publication
+
+[AUTOSAR](https://www.autosar.org/) released the [Adaptive AUTOSAR R24-11](https://www.autosar.org/search?tx_solr%5Bfilter%5D%5B1%5D=platform%3AAP&tx_solr%5Bfilter%5D%5B2%5D=category%3AR24-11&tx_solr%5Bq%5D=) including Automotive API Gateway specification at the end of December 2024. Automotive API Gateway specification is developed based on the [COVESA VISS v2-Core](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v2.0) and [COVESA VISS v2-Transport](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v2.0) specifications. The related standards and technical documents are as follows:
+- [Explanation of Automotive API](https://www.autosar.org/fileadmin/standards/R24-11/AP/AUTOSAR_AP_EXP_AutomotiveAPI.pdf)
+- [Requirements on Automotive API Gateway](https://www.autosar.org/fileadmin/standards/R24-11/AP/AUTOSAR_AP_RS_AutomotiveAPIGateway.pdf)
+- [Specification of Automotive API Gateway](https://www.autosar.org/fileadmin/standards/R24-11/AP/AUTOSAR_AP_SWS_AutomotiveAPIGateway.pdf)
+- [Technical Report on VSS Representation](https://www.autosar.org/fileadmin/standards/R24-11/AP/AUTOSAR_AP_TR_VSSRepresentation.pdf)
+- [Adaptive Platform Release Overview](https://www.autosar.org/fileadmin/standards/R24-11/AP/AUTOSAR_AP_TR_ReleaseOverview.pdf)
+
 The [VISS explainer](./VISS-explainer.md) gives some background and rationale to this interface.
 
 ## Reference Implementation
