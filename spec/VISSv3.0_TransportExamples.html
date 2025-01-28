@@ -905,7 +905,7 @@
               {
                 "action": "subscribe",
                 "path": "Vehicle.Drivetrain.FuelSystem.Level",
-                "filter": {"variant":"range", "parameter":[{"boundary-op":"gt", "boundary":"49"}, {"boundary-op":"lt", "boundary":"51"}]},
+                "filter": {"variant":"range", "parameter":[{"logic-op":"gt", "boundary":"49"}, {"logic-op":"lt", "boundary":"51"}]},
                 "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds",
                 "requestId": "6578"
               }
@@ -987,7 +987,7 @@
               {
                 "action": "subscribe",
                 "path": "Vehicle.Drivetrain.FuelSystem.Level",
-                "filter": "filter":{"variant":"range","parameter":[{"boundary-op":"lt","boundary":"50","combination-op":"OR"},{"boundary-op":"gt","boundary":"55"}]},
+                "filter": "filter":{"variant":"range","parameter":[{"logic-op":"lt","boundary":"50","combination-op":"OR"},{"logic-op":"gt","boundary":"55"}]},
                 "requestId": "6578"
               }
                </code></pre>

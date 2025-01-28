@@ -482,7 +482,7 @@
                                 "parameter": {
                                     "type": "object",
                                     "properties": {
-                                        "boundary-op": {
+                                        "logic-op": {
                                             "type": "string",
                                             "enum": [
                                                 "eq",
@@ -498,7 +498,7 @@
                                         }
                                     },
                                     "required": [
-                                        "boundary-op",
+                                        "logic-op",
                                         "boundary"
                                     ]
                                 }
@@ -517,7 +517,7 @@
                                     "items": {
                                         "type": "object",
                                         "properties": {
-                                            "boundary-op": {
+                                            "logic-op": {
                                                 "type": "string",
                                                 "enum": [
                                                     "eq",
@@ -540,7 +540,7 @@
                                             }
                                         },
                                         "required": [
-                                            "boundary-op",
+                                            "logic-op",
                                             "boundary"
                                         ]
                                     },

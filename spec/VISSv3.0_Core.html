@@ -694,8 +694,8 @@
                   If evaluated to true, the server issues an event message containing the signal value to the subscribing client.
                   The boundary operator MUST be one of the values shown in the footer (**).<br>
                   Examples<br>
-                  {"boundary-op":"gt", "boundary": "5"}   // x > 5<br>
-                  {"boundary-op":"eq", "boundary": "5"}   // x == 5
+                  {"logic-op":"gt", "boundary": "5"}   // x > 5<br>
+                  {"logic-op":"eq", "boundary": "5"}   // x == 5
                   </p>
                 </section>
                 <section id="multi-boundary-range">
@@ -704,14 +704,14 @@
                   Two boundaries with respective boundary operators are evaluated relative to the current signal value.
                   The logical outcome of the two evaluations are applied as input to a logical AND/OR operation.
                   If evaluated to true, the server issues an event message containing the signal value to the subscribing client.
-                  Besides the mandatory "boundary-op", and "boundary" key-value pairs in each JSON object,
+                  Besides the mandatory "logic-op", and "boundary" key-value pairs in each JSON object,
                   the first object may contain a "combination-op" key value pair, which then MUST have either the value "AND", or the value "OR".
                   If omitted, the result of the two boundary evaluations is per default applied to an AND operation.
                   The JSON array MUST contain two objects.
                   The boundary operator MUST be one of the values shown in the footer (**).<br>
                   Examples<br>
-                  [{"boundary-op":"gt", "boundary": "5"},{"boundary-op":"lt", "boundary": "10"}]   // x > 5 AND x < 10<br>
-                  [{"boundary-op":"lt", "boundary": "5", "combination-op":"OR"},{"boundary-op":"gt", "boundary": "10"}]   // x < 5 OR x > 10
+                  [{"logic-op":"gt", "boundary": "5"},{"logic-op":"lt", "boundary": "10"}]   // x > 5 AND x < 10<br>
+                  [{"logic-op":"lt", "boundary": "5", "combination-op":"OR"},{"logic-op":"gt", "boundary": "10"}]   // x < 5 OR x > 10
                   </p>
                 </section>
                 (**)The supported boundary operators are ["eq", "ne", "gt", "gte", "lt", "lte"],
