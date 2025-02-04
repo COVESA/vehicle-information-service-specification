@@ -1529,20 +1529,20 @@
 	  </tr>
 	  <tr>
 	    <td> <dfn data-dfn-type="dfn" id="dfn-path">path</dfn></td>
-	    <td>String</td>
+	    <td>string</td>
 	    <td>The path to a node in the VSS tree, as defined by the
 	    <a href="https://github.com/COVESA/vehicle_signal_specification">Vehicle Signal Specification (VSS)</a>.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn data-dfn-type="dfn" id="dfn-requestid">requestId</dfn></td>
-            <td>String</td>
+            <td>string</td>
 	    <td> Unique id value specified by the client. Returned by the server in
 	    the response and used by the client to link the request and response
 	    messages. The value <em class="rfc2119" title="MAY">MAY</em> be an integer or a Universally Unique Identifier (UUID).</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn data-dfn-type="dfn" id="dfn-subscriptionid">subscriptionId</dfn> </td>
-            <td>String</td>
+            <td>string</td>
 	    <td>Value returned by the server to uniquely identify each subscription.</td>
 	  </tr>
 	  <tr>
@@ -1552,13 +1552,13 @@
 	  </tr>
 	  <tr>
 	    <td><b>data</b> </td>
-	    <td>object</td>
-	    <td>Contains a path and one or more data points.</td>
+	    <td>object / array</td>
+	    <td>Data contains one or more objects each consisting of a path and a data point.</td>
 	  </tr>
 	  <tr>
 	    <td><b>dp</b> </td>
-	    <td>object</td>
-	    <td>The data point contains a value and a timestamp.</td>
+	    <td>object / array</td>
+	    <td>A data point contains one or more objects each consisting of a value and a timestamp.</td>
 	  </tr>
 	  <tr>
 	    <td><dfn data-dfn-type="dfn" id="dfn-ts">ts</dfn> </td>
@@ -1567,7 +1567,7 @@
 	  </tr>
 	  <tr>
 	    <td> <dfn data-dfn-type="dfn" id="dfn-value">value</dfn> </td>
-	    <td>string</td>
+	    <td>string/ object / array</td>
 	    <td> The data value associated with the path.</td>
 	  </tr>
     <tr>
@@ -1588,7 +1588,7 @@
 	  <tr>
 	    <td id="dfn-error"><strong>error</strong></td>
 	    <td> <a href="#error-def">Error</a> </td>
-	    <td> Returns an error code, reason and message.</td>
+	    <td> Returns an error code, reason and description.</td>
 	  </tr>
 	</tbody></table>
         </section>

@@ -227,10 +227,8 @@
                 While it is meant to support conforming taxonomies it was created principally with the
                 <a href="https://github.com/COVESA/vehicle_signal_specification">Vehicle Signal Specification</a> (VSS) in mind.
                 For more details, see the <a href="http://covesa.github.io/vehicle_signal_specification/">VSS documentation</a>.<br>
-                Depending on how VISS is being used, for instance to serve data already off-boarded and residing in the cloud,
-                it may make sense to allow sensor values to be updated by sending a 'set' request.
-                When VISS is directly on the vehicle, values reported by sensors are authoritative and should be read-only within VISS.
-                Implementations should handle set requests appropriately for their situation and respond with appropriate success or error messages accordingly.
+                An implementation of a VISS compliant server can be deployed either in-vehicle or off-vehicle.
+                In the off-vehicle case it would typically reside in the cloud, serving data that has already been off-boarded.
                 </p>
         <figure id="fig-example-vss-tree">
           <img src="images/vss-tree.jpg" alt="example-vss-tree">
