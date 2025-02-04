@@ -275,9 +275,10 @@
           <p>
           The VISSv3 server shall use the following port numbers for the different transport protocols.
           <ul>
-            <li>HTTP port number = 443.</li>
-            <li>Websocket port number = 6443.</li>
-            <li>MQTT port number = 8883.</li>
+            <li>HTTP port number = 443</li>
+            <li>Websocket port number = 6443</li>
+            <li>MQTT port number = 8883</li>
+            <li>gRPC port number: 5443</li>
           </ul>
           The access grant token server shall use the port number 7443.<br>
           The access token server shall use the port number 8443.<br>
@@ -1140,7 +1141,7 @@
           <a href="#methods"></a> chapter,
           and for different <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">
           transport protocols</a> in the [[TRANSPORT]] document.
-          The first time a token is submitted in a request it must be provided in its entirety. If a server supports caching of access tokens and returns a token hanle to the client,
+          The first time a token is submitted in a request it must be provided in its entirety. If a server supports caching of access tokens and returns a token handle to the client,
           then any following requests may provide the token handle instead of the complete access token.
           </p>
         </section>
@@ -1842,7 +1843,7 @@
           <em>This appendix is non-normative.</em><br>
           <p>
           File transfer use cases, where a client either sends or receives a file from the vehicle server,
-          can e. g. be a client that wants to push a map to the vehicle, or a client that wants to receive a video recording clip from the vehicle.<br>
+          can e. g. be a client that wants to push a map to the vehicle (download), or a client that wants to receive a video recording clip from the vehicle (upload).<br>
           File resources represented in the VSS tree can either be read-only, represented by the sensor node type,
           or write-only, represented by the actuator node type. In either case the node datatype MUST be a reference to a struct datatype with the following fixed definition:
           <pre><code>
@@ -1862,7 +1863,7 @@
           The control channel is the channel where the primary VISSv3.0 payloads are communicated, 
           while the data channel is a channel over which the file transfer data is communicated.
           The file transfer data consists of the data from the file, split into appropriate size chunks, and prepended by a header.
-          The header consists of three fixed size parameters as shown in the list below.
+          The header consists of the fixed size parameters shown in the list below.
         <ul>
             <li>uid: 4 bytes. A unique identifier for this file transfer session.</li>
             <li>messageNo: 1 byte. Starting at zero and increasing by one for each file chunk that is transferred.
