@@ -37,9 +37,9 @@
             href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_PayloadEncoding.html",
             publisher: "Ulf Bjorkengren"
           },
-          "TRANSPORT EXAMPLES": {
-            title: "COVESA VISS version 3.0-Transport Examples",
-            href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html",
+          "TRANSPORT": {
+            title: "COVESA VISS version 3.0-Transport",
+            href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html",
             publisher: "Ulf Bjorkengren"
           }
         }
@@ -128,7 +128,7 @@
       access control solution was added.</p>
 
       <p>
-        There are three parts to this specification, CORE, [[TRANSPORT EXAMPLES]], and [[PAYLOAD ENCODING]]. This document, the VISS version 3.0 CORE specification,
+        There are three parts to this specification, CORE, [[TRANSPORT]], and [[PAYLOAD ENCODING]]. This document, the VISS version 3.0 CORE specification,
         describes the VISSv3.0 messaging layer.<br>
         The VISSv3.0 transport protocol examples document describes the deviations from the CORE definitions that are used in some transport protocols.
         It also examplifies the JSON primary payload format using the Websocket payloads.<br>
@@ -143,7 +143,7 @@
         This includes the messaging layer and set of rules for structuring data.<br>
         The specification is agnostic to which transport protocol that is used as long as it conforms to this messaging API and data rule set.
         Transport protocols that cannot conform to the entire CORE specification can still be conformant by describing their deviations in the
-        [[TRANSPORT EXAMPLES]] specification.<br>
+        [[TRANSPORT]] specification.<br>
         The primary payload data format is JSON. The JSON schema (<a href="#json-schema"></a>) defines all of the payloads.
         If a transport protocol uses a different payload encoding, such as gRPC,
         or a more bandwidth efficient data representation is desired, then this encoding may be defined in the [[PAYLOAD ENCODING]] document.
@@ -242,7 +242,7 @@
         <p>Addressing of resources is done using URIs as defined in [[RFC3987]].<br>
         <blockquote><a>scheme</a>://<a>authority</a>/<a>path</a>?<a>query</a></blockquote>
         The <dfn>scheme</dfn> describes the protocol to use to reach the addressed resource.
-        For supported protocols, see the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#transport-protocols">transport protocols</a> in [[TRANSPORT EXAMPLES]] specification.<br>
+        For supported protocols, see the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">transport protocols</a> in [[TRANSPORT]] specification.<br>
         The <dfn>authority</dfn> describes where to reach the resource, for more details see <a href="#authority-component"></a>.<br>
         The <dfn>path</dfn> addresses a specific service within the resource, for more details see <a href="#path-component"></a>.<br>
         The <dfn>query</dfn> contains further information related to the addressed service, see <a href="#filter-request"></a>.<br>
@@ -488,9 +488,9 @@
           <p>The error information has three components - a number, a reason, and a description.
           The number MUST always be part of the error information, while the reason and description components MAY be a part of it.
             <ul>
-              <li><b>number</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html/#status-codes">status codes</a> as defined in [[TRANSPORT EXAMPLES]].</li>
-              <li><b>reason</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#status-codes">status codes</a> as defined in [[TRANSPORT EXAMPLES]].</li>
-              <li><b>description</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#status-codes">status codes</a> as defined in [[TRANSPORT EXAMPLES]].</li>
+              <li><b>number</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html/#status-codes">status codes</a> as defined in [[TRANSPORT]].</li>
+              <li><b>reason</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">status codes</a> as defined in [[TRANSPORT]].</li>
+              <li><b>description</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">status codes</a> as defined in [[TRANSPORT]].</li>
             </ul>
           </p>
           </section>
@@ -645,8 +645,8 @@
                 Every path element in a value array must address at least one node in the tree, or else an error message shall be returned.<br>
                 Different elements of the value array may address the same node,
                 in which case it is the responsibility of the server to resolve this to a singleton in the event messages.<br>
-                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https-search-read">search read on HTTPS</a> and
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#wss-search-read">search read on WebSocket</a> in [[TRANSPORT EXAMPLES]] specification.
+                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-search-read">search read on HTTPS</a> and
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#wss-search-read">search read on WebSocket</a> in [[TRANSPORT]] specification.
                 </p>
         </section>
 
@@ -667,8 +667,8 @@
                 The period must conform to the [[ISO8601]] duration format, expressed with days, hour, minute,
                 and second data, i. e. "parameter": "PdddDThhHmmMssS".
                 The number of days shall be less than 999. Only a single period can be expressed.<br>
-                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https-history-read">history read on HTTPS</a> and
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#wss-history-read">history read on WebSocket</a> in [[TRANSPORT EXAMPLES]] specification.
+                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-history-read">history read on HTTPS</a> and
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#wss-history-read">history read on WebSocket</a> in [[TRANSPORT]] specification.
                 </p>
         </section>
 
@@ -677,7 +677,7 @@
                 <p>
                 The parameter object contains the period time X in between captures, {"period":"X"}.
                 X is an integer and represents the period time in milliseconds.
-                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#subscribe">subscribe section</a> in [[TRANSPORT EXAMPLES]] specification.
+                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#subscribe">subscribe section</a> in [[TRANSPORT]] specification.
                </p>
         </section>
 
@@ -717,8 +717,8 @@
                 (**)The supported boundary operators are ["eq", "ne", "gt", "gte", "lt", "lte"],
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than",
                 "lte" is "less than or equal".<br>
-                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#authorized-subscribe">authorized subscribe</a> and
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#range-subscribe">range subscribe</a> in [[TRANSPORT EXAMPLES]] specification.
+                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#authorized-subscribe">authorized subscribe</a> and
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#range-subscribe">range subscribe</a> in [[TRANSPORT]] specification.
                </p>
         </section>
 
@@ -736,8 +736,8 @@
                 (**)The supported logic operators are ["eq", "ne", "gt", "gte", "lt", "lte"],
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal",
                 "lt" is "less than", "lte" is "less than or equal".<br>
-                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#change-subscribe">Change Subscribe</a>
-                 in [[TRANSPORT EXAMPLES]] specification.
+                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#change-subscribe">Change Subscribe</a>
+                 in [[TRANSPORT]] specification.
                </p>
         </section>
 
@@ -748,8 +748,8 @@
                 where X is a float value setting the max allowed error between any data sample and the simplified curve,
                 and Y is the number of buffer elements. Data is processed when the buffer becomes full,
                 and the essential data points are returned as a time series per signal.<br>
-                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#curve-logging-subscribe">curve logging subscribe</a>
-                 in [[TRANSPORT EXAMPLES]] specification.
+                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#curve-logging-subscribe">curve logging subscribe</a>
+                 in [[TRANSPORT]] specification.
                </p>
         </section>
 
@@ -770,7 +770,7 @@
         but cannot be combined with any other filter variant.<br>
         The response is a JSON formatted object with corresponding key-value pairs per addressed node.
         The server MAY support the metadata request.<br>
-        Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https-service-discovery-read">signal discovery read on HTTPS</a> in [[TRANSPORT EXAMPLES]] specification.
+        Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-service-discovery-read">signal discovery read on HTTPS</a> in [[TRANSPORT]] specification.
         </p>
     </section>
 
@@ -1138,8 +1138,8 @@
           <p>
           This is a VISSv3 request including an <a href="#access-token-def">access token</a> as described in general in the
           <a href="#methods"></a> chapter,
-          and for different <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#transport-protocols">
-          transport protocols</a> in the [[TRANSPORT EXAMPLES]] document.
+          and for different <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">
+          transport protocols</a> in the [[TRANSPORT]] document.
           The first time a token is submitted in a request it must be provided in its entirety. If a server supports caching of access tokens and returns a token hanle to the client,
           then any following requests may provide the token handle instead of the complete access token.
           </p>
@@ -1149,7 +1149,7 @@
           <h2>Protected Resource Response</h2>
           <p>
           This is a VISSv3 response as described in general in the <a href="#methods"></a> chapter,
-          and for different <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#transport-protocols">transport protocols</a> in the [[TRANSPORT EXAMPLES]] document.
+          and for different <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">transport protocols</a> in the [[TRANSPORT]] document.
           It does not differ from the response to an unprotected resource request.
           </p>
         </section>
@@ -2055,19 +2055,19 @@
           </tr>
           <tr>
             <td>http</td>
-            <td>[[TRANSPORT EXAMPLES]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#https">HTTPS</a> chapter</td>
+            <td>[[TRANSPORT]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https">HTTPS</a> chapter</td>
           </tr>
           <tr>
             <td>ws</td>
-            <td>[[TRANSPORT EXAMPLES]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_TransportExamples.html#secure-websockets">Secure Websocket</a> chapter</td>
+            <td>[[TRANSPORT]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#secure-websockets">Secure Websocket</a> chapter</td>
           </tr>
           <tr>
             <td>mqtt</td>
-            <td>[[TRANSPORT EXAMPLES]], Transport Protocols:MQTT chapter</td>
+            <td>[[TRANSPORT]], Transport Protocols:MQTT chapter</td>
           </tr>
           <tr>
             <td>grpc</td>
-            <td>[[TRANSPORT EXAMPLES]], Transport Protocols:gRPC chapter</td>
+            <td>[[TRANSPORT]], Transport Protocols:gRPC chapter</td>
           </tr>
         </table><br>
 
