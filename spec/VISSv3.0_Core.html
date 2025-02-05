@@ -130,7 +130,7 @@
       <p>
         There are three parts to this specification, CORE, [[TRANSPORT]], and [[PAYLOAD ENCODING]]. This document, the VISS version 3.0 CORE specification,
         describes the VISSv3.0 messaging layer.<br>
-        The VISSv3.0 transport protocol examples document describes the deviations from the CORE definitions that are used in some transport protocols.
+        The VISSv3.0 transport protocol document describes the deviations from the CORE definitions that are used in some transport protocols.
         It also examplifies the JSON primary payload format using the Websocket payloads.<br>
         The VISSv3.0 payload encoding document describes payload encoding designs that may be applied e. g. for payloads in transit.
       </p>
@@ -906,6 +906,12 @@
     <section id="access-control-model">
       <h2>Access Control Model</h2>
       <p>
+      A <a href="https://gdpr-info.eu">General Data Protection Regulation (GDPR)</a> aligned access control model is defined in this chapter.
+      The general flow is that a client first authenticates for a specific role with the Access Grant Token server.
+      If this is successful it receives an Access Grant token. This can then be used one or more times in access requests to the Access Token server.
+      These requests contains the AGT and a purpose. It is assumed that the Ecosystem manager has published a list over the purposes that the ecosystem serves,
+      any other purpose must be denied access. If this request to the ATS is successful then the client receives an Access token
+      that it can use in requests to the VISSv3 server for access to one or more of the signals associated to the purpose.<br>
       Access control MUST be supported. However, in this chapter only the sections that describe the interactions between the
       <a href="#client-def">client</a> and the VISSv3 server are mandatory.<br>
       Access control SHALL not be applied to the VSS nodes containing the VSS version data,
@@ -1894,11 +1900,11 @@
           </tr>
           <tr>
             <td>http</td>
-            <td>[[TRANSPORT]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https">HTTPS</a> chapter</td>
+            <td>[[TRANSPORT]], Transport Protocol:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https">HTTPS</a> chapter</td>
           </tr>
           <tr>
             <td>ws</td>
-            <td>[[TRANSPORT]], Transport Protocol Examples:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#secure-websockets">Secure Websocket</a> chapter</td>
+            <td>[[TRANSPORT]], Transport Protocol:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#secure-websockets">Secure Websocket</a> chapter</td>
           </tr>
           <tr>
             <td>mqtt</td>
