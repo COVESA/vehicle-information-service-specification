@@ -758,13 +758,12 @@
         The metadata request is used when the client instead of the data associated to VSS node(s)
         wants to retrieve meta data associated to the VSS node(s).<br>
         The metadata is retrieved from the VSS tree that is deployed in the vehicle.
-        This request variant is sometimes referred to as a signal discovery request.
-        If the "parameter" object contains an empty string, then all metadata that the server can retrieve for the for the addressed node(s) are returned,
-        while if it contains a metadata key name, or an array of key names, then only the selected metadata is returned.<br>
-        For the set of metadata key names,
-        see the <a href="https://github.com/COVESA/vehicle_signal_specification">Vehicle Signal Specification</a>.<br>
-        The vsspath in the request may point to either a leaf node, or to a branch node.
-        In the latter case then the response will contain metadata from the entire sub-tree having this branch as the root.<br>
+        This request variant is sometimes referred to as a signal discovery request.<br>
+        The path in the request may point to either a leaf node, or to a branch node.
+        The "parameter" value in the filter expression sets the number of descendant generations that
+        metadata will maximally be returned from. If it is set to zero then there is no limit set and the
+        entire sub-tree that has the addressed node as root will be returned.
+        If it is set to two then the metadata from the subtree root and its immediate children will be returned.
         A metadata request can be combined with a paths filter operation to address multiple nodes,
         but cannot be combined with any other filter variant.<br>
         The response is a JSON formatted object with corresponding key-value pairs per addressed node.

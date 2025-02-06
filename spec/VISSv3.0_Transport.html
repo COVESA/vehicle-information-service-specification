@@ -613,11 +613,10 @@
 
           <section id="wss-signal-discovery-read">
             <h2>Signal Discovery Read</h2>
-            <p>A client may issue a signal discovery read request to access the signal metadata that is represented in the tree.
+            <p>
+              The signal discovery request uses the metadata filtering type as described in the [[CORE]] document to retrieve metadata in the VSS tree.
                A successful response will contain the requested metadata from all nodes of the subtree defined by
-               the subtree root node that is addressed by the path.
-              The metadata, i. e. the metadata in the VSS tree, is retrieved by the setting the "variant" to  "metadata",
-              and the parameter object to relevant metadata. If set to an empty string all metadata will be returned<br>
+               the node that is addressed by the path and the requested depth set by the "parameter" value.
             </p>
             <p>
               <b>Example:</b><br>
@@ -626,7 +625,7 @@
               {
                 "action": "get",
                 "path": "Vehicle.Drivetrain.FuelSystem",
-                "filter":{"variant":"metadata", "parameter":["type", "datatype"]},
+                "filter":{"variant":"metadata", "parameter":"2"},
                 "requestId": "5687"
               }
               </code></pre>
@@ -1329,14 +1328,12 @@
             <h2>Signal Discovery Read</h2>
             <p>
               The signal discovery request uses the metadata filtering type as described in the [[CORE]] document to retrieve metadata in the VSS tree.
-              If the parameter object is set to an empty string, then all metadata in the addressed VSS nodes is returned.
-              If only specific metadata is desired, the value can be set to this, e. g. "parameter":["type", "datatype"].
-              The values must be the names as defined in the VSS specification.<br>
-              <br>
-              <b>Example:</b>
+              A successful response will contain the requested metadata from all nodes of the subtree defined by the subtree root node
+              that is addressed by the path and the requested depth set by the "parameter" value.<br><br>
+              <b>Example:</b><br>
               Request:
               <pre><code>
-              GET /Vehicle/Drivetrain/FuelSystem?filter={"variant":"metadata", "parameter":""}   HTTP/1.1
+              GET /Vehicle/Drivetrain/FuelSystem?filter={"variant":"metadata", "parameter":"0"}   HTTP/1.1
               Host: 127.0.0.1:1337
               Accept: application/json
 	      ...
