@@ -491,7 +491,7 @@
               <pre><code>
               {
                 "action": "get",
-                "path": "Vehicle.Drivetrain.InternalCombustionEngine.RPM",
+                "path": "Vehicle.Powertrain.CombustionEngine.RPM",
                 "requestId": "8756"
               }
               </code></pre>
@@ -500,7 +500,7 @@
               {
                 "action": "get",
                 "requestId": "8756",
-                "data":{"path":"Vehicle.Drivetrain.InternalCombustionEngine.RPM",
+                "data":{"path":"Vehicle.Powertrain.CombustionEngine.RPM",
                         "dp":{"value":"2372", "ts":"2020-04-15T13:37:00Z"}
                 },
                 "ts":"2020-04-15T13:37:05Z"
@@ -532,7 +532,7 @@
               <pre><code>
               {
                 "action": "get",
-                "path": "Vehicle.Drivetrain.InternalCombustionEngine.RPM",
+                "path": "Vehicle.Powertrain.CombustionEngine.RPM",
                 "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds",
                 "requestId": "8657"
               }
@@ -542,7 +542,7 @@
               {
                 "action": "get",
                 "requestId": "8657",
-                "data":{"path":"Vehicle.Drivetrain.InternalCombustionEngine.RPM",
+                "data":{"path":"Vehicle.Powertrain.CombustionEngine.RPM",
                         "dp":{"value":"2372", "ts":"2020-04-15T13:37:00Z"}
                 },
                 "ts":"2020-04-15T13:37:01Z"
@@ -624,7 +624,7 @@
               <pre><code>
               {
                 "action": "get",
-                "path": "Vehicle.Drivetrain.FuelSystem",
+                "path": "Vehicle.Powertrain.FuelSystem",
                 "filter":{"variant":"metadata", "parameter":"2"},
                 "requestId": "5687"
               }
@@ -693,7 +693,7 @@
               <pre><code>
               {
                 "action": "set",
-                "path": "Vehicle.Drivetrain.Transmission.PerformanceMode",
+                "path": "Vehicle.Powertrain.Transmission.PerformanceMode",
                 "value": "sport",
                 "requestId": "5687"
               }
@@ -731,7 +731,7 @@
               <pre><code>
               {
                 "action": "set",
-                "path": "Vehicle.Drivetrain.Transmission.PerformanceMode",
+                "path": "Vehicle.Powertrain.Transmission.PerformanceMode",
                 "value": "sport",
                 "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds",
                 "requestId": "5687"
@@ -841,7 +841,7 @@
               <pre><code>
               {
                 "action": "subscribe",
-                "path": "Vehicle.Drivetrain.FuelSystem.Level",
+                "path": "Vehicle.Powertrain.FuelSystem.Level",
                 "filter": {"variant":"timebased", "parameter":{"period":"500"}},
                 "requestId": "6578"
               }
@@ -869,7 +869,7 @@
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                "data": {"path": "Vehicle.Drivetrain.FuelSystem.Level",
+                "data": {"path": "Vehicle.Powertrain.FuelSystem.Level",
                         "dp": {"value": "50", "ts": "2020-04-15T13:37:00Z"}
                 },
                 "ts": "2020-04-15T13:37:00Z"
@@ -903,7 +903,7 @@
               <pre><code>
               {
                 "action": "subscribe",
-                "path": "Vehicle.Drivetrain.FuelSystem.Level",
+                "path": "Vehicle.Powertrain.FuelSystem.Level",
                 "filter": {"variant":"range", "parameter":[{"logic-op":"gt", "boundary":"49"}, {"logic-op":"lt", "boundary":"51"}]},
                 "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1...Zw_KSsds",
                 "requestId": "6578"
@@ -923,7 +923,7 @@
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                "data": {"path": "Vehicle.Drivetrain.FuelSystem.Level",
+                "data": {"path": "Vehicle.Powertrain.FuelSystem.Level",
                         "dp": {"value": "50", "ts": "2020-04-15T13:37:00Z"}
                 },
                 "ts": "2020-04-15T13:37:00Z"
@@ -945,7 +945,7 @@
               <pre><code>
               {
                 "action": "subscribe",
-                "path": "Vehicle.Drivetrain.FuelSystem.Level",
+                "path": "Vehicle.Powertrain.FuelSystem.Level",
                 "filter": {"variant":"curvelog", "parameter":{"maxerr":"0.5", "bufsize":"100"}},
                 "requestId": "6578"
               }
@@ -964,7 +964,7 @@
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                "data":{"path": "Vehicle.Drivetrain.FuelSystem.Level",
+                "data":{"path": "Vehicle.Powertrain.FuelSystem.Level",
                         "dp":[{"value": "50", "ts": "2020-04-15T13:38:00Z"}, ..., {"value": "25", "ts": "2020-04-15T13:39:30Z"}]
                 },
                 "ts": "2020-04-15T13:37:00Z"
@@ -985,7 +985,7 @@
               <pre><code>
               {
                 "action": "subscribe",
-                "path": "Vehicle.Drivetrain.FuelSystem.Level",
+                "path": "Vehicle.Powertrain.FuelSystem.Level",
                 "filter": "filter":{"variant":"range","parameter":[{"logic-op":"lt","boundary":"50","combination-op":"OR"},{"logic-op":"gt","boundary":"55"}]},
                 "requestId": "6578"
               }
@@ -1004,7 +1004,7 @@
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                "data":{"path": "Vehicle.Drivetrain.FuelSystem.Level",
+                "data":{"path": "Vehicle.Powertrain.FuelSystem.Level",
                         "dp":{"value": "51", "ts": "2020-04-15T14:00:00Z"}},
                 "ts": "2020-04-15T14:00:00Z"
               }
@@ -1024,7 +1024,7 @@
               <pre><code>
               {
                 "action": "subscribe",
-                "path": "Vehicle.Drivetrain.FuelSystem.Level",
+                "path": "Vehicle.Powertrain.FuelSystem.Level",
                 "filter":{"variant":"change","parameter":{"logic-op":"gt","diff":"10"}},
                 "requestId": "6578"
               }
@@ -1043,7 +1043,7 @@
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                "data":{"path": "Vehicle.Drivetrain.FuelSystem.Level",
+                "data":{"path": "Vehicle.Powertrain.FuelSystem.Level",
                         "dp":{"value": "101", "ts": "2020-04-15T14:00:00Z"}},
                 "ts": "2020-04-15T14:00:00Z"
               }
@@ -1227,7 +1227,7 @@
             <b>Example:</b>
             Request:		
             <pre><code>
-            GET /Vehicle/Drivetrain/InternalCombustionEngine/RPM   HTTP/1.1
+            GET /Vehicle/Powertrain/CombustionEngine/RPM   HTTP/1.1
             Host:127.0.0.1:1337
             Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds
             </code></pre>
@@ -1237,7 +1237,7 @@
             Content-Type: application/json; charset=utf-8
 	    ...
             {
-              "data":{"path":"Vehicle.Drivetrain.InternalCombustionEngine.RPM",
+              "data":{"path":"Vehicle.Powertrain.CombustionEngine.RPM",
                       "dp":{"value":"2372", "ts":"2020-04-15T13:37:00Z"}
                      },
                 "ts": "2020-04-15T13:37:00Z"
@@ -1333,7 +1333,7 @@
               <b>Example:</b><br>
               Request:
               <pre><code>
-              GET /Vehicle/Drivetrain/FuelSystem?filter={"variant":"metadata", "parameter":"0"}   HTTP/1.1
+              GET /Vehicle/Powertrain/FuelSystem?filter={"variant":"metadata", "parameter":"0"}   HTTP/1.1
               Host: 127.0.0.1:1337
               Accept: application/json
 	      ...
@@ -1364,7 +1364,7 @@
             <p>
               <b>Example:</b>
               <pre><code>
-              POST /Vehicle/Drivetrain/Transmission/PerformanceMode   HTTP/1.1
+              POST /Vehicle/Powertrain/Transmission/PerformanceMode   HTTP/1.1
               Host: 127.0.0.1:1337
               Accept: application/json
 	      ...
@@ -1404,7 +1404,7 @@
             is the actual token. A token header can be combined with all types of update requests.
             </p>
             <pre><code>
-            POST /Vehicle/Drivetrain/Transmission/PerformanceMode   HTTP/1.1
+            POST /Vehicle/Powertrain/Transmission/PerformanceMode   HTTP/1.1
             Host:127.0.0.1:1337
             Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds
             {
