@@ -330,10 +330,7 @@
           where X and Y are the actual values of respective datatype.
           The datatype of a field of the struct may be any datatype supported by VSS, including a struct.<br>
           For representation of multiple data points, see <a href="#response-syntax"></a>.<br>
-          If data is represented incorrectly, then an error message with number 400, and reason "Bad data" MUST be returned.
-          A specific case of this is if an array of data elements does not contain the number expected by the server.
-          The server MAY then respond successfully, and follow a proprietary recovery policy,
-          or it MAY respond with error number 400, and reason "Invalid array size".
+          If data is represented incorrectly, then an error message with number 400, and reason "invalid_data" MUST be returned.
         </p>
       </section>
     </section>
@@ -485,7 +482,7 @@
         <section id="error-information">
           <h2>Error Information</h2>
           <p>The error information has three components - a number, a reason, and a description.
-          The number MUST always be part of the error information, while the reason and description components MAY be a part of it.
+          All the three components MUST be part of the error information.
             <ul>
               <li><b>number</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html/#status-codes">status codes</a> as defined in [[TRANSPORT]].</li>
               <li><b>reason</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">status codes</a> as defined in [[TRANSPORT]].</li>
@@ -724,13 +721,15 @@
      <section id="change-filter-operation">
           <h2>Change Filter Operation</h2>
                 <p>
-                The values must be of a number or boolean datatype.<br>
+                The diff values must be of a number or boolean datatype.<br>
                 The parameter object contains the logical operator for comparison of previous and current values, {"logic-op":"X", "diff":"Y"},
                 where X is one of the supported logical operators (**), and Y is the value of the required change.<br>
                 For boolean values the following expressions shall be supported:<br>
                 "parameter":{"logic-op":"gt", "diff": "0"} This leads to a trigger event when the value goes false->true.<br>
                 "parameter":{"logic-op":"lt", "diff": "0"} This leads to a trigger event when the value goes true->false.<br>
-                "parameter":{"logic-op":"ne", "diff": "0"} This leads to a trigger event when the value goes true->false OR false->true.
+                "parameter":{"logic-op":"ne", "diff": "0"} This leads to a trigger event when the value goes true->false OR false->true.<br>
+                The "not equal" logic operator together with a zero ("0") diff can be used to get changes from data with string datatypes
+                for which other diff values may not be possible to generalize.
                 <br><br>
                 (**)The supported logic operators are ["eq", "ne", "gt", "gte", "lt", "lte"],
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal",
@@ -782,10 +781,10 @@
      <section id="error-handling">
           <h2>Error Handling</h2>
             <p>
-            A request addressing multiple nodes may address both valid nodes, and invalid nodes.
-            The latter case shall lead to a Forbidden error (403) response message part that contains information about which node, or nodes,
-            that are invalid.
-            The error message shall not contain data from any of the validly addressed nodes.
+            Error messages from requests for multiple signals are not handled differently from requests for a single signal
+            except for the case when one or more of the signals are temporarily unavailable.
+            Then the server may select to use the in-line error reporting, see
+            <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#in-line-error-reporting">In-line Error Reporting</a> in [[TRANSPORT]] specification.
             </p>
      </section>
 
@@ -1303,9 +1302,11 @@
           The VISSv3 server SHALL have access to a secure system time, that cannot be modified by actors without system acknowledged credentials.
           Time validation may allow for a time synchronization inaccuracy in the range of tens of seconds.<br>
           After a successful token validation, the server MUST check that the scope of the token is compatible with the request.
-          If the scope claim of the <a href="#access-token-def">access token</a> contains a <a>purpose</a> short-name, successful validation requires that all the nodes addressed by the path in the request MUST
+          If the scope claim of the <a href="#access-token-def">access token</a> contains a <a>purpose</a> short-name,
+          successful validation requires that all the nodes addressed by the path in the request MUST
           be matched by the paths associated with the <a>purpose</a> in the <a href="#purpose-list-def">purpose list</a> .<br>
-          If the scope claim of the <a href="#access-token-def">access token</a> contains a explicit list of signals, successful validation requires that all the nodes addressed by the path in the request MUST
+          If the scope claim of the <a href="#access-token-def">access token</a> contains a explicit list of signals,
+          successful validation requires that all the nodes addressed by the path in the request MUST
           be matched by the one of the signals included in the token.<br>
           Validation of the <a href="#device-roles-def">device</a> and <a href="#application-roles-def">app </a>roles may involve MAC address checks,
           or message round-trip measurements.<br>
@@ -1345,34 +1346,9 @@
           If the client decides to include the access token handle in a request, the server must then fetch the corresponding access token from the cache,
           and verify its validity before deciding to grant the request.<br>
           The server might decide to remove any token from the cache. In the case this token is then referred to with a token handle the client will get a "401,
-          missing_token" error and will be forced to send the whole <a href="#access-token-def">access token</a> again.
+          invalid_token" error message and will be forced to send the whole <a href="#access-token-def">access token</a> again.<br>
           For <a href="#client-def">client</a> requests that are not granted due to access control,
-          the VISSv3 server MUST return one of the error codes shown in the table below.<br>
-        <table id="errorDefs" class="parameters">
-          <tbody><tr>
-            <th>Error&nbsp;Number&nbsp;(Code)</th>
-            <th>Error Reason</th>
-            <th>Error Description</th>
-          </tr>
-          <tr>
-            <td>401 (Unauthorized)</td>
-            <td>missing_token</td>
-            <td>One or more of the requested signals are access controlled, an <a href="#access-token-def">access token</a> or its jti,
-            must be included in the request.</td>
-          </tr>
-          <tr>
-            <td>406 (Not Acceptable)</td>
-            <td>invalid_token</td>
-            <td>In case the request included an <a href="#access-token-def">access token</a>, a fresh one must be obtained.
-            In case the request included just the jti, the whole <a href="#access-token-def">access token</a> needs to be send again.</td>
-          </tr>
-          <tr>
-            <td>406 (Not Acceptable)</td>
-            <td>insufficient_priviledges</td>
-            <td>The priviledges represented by the <a href="#access-token-def">access token</a> are not sufficient.</td>
-          </tr>
-          </tbody>
-        </table>
+          the VISSv3 server MUST return a "401, invalid_token" error message.
         </p>
       </section>
 
@@ -1866,7 +1842,7 @@
         When a client has obtained the information how to connect to the server, then the server MUST respond to read requests for data from the Server tree.
         </p>
 
-        <h3>Server Tree Example</h3>
+        <h3>Server Tree</h3>
         <p>
         Below follows an example of a server capabilities tree.
         The tree MUST contain the structures listed below, other parts are optional.

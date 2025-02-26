@@ -189,7 +189,8 @@
         <h2>Status Codes</h2>
 	<p>A server implementing this specification <em class="rfc2119" title="SHALL">SHALL</em> support the error codes,
 	error reasons and error descriptions shown in the table below, for all supported transport protocols.
-	The server may choose to dynamically replace the error description as described in the sub-chapters<br>
+	The server may choose to dynamically replace the error description as described in the sub-chapters by any of the error descriptions in sub-chapters below,
+	or by any other relevant error description.<br>
         The client <em class="rfc2119" title="MAY">MAY</em> support any status code defined in [[RFC2616]].</p>
         <table id="errorDefs" class="parameters">
 	  <tbody><tr>
@@ -235,7 +236,7 @@
 	  <tr>
 	    <td>502 (Bad Gateway)
 	    <td>bad_gateway</td>
-	    <td>The upsteam server response was invalid</td>
+	    <td>The upstream server response was invalid</td>
 	  </tr>
 	  <tr>
 	    <td>503 (Service Unavailable)</td>
@@ -245,9 +246,109 @@
 	  <tr>
 	    <td>504 (Gateway Timeout)</td>
 	    <td>gateway_timeout</td>
-	    <td>The upsteam server took too long to respond</td>
+	    <td>The upstream server took too long to respond</td>
 	  </tr>
 	</tbody></table>
+
+      <section id="in-line-error-reporting">
+        <h2>In-line Error Reporting</h2>
+        <p>
+        A client may issue one request to get or subscribe to multiple signals.
+        If one or more of the requested signals are temporarily unavaliable then the server has two alternatives on how to respond.
+        </p>
+        <ul>
+            <li>Error message: 404 - unavailable_data</li>
+            <li>In-line error reporting</li>
+        </ul>
+        The error message alternative leads to that the client misses out on the signals that were available,
+        while the in-line error reporting alternative leads to that the client receives the available signals.
+        The in-line error reporting takes advanage of that values always are represented using string format
+        and replaces the missing value with the string:
+        <ul>
+            <li>"visserr: Data-not-available"</li>
+        </ul>
+        The leading part of the in-line error text, "visserr:", MUST not be used in ordinary string values.<br>
+        An in-line error reporting example is shown below.
+        <pre><code>
+{
+    "action": "get",
+    "data": [
+        {
+            "dp": {
+                "ts": "2025-02-04T15:48:43.739Z",
+                "value": "visserr:Data-not-available"
+            },
+            "path": "Vehicle.ADAS.ABS.IsEnabled"
+        },
+        {
+            "dp": {
+                "ts": "2025-02-04T15:48:43.739Z",
+                "value": "true"
+            },
+            "path": "Vehicle.ADAS.ABS.IsError"
+        }
+    ],
+    "requestId": "237",
+    "ts": "2025-02-04T15:48:43.739Z"
+}        </code></pre>
+        In-line error reporting SHALL not be used when access control is required in the request.
+        The reason for this is that the purpose that is associated with the set of requested data can not be met
+        with a reduced data set, thus the "contract" between client and data owner becomes invalid.
+      </section>
+
+      <section id="common-error-scenarios">
+        <h2>Common Error Scenarios</h2>
+        <p>
+        Some error scenarios that are expected to be encountered by clients are listed below together with the expected error message by the server.
+        </p>
+        <table id="errorDefs" class="parameters">
+	  <tbody><tr>
+	    <th>Error Scenario</th>
+	    <th>Error Message</th>
+	    <th>Comment</th>
+	  </tr>
+	  <tr>
+	    <td>Incorrect datatype</td>
+	    <td>400 - invalid_data - Incorrect data type</td>
+	    <td>Mismatch with the datatype in the VSS tree</td>
+	  </tr>
+	  <tr>
+	    <td>Signal currently not available</td>
+	    <td>404 - unavailable_data - Data temporarily unaccessible</td>
+	    <td>Vehicle is currently not offering the signal</td>
+	  </tr>
+	  <tr>
+	    <td>Unknown signal</td>
+	    <td>404 - unavailable_data - Data is unknown</td>
+	    <td>Signal is not part of the VSS tree</td>
+	  </tr>
+	  <tr>
+	    <td>Misused filter</td>
+	    <td>400 - bad_request - Missing or invalid filter</td>
+	    <td>Missing or invalid filter</td>
+	  </tr>
+	  <tr>
+	    <td>Incorrect filter</td>
+	    <td>400 - bad_request - Incorrect filter</td>
+	    <td>Filter type not allowed with request method</td>
+	  </tr>
+	  <tr>
+	    <td>Unknown subscription Id</td>
+	    <td>404 - unavailable_data - Unknown subscription Id</td>
+	    <td>Filter type not allowed with request method</td>
+	  </tr>
+	  <tr>
+	    <td>Unsupported feature Id</td>
+	    <td>404 - unavailable_data - Unsupported feature</td>
+	    <td>The feature is not a server capability</td>
+	  </tr>
+	  <tr>
+	    <td>Invalid access rights</td>
+	    <td>401 - invalid_token - Access token is invalid</td>
+	    <td>Access right is expired or otherwise invalid</td>
+	  </tr>
+	</tbody></table>
+      </section>
 
       <section id="400-bad-request">
         <h2>400 Bad Request Error Descriptions</h2>
@@ -441,8 +542,7 @@
             message to the server to get the value of one or more vehicle signals.
             If the server is able to satisfy the request it <em class="rfc2119" title="SHALL">SHALL</em> return a
             <a href="#dfn-getsuccessresponse" class="internalDFN" data-link-type="dfn">getSuccessResponse</a> message.
-            If the server is unable to fulfil the request, e.g. because the client is not authorized to retrieve one or more of the signals,
-            then the server <em class="rfc2119" title="SHALL">SHALL</em> return a
+            If an error occurs then the server <em class="rfc2119" title="SHALL">SHALL</em> return a
             <a href="#dfn-geterrorresponse" class="internalDFN" data-link-type="dfn">getErrorResponse</a> message.
             The structure of these message objects is defined below.
             </p><br>
@@ -511,7 +611,7 @@
               {
                 "action": "get",
                 "requestId": "8756",
-                "error": {"number": 404, "reason": "unavailable_data", "description": "The requested data was not found."},
+                "error": {"number": "404", "reason": "unavailable_data", "description": "The requested data was not found."},
                 "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
@@ -648,9 +748,9 @@
             The client may request that the server sets the value of a signal.
             If the server is able to satisfy the request it <em class="rfc2119" title="SHALL">SHALL</em> return a
             <a href="#dfn-setsuccessresponse" class="internalDFN" data-link-type="dfn">setSuccessResponse</a> message.
-            If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only,
-            the server <em class="rfc2119" title="SHALL">SHALL</em> return a
+            If an error occurs then the server <em class="rfc2119" title="SHALL">SHALL</em> return a
             <a href="#dfn-seterrorresponse" class="internalDFN" data-link-type="dfn">setErrorResponse</a> message.
+             The structure of these message objects is defined below.
             </p>
 	<table class="simple">
 	<thead>
@@ -711,7 +811,7 @@
               {
                 "action": "set",
                 "requestId": "5687",
-                "error": {"number": 404, "reason": "unavailable_data", "description": "The requested data was not found."},
+                "error": {"number": "404", "reason": "unavailable_data", "description": "The requested data was not found."},
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
@@ -761,10 +861,11 @@
             messages sent to the client in order to reduce processing demands.<br>
             If the server is able to satisfy the request it SHALL return a
             <a href="#dfn-subscribesuccessresponse" class="internalDFN" data-link-type="dfn">subscribeSuccessResponse</a> message.
-            If an error occurs e.g. because the client is not authorized to read the requested value, the server SHALL return a
-            <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> message.
+            If an error occurs then the server SHALL return a
+            <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> message.<br>
             If an error occurs during the subscription session, the server shall return an
             <a href="#dfn-subscriptionerrorevent" class="internalDFN" data-link-type="dfn">subscriptionErrorEvent</a> message.<br>
+            The structure of these message objects is defined below.<br>
             The subscription variants are, as described in the [[CORE]] document:
 	  <ul>
 	  <li>timebased: event messages are issued at a regular time interval,</li>
@@ -860,7 +961,7 @@
               {
                 "action": "subscribe",
                 "requestId": "6578",
-                "error": {"number": 404, "reason": "unavailable_data", "description": "The requested data was not found."},
+                "error": {"number": "404", "reason": "unavailable_data", "description": "The requested data was not found."},
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
@@ -880,7 +981,7 @@
               {
                 "action": "subscription",
                 "subscriptionId": "12345",
-                "error": {"number": 401, "reason": "expired_token", "description": "Access token has expired."},
+                "error": {"number": "401", "reason": "expired_token", "description": "Access token has expired."},
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
@@ -1059,8 +1160,8 @@
             <a href="#dfn-unsubscriberequest" class="internalDFN" data-link-type="dfn">unsubscribeRequest</a> message to the server.
             If the server is able to satisfy the request it returns an
             <a href="#dfn-unsubscribesuccessresponse" class="internalDFN" data-link-type="dfn">unsubscribeSuccessResponse</a> message.
-            If an error occurs, for example because an invalid subscriptionId is passed to the server, an
-            <a href="#dfn-unsubscribeerrorresponse" class="internalDFN" data-link-type="dfn">unsubscribeErrorResponse</a> message is returned.
+            If an error occurs then an
+            <a href="#dfn-unsubscribeerrorresponse" class="internalDFN" data-link-type="dfn">unsubscribeErrorResponse</a> message SHALL be returned.
             <br>
             If the client has created more than one WebSocket instance, it <em class="rfc2119" title="MUST">MUST</em> always unsubscribe
             using the same WebSocket instance that was originally used to create the subscription.
@@ -1121,7 +1222,7 @@
               {
                 "action": "unsubscribe",
                 "requestId": "6578",
-                "error": {"number": 400, "reason": "invalid_data", "description": "Data present in the request is invalid."},
+                "error": {"number": "400", "reason": "invalid_data", "description": "Data present in the request is invalid."},
                 "ts": "2020-04-15T13:37:00Z"
               }
                </code></pre>
@@ -1208,7 +1309,7 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                "error": {"number": 404, "reason": "unavailable_data", "description": "The requested data was not found."},
+                "error": {"number": "404", "reason": "unavailable_data", "description": "The requested data was not found."},
                 "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
@@ -1252,7 +1353,7 @@
             Content-Type: application/json; charset=utf-8
 	    ...
             {
-              "error": {"number": 401, "reason": "invalid_token", "description": "Access token is invalid."},
+              "error": {"number": "401", "reason": "invalid_token", "description": "Access token is invalid."},
               "ts": "2020-04-15T13:37:00Z"
             }
             </code></pre>
@@ -1291,7 +1392,7 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                        "error": {"number": 404, "reason": "unavailable_data", "description": "The requested data was not found."},
+                        "error": {"number": "404", "reason": "unavailable_data", "description": "The requested data was not found."},
                         "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>		
@@ -1387,7 +1488,7 @@
               Content-Type: application/json; charset=utf-8
 	      ...
               {
-                "error": {"number": 404, "reason": "unavailable_data", "description": "The requested data was not found."},
+                "error": {"number": "404", "reason": "unavailable_data", "description": "The requested data was not found."},
                 "ts": "2020-04-15T13:37:00Z"
               }
               </code></pre>
@@ -1627,8 +1728,8 @@
     <tr>
       <th rowspan="3"><b>Error</b></th>
       <td><a href="#status-codes">number</a></td><td>string</td><td>Yes</td></tr>
-      <tr><td><a href="#status-codes">reason</a></td><td>string</td><td>No</td></tr>
-      <tr><td><a href="#status-codes">description</a></td><td>string</td><td>No</td></tr>
+      <tr><td><a href="#status-codes">reason</a></td><td>string</td><td>Yes</td></tr>
+      <tr><td><a href="#status-codes">description</a></td><td>string</td><td>Yes</td></tr>
 
   </tbody>
   </table>

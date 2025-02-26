@@ -733,13 +733,17 @@
                 "properties": {
                     "number": {
                         "description": "The status code",
-                        "type": "integer",
+                        "type": "string",
                         "enum": [
-                            400,
-                            401,
-                            403,
-                            404,
-                            503
+                            "400",
+                            "401",
+                            "403",
+                            "404",
+                            "408",
+                            "429",
+                            "502",
+                            "503",
+                            "504"
                         ]
                     },
                     "reason": {
@@ -748,27 +752,19 @@
                         "enum": [
                             "bad_request",
                             "invalid_data",
-                            "expired_token",
                             "invalid_token",
-                            "missing_token",
                             "forbidden_request",
                             "unavailable_data",
-                            "service_unavailable"
+                            "request_timeout",
+                            "too_many_requests",
+                            "bad_gateway",
+                            "service_unavailable",
+                            "gateway_timeout"
                         ]
                     },
                     "description": {
                         "description": "The access token",
-                        "type": "string",
-                        "enum": [
-                            "The request is malformed.",
-                            "Data present in the request is invalid.",
-                            "Access token has expired.",
-                            "Access token is invalid.",
-                            "Access token is missing.",
-                            "The server refuses to carry out the request.",
-                            "The requested data was not found.",
-                            "The server is temporarily unable to handle the request."
-                        ]
+                        "type": "string"
                     }
                 },
                 "required": [
