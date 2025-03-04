@@ -23,8 +23,8 @@ service VISS {
 
 message ErrorResponseMessage {
     string Number = 1;
-    optional string Reason = 2;
-    optional string Description = 3;
+    string Reason = 2;
+    string Description = 3;
 }
 
 message FilterExpressions {
