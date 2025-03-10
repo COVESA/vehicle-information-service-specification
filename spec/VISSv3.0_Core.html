@@ -186,16 +186,16 @@
 
         <dl title="enum Defs" class="idl">
           <dt><b>client</b></dt>
-          <dd>An entity that works with data managed by a server.</dd>
+          <dd>An entity that interacts with data managed by a server.</dd>
           <dt><b>server</b></dt>
-          <dd>An entity that manages and offers access to data.</dd>
+          <dd>An entity that manages and provides access to data.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-success-response">success response</dfn></dt>
-          <dd>The message being returned by the server to the client when no error is encountered. These are specific per request type.</dd>
+          <dd>The message returned by the server to the client when no error is encountered. These are specific per request type.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-error-message">error message</dfn></dt>
-          <dd>The message being returned by the server to the client when an error is encountered. It can be a synchronous response message,
-          or an asynchrounous event message.</dd>
+          <dd>The message returned by the server to the client when an error is encountered. It can be a synchronous response message,
+          or an asynchronous event message.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-data-point">data point</dfn></dt>
-          <dd>A structure containing one or more value, timestamp tuplets.</dd>
+          <dd>A structure containing one or more value-timestamp tuples.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-value">value</dfn></dt>
           <dd>The data that is associated with one or more VSS nodes. Regardless of its data type,
           a single data item is always represented as a string in message payloads.</dd>
@@ -222,8 +222,8 @@
 
     <section id="data-model">
       <h2>Data Model</h2>
-                <p>The service is intended for use with a tree-like logical taxonomy to represent the vehicle data.
-                An illustrative example of such a tree structure is shown in <a href="#fig-example-vss-tree">Figure 1</a>.
+                <p>The service is designed to use with a tree-like logical taxonomy to represent the vehicle data.
+                An illustrative example of such a tree structure is shown in <a href="#fig-example-vss-tree">Figure 2</a>.
                 While it is meant to support conforming taxonomies it was created principally with the
                 <a href="https://github.com/COVESA/vehicle_signal_specification">Vehicle Signal Specification</a> (VSS) in mind.
                 For more details, see the <a href="http://covesa.github.io/vehicle_signal_specification/">VSS documentation</a>.<br>
@@ -237,7 +237,7 @@
 
       <section id="address">
         <h2>Addressing</h2>
-        <p>Addressing of resources is done using URIs as defined in [[RFC3987]].<br>
+        <p>Resource addressing is performed using URIs as defined in [[RFC3987]].<br>
         <blockquote><a>scheme</a>://<a>authority</a>/<a>path</a>?<a>query</a></blockquote>
         The <dfn>scheme</dfn> describes the protocol to use to reach the addressed resource.
         For supported protocols, see the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">transport protocols</a> in [[TRANSPORT]] specification.<br>
@@ -263,7 +263,7 @@
           <p>
           Depending on the deployment of a resource, either in the cloud or in a vehicle, they will have a domain name or an IP address, respectively.
           A client is expected to obtain this part of the authority component via an interaction with the
-          <a href="#ecosystem-manager-def">ecosystem manager</a>. The details of this interaction is out of scope for this specification.
+          <a href="#ecosystem-manager-def">ecosystem manager</a>. The details of this interaction are out of scope for this specification.
           </p>
         </section>
 
@@ -295,7 +295,7 @@
           which therefore is the recommended choice also in this specification.
           However, in HTTP URLs the conventional delimiter is slash (/), therefore also this delimiter is supported.
           To exemplify, the path expression from traversing the nodes Vehicle, Car, Engine, RPM can  be "Vehicle.Car.Engine.RPM",
-          or "Vehicle/Car/Engine/RPM". A mix of delimiters in the same path expression SHOULD be avoided.<br>
+          or "Vehicle/Car/Engine/RPM". Mixing delimiters in the same path expression SHOULD be avoided.<br>
           The path MUST not contain any wildcard characters ("*"), for such needs see <a href="#paths-filter-operation"></a>.<br>
           For the <b>access grant token server</b> the path is "agts".<br>
           For the <b>access token server</b> the path is "ats".<br>
