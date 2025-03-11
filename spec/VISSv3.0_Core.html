@@ -519,8 +519,8 @@
       <section id="data-security">
         <h2>Data security</h2>
         <p>
-        The <a href="#access-control-model"></a> makes it possible to apply restrictions on the data access for clients that are
-        granted access on the transport protocol level.
+        The <a href="#access-control-model"></a> enables the enforcement of data access restrictions 
+        for clients that have been granted access at the transport protocol level.
         </p>
       </section>
 
@@ -528,27 +528,26 @@
         <h2>Privacy Considerations</h2>
         <p>
         In addition to some privacy provisions within the specification itself, COVESA and W3C have activities seeking
-	to establish systems and guidelines to provide further considerations for handling of information.
+	to establish systems and guidelines to provide further considerations for handling of sensitive information.
         </p>
 
         <p>
-        For some uses, such as when information is only referenced within the vehicle not sent
-        off nor persisting between restarts, there should be little to no privacy concerns.
+          For certain use cases, such as when data is referenced only within the vehicle, is not transmitted externally, 
+          and does not persist across restarts, privacy concerns should be minimal or nonexistent.
         </p>
 
         <p>
-        This specification has granular access control capabilities to limit what information an application may access.
-        All information sent from a VISS service to client application must be transported over an
-        encrypted protocol to help protect privacy.
+        This specification has granular access control capabilities, allowing restrictions on the information an application may access.
+        Additionally, all data transmitted from a VISS service to a client application MUST be transported 
+        over an encrypted protocol to ensure privacy protection.
         </p>
 
         <p>
-        A client accessing vehicle data may require consent from whoever is deemed authoritative for a given
-        jurisdiction and ownership situation.
-        This specification enables an External Consent Framework to connect to a VISS server to realize this functionality,
+        A client accessing vehicle data may require consent from an authorized entity, which varies based on jurisdiction and ownership.
+        This specification supports integration with an External Consent Framework (ECF) to enable consent management within a VISS server,
         see <a href="#consent-support"></a>.
-        That consent should be revocable. Revoking it is outside the scope of this specification,
-        it is expected to be handled out of band and in some cases by regulations and contractual commitments.
+        Consent SHOULD be revocable; however, the process for revocation is out of scope for this specification.
+        It is expected to be handled out of band and may be governed by regulations or contractual agreements.
         </p>
 
       </section>
