@@ -338,39 +338,39 @@
     <section id="interface">
       <h2>Interface</h2>
       <p>
-        This chapter describes the different methods and its arguments that govern the communication between a client and the server.
+        This chapter describes the different methods and their arguments that govern the communication between a client and the server.
       </p>
 
       <section id="methods">
         <h2>Methods</h2>
         <p>
-          The transport protocols used to implement these methods MUST implement the Read and Update methods,
-          and MAY implement the Subscribe, Unsubscribe, and Subscription methods.
+          Transport protocols used to implement these methods MUST support the Read and Update methods,
+          and MAY support the Subscribe, Unsubscribe, and Subscription methods.
         </p>
         <section id="read">
           <h2>Read</h2>
           <p>Purpose: Get one or more values addressed by the given path.</p>
-          <p>The client MAY have to obtain an <a>authorization</a> token before being able to access the values.
-             If the server is able to satisfy the request it MUST return a <a>success response</a>.
-             If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error message</a>.</p>
+          <p>The client MAY have to obtain an <a>authorization</a> token before accessing the requested values.
+             If the server successfully processes the request, it MUST return a <a>success response</a>.
+             If the server fails to fulfill the request, then the server MUST return an <a href="#error-message">error message</a>.</p>
           <p>Arguments, of which path is mandatory:
           <ul>
-            <li><a>path</a> The path as defined in VSS to a node in the VSS tree.</li>
-            <li><a>filter</a> Additional information defining the requested data.</li>
+            <li><a>path</a> The VSS-defined path to a node in the VSS tree.</li>
+            <li><a>filter</a> Additional parameters to refine the requested data.</li>
             <li><a>authorization</a> The authorization token.</li>
-            <li><a>data compression</a> The data compression scheme(s).</li>
+            <li><a>data compression</a> The compression scheme(s) used for transmitted data.</li>
           </ul>
           </p>
           <p>Success response, of which authorization is optional:
             <ul>
-              <li><a>data</a> The data structure contains one or more sets of a path and a data point structure.</li>
-              <li style="margin-left: 40px"><a>path</a> The path for the associated data point structure.</li>
-              <li style="margin-left: 40px"><a>data point</a> A structure containing one or more tuplets of value and timestamp.</li>
+              <li><a>data</a> A structure containing one or more sets of a path and data point.</li>
+              <li style="margin-left: 40px"><a>path</a> The VSS-defined path for the associated data point.</li>
+              <li style="margin-left: 40px"><a>data point</a> A structure containing one or more value-timestamp tuples.</li>
               <li style="margin-left: 80px"><a>value</a> The latest available value.
               Please note that also for actuators this returns the current value, and not a target value that might have been set.</li>
               <li style="margin-left: 80px"><a>timestamp</a> The capture time of the value.</li>
               <li><a>authorization</a> A handle representing the authorization token.</li>
-              <li><a>timestamp</a> The time of the server request execution.</li>
+              <li><a>timestamp</a> The server execution time of the request.</li>
             </ul>
           </p>
         </section>
@@ -378,23 +378,23 @@
         <section id="update">
           <h2>Update</h2>
           <p>Purpose: Provide an altered value to the vehicle signal addressed by the <a>path</a>.</p>
-          <p>The client MAY have to obtain an authorization token before being able to update the vehicle signal.
-          If the server is able to satisfy the request it MUST return a <a>success response</a>, else it MUST return an <a>error message</a>.
+          <p>The client MAY have to obtain an authorization token before updating a vehicle signal.
+          If the server successfully processes the request, it MUST return a <a>success response</a>. If it cannot, it MUST return an <a>error message</a>.
           Only actuator type signals can be updated.
           Please note that a success response does not guarantee that the actuation attempt to change to the updated target value has, or will, succeed.
           A client may monitor the actuation progress through subsequent reads of the actuator value.
           </p>
           <p>Arguments, of which path and value are mandatory:
             <ul>
-              <li><a>path</a> The path as defined in VSS to a leaf node in the VSS tree.</li>
-              <li><a>value</a> The value by which the vehicle signal addressed by the path will be updated to.</li>
+              <li><a>path</a> The VSS-defined path to a leaf node in the VSS tree.</li>
+              <li><a>value</a> The new value to update the vehicle signal at the specified path.</li>
               <li><a>authorization</a> The authorization token.</li>
             </ul>
           </p>
           <p>Success response, of which authorization is optional:
             <ul>
               <li><a>authorization</a> A handle representing the authorization token.</li>
-              <li><a>timestamp</a> The time of the server request execution. This may not be the same as the final update time of the signal.</li>
+              <li><a>timestamp</a> The server execution time of the request. This may not be the same as the final update time of the signal.</li>
             </ul>
           </p>
         </section>
@@ -402,60 +402,61 @@
         <section id="subscribe">
           <h2>Subscribe</h2>
           <p>Purpose: Get asynchronous messages containing the value(s) addressed by the path.
-          The triggering rules for issuing the event messages are set by the filter data.</p>
-          <p>The client MAY have to obtain an authorization token before being able to subscribe to the vehicle signal(s).
-             The server MUST issue an event message if a trigger rule is fulfilled.
-             If the server is able to satisfy the request it MUST return a <a>success response</a>.
-             If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error message</a>.
+          The triggering conditions for these events are determined by the filter rules.</p>
+          <p>The client MAY have to obtain an authorization token before subscribing to vehicle signal(s).
+             The server MUST issue an event message if a trigger rule is met.
+             If the server successfully processes the request, it MUST return a <a>success response</a>.
+             If the server fails to fulfill the request, then the server MUST return an <a href="#error-message">error message</a>.
              If an error occurs during the subscription period, the server SHOULD return an <a href="#error-message">error message</a>.</p>
           <p>Arguments, of which path and filter are mandatory:
             <ul>
-              <li><a>path</a> The path as defined in VSS to a node in the VSS tree.</li>
-              <li><a>filter</a> The rule set describing triggering criterias for issuance of asynchronous event messages.</li>
+              <li><a>path</a> The VSS-defined path to a node in the VSS tree.</li>
+              <li><a>filter</a> A rule set defining the triggering criteria for asynchronous event messages.</li>
               <li><a>authorization</a> The authorization token.</li>
-              <li><a>data compression</a> The data compression scheme(s).</li>
+              <li><a>data compression</a> The compression scheme(s) used for transmitted data.</li>
             </ul>
           </p>
           <p>Success response, of which authorization is optional:
             <ul>
               <li><a>authorization</a> A handle representing the authorization token.</li>
-              <li><a>subscriptionId</a> A handle identifying event messages associated with the subscription.</li>
+              <li><a>subscriptionId</a> A unique identifier for the subscription session.</li>
               <li><a>timestamp</a> The start time for the subscription period.</li>
             </ul>
           </p>
         </section>
         <section id="unsubscribe">
           <h2>Unsubscribe</h2>
-          <p>Purpose: Termination of the subscription period started by a previous subscribe request.</p>
-          <p>If the server is able to satisfy the request it MUST return a <a>success response</a>,
+          <p>Purpose: Terminates a subscription that was previously established through a subscribe request.</p>
+          <p>If the server successfully processes the request, it MUST return a <a>success response</a>,
           and it MUST stop issuing event messages associated to the subscription handle.
-          If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error message</a>.</p>
+          If the server fails to fulfill the request, then the server MUST return an <a href="#error-message">error message</a>.</p>
           <p>Arguments, of which subscriptionId is mandatory:
             <ul>
-              <li><a>subscriptionId</a> Handle identifying the subscription.</li>
+              <li><a>subscriptionId</a> A unique identifier for the subscription session.</li>
             </ul>
           </p>
           <p>Success response:
             <ul>
-              <li><a>timestamp</a> The stop time for the subscription period.</li>
+              <li><a>timestamp</a> The time at which the subscription was terminated.</li>
             </ul>
           </p>
         </section>
         <section id="subscription">
           <h2>Subscription</h2>
-          <p>Purpose: Asynchronous client event message issued according to the subscribe request trigger rules.</p>
+          <p>Purpose: Sends asynchronous event messages to the client when a subscribe request trigger rule is met.
+          </p>
           <p>The server MUST issue an event message when a triggering rule associated with the subscription is met.
              If the server cannot fulfill the triggering rules it MUST issue an error message and terminate the subscription.
           </p>
           <p>Arguments, of which all are mandatory:
             <ul>
-              <li><a>subscriptionId</a> Handle identifying the subscription.</li>
-              <li><a>data</a> The data structure contains one or more sets of a path and a data point structure.</li>
-              <li style="margin-left: 40px"><a>path</a> The path for the associated data point structure.</li>
-              <li style="margin-left: 40px"><a>data point</a> A structure containing one or more tuplets of value and timestamp.</li>
-              <li style="margin-left: 80px"><a>value</a> The value associated with the filter expression.</li>
+              <li><a>subscriptionId</a> A unique identifier for the subscription session.</li>
+              <li><a>data</a> A structure containing one or more sets of a path and data point.</li>
+              <li style="margin-left: 40px"><a>path</a> The VSS-defined path for the associated data point.</li>
+              <li style="margin-left: 40px"><a>data point</a> A structure containing one or more value-timestamp tuples.</li>
+              <li style="margin-left: 80px"><a>value</a> The current value associated with the filter expression.</li>
               <li style="margin-left: 80px"><a>timestamp</a> The capture time of the value.</li>
-              <li><a>timestamp</a> The time of the server subscription execution.</li>
+              <li><a>timestamp</a> The server execution time of the subscription event.</li>
             </ul>
           </p>
         </section>
@@ -463,8 +464,8 @@
 
       <section id="error-message">
         <h2>Error Message</h2>
-        <p>The server MUST inform a client about errors ocurring in interactions between the two, whether it is in a synchronous
-        error response, or an asynchronous error event as a result of a previous subscribe.
+        <p>The server MUST notify the client of any errors that occur during their interaction, whether as a synchronous error response 
+          or an asynchronous error event resulting from a previous subscription request.
         For transport protocols which do not control the logical linking between request and response messages it may not be possible to link
         an error message to the correct client request.
         In cases like this the server may omit sending an error message.
@@ -475,18 +476,18 @@
             <ul>
               <li><a href="#error-information"></a></li>
               <li><a>subscriptionId</a> The reference to the subscribe session.</li>
-              <li><a>timestamp</a> The time of the server execution leading to the error.</li>
+              <li><a>timestamp</a> The server execution time when the error occurred.</li>
             </ul>
           </p>
 
         <section id="error-information">
           <h2>Error Information</h2>
-          <p>The error information has three components - a number, a reason, and a description.
+          <p>The error information consists of three components: number, reason, and description.
           All the three components MUST be part of the error information.
             <ul>
-              <li><b>number</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html/#status-codes">status codes</a> as defined in [[TRANSPORT]].</li>
-              <li><b>reason</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">status codes</a> as defined in [[TRANSPORT]].</li>
-              <li><b>description</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">status codes</a> as defined in [[TRANSPORT]].</li>
+              <li><b>number</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html/#status-codes">status codes</a> defined in [[TRANSPORT]].</li>
+              <li><b>reason</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">status codes</a> defined in [[TRANSPORT]].</li>
+              <li><b>description</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">status codes</a> defined in [[TRANSPORT]].</li>
             </ul>
           </p>
           </section>
