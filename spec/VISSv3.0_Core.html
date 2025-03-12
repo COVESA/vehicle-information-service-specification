@@ -556,25 +556,25 @@
     <section id="filter-request">
       <h2>Filter Request</h2>
           <p>
-          Filtering is a mechanism to refine a client request, in order to more precisely control what is returned in a response.
-          Filtering can be applied in read requests and in subscribe requests.
-          A request where filtering is applied has the following structure
+          Filtering is a mechanism that refines client requests to provide more precise control over the returned response data.
+          Filtering can be applied in both read requests and subscribe requests.<br>
+          A request with filtering follows this structure:
           <ul>
-          <li>for the HTTP protocol:
+          <li>For HTTP protocol:
           <ul>
           <li>GET /&lt;vsspath&gt;?filter=&lt;filter-expression&gt;</li>
           </ul></li>
-          <li>for any protocol using the primary JSON payload format:
+          <li>For any protocol using the primary JSON payload format:
           <ul>
           <li>{"action":"get", "path":"&lt;vsspath&gt;", "filter":"&lt;filter-expression&gt;"}</li>
           </ul></li>
           </ul>
           where<br>
           <ul>
-          <li>Get is the transport protocol method,</li>
-          <li>vsspath is the path starting from the tree root,</li>
-          <li>filter is the key name for the filter expression,</li>
-          <li>filter-expression contains the filter instructions.</li>
+          <li>get: the transport protocol method.</li>
+          <li>vsspath: The VSS path, starting from the tree root.</li>
+          <li>filter: The key name for the filter expression.</li>
+          <li>filter-expression: The filter instructions.</li>
           </ul>
           </ul>
           The filter expression has the object format as shown below. For the case of an optional second object of this type,
@@ -584,48 +584,48 @@
           </ul>
           where<br>
           <ul>
-          <li><b>variant</b>: the key name for the filter operation variant, which can have one of the values:
+          <li><b>variant</b>: The key name for the filter operation variant, which can have one of the following values:
           <ul>
           <li><u>paths</u>:
           <ul>
-          <li>one or more relative paths. In the case of several paths an array expression shall be used.</li>
+          <li>One or more relative paths. If multiple paths are used, an array expression SHALL be applied.</li>
           </ul></li>
           <li><u>timebased</u>:
           <ul>
-          <li>data is captured repeatedly with a fixed period time.</li>
+          <li>Data is captured at fixed time intervals.</li>
           </ul></li>
           <li><u>range</u>:
           <ul>
-          <li>data is captured when values are in the given range.</li>
+          <li>Data is captured when values are in the given range.</li>
           </ul></li>
           <li><u>change</u>:
           <ul>
-          <li>data is captured when the value since last capture has changed more than a fixed value.</li>
+          <li>Data is captured when the value since last capture has changed more than a fixed value.</li>
           </ul></li>
           <li><u>curvelog</u>:
           <ul>
-          <li>captured data is processed according to the
+          <li>Captured data is processed according to the
           <a data-link-type="dfn" href="https://www.geotab.com/blog/gps-logging-curve-algorithm/">curve logging</a> algorithm before being sent to client.</li>
           </ul></li>
           <li><u>history</u>:
           <ul>
-          <li>captured data from a time period from current time and backwards in time.</li>
+          <li>Captured data from a time period from current time and backwards in time.</li>
           </ul></li>
           <li><u>metadata</u>:
           <ul>
-          <li>the response contains the VSS metadata of the addressed sub-tree.</li>
+          <li>The response contains the VSS metadata of the addressed sub-tree.</li>
           </ul></li>
           </ul></li>
-          <li><b>parameter</b>: the key name for the optional configuration data that the filter operation requires.
-          The parameter data varies depending on the variant,
-          is enclosed in one object, or optionally an array of two objects, and is described in the following chapters.</li>
+          <li><b>parameter</b>: The key name for optional configuration data required by the filter operation.
+          The parameter data varies depending on the variant. It must be enclosed in an object or, optionally, an array of two objects.
+          Detailed descriptions of parameter values are provided in the following sections.</li>
           </ul>
           The server MUST support the timebased and change variants, the other variants are optional.<br>
-          In the JSON object, the key-value pairs "variant" and "parameter" must always be present.
+          In the JSON object, the key-value pairs "variant" and "parameter" MUST always be present.
           The JSON expression may consist of maximum one object with variant "paths", plus maximum one object with any other supported variant,
           which are then logically combined as with an AND operator.<br>
-          The variants timebased, range, change, and curvelog are only applicable for subscription requests.
-          Subscription requests are not supported by the HTTP transport protocol.<br>
+          The variants timebased, range, change, and curvelog can only be used in subscription requests.
+          Subscription requests are NOT supported by the HTTP transport protocol.<br>
           The restriction on how many objects that can be combined is also set by the URL size restriction on 1k characters (*).<br>
           (*) 1k is the "conservative limit, which should always be supported, a more liberal limit is 2k, which is supported in most cases.
           </p>
@@ -633,13 +633,13 @@
      <section id="paths-filter-operation">
         <h2>Paths Filter Operation</h2>
                 <p>
-                The paths filter operation is used when a single request is used to retrieve signal data from multiple data points in the VSS tree.
-                The vsspath shall point to the last node in the tree that is common for the relative paths in the filter parameter object,
+                The paths filter operation allows a single request to retrieve signal data from multiple data points in the VSS tree.
+                The vsspath SHALL point to the last node in the tree that is common for the relative paths in the filter parameter object,
                 that start off from this node.
-                If the end point of a path in the filter value is a branch, then all leaf nodes in the sub-tree below this branch are addressed.
-                A path in the filter value may contain the wildcard character (*) as a representative for a single path segment.<br>
-                Every path element in a value array must address at least one node in the tree, or else an error message shall be returned.<br>
-                Different elements of the value array may address the same node,
+                If a path endpoint in the filter value is a branch, all leaf nodes in the sub-tree below that branch SHALL be included.
+                A path in the filter value MAY contain the wildcard character (*), which represents a single path segment.<br>
+                Every path element in a value array must address at least one node in the tree. If no matching node is found, the server SHALL return an error message.<br>
+                Different elements of the value array MAY address the same node,
                 in which case it is the responsibility of the server to resolve this to a singleton in the event messages.<br>
                 Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-search-read">search read on HTTPS</a> and
                 <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#wss-search-read">search read on WebSocket</a> in [[TRANSPORT]] specification.
@@ -649,27 +649,26 @@
      <section id="history-filter-operation">
         <h2>History Filter Operation</h2>
                 <p>
-                The server typically have access only to the latest, most fresh data point representing a signal.
-                However, it may for various reasons at least temporarily have access to also older data points.
-                A scenario where this could occur is when a vehicle temporarily loses its connectivity,
-                maybe because it enters into a tunnel. Assuming that the vehicle detects the loss of connectivity, it may then start to record data.
-                If recorded, this data may then be accessed using the history variant.
+                By default, the server typically have access only to the latest, most fresh data point representing a signal.
+                However, under certain conditions, it MAY temporarily store and provide access to historical data points.
+                One such scenario occurs when a vehicle temporarily loses connectivity, for example, when entering a tunnel. 
+                If the vehicle detects this loss of connectivity, it MAY begin recording data. 
+                If recorded, this data MAY be accessed using the history variant of the filter operation.
                 The vehicle system makes its own decision whether to record any data, and for how long this data will be kept in storage.
-                The period in the filter expression goes from current time, excluding the current value, and backwards in time.
-                The number of data points in the response depends on the period size, and the sample frequency.
-                The latter can not be set by the client,
-                so the client should have some understanding of its value to estimate the amount of data it may receive.
-                A request for historic data will return a Not found error (404) if historic data is unavailable.
-                The period must conform to the [[ISO8601]] duration format, expressed with days, hour, minute,
-                and second data, i. e. "parameter": "PdddDThhHmmMssS".
-                The number of days shall be less than 999. Only a single period can be expressed.<br>
+                The history period in the filter expression MUST extend backward in time from the current time, excluding the current value.
+                The number of data points in the response depends on the history period size, and the sampling frequency.
+                Since the sampling frequency is server-defined, the client SHOULD estimate the potential data volume before making a request.
+                If no historical data is available, the request SHALL return a "404 Not Found" error.
+                The period MUST conform to the [[ISO8601]] duration format, expressed in days, hours, minutes, and seconds. 
+                For example: "parameter": "PdddDThhHmmMssS".
+                The number of days MUST be less than 999. Only a single period can be specified.<br>
                 Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-history-read">history read on HTTPS</a> and
                 <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#wss-history-read">history read on WebSocket</a> in [[TRANSPORT]] specification.
                 </p>
         </section>
 
      <section id="timebased-filter-operation">
-          <h2>Time Based Filter Operation</h2>
+          <h2>Time-Based Filter Operation</h2>
                 <p>
                 The parameter object contains the period time X in between captures, {"period":"X"}.
                 X is an integer and represents the period time in milliseconds.
@@ -680,15 +679,15 @@
      <section id="range-filter-operation">
           <h2>Range Filter Operation</h2>
                 <p>
-                The range filter operation supports two types of ranges, see the following sub chapters.<br>
-                The values must be of a number datatype.
+                The range filter operation supports two types of ranges, as described in the following subchapters<br>
+                The values MUST be of a numeric data type.
                 </p>
                 <section id="single-boundary-range">
                   <h2>Single Boundary Range</h2>
                   <p>
-                  One logical "boundary operator" evaluates the current signal value in relation to the boundary.
-                  If evaluated to true, the server issues an event message containing the signal value to the subscribing client.
-                  The boundary operator MUST be one of the values shown in the footer (**).<br>
+                  A single "boundary operator" evaluates the current signal value relative to a single boundary.
+                  If the condition evaluates to true, the server MUST issue an event message containing the signal value to the subscribing client.
+                  The boundary operator MUST be one of the values listed in the footer (**).<br>
                   Examples<br>
                   {"logic-op":"gt", "boundary": "5"}   // x > 5<br>
                   {"logic-op":"eq", "boundary": "5"}   // x == 5
@@ -697,14 +696,14 @@
                 <section id="multi-boundary-range">
                   <h2>Multi Boundary Range</h2>
                   <p>
-                  Two boundaries with respective boundary operators are evaluated relative to the current signal value.
+                  A multi boundary range evaluates the current signal value relative to two boundaries.
                   The logical outcome of the two evaluations are applied as input to a logical AND/OR operation.
-                  If evaluated to true, the server issues an event message containing the signal value to the subscribing client.
-                  Besides the mandatory "logic-op", and "boundary" key-value pairs in each JSON object,
-                  the first object may contain a "combination-op" key value pair, which then MUST have either the value "AND", or the value "OR".
-                  If omitted, the result of the two boundary evaluations is per default applied to an AND operation.
+                  If the condition evaluates to true, the server MUST issue an event message containing the signal value to the subscribing client.
+                  In addition to the mandatory "logic-op" and "boundary" key-value pairs in each JSON object, 
+                  the first object MAY include an optional "combination-op" key-value pair, which MUST have either the value "AND" or "OR".
+                  If omitted, the result of the two boundary evaluations SHALL default to an AND operation.
                   The JSON array MUST contain two objects.
-                  The boundary operator MUST be one of the values shown in the footer (**).<br>
+                  The boundary operator MUST be one of the values listed in the footer (**).<br>
                   Examples<br>
                   [{"logic-op":"gt", "boundary": "5"},{"logic-op":"lt", "boundary": "10"}]   // x > 5 AND x < 10<br>
                   [{"logic-op":"lt", "boundary": "5", "combination-op":"OR"},{"logic-op":"gt", "boundary": "10"}]   // x < 5 OR x > 10
@@ -721,15 +720,18 @@
      <section id="change-filter-operation">
           <h2>Change Filter Operation</h2>
                 <p>
-                The diff values must be of a number or boolean datatype.<br>
+                The change filter operation detects differences between previous and current values based on a specified condition.
+                The diff values MUST be of numeric or boolean data types.<br>
                 The parameter object contains the logical operator for comparison of previous and current values, {"logic-op":"X", "diff":"Y"},
                 where X is one of the supported logical operators (**), and Y is the value of the required change.<br>
-                For boolean values the following expressions shall be supported:<br>
-                "parameter":{"logic-op":"gt", "diff": "0"} This leads to a trigger event when the value goes false->true.<br>
-                "parameter":{"logic-op":"lt", "diff": "0"} This leads to a trigger event when the value goes true->false.<br>
-                "parameter":{"logic-op":"ne", "diff": "0"} This leads to a trigger event when the value goes true->false OR false->true.<br>
-                The "not equal" logic operator together with a zero ("0") diff can be used to get changes from data with string datatypes
-                for which other diff values may not be possible to generalize.
+                For boolean values the following expressions SHALL be supported:<br>
+                <ul>
+                <li>{"logic-op":"gt", "diff": "0"}: Triggers an event when the value changes from false->true.</li>
+                <li>{"logic-op":"lt", "diff": "0"}: Triggers an event when the value changes from true->false.</li>
+                <li>{"logic-op":"ne", "diff": "0"}: Triggers an event when the value changes from true->false OR false->true.</li>
+                </ul>
+                The "not equal" (ne) logic operator with a zero (0) diff can also be used to track changes in string data types, 
+                where other diff values may not be applicable.
                 <br><br>
                 (**)The supported logic operators are ["eq", "ne", "gt", "gte", "lt", "lte"],
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal",
@@ -742,10 +744,11 @@
      <section id="curvelog-filter-operation">
           <h2>Curve logging Filter Operation</h2>
                 <p>
+                The curve logging filter operation compresses data by simplifying a time-series signal while maintaining its essential characteristics.
                 The parameter object contains the maximum error limit, and the buffer size, {"maxerr": "X", "bufsize":"Y"},
-                where X is a float value setting the max allowed error between any data sample and the simplified curve,
-                and Y is the number of buffer elements. Data is processed when the buffer becomes full,
-                and the essential data points are returned as a time series per signal.<br>
+                where X is a floating-point value representing the maximum allowable error between any sampled data point and the simplified curve,
+                and Y is the number of buffer elements. The data is processed when the buffer becomes full, 
+                and only the essential data points are returned as a time series per signal.<br>
                 Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#curve-logging-subscribe">curve logging subscribe</a>
                  in [[TRANSPORT]] specification.
                </p>
@@ -754,18 +757,18 @@
    <section id="metadata-request">
      <h2>Metadata Filter Operation</h2>
         <p>
-        The metadata request is used when the client instead of the data associated to VSS node(s)
-        wants to retrieve meta data associated to the VSS node(s).<br>
+        A metadata request allows a client to retrieve metadata associated with VSS node(s), 
+        rather than the actual signal data.<br>
         The metadata is retrieved from the VSS tree that is deployed in the vehicle.
         This request variant is sometimes referred to as a signal discovery request.<br>
-        The path in the request may point to either a leaf node, or to a branch node.
+        The path in the request MAY point to either a leaf node or a branch node.
         The "parameter" value in the filter expression sets the number of descendant generations that
         metadata will maximally be returned from. If it is set to zero then there is no limit set and the
         entire sub-tree that has the addressed node as root will be returned.
         If it is set to two then the metadata from the subtree root and its immediate children will be returned.
         A metadata request can be combined with a paths filter operation to address multiple nodes,
         but cannot be combined with any other filter variant.<br>
-        The response is a JSON formatted object with corresponding key-value pairs per addressed node.
+        The response is a JSON-formatted object containing key-value pairs for each addressed node.
         The server MAY support the metadata request.<br>
         Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-service-discovery-read">signal discovery read on HTTPS</a> in [[TRANSPORT]] specification.
         </p>
@@ -774,16 +777,16 @@
      <section id="multiple-signals-request">
           <h2>Multiple Signals Request</h2>
             <p>
-            The filtering operations may be used to address multiple tree nodes in one request.
-            This may lead to specific issues in certain situations, as described below.
+            Filtering operations MAY be used to address multiple nodes in the VSS tree within a single request.
+            However, this MAY lead to specific issues in certain situations, as described below.
             </p>
 
      <section id="error-handling">
           <h2>Error Handling</h2>
             <p>
-            Error messages from requests for multiple signals are not handled differently from requests for a single signal
-            except for the case when one or more of the signals are temporarily unavailable.
-            Then the server may select to use the in-line error reporting, see
+            Error messages for multiple-signal requests are handled the same way as for single-signal requests, 
+            except when one or more signals are temporarily unavailable.
+            In such cases, the server MAY use in-line error reporting, see
             <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#in-line-error-reporting">In-line Error Reporting</a> in [[TRANSPORT]] specification.
             </p>
      </section>
@@ -791,7 +794,7 @@
      <section id="response-syntax">
           <h2>Response syntax</h2>
             <p>
-            A response may contain multiple values, due to either that multiple nodes are addressed,
+            A response MAY contain multiple values, due to either that multiple nodes are addressed,
             or to that multiple values for one signal is returned.
             These two reasons can be combined, leading to four different cases.
                 <ul>
@@ -879,23 +882,23 @@
     }
   ]
         </pre></p>
-               In the case of a request for multiple values from multiple nodes, the data point for different paths may contain single or multiple objects,
-               as the vehicle system may not have multiple values recorded for all requested signals.
+               In the case of a request for multiple values from multiple nodes, the data point for different paths MAY contain single or multiple objects,
+               as the vehicle system MAY not have multiple values recorded for all requested signals.
             </p>
      </section>
 
      <section id="subscription-event-triggering">
           <h2>Subscription Event Triggering</h2>
             <p>
-            A subscription request must always contain a filter operation that describes the trigger event that leads to
-            that the server dispatches an asynchronous event message.
-            For the filter variants "range" or "change", the triggering is dependent on the signal value.
-            When the request addresses multiple signals, the triggering condition shall only be evaluated on one of the signals,
-            which is the first signal in the parameter array of paths.
-            The first path in the array must therefore not contain wildcards to address multiple signals.
-            In this case one of the path addresses in the wildcard expression must be selected as the first array element,
-            which can then be followed by the wildcard expression.
-            The duplicate reference to one signal that this leads to shall be resolved by the server to a singleton in the event messages.
+            A subscription request MUST include a filter operation that defines the trigger event 
+            causing the server to dispatch an asynchronous event message.
+            For "range" and "change" filter variants, triggering depends on the signal value.
+            When a request addresses multiple signals, the triggering condition SHALL be evaluated for only one signal, 
+            specifically the first signal in the paths parameter array.
+            The first path in the array MUST NOT contain wildcards, as it determines the triggering signal.
+            If a wildcard expression is used, one of the resolved path addresses MUST be explicitly selected 
+            as the first array element, followed by the wildcard expression.
+            If this results in a duplicate reference to the same signal, the server SHALL resolve it into a singleton in the event messages.
             </p>
      </section>
      </section>
