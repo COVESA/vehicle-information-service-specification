@@ -186,16 +186,16 @@
 
         <dl title="enum Defs" class="idl">
           <dt><b>client</b></dt>
-          <dd>An entity that works with data managed by a server.</dd>
+          <dd>An entity that interacts with data managed by a server.</dd>
           <dt><b>server</b></dt>
-          <dd>An entity that manages and offers access to data.</dd>
+          <dd>An entity that manages and provides access to data.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-success-response">success response</dfn></dt>
-          <dd>The message being returned by the server to the client when no error is encountered. These are specific per request type.</dd>
+          <dd>The message returned by the server to the client when no error is encountered. These are specific per request type.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-error-message">error message</dfn></dt>
-          <dd>The message being returned by the server to the client when an error is encountered. It can be a synchronous response message,
-          or an asynchrounous event message.</dd>
+          <dd>The message returned by the server to the client when an error is encountered. It can be a synchronous response message,
+          or an asynchronous event message.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-data-point">data point</dfn></dt>
-          <dd>A structure containing one or more value, timestamp tuplets.</dd>
+          <dd>A structure containing one or more value-timestamp tuples.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-value">value</dfn></dt>
           <dd>The data that is associated with one or more VSS nodes. Regardless of its data type,
           a single data item is always represented as a string in message payloads.</dd>
@@ -222,8 +222,8 @@
 
     <section id="data-model">
       <h2>Data Model</h2>
-                <p>The service is intended for use with a tree-like logical taxonomy to represent the vehicle data.
-                An illustrative example of such a tree structure is shown in <a href="#fig-example-vss-tree">Figure 1</a>.
+                <p>The service is designed to use with a tree-like logical taxonomy to represent the vehicle data.
+                An illustrative example of such a tree structure is shown in <a href="#fig-example-vss-tree">Figure 2</a>.
                 While it is meant to support conforming taxonomies it was created principally with the
                 <a href="https://github.com/COVESA/vehicle_signal_specification">Vehicle Signal Specification</a> (VSS) in mind.
                 For more details, see the <a href="http://covesa.github.io/vehicle_signal_specification/">VSS documentation</a>.<br>
@@ -237,7 +237,7 @@
 
       <section id="address">
         <h2>Addressing</h2>
-        <p>Addressing of resources is done using URIs as defined in [[RFC3987]].<br>
+        <p>Resource addressing is performed using URIs as defined in [[RFC3987]].<br>
         <blockquote><a>scheme</a>://<a>authority</a>/<a>path</a>?<a>query</a></blockquote>
         The <dfn>scheme</dfn> describes the protocol to use to reach the addressed resource.
         For supported protocols, see the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">transport protocols</a> in [[TRANSPORT]] specification.<br>
@@ -263,7 +263,7 @@
           <p>
           Depending on the deployment of a resource, either in the cloud or in a vehicle, they will have a domain name or an IP address, respectively.
           A client is expected to obtain this part of the authority component via an interaction with the
-          <a href="#ecosystem-manager-def">ecosystem manager</a>. The details of this interaction is out of scope for this specification.
+          <a href="#ecosystem-manager-def">ecosystem manager</a>. The details of this interaction are out of scope for this specification.
           </p>
         </section>
 
@@ -295,7 +295,7 @@
           which therefore is the recommended choice also in this specification.
           However, in HTTP URLs the conventional delimiter is slash (/), therefore also this delimiter is supported.
           To exemplify, the path expression from traversing the nodes Vehicle, Car, Engine, RPM can  be "Vehicle.Car.Engine.RPM",
-          or "Vehicle/Car/Engine/RPM". A mix of delimiters in the same path expression SHOULD be avoided.<br>
+          or "Vehicle/Car/Engine/RPM". Mixing delimiters in the same path expression SHOULD be avoided.<br>
           The path MUST not contain any wildcard characters ("*"), for such needs see <a href="#paths-filter-operation"></a>.<br>
           For the <b>access grant token server</b> the path is "agts".<br>
           For the <b>access token server</b> the path is "ats".<br>
@@ -338,39 +338,39 @@
     <section id="interface">
       <h2>Interface</h2>
       <p>
-        This chapter describes the different methods and its arguments that govern the communication between a client and the server.
+        This chapter describes the different methods and their arguments that govern the communication between a client and the server.
       </p>
 
       <section id="methods">
         <h2>Methods</h2>
         <p>
-          The transport protocols used to implement these methods MUST implement the Read and Update methods,
-          and MAY implement the Subscribe, Unsubscribe, and Subscription methods.
+          Transport protocols used to implement these methods MUST support the Read and Update methods,
+          and MAY support the Subscribe, Unsubscribe, and Subscription methods.
         </p>
         <section id="read">
           <h2>Read</h2>
           <p>Purpose: Get one or more values addressed by the given path.</p>
-          <p>The client MAY have to obtain an <a>authorization</a> token before being able to access the values.
-             If the server is able to satisfy the request it MUST return a <a>success response</a>.
-             If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error message</a>.</p>
+          <p>The client MAY have to obtain an <a>authorization</a> token before accessing the requested values.
+             If the server successfully processes the request, it MUST return a <a>success response</a>.
+             If the server fails to fulfill the request, then the server MUST return an <a href="#error-message">error message</a>.</p>
           <p>Arguments, of which path is mandatory:
           <ul>
-            <li><a>path</a> The path as defined in VSS to a node in the VSS tree.</li>
-            <li><a>filter</a> Additional information defining the requested data.</li>
+            <li><a>path</a> The VSS-defined path to a node in the VSS tree.</li>
+            <li><a>filter</a> Additional parameters to refine the requested data.</li>
             <li><a>authorization</a> The authorization token.</li>
-            <li><a>data compression</a> The data compression scheme(s).</li>
+            <li><a>data compression</a> The compression scheme(s) used for transmitted data.</li>
           </ul>
           </p>
           <p>Success response, of which authorization is optional:
             <ul>
-              <li><a>data</a> The data structure contains one or more sets of a path and a data point structure.</li>
-              <li style="margin-left: 40px"><a>path</a> The path for the associated data point structure.</li>
-              <li style="margin-left: 40px"><a>data point</a> A structure containing one or more tuplets of value and timestamp.</li>
+              <li><a>data</a> A structure containing one or more sets of a path and data point.</li>
+              <li style="margin-left: 40px"><a>path</a> The VSS-defined path for the associated data point.</li>
+              <li style="margin-left: 40px"><a>data point</a> A structure containing one or more value-timestamp tuples.</li>
               <li style="margin-left: 80px"><a>value</a> The latest available value.
               Please note that also for actuators this returns the current value, and not a target value that might have been set.</li>
               <li style="margin-left: 80px"><a>timestamp</a> The capture time of the value.</li>
               <li><a>authorization</a> A handle representing the authorization token.</li>
-              <li><a>timestamp</a> The time of the server request execution.</li>
+              <li><a>timestamp</a> The server execution time of the request.</li>
             </ul>
           </p>
         </section>
@@ -378,23 +378,23 @@
         <section id="update">
           <h2>Update</h2>
           <p>Purpose: Provide an altered value to the vehicle signal addressed by the <a>path</a>.</p>
-          <p>The client MAY have to obtain an authorization token before being able to update the vehicle signal.
-          If the server is able to satisfy the request it MUST return a <a>success response</a>, else it MUST return an <a>error message</a>.
+          <p>The client MAY have to obtain an authorization token before updating a vehicle signal.
+          If the server successfully processes the request, it MUST return a <a>success response</a>. If it cannot, it MUST return an <a>error message</a>.
           Only actuator type signals can be updated.
           Please note that a success response does not guarantee that the actuation attempt to change to the updated target value has, or will, succeed.
           A client may monitor the actuation progress through subsequent reads of the actuator value.
           </p>
           <p>Arguments, of which path and value are mandatory:
             <ul>
-              <li><a>path</a> The path as defined in VSS to a leaf node in the VSS tree.</li>
-              <li><a>value</a> The value by which the vehicle signal addressed by the path will be updated to.</li>
+              <li><a>path</a> The VSS-defined path to a leaf node in the VSS tree.</li>
+              <li><a>value</a> The new value to update the vehicle signal at the specified path.</li>
               <li><a>authorization</a> The authorization token.</li>
             </ul>
           </p>
           <p>Success response, of which authorization is optional:
             <ul>
               <li><a>authorization</a> A handle representing the authorization token.</li>
-              <li><a>timestamp</a> The time of the server request execution. This may not be the same as the final update time of the signal.</li>
+              <li><a>timestamp</a> The server execution time of the request. This may not be the same as the final update time of the signal.</li>
             </ul>
           </p>
         </section>
@@ -402,60 +402,61 @@
         <section id="subscribe">
           <h2>Subscribe</h2>
           <p>Purpose: Get asynchronous messages containing the value(s) addressed by the path.
-          The triggering rules for issuing the event messages are set by the filter data.</p>
-          <p>The client MAY have to obtain an authorization token before being able to subscribe to the vehicle signal(s).
-             The server MUST issue an event message if a trigger rule is fulfilled.
-             If the server is able to satisfy the request it MUST return a <a>success response</a>.
-             If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error message</a>.
+          The triggering conditions for these events are determined by the filter rules.</p>
+          <p>The client MAY have to obtain an authorization token before subscribing to vehicle signal(s).
+             The server MUST issue an event message if a trigger rule is met.
+             If the server successfully processes the request, it MUST return a <a>success response</a>.
+             If the server fails to fulfill the request, then the server MUST return an <a href="#error-message">error message</a>.
              If an error occurs during the subscription period, the server SHOULD return an <a href="#error-message">error message</a>.</p>
           <p>Arguments, of which path and filter are mandatory:
             <ul>
-              <li><a>path</a> The path as defined in VSS to a node in the VSS tree.</li>
-              <li><a>filter</a> The rule set describing triggering criterias for issuance of asynchronous event messages.</li>
+              <li><a>path</a> The VSS-defined path to a node in the VSS tree.</li>
+              <li><a>filter</a> A rule set defining the triggering criteria for asynchronous event messages.</li>
               <li><a>authorization</a> The authorization token.</li>
-              <li><a>data compression</a> The data compression scheme(s).</li>
+              <li><a>data compression</a> The compression scheme(s) used for transmitted data.</li>
             </ul>
           </p>
           <p>Success response, of which authorization is optional:
             <ul>
               <li><a>authorization</a> A handle representing the authorization token.</li>
-              <li><a>subscriptionId</a> A handle identifying event messages associated with the subscription.</li>
+              <li><a>subscriptionId</a> A unique identifier for the subscription session.</li>
               <li><a>timestamp</a> The start time for the subscription period.</li>
             </ul>
           </p>
         </section>
         <section id="unsubscribe">
           <h2>Unsubscribe</h2>
-          <p>Purpose: Termination of the subscription period started by a previous subscribe request.</p>
-          <p>If the server is able to satisfy the request it MUST return a <a>success response</a>,
+          <p>Purpose: Terminates a subscription that was previously established through a subscribe request.</p>
+          <p>If the server successfully processes the request, it MUST return a <a>success response</a>,
           and it MUST stop issuing event messages associated to the subscription handle.
-          If the server is unable to fulfil the request, then the server MUST return an <a href="#error-message">error message</a>.</p>
+          If the server fails to fulfill the request, then the server MUST return an <a href="#error-message">error message</a>.</p>
           <p>Arguments, of which subscriptionId is mandatory:
             <ul>
-              <li><a>subscriptionId</a> Handle identifying the subscription.</li>
+              <li><a>subscriptionId</a> A unique identifier for the subscription session.</li>
             </ul>
           </p>
           <p>Success response:
             <ul>
-              <li><a>timestamp</a> The stop time for the subscription period.</li>
+              <li><a>timestamp</a> The time at which the subscription was terminated.</li>
             </ul>
           </p>
         </section>
         <section id="subscription">
           <h2>Subscription</h2>
-          <p>Purpose: Asynchronous client event message issued according to the subscribe request trigger rules.</p>
+          <p>Purpose: Sends asynchronous event messages to the client when a subscribe request trigger rule is met.
+          </p>
           <p>The server MUST issue an event message when a triggering rule associated with the subscription is met.
              If the server cannot fulfill the triggering rules it MUST issue an error message and terminate the subscription.
           </p>
           <p>Arguments, of which all are mandatory:
             <ul>
-              <li><a>subscriptionId</a> Handle identifying the subscription.</li>
-              <li><a>data</a> The data structure contains one or more sets of a path and a data point structure.</li>
-              <li style="margin-left: 40px"><a>path</a> The path for the associated data point structure.</li>
-              <li style="margin-left: 40px"><a>data point</a> A structure containing one or more tuplets of value and timestamp.</li>
-              <li style="margin-left: 80px"><a>value</a> The value associated with the filter expression.</li>
+              <li><a>subscriptionId</a> A unique identifier for the subscription session.</li>
+              <li><a>data</a> A structure containing one or more sets of a path and data point.</li>
+              <li style="margin-left: 40px"><a>path</a> The VSS-defined path for the associated data point.</li>
+              <li style="margin-left: 40px"><a>data point</a> A structure containing one or more value-timestamp tuples.</li>
+              <li style="margin-left: 80px"><a>value</a> The current value associated with the filter expression.</li>
               <li style="margin-left: 80px"><a>timestamp</a> The capture time of the value.</li>
-              <li><a>timestamp</a> The time of the server subscription execution.</li>
+              <li><a>timestamp</a> The server execution time of the subscription event.</li>
             </ul>
           </p>
         </section>
@@ -463,8 +464,8 @@
 
       <section id="error-message">
         <h2>Error Message</h2>
-        <p>The server MUST inform a client about errors ocurring in interactions between the two, whether it is in a synchronous
-        error response, or an asynchronous error event as a result of a previous subscribe.
+        <p>The server MUST notify the client of any errors that occur during their interaction, whether as a synchronous error response 
+          or an asynchronous error event resulting from a previous subscription request.
         For transport protocols which do not control the logical linking between request and response messages it may not be possible to link
         an error message to the correct client request.
         In cases like this the server may omit sending an error message.
@@ -475,18 +476,18 @@
             <ul>
               <li><a href="#error-information"></a></li>
               <li><a>subscriptionId</a> The reference to the subscribe session.</li>
-              <li><a>timestamp</a> The time of the server execution leading to the error.</li>
+              <li><a>timestamp</a> The server execution time when the error occurred.</li>
             </ul>
           </p>
 
         <section id="error-information">
           <h2>Error Information</h2>
-          <p>The error information has three components - a number, a reason, and a description.
+          <p>The error information consists of three components: number, reason, and description.
           All the three components MUST be part of the error information.
             <ul>
-              <li><b>number</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html/#status-codes">status codes</a> as defined in [[TRANSPORT]].</li>
-              <li><b>reason</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">status codes</a> as defined in [[TRANSPORT]].</li>
-              <li><b>description</b> See the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">status codes</a> as defined in [[TRANSPORT]].</li>
+              <li><b>number</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html/#status-codes">status codes</a> defined in [[TRANSPORT]].</li>
+              <li><b>reason</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">status codes</a> defined in [[TRANSPORT]].</li>
+              <li><b>description</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">status codes</a> defined in [[TRANSPORT]].</li>
             </ul>
           </p>
           </section>
@@ -518,8 +519,8 @@
       <section id="data-security">
         <h2>Data security</h2>
         <p>
-        The <a href="#access-control-model"></a> makes it possible to apply restrictions on the data access for clients that are
-        granted access on the transport protocol level.
+        The <a href="#access-control-model"></a> enables the enforcement of data access restrictions 
+        for clients that have been granted access at the transport protocol level.
         </p>
       </section>
 
@@ -527,27 +528,26 @@
         <h2>Privacy Considerations</h2>
         <p>
         In addition to some privacy provisions within the specification itself, COVESA and W3C have activities seeking
-	to establish systems and guidelines to provide further considerations for handling of information.
+	to establish systems and guidelines to provide further considerations for handling of sensitive information.
         </p>
 
         <p>
-        For some uses, such as when information is only referenced within the vehicle not sent
-        off nor persisting between restarts, there should be little to no privacy concerns.
+          For certain use cases, such as when data is referenced only within the vehicle, is not transmitted externally, 
+          and does not persist across restarts, privacy concerns should be minimal or nonexistent.
         </p>
 
         <p>
-        This specification has granular access control capabilities to limit what information an application may access.
-        All information sent from a VISS service to client application must be transported over an
-        encrypted protocol to help protect privacy.
+        This specification has granular access control capabilities, allowing restrictions on the information an application may access.
+        Additionally, all data transmitted from a VISS service to a client application MUST be transported 
+        over an encrypted protocol to ensure privacy protection.
         </p>
 
         <p>
-        A client accessing vehicle data may require consent from whoever is deemed authoritative for a given
-        jurisdiction and ownership situation.
-        This specification enables an External Consent Framework to connect to a VISS server to realize this functionality,
+        A client accessing vehicle data may require consent from an authorized entity, which varies based on jurisdiction and ownership.
+        This specification supports integration with an External Consent Framework (ECF) to enable consent management within a VISS server,
         see <a href="#consent-support"></a>.
-        That consent should be revocable. Revoking it is outside the scope of this specification,
-        it is expected to be handled out of band and in some cases by regulations and contractual commitments.
+        Consent SHOULD be revocable; however, the process for revocation is out of scope for this specification.
+        It is expected to be handled out of band and may be governed by regulations or contractual agreements.
         </p>
 
       </section>
