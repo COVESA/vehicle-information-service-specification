@@ -903,51 +903,54 @@
     <section id="access-control-model">
       <h2>Access Control Model</h2>
       <p>
-      A <a href="https://gdpr-info.eu">General Data Protection Regulation (GDPR)</a> aligned access control model is defined in this chapter.
-      The general flow is that a client first authenticates for a specific role with the Access Grant Token server.
-      If this is successful it receives an Access Grant token. This can then be used one or more times in access requests to the Access Token server.
-      These requests contains the AGT and a purpose. It is assumed that the Ecosystem manager has published a list over the purposes that the ecosystem serves,
-      any other purpose must be denied access. If this request to the ATS is successful then the client receives an Access token
-      that it can use in requests to the VISSv3 server for access to one or more of the signals associated to the purpose.<br>
-      Access control MUST be supported. However, in this chapter only the sections that describe the interactions between the
+      This chapter defines an access control model aligned with the <a href="https://gdpr-info.eu">General Data Protection Regulation (GDPR)</a>.
+      The general process begins with a client authenticating for a specific role with the Access Grant Token server.
+      If this is successful it receives an Access Grant token. This token can then be used one or more times when making access requests to the Access Token server.
+      These requests contain the AGT and a purpose. It is assumed that the Ecosystem Manager has published a list of approved purposes that the ecosystem serves, 
+      and any other purpose must be denied access. If the request to the ATS is successful, the client receives an Access Token, 
+      which can then be used in requests to the VISSv3 server to access one or more signals associated with the approved purpose.<br>
+      Access control MUST be supported. However, in this chapter only the sections that describe interactions between the
       <a href="#client-def">client</a> and the VISSv3 server are mandatory.<br>
-      Access control SHALL not be applied to the VSS nodes containing the VSS version data,
-      and not to client requests for dynamic metadata about the server capabilities,
-      or about the access control selection tags applied to the VSS tree.
+      Access control SHALL NOT be applied to the VSS nodes containing the VSS version data, nor to client requests 
+      for dynamic metadata about server capabilities or access control selection tags applied to the VSS tree.
       </p>
 
       <section id="architecture">
         <h2>Architecture</h2>
         <em>This section is non-normative.</em>
         <p>
-        The VISSv3 access control model is inspired by the concepts of OAuth2.0 [[RFC6749]],
-        but some deviations exist as is described in the following chapters.<br><br>
-        Four actors are defined:<br>
-        <b>Client</b><br>
+        The VISSv3 access control model is inspired by OAuth2.0 [[RFC6749]],
+        but includes some deviations, which are described in the following chapters.<br><br>
+        The architecture defines four primary actors:<br>
+        <ul>
+        <li><b>Client: </b>
         An <a href="#application-roles-def">application </a>making protected and authorized resource requests on behalf of its
         <a href="#user-roles-def">user</a>.<br>
-        <b>Access grant token server</b><br>
-        The server issuing the Access Grant credential after successfully authenticating the <a href="#client-def">client</a>.<br>
-        <b>Access token server</b><br>
-        The server issuing the <a href="#access-token-def">access token</a> to the <a href="#client-def">client</a>
+        <li><b>Access Grant Token (AGT) Server:</b>
+        The server issuing the Access Grant Token after successfully authenticating the <a href="#client-def">client</a>.<br>
+        <li><b>Access Token Server (ATS):</b>
+        The server issuing the <a href="#access-token-def">Access Token</a> to the <a href="#client-def">client</a>
         after successfully validating the request and obtaining authorization.<br>
-        <b>VISSv3 server</b><br>
+        <li><b>VISSv3 Server:</b>
         The server hosting the protected resources, capable of accepting and responding to protected resource requests using
-        <a href="#access-token-def">access tokens</a>.<br><br>
+        <a href="#access-token-def">Access Tokens</a>.<br><br>
+        </ul>
         The abstract protocol flow illustrated in the figure below describes the interaction between the four actors.<br>
         <figure id="fig-oauth2.0-flow">
           <img src="images/VISSv3-abstract-flow.jpg" alt="VISSv3 abstract protocol flow.">
           <figcaption> <span class="fig-title">The abstract protocol flow.</span></figcaption>
         </figure>
-        Besides the four actors directly involved in the abstract flow, there are two more actors.<br>
-        <b>Resource owner</b><br>
-        This is typically the driver of the vehicle, who may be asked for consent before access is granted.<br>
-        <b>Ecosystem manager</b><br>
-        The entity managing the access control ecosystem. It controls the Policy documents,
+        In addition to the four core actors, two additional actors participate in the ecosystem:<br>
+        <ul>
+        <li><b>Resource owner:</b>
+        This is typically the driver of the vehicle, who may be required to provide consent before access is granted.<br>
+        <li><b>Ecosystem manager:</b>
+        The entity manages the access control ecosystem. It controls the Policy documents,
         and manages the PKI ecosystem that the other actors may utilize.<br><br>
-        The abstract protocol flow is implemented by two different flows, as will be described in the following chapters.<br>
-        The process to obtain the credentials needed for <a href="#client-def">client</a> authentication is out-of-scope,
-        as well as the installation procedures for the <a href="#application-roles-def">applications</a>.
+        </ul>
+        The abstract protocol flow is implemented through two different flows, which are described in the following chapters.<br>
+        The process of obtaining credentials for <a href="#client-def">client</a> authentication is out-of-scope, 
+        along with the installation procedures for the <a href="#application-roles-def">applications</a>.
         </p>
       </section>
 
@@ -955,19 +958,20 @@
         <h2>Protocol Flows</h2>
         <em>This section is non-normative.</em>
         <p>
-        Two different flows are described. Which flow to use depends on the capabilities of the <a href="#client-def">client</a>.<br>
-        If a <a href="#client-def">client</a> is able to run public key cryptographic primitives,
-        i.e. key pair generation and signatures,
-        and has access to some kind of trusted execution environment where private keys are protected from the regular execution environment,
-        then it can use the long term flow. <a href="#client-def">Clients</a> that do not have access to these capabilities,
-        or do not want to use them, must select the short term flow.<br>
-        The advantage of using the long term flow is that the <a href="#client-def">client</a> can be trusted with longer expiry times of
+        Two different flows are described, and the choice of flow depends on the <a href="#client-def">client</a>'s capabilities.<br>
+        If a <a href="#client-def">client</a> supports public key cryptographic operations,
+        such as key pair generation and digital signatures,
+        and has access to a trusted execution environment (TEE) that protects private keys from the regular execution environment,
+        then it can use the long-term flow. <a href="#client-def">Clients</a> that lack these capabilities 
+        or choose not to use them MUST select the short-term flow.<br>
+        The advantage of the long-term flow is that the <a href="#client-def">client</a> can be trusted with longer expiry times of
         <a href="#access-grant-token-def">access grant tokens</a>.
-        In the short term flow the <a href="#client-def">client</a> must due to a shorter expiry time contact the
+        In the short-term flow, due to a shorter expiry time, the <a href="#client-def">client</a> must contact the
         <a href="#access-grant-server-def">access grant token server</a> more often to obtain a new
         <a href="#access-grant-token-def">access grant token</a>.<br>
         A <a href="#client-def">client</a> selects the type of flow by either submitting a public key in the
-        <a href="#access-grant-request-def">access grant request</a>, or not. The latter leading to an short term flow.
+        <a href="#access-grant-request-def">access grant request</a>, or not. 
+        If a public key is submitted, the long-term flow is used; otherwise, the short-term flow applies.
         </p>
       </section>
 
@@ -975,36 +979,35 @@
         <h2>Protocol Messages</h2>
         <em>This section is non-normative.</em>
         <p>
-        This chapter describes the payloads of the messages used in the protocol flow.
+        This chapter describes the payload structures of the messages used in the protocol flow.
         </p>
 
         <dfn id="access-grant-request-def"></dfn>
         <section id="access-grant-request">
           <h2>Access Grant Request</h2>
           <p>
-          The request shall contain the Context and Proof parameters below, the others are optional:
+          The request SHALL contain the Context and Proof parameters listed below. The other parameters are optional:
           <ul>
-            <li>VIN: The vehicle identification number. Instead of the
-	    assigned VIN a generated hash can be used as a pseudo VIN,
-            or any other identity that uniquely links to the vehicle in the access control ecosystem.</li>
-            <li><a href="#client-context-def">Context</a>: The context associated to the <a href="#client-def">client</a>.
-            The context consists of a triplet of roles for <a href="#user-roles-def">user</a>, <a href="#application-roles-def">app </a>permissions,
-            and <a href="#device-roles-def">device</a> characteristics.</li>
-            <li><a href="#proof-of-possession-def">Proof</a>: A proof mechanism that is used by the <a href="#client-def">client</a>
-            to attest its context to the <a href="#access-grant-server-def">access grant token server</a>.
-            This is indeed a composed proof for the User role, <a href="#application-roles-def">app </a>permissions,
-            and <a href="#device-roles-def">device</a> characteristics.</li>
-            <li>Public key: If this parameter is present, the client will receive a long term
-            <a href="#access-grant-token-def">access grant token</a> in return.</li>
+            <li>VIN: The vehicle identification number. Instead of the assigned VIN, a generated hash may be used as a pseudo-VIN, 
+            or any other unique identifier that links the vehicle within the access control ecosystem.</li>
+            <li><a href="#client-context-def">Context</a>: The context associated with the <a href="#client-def">client</a>, 
+            consisting of three key roles: <a href="#user-roles-def">user roles</a>, <a href="#application-roles-def">application roles</a>,
+            and <a href="#device-roles-def">device roles</a>.</li>
+            <li><a href="#proof-of-possession-def">Proof</a>: A verification mechanism used by the <a href="#client-def">client</a>
+            to prove its context to the <a href="#access-grant-server-def">Access Grant Token Server</a>.
+            This is a composite proof that includes <a href="#user-roles-def">user roles</a>, <a href="#application-roles-def">application roles</a>,
+            and <a href="#device-roles-def">device roles</a>.</li>
+            <li>Public key: If this parameter is present, the client will receive a long-term
+            <a href="#access-grant-token-def">Access Grant Token</a> in return.</li>
           </ul>
           </p>
           <p>
-            Depending on the kind of <a href="#proof-of-possession-def">proofs</a> included in the request,
-            the client and the server may need to run an interactive protocol to verify them.
-            The protocol may involve also third parties, such as the <a href="#ecosystem-manager-def">ecosystem manager</a> or the
-            <a href="#resource-owner-def">resource owner</a>. The protocol is out of scope for this specification.<br>
-            In scenarios where both the client and the <a href="#access-grant-server-def">access grant token server</a>
-            are deployed in-vehicle the VIN parameter may be omitted, in all other deployment scenarios it shall be present.<br>
+            Depending on the type of <a href="#proof-of-possession-def">proofs</a> included in the request,
+            the client and the server MAY need to run an interactive protocol to verify them.
+            The protocol MAY also involve third parties, such as the <a href="#ecosystem-manager-def">ecosystem manager</a> or the
+            <a href="#resource-owner-def">resource owner</a>. The verification protocol itself is out of scope for this specification.<br>
+            In scenarios where both the client and the <a href="#access-grant-server-def">Access Grant Token Server</a>
+            are deployed inside the vehicle, the VIN parameter MAY be omitted. In all other deployment scenarios, the VIN parameter SHALL be included.<br>
           </p>
         </section>
 
