@@ -466,9 +466,6 @@
         <h2>Error Message</h2>
         <p>The server MUST notify the client of any errors that occur during their interaction, whether as a synchronous error response 
           or an asynchronous error event resulting from a previous subscription request.
-        For transport protocols which do not control the logical linking between request and response messages it may not be possible to link
-        an error message to the correct client request.
-        In cases like this the server may omit sending an error message.
         The error message has three arguments, of which subscriptionId is mandatory only for error events.
         In the case of an error event being issued by the server, the associated subscription session SHALL thereafter be terminated by the server.
         </p>
@@ -766,9 +763,9 @@
         metadata will maximally be returned from. If it is set to zero then there is no limit set and the
         entire sub-tree that has the addressed node as root will be returned.
         If it is set to two then the metadata from the subtree root and its immediate children will be returned.
-        A metadata request can be combined with a paths filter operation to address multiple nodes,
-        but cannot be combined with any other filter variant.<br>
-        The response is a JSON-formatted object containing key-value pairs for each addressed node.
+        A metadata request can be combined with a paths filter operation to address multiple nodes.
+        If it is combined with any other filter variant an error message is returned.<br>
+        The response is a JSON formatted object containing key-value pairs for each addressed node.
         The server MAY support the metadata request.<br>
         Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-service-discovery-read">signal discovery read on HTTPS</a> in [[TRANSPORT]] specification.
         </p>
@@ -794,8 +791,7 @@
      <section id="response-syntax">
           <h2>Response syntax</h2>
             <p>
-            A response MAY contain multiple values, due to either that multiple nodes are addressed,
-            or to that multiple values for one signal is returned.
+            A response MAY contain multiple values, due to either that multiple nodes were addressed or that multiple values for one signal are returned.<br>
             These two reasons can be combined, leading to four different cases.
                 <ul>
                 <li>Request for a single value from a single node.</li>
@@ -1847,7 +1843,6 @@
 
         <h3>Server Tree</h3>
         <p>
-        Below follows an example of a server capabilities tree.
         The tree MUST contain the structures listed below, other parts are optional.
         Server capabilities that extends this specification, or change anything defined in this specification SHALL be declared in the Server tree.
         </p>
@@ -1857,6 +1852,7 @@
             <li>The Support node MUST have at least one child named Protocol.</li>
             <li>The Protocol node MUST be an attribute with a string array datatype with members defining the supported transport protocols.</li>
         </ul>
+        Below follows an example of a server capabilities tree.
           <pre><code>
               <embed type="text/yaml" src="resources/server.yml.txt" width="700" height="500">
           </code></pre>
@@ -2211,7 +2207,7 @@
         </ul>
         See the following chapters for description of the supported compression schemes.<br>
         If the server supports data compression it SHALL declare the compression schemes it supports in its server capabilities tree
-        with an expression A+B which is the sum of the values representing the supported schemes.<br>
+        with an expression A+B where A and B are the sum of the values representing the supported schemes, respectively.<br>
         If a client request for data compression is not supported, or impossible to realize, the server shall respond with an error message.
         </p>
 
@@ -2222,7 +2218,8 @@
         <a data-link-type="dfn" href="https://github.com/COVESA/vss-tools/blob/master/docs/id.md">here</a>.<br>
         The server will then in the response message(s) replace the VSS path with the static UID value.
         The static UID is represented as a hex value string starting with the characters "0x" then followed by 8 hexadecimal values.
-        The client needs to obtain means for decoding the static UIDs into corresponding VSS paths.
+        The client needs to obtain means for decoding the static UIDs into corresponding VSS paths, see the 
+        <a data-link-type="dfn" href="https://github.com/COVESA/vss-tools/blob/master/docs/id.md">VSS-tools description</a>.<br>
         The server shall respond with an error message if the client applies the path compression in its request.
         </p>
 
@@ -2251,7 +2248,7 @@
 
         <h3>Sequence Diagram Compression Scheme Examples</h3>
         <p>
-        The sequence diagram below shows client Get requests for vehicle speed where different combinations of compression schemes are selected.
+        The sequence diagram below shows client Get requests for the vehicle speed signal where different combinations of compression schemes are used.
         The responses mainly show the paths or timestamps that becomes compressed.
         In the first request/response the client requests static UID path compression, in the second request local path compression,
         and in the third and fourth request relative timestamp compression is added together with the respective path compression.
