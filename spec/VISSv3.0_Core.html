@@ -1638,8 +1638,8 @@
         <em>This section is non-normative.</em>
         <p>
         The Policy documents are typically owned and created by the <a href="#ecosystem-manager-def">ecosystem manager</a>.
-        They need to be handled securely to protect their integrity.
-        The <a href="#ecosystem-manager-def">ecosystem manager</a> shall securely provision them to the
+        They MUST be handled securely to protect their integrity.
+        The <a href="#ecosystem-manager-def">ecosystem manager</a> SHALL securely provision them to the
         <a href="#access-token-server-def">access token servers</a> in the access control ecosystem.
         </p>
 
@@ -1647,16 +1647,18 @@
           <section id="purpose-list">
             <h2>Purpose List</h2>
             <p>
-        A <a href="#client-def">client</a> shall provide a <a>purpose</a> as input to a request for an <a href="#access-token-def">access token</a>.
-        A list of supported purposes needs to exist for a client to select from.
-        The <a href="#ecosystem-manager-def">ecosystem manager</a> shall therefore provide means for <a href="#client-def">clients</a>
-        to survey the list to find a <a>purpose</a> that fits its use case.<br>
-        Each entry in the list contains a short description of the purpose, which is what the <a href="#client-def">client</a>
-        shall provide as input to its request for an <a href="#access-token-def">access token</a>.
-        There is also a long purpose description, which may be used in the dialogue for consent, if needed.
-        Then there is a list of the <a href="#client-context-def">client context</a>, i. e. the sub-actor role triplet,
-        that can be granted this access, and last there is a list of  the signals that the client is given access to for this purpose,
-        with the access control and consent requirements. The list shall use a JSON format as shown in the example below.
+        A <a href="#client-def">client</a> SHALL provide a <a>purpose</a> as input when requesting an <a href="#access-token-def">access token</a>.
+        To support this, a predefined list of supported purposes MUST exist, allowing the client to select the <a>purpose</a> that matches its use case.
+        The <a href="#ecosystem-manager-def">ecosystem manager</a> SHALL provide a mechanism for <a href="#client-def">clients</a>
+        to access and review this list.<br>
+        Each entry in the purpose list includes the following:
+        <ul>
+          <li>A short description of the purpose, which the <a href="#client-def">client</a> uses as input when requesting an <a href="#access-token-def">access token</a>.</li>
+          <li>A long description, which MAY be used in consent dialogs when applicable.</li>
+          <li>A list of valid <a href="#client-context-def">client context</a> (i.e., combinations of user, app, and device roles) that may be granted access for this purpose.</li>
+          <li>A list of signals accessible under this purpose, along with the associated access permissions and any consent requirements.</li>
+        </ul>
+        The purpose list SHALL be formatted in JSON, as illustrated below:
         <pre><code>
         {"purposes":
             [{"short": "fuel-status",
@@ -1669,28 +1671,29 @@
             {}]
         }
         </code></pre>
-        The purpose list shall be securely provisioned to the <a href="#access-token-server-def">access token server</a>.
-        The protocol for this is out-of-scope.
-        The <a href="#access-token-server-def">access token server</a> must reject all requests for <a href="#access-token-def">access tokens</a>
-        if it is not in possession of a purpose list.
+        The purpose list SHALL be securely provisioned to the <a href="#access-token-server-def">access token server</a>.
+        The provisioning protocol is out of scope for this specification.
+        If the <a href="#access-token-server-def">access token server</a> does not possess a valid purpose list, 
+        it MUST reject all <a href="#access-token-def">access tokens</a> requests.
             </p>
           </section>
 
           <section id="scope-list">
             <h2>Scope List</h2>
             <p>
-            The scope list contains a list of the VSS tree nodes for which access shall be prohibited, per
-            <a href="#client-context-def">client context</a>.
-            This prohibition is regardless of whether the <a href="#client-def">client</a> has a valid
-            <a href="#access-token-def">access token</a> or not.<br>
-            The scope list can also be used to limit the node metadata that is returned on a signal discovery request.<br>
-            Each entry in the list contains a list of paths to nodes that should be excluded, and a list of the
-            <a href="#client-context-def">client contexts</a>, i. e. the sub-actor role triplet,
-            for which this exclusion should be made.<br>
-            The scope list may contain an entry for a context with all three Roles set to "Undefined".
+              The Scope List defines the VSS tree nodes to which access SHALL be prohibited for specific
+            <a href="#client-context-def">client context</a>, regardless of whether the <a href="#client-def">client</a> 
+            possesses a valid <a href="#access-token-def">access token</a>.<br>
+            In addition to access control, the scope list MAY also be used to restrict metadata visibility when a client sends a signal discovery request.<br>
+            Each entry in the list contains:
+            <ul>
+              <li>A list of node paths to be excluded, and</li>
+              <li>A list of <a href="#client-context-def">client contexts</a> (i.e., sub-actor role triplets) for which this exclusion applies.</li>
+            </ul>
+            The scope list MAY include an entry for a context with all three Roles set to "Undefined".
             The no-access scope of this entry shall then be used for signal discovery requests where no token is included.
             An entry in the no_access array that addresses a branch results in no access to the subtree of this branch.<br>
-            The list shall use a JSON format as shown in the example below.
+            The scope list SHALL be formatted in JSON, as illustrated below:
         <pre><code>
         {"scope":
             [{"contexts":[ { "user":["Driver", "Passenger"], "app":"Third party", "device":"Vehicle"}, { } ],
@@ -1702,10 +1705,10 @@
             {}]
         }
         </code></pre>
-        The scope list shall be securely provisioned to the <a href="#access-token-server-def">access token server</a>.
-        The protocol for this is out-of-scope.
-        The <a href="#access-token-server-def">access token server</a> shall not restrict the scope for any
-        <a href="#client-context-def">client context</a> if it is not in possession of a scope list.
+        The scope list SHALL be securely provisioned to the <a href="#access-token-server-def">access token server</a>.
+        The provisioning protocol is out of scope for this specification.
+        If the <a href="#access-token-server-def">access token server</a> does not have access to a scope list, it SHALL NOT apply any scope restrictions for
+        <a href="#client-context-def">client context</a>.
             </p>
           </section>
       </section>
