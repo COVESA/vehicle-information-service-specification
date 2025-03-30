@@ -1233,15 +1233,16 @@
 
       <section id="https">
         <h2>HTTPS</h2>
-        <p>The message data components described in the [[CORE]] document are in the first hand mapped to required HTTP parameters,
-        and only when there is no appropriate mapping it is mapped to the payload.
-        The most significant deviations are:
+        <p>
+          The message data components described in the [[CORE]] specification are primarily mapped to standard HTTP parameters.
+          Only when no suitable mapping is available are they included in the payload.
+          The most significant deviations are as follows:
         <ul>
-          <li>The path is part of the URL.</li>
-          <li>A filter expression is appended to the URL as a query.</li>
-          <li>The HTTP methods GET, POST replaces the use of "action".</li>
+          <li>The path is included as part of the URL.</li>
+          <li>A filter expression is added to the URL as a query string.</li>
+          <li>The HTTP methods GET and POST are used instead of the "action" field.</li>
         </ul>
-        The subscribe/unsubscribe messages are not supported by this transport protocol.
+        The subscribe/unsubscribe operations are not supported by this transport protocol.
         </p>
 
         <section id="https-life-time-mngmnt">
@@ -1257,7 +1258,7 @@
                While the client typically connects to the server using the specified hostname, which often includes the "www" prefix,
                it's important to note that this convention may not apply in situations where VISS operates within a local, in-vehicle network or if remote vehicle connections are allowed.
                The communication SHALL use port 443, the default port for secure HTTPS connections.
-               The hostname resolution can be done via DNS or configured through local settings.
+               Hostname resolution can be achieved using DNS or configured through local settings.
             </p>
           </section>
 
@@ -1278,9 +1279,9 @@
             <h2>Read</h2>
             <p>
             The client MAY send a HTTPS GET request message to the server to get one or more value(s) of one or more vehicle signal(s).
-            If the server is able to satisfy the request it SHALL return a response containing the requested value(s).
-            If the server is unable to fulfil the request, e.g. because the client is not authorized to retrieve one or more of the signals,
-            then the server response SHALL have the status code set to indicate error.
+            If the server can fulfill the request, it SHALL return a response containing the requested value(s).
+            If the server is unable to fulfill the request, e.g. because the client is not authorized to retrieve one or more of the signals,
+            then it SHALL respond with an appropriate error status code.
             </p>
             <p>
               <b>Example:</b>
@@ -1318,12 +1319,12 @@
           <section id="https-authorized-read">
             <h2>Authorized Read</h2>
             <p>
-            JWT tokens will be sent in the <code>Authorization</code> header, following with term <code>Bearer</code> and a space character.
+              JWT tokens MUST be included in the <code>Authorization</code> header, prefixed with <code>Bearer</code> and followed by a space character.
             </p>
             <p>
             The following example assumes
             <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds</code>
-            is the actual token. A token header can be combined with all types of read requests.
+            is the actual token. A JWT token in the <code>Authorization</code> header can be combined with all types of read requests.
             <br>
             <b>Example:</b>
             Request:		
@@ -1363,8 +1364,8 @@
           <section id="https-search-read">
             <h2>Search Read</h2>
             <p>
-              The search read request uses the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#paths-filter-operation">paths filter operation</a> described in the [[CORE]] document to provide one or more path expressions,
-              relative to the path in the GET URL.<br>
+              The search read request uses the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#paths-filter-operation">chapter 7.1 Paths Filter Operation</a> 
+              described in the [[CORE]] specification to define one or more path expressions, relative to the path in the GET URL.<br>
               <b>Example:</b>
               Request:
               <pre><code>
@@ -1402,8 +1403,9 @@
           <section id="https-history-read">
             <h2>History Read</h2>
             <p>
-              The history read request uses the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#history-filter-operation">history filter operation</a> described in the [[CORE]] document to read recorded values
-              for a given period backwards in time.<br>
+              The history read request uses the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#history-filter-operation">chapter 7.2 History Filter Operation</a> 
+              described in the [[CORE]] specification to read recorded values
+              for a specific past duration.<br>
               <b>Example:</b>
               Request:
               <pre><code>
@@ -1428,9 +1430,11 @@
           <section id="https-service-discovery-read">
             <h2>Signal Discovery Read</h2>
             <p>
-              The signal discovery request uses the metadata filtering type as described in the [[CORE]] document to retrieve metadata in the VSS tree.
-              A successful response will contain the requested metadata from all nodes of the subtree defined by the subtree root node
-              that is addressed by the path and the requested depth set by the "parameter" value.<br><br>
+              The signal discovery request uses the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#metadata-request">chapter 7.7 Metadata Filter Operation</a> 
+              described in the [[CORE]] specification to retrieve metadata from a specified subtree in the VSS tree.
+              A successful response will contain the requested metadata from all nodes of the subtree defined by 
+              the subtree root node addressed by the path. 
+              The depth of metadata retrieval is controlled by the "parameter" value.<br><br>
               <b>Example:</b><br>
               Request:
               <pre><code>
@@ -1451,162 +1455,163 @@
               </code></pre>
             </p>
           </section>
+        </section>
 
-          <section id="https-update">
-            <h2>Update</h2>
-            <p>
-            The client may request that the server sets the value of a signal.
-            If the server is able to satisfy the request it <em class="rfc2119" title="SHALL">SHALL</em> return a
-            <a href="#dfn-setsuccessresponse" class="internalDFN" data-link-type="dfn">setSuccessResponse</a> message.
-            If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only,
-            the server <em class="rfc2119" title="SHALL">SHALL</em> return a
-            <a href="#dfn-seterrorresponse" class="internalDFN" data-link-type="dfn">setErrorResponse</a> message.
-            </p>
-            <p>
-              <b>Example:</b>
-              <pre><code>
-              POST /Vehicle/Powertrain/Transmission/PerformanceMode   HTTP/1.1
-              Host: 127.0.0.1:1337
-              Accept: application/json
-	      ...
-              {
-                "value": "sport"
-              }
-              </code></pre>
-              Successful response:
-              <pre><code>
-              HTTP/1.1 200 OK
-              Content-Type: application/json; charset=utf-8
-	      ...
-              {
-                "ts": "2020-04-15T13:37:00Z"
-              }
-              </code></pre>
-              Error response:
-              <pre><code>
-              HTTP/1.1 404 Not Found
-              Content-Type: application/json; charset=utf-8
-	      ...
-              {
-                "error": {"number": "404", "reason": "unavailable_data", "description": "The requested data was not found."},
-                "ts": "2020-04-15T13:37:00Z"
-              }
-              </code></pre>
-            </p>
-
-          <section id="https-authorized-update">
-            <h2>Authorized Update</h2>
-            <p>
-            JWT tokens will be sent in the <code>Authorization</code> header, following with term <code>Bearer</code> and a space character.
-            </p>
-            <p>
-            The following example assumes
-            <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds</code>
-            is the actual token. A token header can be combined with all types of update requests.
-            </p>
+        <section id="https-update">
+          <h2>Update</h2>
+          <p>
+          The client may request that the server sets the value of a signal.
+          If the server is able to satisfy the request it <em class="rfc2119" title="SHALL">SHALL</em> return a
+          <a href="#dfn-setsuccessresponse" class="internalDFN" data-link-type="dfn">setSuccessResponse</a> message.
+          If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only,
+          the server <em class="rfc2119" title="SHALL">SHALL</em> return a
+          <a href="#dfn-seterrorresponse" class="internalDFN" data-link-type="dfn">setErrorResponse</a> message.
+          </p>
+          <p>
+            <b>Example:</b>
             <pre><code>
             POST /Vehicle/Powertrain/Transmission/PerformanceMode   HTTP/1.1
-            Host:127.0.0.1:1337
-            Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds
+            Host: 127.0.0.1:1337
+            Accept: application/json
+      ...
             {
               "value": "sport"
             }
             </code></pre>
-          </section>
-          </section>
-        </section>
-      </section>
-
-      <section id="mqtt">
-        <h2>MQTT</h2>
-        <p>
-        As the MQTT protocol is based on a pub-sub model, while VISS is based on a client-server model, it is necessary to apply a thin application level protocol
-        on top of MQTT to abstract the client-server specific behavior. This is done by embedding the VISS messages in the MQTT messages,
-        together with supplementary information that makes this abstraction possible, see the next chapter.<br>
-        The VISS messages are adhering to the primary payload format without any deviations.
-        </p>
-
-        <section id="application-level-protocol">
-          <h2>Application Level Protocol</h2>
-          <p>
-            For MQTT to support the complete VISSv3 interface, as decribed in the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#interface">interface</a> chapter of the [[CORE]] specification,
-            an application level protocol that runs on top of MQTT is added.
-            It is described in the following, please also see the sequence diagram below.
-            To emulate the client-server pattern that is described in the [[CORE]] specification, the vehicle server, via its vehicle client,
-            issues a subscribe request to the broker on a topic named VID/Vehicle,
-            where VID is an identity that uniquely links to the vehicle in the access control ecosystem.
-            This vehicle identity is not necessarily the manufacturer's Vehicle Identification Number (VIN).<br>
-            The client on the "cloud side" of the broker is expected to have access to this vehicle identity.
-            How it obtains it is out of scope for this specification.
-            When the cloud client wants to issue a request to the vehicle server it first generates a unique topic name,
-            which it subscribes to at the broker. It then generates a JSON formatted payload with the general structure
+            Successful response:
             <pre><code>
-            {"topic":"aUniqueTopic", "request":"VISSv3Request"}
+            HTTP/1.1 200 OK
+            Content-Type: application/json; charset=utf-8
+      ...
+            {
+              "ts": "2020-04-15T13:37:00Z"
+            }
             </code></pre>
-            where "aUniqueTopic" is the uniques topic name it just subscribed to, and "VISSv3Request" is the request for the vehicle server.
-            This request MUST follow the primary payload format of this specification.
-            This JSON message is then issued to the broker, associated to the topic VID/Vehicle.
-            This message will then be forwarded by the broker to the vehicle client, which forwards the string being the value of the
-            "request" key in the message to the vehicle server. When the vehicle client receives the response to this request,
-            it publishes it to the broker associated with the topic name that was the string value of the "topic" key name in the
-            message it previously received from the broker.<br>
-            The broker will then forward this message to the cloud side client that earlier subscribed to this topic name,
-            which concludes the client-server based request-response as described in the [[CORE]] specification.<br>
-            In the case of subscription requests the vehicle client needs to save the subscriptionId found in the subscribe response,
-            together with the topic name associated to the subscribe request. When the vehicle server later issues event messages,
-            the vehicle client must parse the subscriptionId from it, and retrieve the topic name associated to it.
-            The vehicle client shall delete the saved topic name and subscriptionId when it receives
-            an unsubscribe request in a message from the broker.<br>
-            In following requests from the cloud side client, the unique topic name may be reused from the previous request-response cycle,
-            or a new unique topic name may be generated. If a new topic name is generated, an unsubscribe should be issued on the old topic name.
-            The vehicle client can continue to use the topic name it subscribes to.<br>
-            The payload format of the response/event messages SHALL follow the primary payload format of this specification.
-            The access control model is applicable also over this transport alternative.
-            The Access Token server should then implement its own version of the application level protocol described here,
-            using the topic name "VID/ATS". The Access Grant Token server may also do the same, with the topic name "VID/AGTS",
-            or if it is deployed in the cloud it may expose the HTTPS interface that is defined in this specification.
-
-          <figure id="VISSv3-over-mqtt">
-            <img src="images/mqtt_vissv3_protocol.jpg" alt="VISSv3 over MQTT">
-            <figcaption> <span class="fig-title">Message flow of VISSv3 over MQTT </span></figcaption>
-          </figure>
+            Error response:
+            <pre><code>
+            HTTP/1.1 404 Not Found
+            Content-Type: application/json; charset=utf-8
+      ...
+            {
+              "error": {"number": "404", "reason": "unavailable_data", "description": "The requested data was not found."},
+              "ts": "2020-04-15T13:37:00Z"
+            }
+            </code></pre>
           </p>
-        </section>
 
-        <section id="security-aspects">
-          <h2>Security Aspects</h2>
+        <section id="https-authorized-update">
+          <h2>Authorized Update</h2>
           <p>
-            The MQTT architecture mandates a "broker" that acts as a middleman in between the client and server endpoints
-            (the subscriber and the publisher in MQTT terminology).
-            This broker has full access to the plaintext communication between the two endpoints as each of the endpoint's
-            TLS channel terminates at the broker. This aspect should be considered when selecting to use the MQTT protocol.
+          JWT tokens will be sent in the <code>Authorization</code> header, following with term <code>Bearer</code> and a space character.
           </p>
-        </section>
-
-        <section id="transport-messages">
-          <h2>Transport Messages</h2>
           <p>
-            As mentioned in the "Application Level Protocol" chapter, the "request" messages issued to the broker contains two
-            JSON formatted key-value pairs, where the value of the "request" key is a string that contains the request the vehicle server
-            will respond to.
-            The format of this request MUST follow the primary payload format of this specification.
+          The following example assumes
+          <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds</code>
+          is the actual token. A token header can be combined with all types of update requests.
           </p>
+          <pre><code>
+          POST /Vehicle/Powertrain/Transmission/PerformanceMode   HTTP/1.1
+          Host:127.0.0.1:1337
+          Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds
+          {
+            "value": "sport"
+          }
+          </code></pre>
+        </section>
         </section>
       </section>
+    </section>
 
-      <section id="grpc">
-        <h2>gRPC</h2>
+    <section id="mqtt">
+      <h2>MQTT</h2>
+      <p>
+      As the MQTT protocol is based on a pub-sub model, while VISS is based on a client-server model, it is necessary to apply a thin application level protocol
+      on top of MQTT to abstract the client-server specific behavior. This is done by embedding the VISS messages in the MQTT messages,
+      together with supplementary information that makes this abstraction possible, see the next chapter.<br>
+      The VISS messages are adhering to the primary payload format without any deviations.
+      </p>
+
+      <section id="application-level-protocol">
+        <h2>Application Level Protocol</h2>
         <p>
-        The gRPC protocol uses protobuf for the serialization.
-        The definition of protobuf messages shall be expressed in a .proto-file.
-        The proto file defining the encoding of the VISS primary payload format is found in the [[PAYLOAD ENCODING]] document.
-        A protobuf compiler is used to generate code from the .proto-file that can then be called by the code executing the actual encoding/decoding
-        between the two payload formats.
-        This code can be implemented in different languages, and is out-of-scope for VISS standardization.
-        An example of it in Go language can be found 
-        <a href="https://github.com/COVESA/vissr/blob/master/utils/grcputils.go">here</a>.
+          For MQTT to support the complete VISSv3 interface, as decribed in the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#interface">interface</a> chapter of the [[CORE]] specification,
+          an application level protocol that runs on top of MQTT is added.
+          It is described in the following, please also see the sequence diagram below.
+          To emulate the client-server pattern that is described in the [[CORE]] specification, the vehicle server, via its vehicle client,
+          issues a subscribe request to the broker on a topic named VID/Vehicle,
+          where VID is an identity that uniquely links to the vehicle in the access control ecosystem.
+          This vehicle identity is not necessarily the manufacturer's Vehicle Identification Number (VIN).<br>
+          The client on the "cloud side" of the broker is expected to have access to this vehicle identity.
+          How it obtains it is out of scope for this specification.
+          When the cloud client wants to issue a request to the vehicle server it first generates a unique topic name,
+          which it subscribes to at the broker. It then generates a JSON formatted payload with the general structure
+          <pre><code>
+          {"topic":"aUniqueTopic", "request":"VISSv3Request"}
+          </code></pre>
+          where "aUniqueTopic" is the uniques topic name it just subscribed to, and "VISSv3Request" is the request for the vehicle server.
+          This request MUST follow the primary payload format of this specification.
+          This JSON message is then issued to the broker, associated to the topic VID/Vehicle.
+          This message will then be forwarded by the broker to the vehicle client, which forwards the string being the value of the
+          "request" key in the message to the vehicle server. When the vehicle client receives the response to this request,
+          it publishes it to the broker associated with the topic name that was the string value of the "topic" key name in the
+          message it previously received from the broker.<br>
+          The broker will then forward this message to the cloud side client that earlier subscribed to this topic name,
+          which concludes the client-server based request-response as described in the [[CORE]] specification.<br>
+          In the case of subscription requests the vehicle client needs to save the subscriptionId found in the subscribe response,
+          together with the topic name associated to the subscribe request. When the vehicle server later issues event messages,
+          the vehicle client must parse the subscriptionId from it, and retrieve the topic name associated to it.
+          The vehicle client shall delete the saved topic name and subscriptionId when it receives
+          an unsubscribe request in a message from the broker.<br>
+          In following requests from the cloud side client, the unique topic name may be reused from the previous request-response cycle,
+          or a new unique topic name may be generated. If a new topic name is generated, an unsubscribe should be issued on the old topic name.
+          The vehicle client can continue to use the topic name it subscribes to.<br>
+          The payload format of the response/event messages SHALL follow the primary payload format of this specification.
+          The access control model is applicable also over this transport alternative.
+          The Access Token server should then implement its own version of the application level protocol described here,
+          using the topic name "VID/ATS". The Access Grant Token server may also do the same, with the topic name "VID/AGTS",
+          or if it is deployed in the cloud it may expose the HTTPS interface that is defined in this specification.
+
+        <figure id="VISSv3-over-mqtt">
+          <img src="images/mqtt_vissv3_protocol.jpg" alt="VISSv3 over MQTT">
+          <figcaption> <span class="fig-title">Message flow of VISSv3 over MQTT </span></figcaption>
+        </figure>
         </p>
       </section>
+
+      <section id="security-aspects">
+        <h2>Security Aspects</h2>
+        <p>
+          The MQTT architecture mandates a "broker" that acts as a middleman in between the client and server endpoints
+          (the subscriber and the publisher in MQTT terminology).
+          This broker has full access to the plaintext communication between the two endpoints as each of the endpoint's
+          TLS channel terminates at the broker. This aspect should be considered when selecting to use the MQTT protocol.
+        </p>
+      </section>
+
+      <section id="transport-messages">
+        <h2>Transport Messages</h2>
+        <p>
+          As mentioned in the "Application Level Protocol" chapter, the "request" messages issued to the broker contains two
+          JSON formatted key-value pairs, where the value of the "request" key is a string that contains the request the vehicle server
+          will respond to.
+          The format of this request MUST follow the primary payload format of this specification.
+        </p>
+      </section>
+    </section>
+
+    <section id="grpc">
+      <h2>gRPC</h2>
+      <p>
+      The gRPC protocol uses protobuf for the serialization.
+      The definition of protobuf messages shall be expressed in a .proto-file.
+      The proto file defining the encoding of the VISS primary payload format is found in the [[PAYLOAD ENCODING]] document.
+      A protobuf compiler is used to generate code from the .proto-file that can then be called by the code executing the actual encoding/decoding
+      between the two payload formats.
+      This code can be implemented in different languages, and is out-of-scope for VISS standardization.
+      An example of it in Go language can be found 
+      <a href="https://github.com/COVESA/vissr/blob/master/utils/grcputils.go">here</a>.
+      </p>
+    </section>
       </section>
 
       <section id="Defs">
