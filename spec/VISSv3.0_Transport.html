@@ -745,12 +745,12 @@
           <section id="wss-update">
             <h2>Update</h2>
             <p>
-            The client may request that the server sets the value of a signal.
-            If the server is able to satisfy the request it <em class="rfc2119" title="SHALL">SHALL</em> return a
+            The client MAY send a request to the server to set the value of a signal.
+            If the server can fulfill the request successfully, it SHALL return a
             <a href="#dfn-setsuccessresponse" class="internalDFN" data-link-type="dfn">setSuccessResponse</a> message.
-            If an error occurs then the server <em class="rfc2119" title="SHALL">SHALL</em> return a
+            If an error occurs, the server SHALL return a
             <a href="#dfn-seterrorresponse" class="internalDFN" data-link-type="dfn">setErrorResponse</a> message.
-             The structure of these message objects is defined below.
+             The structure of these message objects is defined below:
             </p>
 	<table class="simple">
 	<thead>
@@ -818,12 +818,13 @@
 
          <section id="wss-authorized-update">
             <h2>Authorized Update</h2>
-            <p>If the operation on the VSS node that is addressed requires authorization,
-               then the request must contain the field "authorization" with its value being a JWT token.
-               The token validation must be successful for a
-               <a href="#dfn-setsuccessresponse" class="internalDFN" data-link-type="dfn">setSuccessResponse</a>
-	       to be returned, else a <a href="#dfn-seterrorresponse" class="internalDFN" data-link-type="dfn">setErrorResponse</a> is returned.
-	       A token can be combined with all types of update requests.
+            <p>
+              If the operation on the targeted VSS node requires authorization, 
+              the request MUST include the "authorization" field, containing a valid JWT token.
+              The token MUST be successfully validated by the server to return a
+              <a href="#dfn-setsuccessresponse" class="internalDFN" data-link-type="dfn">setSuccessResponse</a>.
+              If validation fails, a <a href="#dfn-seterrorresponse" class="internalDFN" data-link-type="dfn">setErrorResponse</a> SHALL be returned.
+              Authorization tokens MAY be used with all types of update requests.
             </p>
             <p>
               <b>Example:</b><br>
@@ -852,27 +853,26 @@
           <section id="subscribe">
             <h2>Subscribe</h2>
             <p>
-            The client may send a <a href="#dfn-subscriberequest" class="internalDFN" data-link-type="dfn">subscribeRequest</a> message
+            The client MAY send a <a href="#dfn-subscriberequest" class="internalDFN" data-link-type="dfn">subscribeRequest</a> message
             to request a subscription to one or more signals,
-            thereby requesting the server to repeatedly return subscription event messages, as specified by
-	    the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#filter-request">filter request</a> described in the [[CORE]].
-            The server <em class="rfc2119" title="MAY">MAY</em> reduce the number of
-            <a href="#dfn-subscriptionevent" class="internalDFN" data-link-type="dfn">subcriptionEvent</a>
-            messages sent to the client in order to reduce processing demands.<br>
-            If the server is able to satisfy the request it SHALL return a
+            thereby requesting the server to repeatedly return subscription event messages based on
+	          the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#filter-request">chapter 7. Filter Request</a> described in the [[CORE]] specification.
+            To reduce processing load, the server MAY limit the number of
+            <a href="#dfn-subscriptionevent" class="internalDFN" data-link-type="dfn">subcriptionEvent</a> messages sent.<br>
+            If the server can fulfill the request, it SHALL return a
             <a href="#dfn-subscribesuccessresponse" class="internalDFN" data-link-type="dfn">subscribeSuccessResponse</a> message.
-            If an error occurs then the server SHALL return a
+            If an error occurs while processing the request, the server SHALL return a
             <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> message.<br>
-            If an error occurs during the subscription session, the server shall return an
+            If an error occurs during an active subscription session, the server SHALL return a
             <a href="#dfn-subscriptionerrorevent" class="internalDFN" data-link-type="dfn">subscriptionErrorEvent</a> message.<br>
-            The structure of these message objects is defined below.<br>
-            The subscription variants are, as described in the [[CORE]] document:
-	  <ul>
-	  <li>timebased: event messages are issued at a regular time interval,</li>
-	  <li>change: event messages are issued when the value has changed as specified,</li>
-	  <li>range: event messages are issued when the value is in the specified range,</li>
-	  <li>curvelog: event messages are issued when the buffer is full, and then processed according to the curve logging algorithm.</li>
-	  </ul>
+            The structure of the subscription messages is defined below.<br>
+            As specified in the [[CORE]] document, the supported subscription variants are:
+            <ul>
+              <li><b>timebased</b>: Event messages are issued at a regular time interval,</li>
+              <li><b>change</b>: Event messages are issued when the value has changed as specified,</li>
+              <li><b>range</b>: Event messages are issued when the value is in the specified range,</li>
+              <li><b>curvelog</b>: Event messages are issued when the buffer is full, and then processed according to the curve logging algorithm.</li>
+            </ul>
 
             </p>
 	<table class="simple">
@@ -990,14 +990,13 @@
           <section id="authorized-subscribe">
             <h2>Authorized Subscribe</h2>
             <p>
-            If the operation on the VSS node that is addressed requires authorization,
-            then the request must contain the field "authorization" with its value being a JWT token.
-            The token validation must be successful for a
-            <a href="#dfn-subscribesuccessresponse" class="internalDFN" data-link-type="dfn">subscribeSuccessResponse</a>
-            to be returned, else a
-            <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> is returned.
-            An "authorization" key-value pair can be combined with all types of subscription requests.
-            </p>
+              If the operation on the addressed VSS node requires authorization, 
+              the request MUST include the "authorization" field with a valid JWT token as its value.
+              The token MUST be successfully validated for a
+              <a href="#dfn-subscribesuccessresponse" class="internalDFN" data-link-type="dfn">subscribeSuccessResponse</a> to be returned.
+              If validation fails, a <a href="#dfn-subscribeerrorresponse" class="internalDFN" data-link-type="dfn">subscribeErrorResponse</a> SHALL be returned.
+              An "authorization" key-value pair can be combined with all types of subscription requests.
+              </p>
             <p>
               <b>Example:</b><br>
               Request:
@@ -1038,7 +1037,7 @@
             <p>
             Curve logging data compression by eliminating data points that are within a set error margin is activated via a subscription request.
             Event messages will be issued when the buffer becomes full, after insignificant data points have been eliminated,
-            refer the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#curvelog-filter-operation">Curve logging Filter Operation</a> chapter in the [[CORE]] documentation.
+            refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#curvelog-filter-operation">chapter 7.6 Curve logging Filter Operation</a> in the [[CORE]] specification.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1077,8 +1076,9 @@
           <section id="range-subscribe">
             <h2>Range Subscribe</h2>
             <p>
-            Subscription to a range of values, that can have either a single boundary, or multipe boundaries as in the example below.
-            For a more information how to use range of values, refer the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#range-filter-operation">Range Filter Operation</a> chapter in the [[CORE]] documentation.
+              Subscription to a range of values, 
+              that can have either a single boundary, or multipe boundaries as in the example below.
+              For a more information how to use range of values, refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#range-filter-operation">chapter 7.4 Range Filter Operation</a> in the [[CORE]] specification.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1117,7 +1117,7 @@
             <h2>Change Subscribe</h2>
             <p>
             Subscription to when a signal has changed between two sequential captures.
-            For a more information how to use change of values, refer the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#change-filter-operation">Change Filter Operation</a> chapter in the [[CORE]] documentation.
+            For a more information how to use change of values, refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#change-filter-operation">chapter 7.5 Change Filter Operation</a> in the [[CORE]] specification.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1158,12 +1158,12 @@
             <p>
             To unsubscribe from a subscription, the client <em class="rfc2119" title="SHALL">SHALL</em> send an
             <a href="#dfn-unsubscriberequest" class="internalDFN" data-link-type="dfn">unsubscribeRequest</a> message to the server.
-            If the server is able to satisfy the request it returns an
+            If the server can fulfill the request successfully, it SHALL returns an
             <a href="#dfn-unsubscribesuccessresponse" class="internalDFN" data-link-type="dfn">unsubscribeSuccessResponse</a> message.
-            If an error occurs then an
+            If an error occurs, an
             <a href="#dfn-unsubscribeerrorresponse" class="internalDFN" data-link-type="dfn">unsubscribeErrorResponse</a> message SHALL be returned.
             <br>
-            If the client has created more than one WebSocket instance, it <em class="rfc2119" title="MUST">MUST</em> always unsubscribe
+            If the client has created multiple WebSocket instance, it <em class="rfc2119" title="MUST">MUST</em> unsubscribe
             using the same WebSocket instance that was originally used to create the subscription.
             </p>
 	<table class="simple">
