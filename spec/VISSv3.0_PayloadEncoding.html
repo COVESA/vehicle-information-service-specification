@@ -135,7 +135,7 @@
 
     <section id="introduction">
       <h2>Introduction</h2>
-      <p>This document describes the payload encodings that is used by some transport protocols.
+      <p>This document describes the payload encodings used by some transport protocols.
       </p>
     </section>
 
@@ -156,17 +156,17 @@
         <h2>Transport Payload</h2>
         <p>The payload primary format is JSON. This means that the payloads received by a client SHALL have the JSON format,
         unless an implementation deliberately deviates from this.
-        See the [[CORE]] document for the JSON payload format of the messages for the different transport protocols.
+        Refer to the [[CORE]] specification for the JSON payload format of the messages for the different transport protocols.
         </p>
       </section>
 
       <section id="protobuf-encoding">
         <h2>Protobuf encoding</h2>
-          <p>Protobuf, short for Protocol Buffers, is a language-neutral, platform-neutral, extensible mechanism for serializing structured data, developed by Google. 
+          <p>Protocol Buffers (Protobuf) is a language-neutral, platform-neutral, extensible mechanism for serializing structured data, developed by Google. 
             This encoding method is particularly beneficial for efficient data serialization and deserialization, ensuring low latency and reduced payload size, 
             which are crucial for vehicle information services.
           </p>
-          <p>The Vehicle Information Service Specification (VISS) defines a protocol for accessing vehicle data in a standardized manner. 
+          <p>The Vehicle Information Service Specification (VISS) defines a standard protocol for accessing vehicle data in a standardized manner. 
             As vehicles become more connected and data-driven, the need for efficient data exchange methods becomes paramount. 
             Protobuf encoding serves as an optimal solution within VISS due to its compact binary format and schema evolution capabilities.
           </p>
@@ -178,10 +178,10 @@
           <section id="protobuf-Schema-definition">
             <h2>Protobuf Schema Definition</h2>
             <p>
-            The following protobuf source code describes the VISS message payloads.
-            Stored in a file e.g. named "viss.proto" the protbuf compiler (protoc) can be used to create helper functions that can be called to encode and decode
-            between the JSON format and the protobuf format.
-            The protobuf source code below also contains a "service" clause that the protoc compiler uses to create a gRPC based communication framework.
+            The following protobuf schema defines the VISS message payloads.
+            When saved in a file (e.g., named "viss.proto"), the Protobuf compiler (protoc) can be used to create helper functions that can be called to encode and decode
+            between the JSON and Protobuf formats.
+            The protobuf schema below also contains a "service" clause that the protoc compiler uses to create a gRPC based communication framework.
             </p>
 
             <figure>
@@ -202,19 +202,19 @@
               <h2>gRPC Realization</h2>
               <p>
                 The 'service' clause in the Protobuf schema is used by the Protobuf compiler(protoc) to automatically generate code for gRPC-based communication. 
-                This code simplifies the implementation of server and client interactions by handling the details of network communication, allowing developers 
-                to focus on the application logic.
+                This generated code simplifies the development of server and client interactions by abstracting the network communication layer, 
+                allowing developers to focus on the application logic.
               </p>
             </section>
 
             <section id="websocket-realization">
               <h2>Websocket Realization</h2>
               <p>
-              If a server supports protobuf payload encoding over the Websocket protocol then it shall be shown in the server capabilities data
+              If a server supports protobuf payload encoding over the Websocket protocol, it SHALL be shown in the server capabilities data
               how the client configures this. Two mechanisms are defined:
             <ul>
               <li>Separate port number. The recommended port number is 6444.</li>
-              <li>A sub-protocol is specified when connecting to the server, The recommended sub-protocol name is "VISS-protoenc".</li>
+              <li>A sub-protocol MUST be specified when connecting to the server, The recommended sub-protocol name is "VISS-protoenc".</li>
             </ul>
               </p>
             </section>
@@ -222,7 +222,7 @@
             <section id="mqtt-realization">
               <h2>MQTT Realization</h2>
               <p>
-              If a server supports protobuf payload encoding over the MQTT protocol then it shall be shown in the server capabilities data
+              If a server supports protobuf payload encoding over the MQTT protocol, it SHALL be shown in the server capabilities data
               which topic name that the server uses to listen for clients that want to issue requests with protobuf encoded payloads.
               The recommended topic name is the topic name used for the unencoded payload channel appended with the string "/protobuf".
               </p>
@@ -233,9 +233,9 @@
           <section id="encoding-and-decoding-with-protobuf">
             <h2>Encoding and Decoding with Protobuf</h2>
             <p>
-            The protobuf compiler uses the protobuf source code to generate an API to helper functions that can be used to implement the encoding and decoding
+            The protobuf compiler uses the protobuf schema to generate an API to helper functions that can be used to implement the encoding and decoding
             between JSON and the protobuf format for the various VISS messages.
-            The implementation of the encoding and the decoding is out-of-scope in this specification.
+            The implementation of the encoding and the decoding is out-of-scope for this specification.
             </p>
           </section>   
         </section>
@@ -243,8 +243,8 @@
           <section id="json-schema-based-encoding">
             <h2>JSON schema based encoding</h2>
             <p>
-            Several IDLs may take a JSON scheme representation of the interface description as input, e. g. OpenAPI and asyncAPI.
-            The JSON scheme representation of the VISSv3.0 interface in the [[CORE]] specification can be used for such a purpose.
+              Several Interface Definition Languages (IDLs), such as OpenAPI and AsyncAPI, can utilize a JSON Schema representation as input.
+              The JSON scheme representation of the VISSv3.0 interface in the [[CORE]] specification can be used for such a purpose.
             </p>
           </section>
 
