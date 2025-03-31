@@ -185,11 +185,11 @@
 
       <section id="status-codes">
         <h2>Status Codes</h2>
-	<p>A server implementing this specification <em class="rfc2119" title="SHALL">SHALL</em> support the error codes,
-	error reasons and error descriptions shown in the table below, for all supported transport protocols.
-	The server may choose to dynamically replace the error description as described in the sub-chapters by any of the error descriptions in sub-chapters below,
-	or by any other relevant error description.<br>
-        The client <em class="rfc2119" title="MAY">MAY</em> support any status code defined in [[RFC2616]].</p>
+	        <p>A server implementing this specification SHALL support the error codes, reasons, and descriptions listed in the table below,
+            across all supported transport protocols.
+            The server MAY dynamically replace the error description with one of the alternatives 
+            described in the following sub-chapters, or with any other relevant message.<br>
+            The client <em class="rfc2119" title="MAY">MAY</em> support any status code defined in [[RFC2616]].</p>
         <table id="errorDefs" class="parameters">
 	  <tbody><tr>
 	    <th>Error&nbsp;Number&nbsp;(Code)</th>
@@ -251,21 +251,21 @@
       <section id="in-line-error-reporting">
         <h2>In-line Error Reporting</h2>
         <p>
-        A client may issue one request to get or subscribe to multiple signals.
-        If one or more of the requested signals are temporarily unavaliable then the server has two alternatives on how to respond.
+        A client MAY issue one request to get or subscribe to multiple signals.
+        If one or more of the requested signals are temporarily unavaliable, the server has two response options:
         </p>
         <ul>
             <li>Error message: 404 - unavailable_data</li>
             <li>In-line error reporting</li>
         </ul>
-        The error message alternative leads to that the client misses out on the signals that were available,
-        while the in-line error reporting alternative leads to that the client receives the available signals.
-        The in-line error reporting takes advanage of that values always are represented using string format
-        and replaces the missing value with the string:
+        Returning an error message means that the client will not receive any signals, including those that were available.
+        In contrast, in-line error reporting allows the client to receive all available signals, while indicating errors for those that are unavailable.
+        The in-line error reporting takes advanage of the fact that all values are represented as strings in the payload.
+        For any missing value, the server replaces the value with the following string:
         <ul>
             <li>"viss-inline:Data-not-available"</li>
+            <ul><li>Note: The prefix "viss-inline:" MUST NOT be used in any ordinary string values.</li></ul>
         </ul>
-        The leading part of the in-line error text, "viss-inline:", MUST not be used in ordinary string values.<br>
         An in-line error reporting example is shown below.
         <pre><code>
 {
@@ -289,7 +289,7 @@
     "requestId": "237",
     "ts": "2025-02-04T15:48:43.739Z"
 }        </code></pre>
-        In-line error reporting SHALL not be used when access control is required in the request.
+        In-line error reporting SHALL NOT be used when access control is required for the request.
         The reason for this is that the purpose that is associated with the set of requested data can not be met
         with a reduced data set, thus the "contract" between client and data owner becomes invalid.
       </section>
@@ -297,7 +297,8 @@
       <section id="common-error-scenarios">
         <h2>Common Error Scenarios</h2>
         <p>
-        Some error scenarios that are expected to be encountered by clients are listed below together with the expected error message by the server.
+          The following table outlines common error scenarios that clients may encounter, 
+          along with the corresponding error messages that the server is expected to return.
         </p>
         <table id="errorDefs" class="parameters">
 	  <tbody><tr>
@@ -351,24 +352,25 @@
       <section id="400-bad-request">
         <h2>400 Bad Request Error Descriptions</h2>
         <p>
-        This error code and reason shall be used for JSON schema related errors.
-        The default error description is shown in the table above. The server may dynamically replace this by any of the error descriptions in the list below,
-        or by any other relevant error description.
+          The 400 Bad Request error code and its associated reason SHALL be used for errors related to the JSON schema.
+          The default error description is listed in the table above. However, the server MAY dynamically replace 
+          it with one of the following error descriptions, or with any other relevant description:
         </p>
         <ul>
-            <li>Missing or invalid action</li>
-            <li>Missing or invalid path</li>
-            <li>Missing or invalid filter</li>
-            <li>Missing or invalid value</li>
+            <li>Missing or invalid <code>action</code></li>
+            <li>Missing or invalid <code>path</code></li>
+            <li>Missing or invalid <code>filter</code></li>
+            <li>Missing or invalid <code>value</code></li>
         </ul>
       </section>
 
       <section id="400-invalid-data">
         <h2>400 Invalid Data Error Descriptions</h2>
         <p>
-        This error code and reason shall be used for errors that are not covered by the JSON schema but e. g. breaks a rule set by a VSS property.
-        The default error description is shown in the table above. The server may dynamically replace this by any of the error descriptions in the list below,
-        or by any other relevant error description.
+        The 400 Invalid Data error code and reason SHALL be used for errors that are not covered by 
+        the JSON schema, but instead violate rules defined by a VSS property.
+        The default error description is provided in the table above. However, the server MAY dynamically replace 
+        it with one of the following descriptions, or with any other relevant error message:
         </p>
         <ul>
             <li>Update of a sensor is not supported</li>
@@ -381,9 +383,9 @@
       <section id="401-unauthorized">
         <h2>401 Unauthorized Error Descriptions</h2>
         <p>
-        This error code and reason shall be used for errors related to access control validation.
-        The default error description is shown in the table above. The server may dynamically replace this by any of the error descriptions in the list below,
-        or by any other relevant error description.
+        The 401 Unauthorized error code and reason SHALL be used for errors related to access control validation.
+        The default error description is provided in the table above. However, the server MAY dynamically replace 
+        it with one of the following messages, or with any other relevant description:
         </p>
         <ul>
             <li>Access token has expired</li>
@@ -394,9 +396,9 @@
       <section id="404-not-found">
         <h2>404 Not Found Error Descriptions</h2>
         <p>
-        This error code and reason shall be used when the server do not have access to the requested data.
-        The default error description is shown in the table above. The server may dynamically replace this by any of the error descriptions in the list below,
-        or by any other relevant error description.
+        The 404 Not Found error code and reason SHALL be used when the server does not have access to the requested data.
+        The default error description is listed in the table above. The server MAY dynamically replace 
+        it with one of the following messages, or with any other relevant description:
         </p>
         <ul>
             <li>Data temporarily unaccessible</li>
@@ -407,17 +409,20 @@
 
       <section id="transport-payload">
         <h2>Transport Payload</h2>
-        <p>The payload SHALL have JSON format.
-        See the JSON Schema chapter in the CORE document for the primary payload format.
+        <p>
+          The payload SHALL be formatted in JSON.
+          Refer to the JSON Schema chapter in the [[CORE]] document for details on the primary payload format.
         </p>
       </section>
 
       <section id="authorization">
         <h2>Authorization</h2>
-          <p>If authorization is enabled on a signal requested by the client,
-          it MUST provide a token to the server in order to verify that it is correctly authorized for the service it requests
-          (see [[CORE]] document).Tokens are integrated in HTTP requests in the <code>Authorization</code> header.
-          For protocols using the primary payload format an optional <code>authorization</code> property in the payload SHALL be used.
+          <p>
+            If authorization is enabled for a signal requested by the client,
+            the client MUST provide an access token to the server to verify that it is authorized to access the requested service
+            (see [[CORE]] document).
+            For HTTP requests, tokens SHALL be included in <code>Authorization</code> header.
+            For transport protocols that use the primary payload format, an optional <code>authorization</code> property in the payload SHALL be used.
           </p>
       </section>
     </section>
