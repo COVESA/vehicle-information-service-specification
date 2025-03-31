@@ -113,27 +113,25 @@
     <p class="copyright">Copyright © 2024 COVESA®. This document includes material copied from or derived from <a href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html">W3C VISS version 2 - Core</a>.</p>
     <section id='abstract'>
       <p>The Vehicle Information Service Specification (VISS) is a
-      service for accessing vehicle information, signals from sensors
-      on control units within a vehicle's network. It exposes this
-      information using a hierarchical tree like taxonomy defined in
-      COVESA Vehicle Signal Specification (VSS). The service provides
-      this information in JSON format. The service may reside in the
-      vehicle, or on servers in the internet with information
-      already brought off the vehicle.</p>
+      service for accessing vehicle information, including signals from sensors
+      on control units within a vehicle's network. This information is exposed through a hierarchical, 
+      tree-like taxonomy as defined in the COVESA Vehicle Signal Specification (VSS), 
+      and is provided in JSON format. The VISS service may be hosted within the vehicle or on external servers, 
+      using data that has already been off-boarded.</p>
 
-      <p>This specification describes a third version of VISS which
-      has been implemented and deployed on production vehicles.
-      The first version of VISS only supported WebSocket as a
+      <p>This specification describes the third version of VISS, which
+      has been implemented and deployed in production vehicles.
+      The first version of VISS supported only WebSocket as a
       transport protocol, the second version is generalized to work
       across different protocols as some are better suited for
       different use cases.
       The second version added support for the HTTP and MQTT transport
-      protocols, subscription capabilities was improved and an
-      access control solution was added.</p>
+      protocols, improved subscription capabilities and added an
+      access control mechanism.</p>
 
       <p>
-        There are three parts to this specification, [[CORE]], [[PAYLOAD ENCODING]], and TRANSPORT. This document, the VISS version 3.0 TRANSPORT specification,
-        describes the VISSv3 transport protocols, and the mapping of the message layer on these transports.
+        This specification consists of three parts, [[CORE]], [[PAYLOAD ENCODING]], and TRANSPORT. This document, the VISS version 3.0 TRANSPORT specification,
+        describes the VISSv3 transport protocols, and how the message layer is mapped to each transport.
         The companion specification [[CORE]] describes the messaging layer, and [[PAYLOAD ENCODING]] describes payload encodings to/from the primary JSON payload format.
       </p>
     </section>
@@ -141,11 +139,11 @@
     <section id="introduction">
       <h2>Introduction</h2>
       <p>This document provides examples of how the message payloads defined in [[CORE]] are used together with different transport protocols.
-      The Websocket ([[RFC6455]]) transport protocol is used to give an example of how the JSON primary payload format is directly used.
-      This is followed by examples of other transport protocols where exceptions from the primary payload format are defined and exemplified.<br>
-      The Vehicle Information Service Specification, version 3.0 permits any transport protocol to be used that can transport the unaltered primary payload format.
-      Transport protocols that require modifications or transformations of the primary payload format MUST define this in either this document or in the [[PAYLOAD ENCODING]] document.
-      The transport protocols that define deviations in this document are listed below.
+      The Websocket protocol([[RFC6455]]) is used to give an example of how the JSON primary payload format is directly used.
+      This is followed by examples of other transport protocols that introduce exceptions or transformations to the primary payload format.<br>
+      The Vehicle Information Service Specification, version 3.0, allows the use of any transport protocol that can carry the unaltered primary payload format.
+      If a transport protocol requires modifications or transformations, those MUST be specified either in this document or in the [[PAYLOAD ENCODING]] document.
+      The transport protocols that define such deviations in this document are listed below.
         <table id="errorDefs" class="parameters">
 	  <tbody><tr>
 	    <th>Protocol name</th>
@@ -164,7 +162,7 @@
 	    <td><a href="https://grpc.io/">[gRPC]</a></td>
 	  </tr>
 	</tbody></table>
-      The Websocket protocol is included to provide an example for protocols that does not introduce any deviations so therefore it is not shown on the list above.
+    The Websocket protocol is included to provide an example for protocols that does not introduce any deviations, and therefore it is not listed above.
       </p>
     </section>
 
@@ -173,10 +171,10 @@
     <section id="terminology">
       <h2>Terminology</h2>
       <p>
-      The acronym 'VISSv3.0' is used to refer to this document, the VISS version 3.0 specification.
-      The acronym 'VSS' is used to refer to the <a href="https://github.com/COVESA/vehicle_signal_specification">'Vehicle Signal Specification'</a>
-      which is hosted by COVESA.
-      The term 'WebSocket' when used in this document, is as defined in the
+      The acronym 'VISSv3.0' refer to this document, the VISS version 3.0 specification.
+      The acronym 'VSS' refer to the <a href="https://github.com/COVESA/vehicle_signal_specification">'Vehicle Signal Specification'</a>
+      which is maintained by COVESA.
+      The term 'WebSocket', as used in this document, follows the definition in the
       <a href="https://www.w3.org/TR/websockets/">W3C WebSocket API</a> and [[RFC6455]], the WebSocket Protocol.
       </p>
     </section>
