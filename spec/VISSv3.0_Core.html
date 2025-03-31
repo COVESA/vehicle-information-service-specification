@@ -1148,20 +1148,22 @@
           <h2>Protected Resource Request</h2>
           <p>
           This is a VISSv3 request including an <a href="#access-token-def">access token</a> as described in general in the
-          <a href="#methods"></a> chapter,
-          and for different <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">
+          <a href="#methods">Chapter 5.1 Methods</a>,
+          and in detail for various <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">
           transport protocols</a> in the [[TRANSPORT]] document.
-          The first time a token is submitted in a request it must be provided in its entirety. If a server supports caching of access tokens and returns a token handle to the client,
-          then any following requests may provide the token handle instead of the complete access token.
+          The first time a token is submitted in a request, it MUST be included in full. 
+          If the server supports access token caching and returns a token handle to the client, 
+          then subsequent requests MAY use the token handle instead of the complete access token.
           </p>
         </section>
 
         <section id="protected-resource-response">
           <h2>Protected Resource Response</h2>
           <p>
-          This is a VISSv3 response as described in general in the <a href="#methods"></a> chapter,
-          and for different <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">transport protocols</a> in the [[TRANSPORT]] document.
-          It does not differ from the response to an unprotected resource request.
+          This is a VISSv3 response as described in general in the <a href="#methods">Chapter 5.1 Methods</a>,
+          and in detail for various <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">
+          transport protocols</a> in the [[TRANSPORT]] document.
+          It is identical to the response for an unprotected resource request, with no differences in structure or content.
           </p>
         </section>
       </section>
@@ -1176,11 +1178,11 @@
         <p>
           The client is an abstract representation of three sub-actors:
           <ul>
-            <li>The <a href="#device-roles-def">device</a>. It is in charge of running the Apps that make requests to the VISSv3 server</li>
-            <li>The <a href="#application-roles-def">app. </a>It runs requests on behalf of the user.</li>
-            <li>The <a href="#user-roles-def">user</a>. It delegates access rights to the app.</li>
+            <li><a href="#device-roles-def">Device</a>: It is responsible for running the applications that make requests to the VISSv3 server.</li>
+            <li><a href="#application-roles-def">Application</a>: It runs requests on behalf of the user.</li>
+            <li><a href="#user-roles-def">User</a>: It delegates access rights to the application.</li>
           </ul>
-          All the information regarding the client is encoded in the <a href="#client-context-def">context</a> of the request.
+          All information related to the client is encoded in the <a href="#client-context-def">context</a> of the request.
         </p>
       </section>
 
@@ -1189,56 +1191,52 @@
         <h2>Access Grant Token Server</h2>
         <em>This section is non-normative.</em>
         <p>
-          The access grant token server is in charge of producing <a href="#access-grant-token-def">access grant tokens</a> to
+          The Access Grant Token Server is responsible for issuing <a href="#access-grant-token-def">access grant tokens</a> to
           <a href="#client-def">clients</a>.<br>
           Depending on the capabilities of the <a href="#client-def">client</a>, the specification supports two types of
-          <a href="#access-grant-token-def">access grant tokens</a>: Short term and long term
-          <a href="#access-grant-token-def">access grant tokens</a>.<br>
-          Long term <a href="#access-grant-token-def">access grant tokens</a>,
-          are supported for those <a href="#client-def">clients</a> able to run public key cryptographic primitives,
-          i.e. key pair generation and signatures,
-          and is the recommended choice for <a href="#client-def">clients</a> with access to a trusted execution environment where
-          private keys are protected from the regular execution environment.
-          The specification also supports short term <a href="#access-grant-token-def">access grant tokens</a> that require
-          no extra capabilities in the client,
-          but due to its shorter expiry time it forces the client to contact the access grant token server more often before
-          <a href="#access-token-server-def">access token server</a> requests for an <a href="#access-token-def">access token</a>.<br>
-          The <a href="#client-def">client</a> request shall contain the following:
+          <a href="#access-grant-token-def">access grant tokens</a> as short-term and long-term <a href="#access-grant-token-def">access grant tokens</a>.<br>
+          Long-term <a href="#access-grant-token-def">access grant tokens</a>,
+          are recommended for <a href="#client-def">clients</a> that support public key cryptographic primitives (e.g., key pair generation and digital signatures),
+          and that have access to a trusted execution environment (TEE) where private keys are securely protected from the regular execution environment.
+          Short-term <a href="#access-grant-token-def">access grant tokens</a> are intended for clients without such cryptographic capabilities.
+          However, due to their shorter expiry times, they require the client to contact the Access Grant Token Server more frequently
+          when requesting an <a href="#access-token-def">access token</a> from the <a href="#access-token-server-def">Access Token Server</a>.<br>
+          <br>A <a href="#client-def">client</a> request to the Access Grant Token Server SHALL contain:
           <ul>
             <li>A <a href="#client-context-def">client context</a>.</li>
             <li>A set of <a href="#proof-of-possession-def">proofs</a>.</li>
+            <li>A VIN(Vehicle Identification Number).</li>
+            <ul>
+              <li>If the <a href="#client-def">client</a> and the <a href="#access-grant-server-def">Access Grant Token Server</a> are both deployed in-vehicle, the VIN MAY be omitted.</li>
+              <li>In all other cases, the VIN SHALL be included.</li>
+              <li>When the VIN is included in the request, the vehicle identity (vin) claim SHALL be present in the resulting <a href="#access-grant-token-def">access grant token</a>.</li>
+            </ul>
+
           </ul>
-          In scenarios where both the client and the access grant token server are deployed in-vehicle the VIN parameter may be omitted,
-          in all other deployment scenarios it shall be present.
-          <ul>
-            <li>A VIN.</li>
-          </ul>
-          When a VIN is present in the request, the vehicle identity (vin) claim shall be present in the
-          <a href="#access-grant-token-def">access grant token</a>.<br>
-          If the <a href="#client-def">client</a> needs a long term <a href="#access-grant-token-def">access grant token</a>,
+          If the <a href="#client-def">client</a> requires a long-term <a href="#access-grant-token-def">access grant token</a>,
           then the request shall also contain:
           <ul>
             <li>A public key.</li>
+              <ul><li>The public key MUST be generated by <a href="#client-def">client</a>,
+                and the associated private key MUST be securely controlled by the <a href="#client-def">client</a>.</li></ul>
           </ul>
-          The Vehicle identification number shall be for the vehicle that the <a href="#client-def">client</a> wants to access.<br>
-          The <a href="#client-context-def">client context</a> contains all relevant information from the client,
+          The VIN provided must identify the vehicle that the <a href="#client-def">client</a> intends to access.<br>
+          The <a href="#client-context-def">client context</a> contains all relevant information about the client,
           i.e. for each of the three sub-actors that the <a href="#client-def">client</a> represents.<br>
-          The <a href="#proof-of-possession-def">proofs</a> are to be used for verifying the <a href="#client-context-def">client context</a>.<br>
-          The public key shall be generated by the <a href="#client-def">client</a>,
-          and the associated private key must be under control of the <a href="#client-def">client</a>.<br><br>
-          The main responsibilities of the access grant token server are:
+          The <a href="#proof-of-possession-def">proofs</a> are used by the server to validate the <a href="#client-context-def">client context</a>.<br><br>
+
+          The <a href="#access-grant-server-def">Access Grant Token Server</a> is responsible for:
           <ul>
-            <li>To verify the <a href="#client-context-def"> client context</a>, and assess that their respective role request can be granted.</li>
-            <li>To check that the vehicle represented by the VIN belong to this Ecosystem, and is accessible.</li>
-            <li>To create an <a href="#access-grant-token-def">access grant token</a>.</li>
+            <li>Verifying the <a href="#client-context-def"> client context</a>, and determining if the requested roles can be granted.</li>
+            <li>Validating that the vehicle identified by the VIN belongs to the ecosystem and is accessible.</li>
+            <li>Issuing the <a href="#access-grant-token-def">access grant token</a>.</li>
           </ul>
-          The <a href="#proof-of-possession-def">proofs</a> may include certificates from a Certificate Authority known by the
-          access grant token server.
-          For example, users might authenticate themselves using X.509 identity certificates and roles might be issued using attribute certificates.
-          In those cases, as part of the authentication protocol,
-          the access grant token server shall also validate the certificates signatures.<br>
-          The access grant token server may contact the <a href="#ecosystem-manager-def">ecosystem manager</a> for checking the VIN.<br>
-          The <a href="#access-grant-token-def">access grant token</a> generation is defined in the corresponding chapter.
+          The <a href="#proof-of-possession-def">proofs</a> may include certificates issued by a trusted Certificate Authority (CA) known to the <a href="#access-grant-server-def">Access Grant Token Server</a>.
+          For example, users may authenticate themselves using X.509 identity certificates and roles may be issued using attribute certificates.
+          In such cases, as part of the authentication protocol,
+          the <a href="#access-grant-server-def">Access Grant Token Server</a> SHALL also validate the certificates signatures.<br>
+          The <a href="#access-grant-server-def">Access Grant Token Server</a> may contact the <a href="#ecosystem-manager-def">ecosystem manager</a> to validate the VIN.<br>
+          Details regarding <a href="#access-grant-token-def">access grant token</a> generation are defined in the corresponding chapter.          .
         </p>
           </p>
         </section>
@@ -1248,44 +1246,42 @@
         <h2>Access Token Server</h2>
         <em>This section is non-normative.</em>
         <p>
-        The <a href="#client-def">client</a> shall after a successful interaction with the
-        <a href="#access-grant-server-def">access grant token server</a>
-        request an <a href="#access-token-def">access token</a> from the access token server.
-        The <a href="#client-def">client</a> request shall contain at least these two parameters below.
+        After a successful interaction with the <a href="#access-grant-server-def">Access Grant Token Server</a>, the <a href="#client-def">client</a>
+        SHALL request an <a href="#access-token-def">access token</a> from the Access Token Server.
+        The <a href="#client-def">client</a> request SHALL include at least the following two parameters:
           <ul>
             <li><a href="#access-grant-token-def">Access grant token</a>.</li>
             <li><a>Purpose</a>.</li>
           </ul>
-        For long term <a href="#access-grant-token-def">access grant tokens</a>, i.e. those including a public key, the
-        <a href="#client-def">client</a> must also include a <a href="#proof-of-possession-def">proof of possession</a>,
-        for the corresponding private key, in the request.<br>
-        The <a>purpose</a> must be supported by the <a href="#ecosystem-manager-def">ecosystem manager</a>, and thus be on the
-        <a href="#purpose-list-def">purpose list</a>.
-        The <a href="#purpose-list-def">purpose list</a> associates a set of accessible signals to the <a>purpose</a>,
-        thus realizing the principle of least privilege.<br>
-        The main responsibilities of the access token server are:
+        If the <a href="#client-def">client</a> uses a long-term <a href="#access-grant-token-def">access grant tokens</a>(i.e., one that includes a public key), 
+        it MUST also include a <a href="#proof-of-possession-def">proof of possession</a> for the corresponding private key in the request.<br>
+        The <a>purpose</a> specified in the request MUST be supported by the <a href="#ecosystem-manager-def">ecosystem manager</a>, 
+        and therefore listed in the official <a href="#purpose-list-def">purpose list</a>.
+        The <a href="#purpose-list-def">purpose list</a> defines the set of accessible signals associated with each <a>purpose</a>,
+        thereby enforcing the principle of least privilege.<br><br>
+        The <a href="#access-token-server">Access Token Server</a> is responsible for:
           <ul>
-            <li>To validate the <a href="#access-grant-token-def">access grant token</a>.</li>
-            <li>To validate that the <a href="#client-context-def">client context</a> provides permission for the requested <a>purpose</a>.</li>
-            <li>To create an <a href="#access-token-def">access token</a>.</li>
+            <li>Validating the the <a href="#access-grant-token-def">access grant token</a>.</li>
+            <li>Verifying that the <a href="#client-context-def">client context</a> is authorized for the requested <a>purpose</a>.</li>
+            <li>Creating and issuing the <a href="#access-token-def">access token</a>.</li>
           </ul>
         The validation of the <a href="#access-grant-token-def">access grant token</a> consists of at least the following:
           <ul>
-            <li>Signature validation.</li>
+            <li>Signature verification (using the public key of the <a href="#access-grant-server-def">Access Grant Token Server</a>).</li>
             <li>Expiry time check.</li>
           </ul>
-        Additionally, for long term <a href="#access-grant-token-def">access grant tokens</a>, the access token server needs to verify the
-        <a href="#proof-of-possession-def">proof of possession</a> using the public key contained in the token.<br>
+        For long-term <a href="#access-grant-token-def">access grant tokens</a>, the server MUST additionally verify the
+        <a href="#proof-of-possession-def">proof of possession</a>, using the public key contained in the token.<br>
         The <a href="#access-grant-token-def">access grant token</a> signature validation is done with the
         <a href="#access-grant-server-def">access grant token server</a> public key.
         <br>
-        To allow for some time synchronization inaccuracy and minor network latency,
-        expiry times should be set to include potential modest margin of error, possibly as long as tens of seconds.<br>
-        If a vehicle identity claim (vin) is present in the <a href="#access-grant-token-def">access grant token</a>,
-        the vehicle identity (vin) claim SHALL be included in the access token.<br>
-        If the <a href="#client-context-def">client context</a> as declared in the <a href="#access-grant-token-def">access grant token</a>
-        does not match in the set of allowed roles for the requested <a>purpose</a> in the <a href="#purpose-list-def">purpose list</a>,
-        then the <a href="#client-def">client</a> request for an <a href="#access-token-def">access token</a> must be denied.<br>
+        To accommodate minor clock drift and network latency,
+        the expiry time SHOULD include a reasonable margin, possibly up to tens of seconds.<br>
+        If a vehicle identity (VIN) claim is present in the <a href="#access-grant-token-def">access grant token</a>,
+        it SHALL also be included in the access token.<br>
+        If the <a href="#client-context-def">client context</a>, as defined in the <a href="#access-grant-token-def">access grant token</a>,
+        does not match any of the roles permitted for the specified <a>purpose</a> in the <a href="#purpose-list-def">purpose list</a>,
+        then the <a href="#client-def">client</a> request for an <a href="#access-token-def">access token</a> MUST be denied.<br>
         </p>
       </section>
 
@@ -1293,33 +1289,38 @@
         <h2>Access Control Server</h2>
         <p>
         The VISSv3 server MUST support validation of <a href="#access-token-def">access tokens</a>.
-        The functionality needed for this is decribed in this chapter.
-        This includes validation of at least the following:
+        The functionality required for this validation is described in this chapter.
+        This includes, at a minimum, validation of the following elements:
           <ul>
             <li>Token signature.</li>
             <li>Token expiry time.</li>
           </ul>
           If a vehicle identity claim (vin) is present in the token, then it MUST be validated to match the identity of this vehicle.<br>
-          If any of the mentioned validations fail, the server MUST reject the access request.<br>
-          Token signature validation may be delegated to the <a href="#access-token-server-def">access token server</a>,
-          if a secure communication link can be established.
-          If not delegated, then a preprovisioned common secret may be shared with the <a href="#access-token-server-def">access token server</a>,
-          or other PKI based solutions may be used.<br>
-          The VISSv3 server SHALL have access to a secure system time, that cannot be modified by actors without system acknowledged credentials.
-          Time validation may allow for a time synchronization inaccuracy in the range of tens of seconds.<br>
-          After a successful token validation, the server MUST check that the scope of the token is compatible with the request.
-          If the scope claim of the <a href="#access-token-def">access token</a> contains a <a>purpose</a> short-name,
+          If any of these validations fail, the server MUST reject the access request.<br>
+          Token signature validation MAY be delegated to the <a href="#access-token-server-def">access token server</a>,
+          provided that a secure communication link can be established.
+          If delegation is not possible, then a pre-provisioned common secret may be shared with the <a href="#access-token-server-def">access token server</a>,
+          or PKI-based solutions MAY be used.<br>
+          The VISSv3 server SHALL have access to a secure system time, which cannot be modified by actors without system acknowledged credentials.
+          Time validation MAY allow for synchronization inaccuracies, typically within a range of tens of seconds.<br>
+          After a successful token validation, the server MUST verify that the scope of the token is compatible with the request:<br>
+          <ul>
+            <li>If the scope claim of the <a href="#access-token-def">access token</a> contains a <a>purpose</a> short-name,
           successful validation requires that all the nodes addressed by the path in the request MUST
-          be matched by the paths associated with the <a>purpose</a> in the <a href="#purpose-list-def">purpose list</a> .<br>
-          If the scope claim of the <a href="#access-token-def">access token</a> contains a explicit list of signals,
+          be matched by the paths associated with the <a>purpose</a> in the <a href="#purpose-list-def">purpose list</a> .</li>
+            <li>If the scope claim of the <a href="#access-token-def">access token</a> contains a explicit list of signals,
           successful validation requires that all the nodes addressed by the path in the request MUST
-          be matched by the one of the signals included in the token.<br>
-          Validation of the <a href="#device-roles-def">device</a> and <a href="#application-roles-def">app </a>roles may involve MAC address checks,
-          or message round-trip measurements.<br>
-          The access permission validation MUST have the outcome shown in the table below,
+          be matched by the one of the signals included in the token.<br></li>
+          </ul>
+          Validation of the <a href="#device-roles-def">device</a> and <a href="#application-roles-def">application</a> roles MAY include techniques such as:
+          <ul>
+            <li>MAC address checks.</li>
+            <li>message round-trip measurements.</li>
+          </ul>
+          The result of access permission validation MUST have the outcome shown in the table below,
           when comparing the type of the <a href="#client-def">client</a> request with the access control mode either in the
           <a href="#purpose-list-def">purpose list</a> or the explicit signals that are associated to the scope claim in the <a href="#access-token-def">access token</a>.
-          If the <a href="#client-def">client</a> request contains several signals, and one fails the validation,
+          If the <a href="#client-def">client</a> request contains multiple signals, and any one of them fails the validation,
           then the entire request MUST be rejected.<br><br>
           <table class="simple">
           <thead>
@@ -1336,24 +1337,24 @@
           </table>
         </p>
         <p>
-          The <a href="#access-token-def">access token</a> need to be refreshed periodically, which is controlled by the expiry time.
-          If the <a href="#access-grant-token-def">access grant token</a> that the <a href="#client-def">client</a> used to obtain the now expired
-          <a href="#access-token-def">access token</a> is not expired,
+          The <a href="#access-token-def">access token</a> needs to be refreshed periodically, which is determined by the expiry time.
+          If the <a href="#access-grant-token-def">access grant token</a> that the <a href="#client-def">client</a> originally used to obtain the now-expired
+          <a href="#access-token-def">access token</a> is still valid,
           then the <a href="#client-def">client</a> can revisit the <a href="#access-token-server-def">access token server</a> with this
           <a href="#access-grant-token-def">access grant token</a> to obtain a new <a href="#access-token-def">access token</a>.<br>
-          If the <a href="#access-grant-token-def">access grant token</a> is expired, then the <a href="#client-def">client</a> must obtain a new
+          However, if the <a href="#access-grant-token-def">access grant token</a> is also expired, then the <a href="#client-def">client</a> MUST obtain a new
           <a href="#access-grant-token-def">access grant token</a> first,
           before revisiting the <a href="#access-token-server-def">access token server</a>.<br>
           The server SHOULD support caching of a limited number of <a href="#access-token-def">access tokens</a>.
-          The <a href="#access-token-def">access token</a> MUST be included in the cache after a first successful request and
-          MUST be removed once they expire.
-          If an access token is cached then the server shall return a token handle of at least 24 bytes long.
-          The client may then use this instead of the complete access token in following requests that require this access token.
+          The <a href="#access-token-def">access token</a> MUST be added to the cache after a first successful request and
+          it MUST be removed once they expire.
+          If an access token is cached then the server SHALL return a token handle of at least 24 bytes long.
+          The client MAY then use this instead of the complete access token in following requests that require this access token.
           If the client decides to include the access token handle in a request, the server must then fetch the corresponding access token from the cache,
           and verify its validity before deciding to grant the request.<br>
-          The server might decide to remove any token from the cache. In the case this token is then referred to with a token handle the client will get a "401,
-          invalid_token" error message and will be forced to send the whole <a href="#access-token-def">access token</a> again.<br>
-          For <a href="#client-def">client</a> requests that are not granted due to access control,
+          The server MAY decide to remove any token from the cache at any time. If the client later references a removed token using its handle, the server WILL return
+          a "401, invalid_token" error, and the client MUST resend the whole <a href="#access-token-def">access token</a>.<br>
+          For any <a href="#client-def">client</a> request denied due to access control,
           the VISSv3 server MUST return a "401, invalid_token" error message.
         </p>
       </section>
@@ -1363,8 +1364,8 @@
         <h2>Resource Owner</h2>
         <em>This section is non-normative.</em>
         <p>
-        The resource owner is typically the owner and/or driver of the vehicle. If Consent is required for granting access to the protected resource,
-        then it should be directed to the resource owner. The process for this is out of scope for this specification.
+        The resource owner is typically the owner and/or driver of the vehicle. If consent is required to grant access to the protected resource,
+        then the request SHOULD be directed to the resource owner. The process of obtaining consent is out of scope for this specification.
         </p>
       </section>
 
@@ -1373,10 +1374,12 @@
         <h2>Ecosystem Manager</h2>
         <em>This section is non-normative.</em>
         <p>
-        The Ecosystem manager is the entity responsible for the functionality of the access control system.
-        This typically includes the management of the <a href="#access-grant-server-def">access grant token server</a>,
-        and the <a href="#access-token-server-def">access token server</a>, the Policy documents,
-        and that there is a PKI domain for the other actors to utilize.
+        The Ecosystem manager is the entity responsible for managing the access control system.
+        This typically includes managing the <a href="#access-grant-server-def">Access Grant Token Server</a>,
+        and the <a href="#access-token-server-def">Access Token Server</a>, maintaining the Policy documents,
+        and ensuring that a PKI domain is available for use by other actors in the ecosystem.
+
+        .
         </p>
       </section>
       </section>
