@@ -1394,11 +1394,10 @@
           <em>This section is non-normative.</em>
           <p>
           The three <a href="#client-def">client</a> sub-actors must provide authentication credentials to the
-          <a href="#access-grant-server-def">access grant token server</a>.
-          This may be certificates that the sub-actors have obtained from a Certificate Authority that is known by the
-          <a href="#access-grant-server-def">access grant token server</a>.
-          The interactions related to this are out of scope.
-          </p>
+          <a href="#access-grant-server-def">Access Grant Token Server</a>.
+          These credentials MAY be certificates issued by a Certificate Authority (CA) recognized by
+          <a href="#access-grant-server-def">Access Grant Token Server</a>.<br>
+          The details of these interactions are out of scope for this specification.
         </section>
 
         <dfn id="access-grant-token-def"></dfn>
@@ -1407,10 +1406,10 @@
           <em>This section is non-normative.</em>
 
           <section id="ags-signed-agtoken">
-            <h2>Short Term Access Grant Token</h2>
+            <h2>Short-Term Access Grant Token</h2>
             <p>
-          The short term access grant token shall have the following claims in header and payload,
-          where all but the vehicle identity (vin) claim are mandatory.<br>
+          The short-term access grant token SHALL include the following claims in both the header and the payload.
+          All claims are mandatory, except for the vehicle identity (vin) claim, which is optional.<br>
           <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>
           {
             "alg": "ES256",
@@ -1425,25 +1424,27 @@
             "jti": "5967e92e-40e8-5f39-892d-cc0da890db1d"
           }
           </pre>
-          The algorithm (alg) claim shall be set to a valid RSA or ECDSA algorithms according to [[RFC7518]].<br>
-          The type (typ) claim shall be set to "JWT".<br>
-          The vehicle identity (vin) claim may be present or not, depending on input to the
-          <a href="#access-grant-server-def">access grant token server</a>.<br>
-          The issued at (iat) claim shall be set to the time of token issuance, in Unix time.<br>
-          The expiry (exp) claim shall be set to the time when the token expires, in Unix time.<br>
-          The <a href="#client-context-def">Client context</a> (clx) claim shall be set to the role triplet that the client has been assigned.
-          The delimiter separating the roles is a plus sign (+).<br>
-          The audience (aud) claim shall be set to the URL "covesa.global/VISSv3".<br>
-          The JSON Web Token identity (jti) claim shall be set to a UUID that is unique within the domain controlled by the
-          <a href="#ecosystem-manager-def">ecosystem manager</a>.
+          <ul>
+            <li>The alg (algorithm) claim SHALL be set to a valid RSA or ECDSA algorithms according to [[RFC7518]].</li>
+            <li>The typ (type) claim SHALL be set to "JWT".</li>
+            <li>The vin (vehicle identity) claim MAY be present or not, depending on input to the
+              <a href="#access-grant-server-def">Access Grant Token Server</a>.</li>
+            <li>The iat (issued at) claim SHALL be set to the Unix timestamp representing the token’s issuance time.</li>
+            <li>The exp (expiry) claim SHALL be set to the Unix timestamp when the token expires.</li>
+            <li>The clx (<a href="#client-context-def">Client context</a>) SHALL be set to the client’s assigned role triplet 
+              (user, app, device), with each role separated by a plus sign (+).</li>
+            <li>The aud (audience) claim SHALL be set to the URL: "covesa.global/VISSv3".</li>
+            <li>The jti (JSON Web Token identity) claim SHALL be set to a UUID that is unique within the domain controlled by the
+              <a href="#ecosystem-manager-def">ecosystem manager</a>.</li>
+          </ul>
             </p>
           </section>
 
           <section id="client-signed-agtoken">
             <h2>Long Term Access Grant Token</h2>
             <p>
-          Except for the vehicle identity (vin) claim that is optional,
-          the long term access grant token SHALL have the following claims in header and payload.<br>
+          Except for the vehicle identity (vin) claim, which is optional,
+          the long term access grant token SHALL include the following claims in both the header and the payload.<br>
           <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>
           {
             "alg": "ES256",
@@ -1459,19 +1460,21 @@
             "jti": "5967e92e-40e8-5f39-892d-cc0da890db1d"
           }
           </pre>
-          The algorithm (alg) claim shall be set to a valid RSA or ECDSA algorithms according to [[RFC7518]].<br>
-          The type (typ) claim shall be set to "JWT".<br>
-          The vehicle identity (vin) claim may be present or not, depending on input to the
-          <a href="#access-grant-server-def">access grant token server</a>.<br>
-          The issued at (iat) claim shall be set to the time of token issuance, in Unix time.<br>
-          The expiry (exp) claim shall be set to the time when the token expires, in Unix time.<br>
-          The <a href="#client-context-def">Client context</a> (clx) claim shall be set to the role triplet that the client has been assigned.
-          The delimiter separating the roles is a plus sign (+).<br>
-          The public key (pub) claim shall be set to the public key that the <a href="#client-def">client</a> provided in the
-          <a href="#access-grant-request-def">access grant request</a>, using the JSON Web Key (JWK) data structure [[RFC7517]].<br>
-          The audience (aud) claim shall be set to the URL "covesa.global/VISSv3".<br>
-          The JSON Web Token identity (jti) claim shall be set to a UUID that is unique within the domain controlled by the
-          <a href="#ecosystem-manager-def">ecosystem manager</a>.
+          <ul>
+            <li>The alg (algorithm) claim SHALL be set to a valid RSA or ECDSA algorithms according to [[RFC7518]].</li>
+            <li>The typ (type) claim SHALL be set to "JWT".</li>
+            <li>The vin (vehicle identity) claim MAY be present or not, depending on input to the
+              <a href="#access-grant-server-def">Access Grant Token Server</a>.</li>
+            <li>The iat (issued at) claim SHALL be set to the Unix timestamp representing the token’s issuance time.</li>
+            <li>The exp (expiry) claim SHALL be set to the Unix timestamp when the token expires.</li>
+            <li>The clx (<a href="#client-context-def">Client context</a>) SHALL be set to the client’s assigned role triplet 
+              (user, app, device), with each role separated by a plus sign (+).</li>
+            <li>The pub (public key) claim SHALL be set to the <a href="#client-def">client</a>'s public key provided in the
+              <a href="#access-grant-request-def">access grant request</a>, using the JSON Web Key (JWK) data structure [[RFC7517]].</li>
+            <li>The aud (audience) claim SHALL be set to the URL: "covesa.global/VISSv3".</li>
+            <li>The jti (JSON Web Token identity) claim SHALL be set to a UUID that is unique within the domain controlled by the
+              <a href="#ecosystem-manager-def">ecosystem manager</a>.</li>
+          </ul>
             </p>
           </section>
         </section>
@@ -1480,8 +1483,8 @@
         <section id="access-token">
           <h2>Access Token</h2>
           <p>
-          Except for the vehicle identity (vin), and client context (clx) claims that are optional,
-          the Access token SHALL have the following claims in header and payload.<br>
+          Except for the vehicle identity (vin), and client context (clx) claims, which are optional,
+          the Access token SHALL include the following claims in both the header and the payload.<br>
           <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>
           {
             "alg": "HS256",
@@ -1497,23 +1500,25 @@
             "jti": "5967e93f-40f9-5f39-893e-cc0da890db2e"
           }
           </pre>
-          The algorithm (alg) claim shall be set to any valid algorithms according to [[RFC7518]].<br>
-          The type (typ) claim shall be set to "JWT".<br>
-          The vehicle identity claim (vin) may be present or not, depending on its presence in the
-          <a href="#access-grant-token-def">access grant token</a>.<br>
-          The issued at (iat) claim shall be set to the time of token issuance, in Unix time.<br>
-          The expiry (exp) claim shall be set to the time when the token expires, in Unix time.<br>
-          The scope (scp) claim shall be set to either a <a href="#purpose-list-def">purpose list</a> short name,
-          which logically links to the signal scope as defined in the <a href="#purpose-list-def">purpose list</a>,
-          or to a set of signals that the token permits access to.
-          Each signal is defined as a JSON object containing the signal path, and the signal permission as shown below.<br>
-          {"path":"vss-path", "access_permission":"permission"}<br>
-          If the scope claim is set to a purpose, the client context claim MUST be present in the token.<br>
-          The <a href="#client-context-def">Client context</a> (clx) claim shall be set to the role triplet that the client has been assigned.
-          The delimiter separating the roles is a plus sign (+).<br>
-          The audience (aud) claim shall be set to the URL "covesa.global/VISSv3".<br>
-          The JSON Web Token identity (jti) claim shall be set to an unguessable UUID that is unique within the domain controlled by the
-          <a href="#ecosystem-manager-def">ecosystem manager</a>.
+          <ul>
+            <li>The alg (algorithm) claim SHALL be set to a valid algorithms according to [[RFC7518]].</li>
+            <li>The typ (type) claim SHALL be set to "JWT".</li>
+            <li>The vin (vehicle identity) claim MAY be present or not, depending on input to the
+              <a href="#access-grant-server-def">Access Grant Token Server</a>.</li>
+            <li>The iat (issued at) claim SHALL be set to the Unix timestamp representing the token’s issuance time.</li>
+            <li>The exp (expiry) claim SHALL be set to the Unix timestamp when the token expires.</li>
+            <li>The scp (scope) claim SHALL be set to either a <a href="#purpose-list-def">purpose list</a> short name,
+              which logically links to the signal scope as defined in the <a href="#purpose-list-def">purpose list</a>,
+              or to a set of signals that the token permits access to.
+              Each signal is defined as a JSON object containing the signal path, and the signal permission as shown below.<br>
+              {"path":"vss-path", "access_permission":"permission"}<br>
+              If the scope claim is set to a purpose, the client context claim MUST be present in the token.</li>
+            <li>The clx (<a href="#client-context-def">Client context</a>) SHALL be set to the client’s assigned role triplet 
+              (user, app, device), with each role separated by a plus sign (+).</li>
+            <li>The aud (audience) claim SHALL be set to the URL: "covesa.global/VISSv3".</li>
+            <li>The jti (JSON Web Token identity) claim SHALL be set to an unguessable UUID that is unique within the domain controlled by the
+              <a href="#ecosystem-manager-def">ecosystem manager</a>.</li>
+          </ul>
           </p>
         </section>
 
@@ -1522,27 +1527,25 @@
           <h2>Proof of Possession</h2>
           <em>This section is non-normative.</em>
           <p>
-            Long term <a href="#access-grant-token-def">access grant tokens</a> need to be accompanied by a Proof of Possession (PoP)
+            Long-term <a href="#access-grant-token-def">access grant tokens</a> MUST to be accompanied by a Proof of Possession (PoP)
             for the private key corresponding to the public key included in the <a href="#access-grant-token-def">access grant token</a>.
-            This requirement enables a longer validity for this kind of tokens, ranging from a few days to a even a year.
+            This requirement enables a longer validity for this kind of tokens, ranging from a several days to a even a year.
             By adding the PoP, an eavesdropper is prevented to reuse an <a href="#access-token-def">access token</a> request,
             impersonating the client. Without a PoP, the longer the validity of an <a href="#access-grant-token-def">access grant token</a>,
             the higher the risk an attacker could intercept and reuse it.
-            PoP for JWT are defined in [[RFC7800]], but in essence,
-            a PoP enables the requester to proof to the server that it has access to a private key, without disclosing it.
-            Traditionally that would require the server to create a random challenge, or nonce, and ask the client to sign it with its private key.
-            Along with the public key,
-            the server would be able to verify the PoP.
+            PoP for JWT are defined in [[RFC7800]]. In essence, PoP enables the requester to proof to the server that it has access to a private key, without disclosing it.
+            Traditionally, this is done by the server generating a random challenge, or nonce, and ask the client to sign it with its private key.
+            Along with the public key, the server would be able to verify the PoP.
             This scheme would require an extra step in the protocols, where the client ask for the nonce.
           </p><p>
-            In order to avoid this extra step, the client can generate the nonce itself. The server would need to check that nonces are not reused.
-            Although logging previous nonces at the server side would work for small environments,
-            the use of an incremental nonce in the form of a timestamp is proposed.
+            To avoid this extra step, the client MAY generate the nonce itself. In this case, the server must ensure that nonces are not reused.
+            While logging previously used nonces on the server may work in small-scale environments,
+            a more scalable approach is to use an incremental nonce based on a timestamp.
             One of the drawbacks of this proposal is that the server has no means to check whether the PoP has been precomputed or not.
             However, this is irrelevant from the eavesdropper point of view.
           </p><p>
-            In case freshness of the PoP was a critical requirement, a public source of randomness to obtain the nonce could be used,
-            e.g. <a href="https://www.cloudflare.com/leagueofentropy/">Leage of Entropy</a> or
+            If PoP freshness is a critical requirement, the nonce could be derived from a public source of randomness,
+            such as the <a href="https://www.cloudflare.com/leagueofentropy/">Leage of Entropy</a> or
             <a href="https://csrc.nist.gov/projects/interoperable-randomness-beacons">Interoperable Randomness Beacons</a>.
             That would provide the server a mean to check freshness of the PoP but on the other hand,
             it would require the client to access the public source of randomness every time it needs to create a PoP
@@ -1558,27 +1561,26 @@
         <h2>Client Context</h2>
         <em>This section is non-normative.</em>
         <p>
-        The client context contains a <a href="#client-def">client</a> actor that is characterized by three subactors:
+        The client context contains a <a href="#client-def">client</a> actor that is characterized by three sub-actors:
           <ul>
             <li>The <a href="#user-roles-def">user</a> of the application.</li>
             <li>The <a href="#application-roles-def">application</a>.</li>
             <li>The <a href="#device-roles-def">device</a>.</li>
           </ul>
-          Each of these subactors is in turn characterized by a role,
+          Each of these sub-actors is in turn characterized by a role,
           building on the concept of a <a href="https://en.wikipedia.org/wiki/Role-based_access_control">Role Based Access Control (RBAC) model</a>.
           The set of these three roles is called the Client context.<br>
-          VISSv3 specifies a rudimentary list of roles for each subactor, it is expected that these lists are augmented by the
+          VISSv3 specifies a rudimentary list of roles for each sub-actor, it is expected that these lists are augmented by the
           <a href="#ecosystem-manager-def">ecosystem manager</a>, hopefully in a cooperative effort.<br>
           Using an RBAC model provides the following main purposes in the VISSv3 access control model:
           <ul>
-            <li>Input to the <a href="#access-grant-server-def">access grant token server</a> in the
+            <li>Input to the <a href="#access-grant-server-def">access grant token server</a> during
             <a href="#client-def">client</a> authentication process.</li>
-            <li>Input to the <a href="#access-token-server-def">access token server</a> in the <a>purpose</a> validation.</li>
+            <li>Input to the <a href="#access-token-server-def">access token server</a> during <a>purpose</a> validation.</li>
           </ul>
-        The <a href="#access-grant-server-def">access grant token server</a> must in the authentication process of the client
-        possibly separately authenticate each of the three subactors.
-        For the <a href="#access-grant-server-def">access grant token server</a> to decide on which authentication method to use per subactor
-        can be quite complex, but may be somewhat eased by the <a href="#client-def">client</a> request for roles for each subactor.<br>
+        During authentication, the <a href="#access-grant-server-def">access grant token server</a> MAY need to authenticate each sub-actor individually.
+        For the <a href="#access-grant-server-def">access grant token server</a> to decide on which authentication method to use per sub-actor
+        can be quite complex. However, this complexity can be reduced if the <a href="#client-def">client</a> explicitly requests specific roles for each sub-actor.
         Following the principle of least priviledge, a <a href="#client-def">client</a> should not have access to more vehicle signals than necessary.
         This is achieved by the <a href="#purpose-list-def">purpose list</a>, that assigns only the for the
         <a>purpose</a> relevant signals to the <a href="#client-def">client</a>.
@@ -1597,12 +1599,12 @@
             <li>Driver</li>
             <li>Passenger</li>
           </ul>
-          An OEM user is anyone representing the vehicle brand.<br>
-          A Dealer user is anyone representing a normally OEM affiliated organisation that provide sale and workshop services for the vehicle.<br>
-          An Independent user is anyone representing a normally OEM independent organisation that provide after-market services for the vehicle.<br>
-          An Owner user is anyone representing the organisation owning the vehicle.<br>
-          A Driver user is anyone driving the vehicle.<br>
-          A Passenger user is anyone travelling in the vehicle, but not being the Driver.<br>
+          An OEM user is anyone who represents the vehicle manufacturer (OEM).<br>
+          A Dealer user represents an OEM-affiliated organization that provides vehicle sales and workshop services.<br>
+          An Independent user represents a non-OEM-affiliated organization offering aftermarket services for the vehicle.<br>
+          An Owner user is the representative of the organization that owns the vehicle.<br>
+          A Driver user is anyone operating the vehicle.<br>
+          A Passenger user is anyone riding in the vehicle without driving it.<br>
           </p>
         </section>
 
@@ -1610,7 +1612,7 @@
         <section id="application-roles">
           <h2>Application Roles</h2>
           <p>
-          VISSv3 specifies the following minimum set of roles for applications:
+          VISSv3 defines the following minimum set of roles for applications:
           <ul>
             <li>OEM</li>
             <li>Third party</li>
@@ -1625,17 +1627,15 @@
         <section id="device-roles">
           <h2>Device Roles</h2>
           <p>
-          VISSv3 specifies the following minimum set of roles for devices:
+          VISSv3 defines the following minimum set of roles for devices:
           <ul>
             <li>Vehicle</li>
             <li>Nomadic</li>
             <li>Cloud</li>
           </ul>
-          A Vehicle role is used for <a href="#application-roles-def">applications</a> that are deployed in-vehicle, in e. g. the center stack ECU.<br>
-          A Nomadic role is used for <a href="#application-roles-def">applications</a> that are deployed in a user's mobile phone, laptop, etc,
-          that uses short range radio communication like Bluetooth, or WiFi.<br>
-          A Cloud role is used for <a href="#application-roles-def">applications</a> that are deployed in off-vehicle devices,
-          and uses a long range radio communication like cellular in the connection to the vehicle.<br>
+          A Vehicle device role is one that is deployed within the vehicle, such as in the center stack ECU.<br>
+          A Nomadic device role refers to a mobile device (e.g., smartphone or laptop) that connects to the vehicle via short-range communication (e.g., Bluetooth or Wi-Fi).<br>
+          A Cloud device role is hosted outside the vehicle, typically in a data center, and connects to the vehicle via long-range communication, such as cellular networks.<br>
           </p>
         </section>
       </section>
