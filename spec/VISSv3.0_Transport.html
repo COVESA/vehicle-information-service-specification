@@ -433,7 +433,7 @@
       The VISSv3.0 specification lists the transport protocols HTTP, WebSocket, gRPC, and MQTT as supported.
       However, this is not necessarily a final list as says that any protocol that transport the primary payloads of this specification,
       or an encoded version of the primary payloads, can be included on this list.<br>
-      The specification does not mandate any specific transport protocol,
+      The specification does not mandate the use of a specific transport protocol,
       but at least one of the listed transport protocols MUST be supported.
       </p>
 
@@ -441,10 +441,10 @@
         <h2>Secure WebSocket</h2>
         <p>
         The WebSocket protocol is used in this document to provide examples of a protocol that does not apply any deviations to the primary payload format.
-        As it does not implicitly provide a logical association between the request and response messages
-        a key-value pair with the keyname "requestId" is added to the data components as described in the [[CORE]] document.<br>
-        As the WebSocket protocol neither specifies a set of explicit methods,
-        another key-value pair with the keyname "action" is also added. See <a href='#action-def'></a> for the declaration of these key-value pairs.
+        As it does not implicitly provide a logical association between the request and response messages,
+        a key-value pair with the key name "requestId" MUST be added to the data components, as described in the [[CORE]] document.<br>
+        Additionally, since WebSocket does not define explicit methods, another key-value pair, "action", MUST also be included. 
+        Refer to <a href='#action-def'></a> for detailed descriptions of these key-value pairs.
         All data components are mapped to the payload.
         </p>
 
@@ -454,85 +454,81 @@
           <section id="wss-initialisation">
             <!--OddPage--><h2>Initialization</h2>
 
-	<p>If the client application is an HTML Application running in a web
-	runtime or is a web page running in a browser, the WebSocket
-	instance may either be instantiated natively or be created using a
-	'standards compliant' WebSocket JavaScript library.</p>
-	<p>A WebSocket can also be initiated from a native (e.g. C++) Application
-	or from an Application written using a 'Managed Runtime' language like
-	Java or C#. It is assumed that native and managed clients use a
-	suitable standards compliant WebSocket library to request that a
-	WebSocket connection is opened on the server.</p>
+            <p>If the client application is an HTML Application running in a web runtime or is a web page running 
+              in a browser, the WebSocket instance may either be instantiated natively or be created using 
+              a 'standards compliant' WebSocket JavaScript library.</p>
+            <p>A WebSocket can also be initiated from a native application (e.g., written in C++)
+              or from a managed runtime environment such as Java or C#. 
+              In these cases, it is assumed that the client uses a standards-compliant WebSocket library 
+              to request a connection with the server.</p>
 
-	<p>Implementations that support additional devices or multiple VISSv3 services
-        should provide discovery. Alternatively, the location of a particular VISSv3
-        Server instance on the local vehicle network may be handled by
-        configuration, either as part of a package manifest or by consulting a
-        registry on application install. The 'wwwVISSv3' hostname in this
-        specification is used an example.
-	</p>
-	
-	<p>A client running on the vehicle is able to connect to the
-	VISSv3 Server instance using the hostname e.g. 'wwwVISSv3' and uses the
-	default port 6443. The hostname 'wwwVISSv3' may locally be mapped to the localhost
-	IP address 127.0.0.1 e.g. by adding an entry to the /etc/hosts file.</p>
+            <p>Implementations that support additional devices or multiple VISSv3 services
+              should provide discovery. Alternatively, the location of a particular VISSv3
+              Server instance on the local vehicle network may be handled by
+              configuration, either as part of a package manifest or by consulting a
+              registry on application install. The 'wwwVISSv3' hostname in this
+              specification is used an example.
+            </p>
+    
+            <p>A client running on the vehicle is able to connect to the
+            VISSv3 Server instance using the hostname e.g. 'wwwVISSv3' and uses the
+            default port 6443. The hostname 'wwwVISSv3' may locally be mapped to the localhost
+            IP address 127.0.0.1 e.g. by adding an entry to the /etc/hosts file.</p>
 
-	<p>The sub-protocol name <em class="rfc2119" title="SHALL">SHALL</em> be 'VISSv3' with the digit 3 being the version number.
-	The sub-protocol version will
-	be associated with exactly one VISS Server Specification version so that the client and server can
-	correctly validate and parse request and response message packets.</p>
-        <pre><code>
-	var vehicle  = new WebSocket("wss://wwwVISSv3:6443", "VISSv3");
-        </code></pre>
-	<p>The client <em class="rfc2119" title="SHALL">SHALL</em> connect to the server over HTTPS and request that
-	the server opens a WebSocket. All WebSocket communications between
-	the client and server <em class="rfc2119" title="MUST">MUST</em> be over ‘wss’. Non encrypted communication
-	is not supported, hence the server <em class="rfc2119" title="MUST">MUST</em> refuse ‘ws’ connection requests.</p>
-	
-        <p>This specification assumes that a single WebSocket is used to enable communication between a client application
-        and the server. The client MAY open more than one websocket.
-        However, the server <em class="rfc2119" title="MAY">MAY</em> refuse to open a subsequent WebSocket connection and
-        the client is responsible for handling this gracefully.
-        </p>
+            <p>The sub-protocol name SHALL be 'VISSv3' with the digit 3 being the version number.
+            The sub-protocol version will
+            be associated with exactly one VISS Server Specification version so that the client and server can
+            correctly validate and parse request and response message packets.</p>
+            <pre><code>
+              var vehicle  = new WebSocket("wss://wwwVISSv3:6443", "VISSv3");
+            </code></pre>
+            <p>The client SHALL connect to the server over HTTPS and request that
+            the server opens a WebSocket. All WebSocket communications between
+            the client and server MUST use ‘wss’ (WebSocket Secure). Non encrypted communication
+            is not supported, hence the server MUST reject ‘ws’ connection requests.</p>
+      
+            <p>This specification assumes that a single WebSocket is used to enable communication between a client application
+            and the server. The client MAY open more than one websocket.
+            However, the server MAY reject to open a subsequent WebSocket connection and
+            the client is responsible for handling this gracefully.
+            </p>
+            <p>If multiple WebSocket connection is established between a client application and the server 
+              then each connection MUST be managed independently. For example, subscriptions created 
+              through one connection can only trigger events through that same connection, 
+              and the client MUST use the same connection to unsubscribe.
+            </p>
+            <p>If multiple WebSocket connection has been established
+            between one or more clients and a particular server instance, there
+            is a risk that race conditions and concurrency issues could occur.
+            For instance, simultaneous updates to the same signal from different connections 
+            could result in conflicts.
+            </p>
 
-        <p>If more than one WebSocket connection is established between a client application and the server then each connection
-        <em class="rfc2119" title="MUST">MUST</em> be managed independently. For example, subscriptions created using a particular
-        WebSocket connection shall only trigger event messages via that connection and the client
-        <em class="rfc2119" title="MUST">MUST</em> use that WebSocket connection to unsubscribe.
-        </p>
-
-        <p>If more than one WebSocket connection has been established
-        between one or more clients and a particular server instance, there
-        is a risk that race conditions and concurrency issues could occur.
-        An example of this would be where two or more WebSocket connections
-        are used to update a particular setting at the same time.
-        </p>
-
-        <p>Unless explicitly stated otherwise, the client <em class="rfc2119" title="MAY">MAY</em> only assume
-        that the server implements a simple concurrency model where lost
-        updates and dirty reads could potentially occur if the server has
-        more than one WebSocket connection open.
-        </p>	
+            <p>Unless explicitly stated otherwise, the client MAY assume that the server implements 
+              a basic concurrency model, meaning that lost updates or dirty reads could occur 
+              when multiple WebSocket connections are in use.
+            </p>	
           </section>
 
           <section id="wss-closure">
             <!--OddPage--><h2>Closure</h2>
-	<p>The WebSocket may be closed by either the client or the
-	server by invoking the ‘close()’ method on the WebSocket
-	instance.</p>
+            <p>The WebSocket connection MAY be closed by either the client or the
+            server by invoking the ‘close()’ method on the WebSocket
+            instance.</p>
 
-	<p>The following example shows the lifetime of a WebSocket on
-	the client:</p>
-        <pre><code>
-	// Open the WebSocket</span>
-	var vehicle  = new WebSocket("wss://wwwVISSv3:6443", "VISSv3");
-	…
-	// Close the WebSocket
-	vehicle.close();
-        </code></pre>
-	<p>The VISSv3 Server may terminate the WebSocket connection if it has not received a request for a period determined by
-	the server. It is the client’s responsibility to handle this gracefully and to recover and request new subscriptions, where required.
-	</p>
+            <p>The following example shows the typical lifecycle of a WebSocket connection on the client side:</p>
+              <pre><code>
+              // Open the WebSocket</span>
+              var vehicle  = new WebSocket("wss://wwwVISSv3:6443", "VISSv3");
+              …
+              // Close the WebSocket
+              vehicle.close();
+              </code></pre>
+            <p>
+              The VISSv3 server MAY also terminate the connection if it does not receive any requests from the client 
+              within a server-defined timeout period. 
+              In such cases, the client MUST handle the closure gracefully, and if needed, re-establish the connection and request new subscriptions, where required.
+            </p>
         </section>
       </section>
 
@@ -541,13 +537,13 @@
 
           <section id="wss-read-message">
             <h2>Read</h2>
-            <p>The client <em class="rfc2119" title="MAY">MAY</em> send a <a href="#dfn-getrequest" class="internalDFN" data-link-type="dfn">getRequest</a>
+            <p>The client MAY send a <a href="#dfn-getrequest" class="internalDFN" data-link-type="dfn">getRequest</a>
             message to the server to get the value of one or more vehicle signals.
-            If the server is able to satisfy the request it <em class="rfc2119" title="SHALL">SHALL</em> return a
+            If the server can fulfill the request, it SHALL return a
             <a href="#dfn-getsuccessresponse" class="internalDFN" data-link-type="dfn">getSuccessResponse</a> message.
-            If an error occurs then the server <em class="rfc2119" title="SHALL">SHALL</em> return a
+            If an error occurs, the server SHALL return a
             <a href="#dfn-geterrorresponse" class="internalDFN" data-link-type="dfn">getErrorResponse</a> message.
-            The structure of these message objects is defined below.
+            The structure of these message objects is defined in the tables below:
             </p><br>
             <table class="simple">
             <thead>
@@ -556,7 +552,7 @@
             <tbody>
                 <tr><th rowspan="6"><dfn data-dfn-type="dfn" id="dfn-getrequest">getRequest</dfn></th><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
                 <tr><td><a href="#dfn-path">path</a></td><td>string</td><td>Yes</td></tr>
-	        <tr><td><a href="#dfn-filter">filter</a></td><td>string</td><td>Optional</td></tr>		
+	              <tr><td><a href="#dfn-filter">filter</a></td><td>string</td><td>Optional</td></tr>		
                 <tr><td><a href="#dfn-authorization">authorization</a></td><td>string</td><td>Optional</td></tr>
                 <tr><td><a href="#dfn-data-compression">data compression</a></td><td>string</td><td>Optional</td></tr>
                 <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
@@ -571,11 +567,11 @@
              <tr><th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-getsuccessresponse">getSuccessResponse</dfn></th><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
              <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
              <tr><td><a href="#dfn-value">data</a></td><td>object/array</td><td>Yes</td></tr>
- 	     <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
+ 	           <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
            </tbody>
            </table>
            <p>
-           In the table above the "data" attribute is either an object containing "value" and "ts" name/value pairs, or an array of such objects.
+            In the table above, the "data" attribute is either an object containing "value" and "ts" name/value pairs, or an array of such objects.
            </p>
            <table class="simple">
            <thead>
@@ -622,12 +618,13 @@
 
           <section id="wss-authorized-read">
             <h2>Authorized Read</h2>
-            <p> If the operation on the VSS node that is addressed requires authorization,
-               then the request must contain the field "authorization" with its value being a JWT token.
-               The token validation must be successful for a
-               <a href="#dfn-getsuccessresponse" class="internalDFN" data-link-type="dfn">getSuccessResponse</a>
-	       to be returned, else a <a href="#dfn-geterrorresponse" class="internalDFN" data-link-type="dfn">getErrorResponse</a> is returned.
-	       A token can be combined with all types of read requests.
+            <p> 
+              If the operation on the addressed VSS node requires authorization, the request MUST include 
+              the "authorization" field, containing a valid JWT token as its value.
+              The token validation MUST be successful for a
+              <a href="#dfn-getsuccessresponse" class="internalDFN" data-link-type="dfn">getSuccessResponse</a>
+              to be returned. If validation fails, a <a href="#dfn-geterrorresponse" class="internalDFN" data-link-type="dfn">getErrorResponse</a> SHALL be returned.
+              JWT tokens can be used with all types of read requests.
             </p>
             <p>
               <b>Example:</b><br>
@@ -656,8 +653,8 @@
 
           <section id="wss-search-read">
             <h2>Search Read</h2>
-            <p>A client may issue a search read request to access multiple values in one request message.
-               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#paths-filter-operation">paths filter operation</a> described in the [[CORE]].
+            <p>The client MAY issue a search read request to retrieve multiple signal values in one request message.
+               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#paths-filter-operation">chapter 7.1 Paths Filter Operation</a> described in the [[CORE]] specification.
             </p>
             <p>
               <b>Example:</b><br>
@@ -688,8 +685,8 @@
 
           <section id="wss-history-read">
             <h2>History Read</h2>
-            <p>A client may issue a history read request to access recorded data points.
-               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#history-filter-operation">history filter operation</a> described in the [[CORE]].
+            <p>A client MAY issue a history read request to retrieve previously recorded data points.
+               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#history-filter-operation">chapter 7.2 History Filter Operation</a> described in the [[CORE]] specification.
             </p>
             <p>
               <b>Example:</b><br>
@@ -717,9 +714,10 @@
           <section id="wss-signal-discovery-read">
             <h2>Signal Discovery Read</h2>
             <p>
-              The signal discovery request uses the metadata filtering type as described in the [[CORE]] document to retrieve metadata in the VSS tree.
-               A successful response will contain the requested metadata from all nodes of the subtree defined by
-               the node that is addressed by the path and the requested depth set by the "parameter" value.
+              To retrieve metadata about the VSS tree, the client MAY issue a signal discovery read request.
+              This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#metadata-request">chapter 7.7 Metadata Filter Operation</a> described in the [[CORE]] specification.
+              The response includes metadata for all nodes in the subtree rooted at the node specified by the path, 
+              limited to the number of generations set by the "parameter" value.
             </p>
             <p>
               <b>Example:</b><br>
