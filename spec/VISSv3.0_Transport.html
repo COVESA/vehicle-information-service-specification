@@ -112,22 +112,26 @@
   <body>
     <p class="copyright">Copyright © 2024 COVESA®. This document includes material copied from or derived from <a href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html">W3C VISS version 2 - Core</a>.</p>
     <section id='abstract'>
-      <p>The Vehicle Information Service Specification (VISS) is a
-      service for accessing vehicle information, including signals from sensors
-      on control units within a vehicle's network. This information is exposed through a hierarchical, 
-      tree-like taxonomy as defined in the COVESA Vehicle Signal Specification (VSS), 
-      and is provided in JSON format. The VISS service may be hosted within the vehicle or on external servers, 
-      using data that has already been off-boarded.</p>
+      <p>
+        The Vehicle Information Service Specification (VISS) is a
+        service for accessing vehicle information, including signals from sensors
+        on control units within a vehicle's network. This information is exposed through a hierarchical, 
+        tree-like taxonomy as defined in the COVESA Vehicle Signal Specification (VSS), 
+        and is provided in JSON format. The VISS service may be hosted within the vehicle or on external servers, 
+        using data that has already been off-boarded.
+      </p>
 
-      <p>This specification describes the third version of VISS, which
-      has been implemented and deployed in production vehicles.
-      The first version of VISS supported only WebSocket as a
-      transport protocol, the second version is generalized to work
-      across different protocols as some are better suited for
-      different use cases.
-      The second version added support for the HTTP and MQTT transport
-      protocols, improved subscription capabilities and added an
-      access control mechanism.</p>
+      <p>
+        This specification describes the third version of VISS, which
+        has been implemented and deployed in production vehicles.
+        The first version of VISS supported only WebSocket as a
+        transport protocol, the second version is generalized to work
+        across different protocols as some are better suited for
+        different use cases.
+        The second version added support for the HTTP and MQTT transport
+        protocols, improved subscription capabilities and added an
+        access control mechanism.
+      </p>
 
       <p>
         This specification consists of three parts, [[CORE]], [[PAYLOAD ENCODING]], and TRANSPORT. This document, the VISS version 3.0 TRANSPORT specification,
