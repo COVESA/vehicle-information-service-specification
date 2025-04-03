@@ -71,4 +71,5 @@ VISS is an open standard and we invite anybody to contribute. Currently VISS con
  - [Geotab Inc](https://www.geotab.com/about/)
  - [Ford Motor Company](https://www.ford.com/)
  - [ETRI](https://etri.re.kr/eng/main/main.etri)
+ - [Mitsubishi Electric](https://www.mitsubishielectric.com/en/)
  - [Jaguar Land Rover](https://www.jaguarlandrover.com/)
