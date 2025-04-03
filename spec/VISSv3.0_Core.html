@@ -148,7 +148,7 @@
         [[TRANSPORT]] specification.<br>
         The primary payload data format is JSON. The JSON schema (<a href="#json-schema"></a>) defines all of the payloads.
         If a transport protocol uses a different payload encoding, such as gRPC,
-        or a more bandwidth efficient data representation is desired, then this encoding may be defined in the [[PAYLOAD ENCODING]] document.
+        or a more bandwidth efficient data representation is desired, then this encoding may be defined in the [[PAYLOAD ENCODING]] specification.
         This encoding must contain a solution for both encoding of the JSON payloads and decoding back to the JSON format.
         A client MUST be able to access the message payload in the JSON format.
       </p>
@@ -161,7 +161,7 @@
           <figcaption> <span class="fig-title">VISSv3 payload encoding overview.</span></figcaption>
         </figure>
       <p>
-        The VISSv3.0 messaging layer builds on RESTful principles for the method exchange via the interface (<a href="#interface"></a>).
+        The VISSv3.0 messaging layer builds on RESTful principles for the method exchange via the interface (Refer to the <a href="#interface">chapter 5. Interface</a>).
       </p>
       <p>
         The VISSv3.0 data structuring rules (<a href="https://covesa.github.io/vehicle_signal_specification/rule_set/">VSS Rule set</a>)
@@ -242,15 +242,15 @@
         <p>Resource addressing is performed using URIs as defined in [[RFC3987]].<br>
         <blockquote><a>scheme</a>://<a>authority</a>/<a>path</a>?<a>query</a></blockquote>
         The <dfn>scheme</dfn> describes the protocol to use to reach the addressed resource.
-        For supported protocols, see the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">transport protocols</a> in [[TRANSPORT]] specification.<br>
+        For supported protocols, refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">chapter 5. Transport Protocols</a> in [[TRANSPORT]] specification.<br>
         The <dfn>authority</dfn> describes where to reach the resource, for more details see <a href="#authority-component"></a>.<br>
         The <dfn>path</dfn> addresses a specific service within the resource, for more details see <a href="#path-component"></a>.<br>
         The <dfn>query</dfn> contains further information related to the addressed service, see <a href="#filter-request"></a>.<br>
         There are potentially three resources for which a client needs a URI, see <a href="#architecture"></a>:<br>
         <ul>
-            <li>VISSv3 server.</li>
-            <li>Access grant token server.</li>
-            <li>Access token server.</li>
+            <li>VISSv3 Server.</li>
+            <li>Access Grant Token Server.</li>
+            <li>Access Token Server.</li>
         </ul>
         </p>
 
@@ -280,8 +280,8 @@
             <li>MQTT port number = 8883</li>
             <li>gRPC port number: 5443</li>
           </ul>
-          The access grant token server shall use the port number 7443.<br>
-          The access token server shall use the port number 8443.<br>
+          The Access Grant Token Server SHALL use the port number 7443.<br>
+          The Access Token Server SHALL use the port number 8443.<br>
           A client may be provisioned with other port numbers than the above specified in its interaction
           to obtain the other parts of the authority component, see <a href="#ip-address-domain-name"></a>.
           </p>
@@ -299,8 +299,8 @@
           To exemplify, the path expression from traversing the nodes Vehicle, Car, Engine, RPM can  be "Vehicle.Car.Engine.RPM",
           or "Vehicle/Car/Engine/RPM". Mixing delimiters in the same path expression SHOULD be avoided.<br>
           The path MUST not contain any wildcard characters ("*"), for such needs see <a href="#paths-filter-operation"></a>.<br>
-          For the <b>access grant token server</b> the path is "agts".<br>
-          For the <b>access token server</b> the path is "ats".<br>
+          For the <b>Access Grant Token Server</b> the path is "agts".<br>
+          For the <b>Access Token Server</b> the path is "ats".<br>
         </p>
       </section>
       </section>
@@ -484,9 +484,9 @@
           <p>The error information consists of three components: number, reason, and description.
           All the three components MUST be part of the error information.
             <ul>
-              <li><b>number</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html/#status-codes">status codes</a> defined in [[TRANSPORT]].</li>
-              <li><b>reason</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">status codes</a> defined in [[TRANSPORT]].</li>
-              <li><b>description</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">status codes</a> defined in [[TRANSPORT]].</li>
+              <li><b>number</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">chapter 4.1 Status Codes</a> defined in [[TRANSPORT]].</li>
+              <li><b>reason</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">chapter 4.1 Status Codes</a> defined in [[TRANSPORT]].</li>
+              <li><b>description</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">chapter 4.1 Status Codes</a> defined in [[TRANSPORT]].</li>
             </ul>
           </p>
           </section>
@@ -640,8 +640,8 @@
                 Every path element in a value array must address at least one node in the tree. If no matching node is found, the server SHALL return an error message.<br>
                 Different elements of the value array MAY address the same node,
                 in which case it is the responsibility of the server to resolve this to a singleton in the event messages.<br>
-                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-search-read">search read on HTTPS</a> and
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#wss-search-read">search read on WebSocket</a> in [[TRANSPORT]] specification.
+                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#wss-search-read">chapter 5.1.2.1.2 Search Read</a> and
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-search-read">chapter 5.2.2.1.2 Search Read</a> in [[TRANSPORT]] specification.
                 </p>
         </section>
 
@@ -661,8 +661,8 @@
                 The period MUST conform to the [[ISO8601]] duration format, expressed in days, hours, minutes, and seconds. 
                 For example: "parameter": "PdddDThhHmmMssS".
                 The number of days MUST be less than 999. Only a single period can be specified.<br>
-                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-history-read">history read on HTTPS</a> and
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#wss-history-read">history read on WebSocket</a> in [[TRANSPORT]] specification.
+                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-history-read">chapter 5.1.2.1.3 History Read</a> and
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-history-read">chapter 5.2.2.1.3 History Read</a> in [[TRANSPORT]] specification.
                 </p>
         </section>
 
@@ -671,7 +671,7 @@
                 <p>
                 The parameter object contains the period time X in between captures, {"period":"X"}.
                 X is an integer and represents the period time in milliseconds.
-                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#subscribe">subscribe section</a> in [[TRANSPORT]] specification.
+                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#subscribe">chapter 5.1.2.3 Subscribe</a> in [[TRANSPORT]] specification.
                </p>
         </section>
 
@@ -711,8 +711,8 @@
                 (**)The supported boundary operators are ["eq", "ne", "gt", "gte", "lt", "lte"],
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than",
                 "lte" is "less than or equal".<br>
-                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#authorized-subscribe">authorized subscribe</a> and
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#range-subscribe">range subscribe</a> in [[TRANSPORT]] specification.
+                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#authorized-subscribe">chapter 5.1.2.3.1 Authorized Subscribe</a> and
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#range-subscribe">chapter 5.1.2.3.3 Range Subscribe</a> in [[TRANSPORT]] specification.
                </p>
         </section>
 
@@ -735,7 +735,7 @@
                 (**)The supported logic operators are ["eq", "ne", "gt", "gte", "lt", "lte"],
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal",
                 "lt" is "less than", "lte" is "less than or equal".<br>
-                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#change-subscribe">Change Subscribe</a>
+                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#change-subscribe">chapter 5.1.2.3.4 Change Subscribe</a>
                  in [[TRANSPORT]] specification.
                </p>
         </section>
@@ -748,7 +748,7 @@
                 where X is a floating-point value representing the maximum allowable error between any sampled data point and the simplified curve,
                 and Y is the number of buffer elements. The data is processed when the buffer becomes full, 
                 and only the essential data points are returned as a time series per signal.<br>
-                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#curve-logging-subscribe">curve logging subscribe</a>
+                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#curve-logging-subscribe">chapter 5.1.2.3.2 Curve Logging Subscribe</a>
                  in [[TRANSPORT]] specification.
                </p>
         </section>
@@ -769,7 +769,7 @@
         If it is combined with any other filter variant an error message is returned.<br>
         The response is a JSON formatted object containing key-value pairs for each addressed node.
         The server MAY support the metadata request.<br>
-        Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-service-discovery-read">signal discovery read on HTTPS</a> in [[TRANSPORT]] specification.
+        Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-service-discovery-read">chapter 5.2.2.1.4 Signal Discovery Read</a> in [[TRANSPORT]] specification.
         </p>
     </section>
 
@@ -786,7 +786,7 @@
             Error messages for multiple-signal requests are handled the same way as for single-signal requests, 
             except when one or more signals are temporarily unavailable.
             In such cases, the server MAY use in-line error reporting, see
-            <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#in-line-error-reporting">In-line Error Reporting</a> in [[TRANSPORT]] specification.
+            <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#in-line-error-reporting">chapter 4.1.1 In-line Error Reporting</a> in [[TRANSPORT]] specification.
             </p>
      </section>
 
@@ -906,10 +906,10 @@
       <h2>Access Control Model</h2>
       <p>
       This chapter defines an access control model aligned with the <a href="https://gdpr-info.eu">General Data Protection Regulation (GDPR)</a>.
-      The general process begins with a client authenticating for a specific role with the Access Grant Token server.
-      If this is successful it receives an Access Grant token. This token can then be used one or more times when making access requests to the Access Token server.
+      The general process begins with a client authenticating for a specific role with the Access Grant Token Server.
+      If this is successful it receives an access grant token. This token can then be used one or more times when making access requests to the Access Token Server.
       These requests contain the AGT and a purpose. It is assumed that the Ecosystem Manager has published a list of approved purposes that the ecosystem serves, 
-      and any other purpose must be denied access. If the request to the ATS is successful, the client receives an Access Token, 
+      and any other purpose must be denied access. If the request to the ATS is successful, the client receives an access token, 
       which can then be used in requests to the VISSv3 server to access one or more signals associated with the approved purpose.<br>
       Access control MUST be supported. However, in this chapter only the sections that describe interactions between the
       <a href="#client-def">client</a> and the VISSv3 server are mandatory.<br>
@@ -929,13 +929,13 @@
         An <a href="#application-roles-def">application </a>making protected and authorized resource requests on behalf of its
         <a href="#user-roles-def">user</a>.<br>
         <li><b>Access Grant Token (AGT) Server:</b>
-        The server issuing the Access Grant Token after successfully authenticating the <a href="#client-def">client</a>.<br>
+        The server issuing the access grant token after successfully authenticating the <a href="#client-def">client</a>.<br>
         <li><b>Access Token Server (ATS):</b>
-        The server issuing the <a href="#access-token-def">Access Token</a> to the <a href="#client-def">client</a>
+        The server issuing the <a href="#access-token-def">access token</a> to the <a href="#client-def">client</a>
         after successfully validating the request and obtaining authorization.<br>
         <li><b>VISSv3 Server:</b>
         The server hosting the protected resources, capable of accepting and responding to protected resource requests using
-        <a href="#access-token-def">Access Tokens</a>.<br><br>
+        <a href="#access-token-def">access tokens</a>.<br><br>
         </ul>
         The abstract protocol flow illustrated in the figure below describes the interaction between the four actors.<br>
         <figure id="fig-oauth2.0-flow">
@@ -944,9 +944,9 @@
         </figure>
         In addition to the four core actors, two additional actors participate in the ecosystem:<br>
         <ul>
-        <li><b>Resource owner:</b>
+        <li><b>Resource Owner:</b>
         This is typically the driver of the vehicle, who may be required to provide consent before access is granted.<br>
-        <li><b>Ecosystem manager:</b>
+        <li><b>Ecosystem Manager:</b>
         The entity manages the access control ecosystem. It controls the Policy documents,
         and manages the PKI ecosystem that the other actors may utilize.<br><br>
         </ul>
@@ -969,7 +969,7 @@
         The advantage of the long-term flow is that the <a href="#client-def">client</a> can be trusted with longer expiry times of
         <a href="#access-grant-token-def">access grant tokens</a>.
         In the short-term flow, due to a shorter expiry time, the <a href="#client-def">client</a> must contact the
-        <a href="#access-grant-server-def">access grant token server</a> more often to obtain a new
+        <a href="#access-grant-server-def">Access Grant Token Server</a> more often to obtain a new
         <a href="#access-grant-token-def">access grant token</a>.<br>
         A <a href="#client-def">client</a> selects the type of flow by either submitting a public key in the
         <a href="#access-grant-request-def">access grant request</a>, or not. 
@@ -999,8 +999,8 @@
             to prove its context to the <a href="#access-grant-server-def">Access Grant Token Server</a>.
             This is a composite proof that includes <a href="#user-roles-def">user roles</a>, <a href="#application-roles-def">application roles</a>,
             and <a href="#device-roles-def">device roles</a>.</li>
-            <li>Public key: If this parameter is present, the client will receive a long-term
-            <a href="#access-grant-token-def">Access Grant Token</a> in return.</li>
+            <li>Public Key: If this parameter is present, the client will receive a long-term
+            <a href="#access-grant-token-def">access grant token</a> in return.</li>
           </ul>
           </p>
           <p>
@@ -1028,7 +1028,7 @@
           <br>
           The <a href="#access-grant-token-def">access grant token</a> is a digitally signed document, issued by the
           <a href="#access-grant-server-def">Access Grant Token Server</a>, containing all relevant information required to issue
-          <a href="#access-token-def">Access Tokens</a>.
+          <a href="#access-token-def">access tokens</a>.
         </p>
         <p>
           If the request fails, the response SHALL contain the following parameter:
@@ -1045,7 +1045,7 @@
         <section id="access-token-request">
           <h2>Access Token Request</h2>
           <p>
-          The client may need to send multiple requests before receiving an access token, even when a valid Access Grant Token is available.
+          The client may need to send multiple requests before receiving an access token, even when a valid access grant token is available.
           This is because, if consent is required, the Access Token Server (ATS) will forward the consent request to the External Consent Framework (ECF),
           and an immediate response from the <a>ECF</a> may not be available.
           In such cases, the ATS will respond to the initial access token request with a session handle, which the client MUST use in subsequent requests for the access token.
@@ -1082,7 +1082,7 @@
           This request MAY be issued by the client after receiving a session handle in response to an initial access token request.<br>
           The request SHALL contain at least the following parameter:
           <ul>
-            <li>Session handle: A reference identifier that logically links this request to the previously issued initial access token request.</li>
+            <li>Session Handle: A reference identifier that logically links this request to the previously issued initial access token request.</li>
           </ul>
           </p>
         </section>
@@ -1097,12 +1097,12 @@
           If access control does not require consent from the data owner, an immediate response is possible.<br>
           In the case of a successful response, it SHALL contain the following parameter:
           <ul>
-            <li><a href="#access-token-def">Access token</a>: The token to be used in <a href="#client-def">client</a>
+            <li><a href="#access-token-def">Access Token</a>: The token to be used in <a href="#client-def">client</a>
             requests to the VISSv3 server for accessing Protected Resources.</li>
           </ul>
           In the case of an error, the response SHALL contain the following parameter:
           <ul>
-            <li>Error code: A error code that provides the client with clear guidance on 
+            <li>Error Code: A error code that provides the client with clear guidance on 
               what must be corrected to successfully complete the request.</li>
           </ul>
           </p>
@@ -1117,8 +1117,8 @@
           If access control requires consent from the data owner, an immediate response is not possible.<br>
           In this case, the response to the initial access token request SHALL contain the following parameters:
           <ul>
-            <li>Session handle: A reference identifier for the initial access token request, which the client can use in subsequent inquiry requests.</li>
-            <li>Consent status: There is at this point not any consent status received from the <a>ECF</a>, so the consent status is set to NOT_SET.</li>
+            <li>Session Handle: A reference identifier for the initial access token request, which the client can use in subsequent inquiry requests.</li>
+            <li>Consent Status: There is at this point not any consent status received from the <a>ECF</a>, so the consent status is set to NOT_SET.</li>
           </ul>
           </p>
         </section>
@@ -1136,7 +1136,7 @@
             <li>Positive consent reply from <a>ECF</a></li>
             If the consent reply is positive, the response SHALL contain the following parameters:
               <ul>
-                <li><a href="#access-token-def">Access token</a>: The token to be used in <a href="#client-def">client</a>
+                <li><a href="#access-token-def">Access Token</a>: The token to be used in <a href="#client-def">client</a>
                 requests to the VISSv3 server for accessing Protected Resources.</li>
                 <li>Consent status: The consent was granted, so the consent status is set to YES.</li>
               </ul>
@@ -1152,7 +1152,7 @@
           This is a VISSv3 request including an <a href="#access-token-def">access token</a> as described in general in the
           <a href="#methods">Chapter 5.1 Methods</a>,
           and in detail for various <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">
-          transport protocols</a> in the [[TRANSPORT]] document.
+          transport protocols</a> in the [[TRANSPORT]] specification.
           The first time a token is submitted in a request, it MUST be included in full. 
           If the server supports access token caching and returns a token handle to the client, 
           then subsequent requests MAY use the token handle instead of the complete access token.
@@ -1164,7 +1164,7 @@
           <p>
           This is a VISSv3 response as described in general in the <a href="#methods">Chapter 5.1 Methods</a>,
           and in detail for various <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">
-          transport protocols</a> in the [[TRANSPORT]] document.
+          transport protocols</a> in the [[TRANSPORT]] specification.
           It is identical to the response for an unprotected resource request, with no differences in structure or content.
           </p>
         </section>
@@ -1252,7 +1252,7 @@
         SHALL request an <a href="#access-token-def">access token</a> from the Access Token Server.
         The <a href="#client-def">client</a> request SHALL include at least the following two parameters:
           <ul>
-            <li><a href="#access-grant-token-def">Access grant token</a>.</li>
+            <li><a href="#access-grant-token-def">Access Grant Token</a>.</li>
             <li><a>Purpose</a>.</li>
           </ul>
         If the <a href="#client-def">client</a> uses a long-term <a href="#access-grant-token-def">access grant tokens</a>(i.e., one that includes a public key), 
@@ -1275,7 +1275,7 @@
         For long-term <a href="#access-grant-token-def">access grant tokens</a>, the server MUST additionally verify the
         <a href="#proof-of-possession-def">proof of possession</a>, using the public key contained in the token.<br>
         The <a href="#access-grant-token-def">access grant token</a> signature validation is done with the
-        <a href="#access-grant-server-def">access grant token server</a> public key.
+        <a href="#access-grant-server-def">Access Grant Token Server</a> public key.
         <br>
         To accommodate minor clock drift and network latency,
         the expiry time SHOULD include a reasonable margin, possibly up to tens of seconds.<br>
@@ -1294,14 +1294,14 @@
         The functionality required for this validation is described in this chapter.
         This includes, at a minimum, validation of the following elements:
           <ul>
-            <li>Token signature.</li>
-            <li>Token expiry time.</li>
+            <li>Token Signature.</li>
+            <li>Token Expiry Time.</li>
           </ul>
           If a vehicle identity claim (vin) is present in the token, then it MUST be validated to match the identity of this vehicle.<br>
           If any of these validations fail, the server MUST reject the access request.<br>
-          Token signature validation MAY be delegated to the <a href="#access-token-server-def">access token server</a>,
+          Token signature validation MAY be delegated to the <a href="#access-token-server-def">Access Token Server</a>,
           provided that a secure communication link can be established.
-          If delegation is not possible, then a pre-provisioned common secret may be shared with the <a href="#access-token-server-def">access token server</a>,
+          If delegation is not possible, then a pre-provisioned common secret may be shared with the <a href="#access-token-server-def">Access Token Server</a>,
           or PKI-based solutions MAY be used.<br>
           The VISSv3 server SHALL have access to a secure system time, which cannot be modified by actors without system acknowledged credentials.
           Time validation MAY allow for synchronization inaccuracies, typically within a range of tens of seconds.<br>
@@ -1316,8 +1316,8 @@
           </ul>
           Validation of the <a href="#device-roles-def">device</a> and <a href="#application-roles-def">application</a> roles MAY include techniques such as:
           <ul>
-            <li>MAC address checks.</li>
-            <li>message round-trip measurements.</li>
+            <li>MAC Address Checks.</li>
+            <li>message Round-trip Measurements.</li>
           </ul>
           The result of access permission validation MUST have the outcome shown in the table below,
           when comparing the type of the <a href="#client-def">client</a> request with the access control mode either in the
@@ -1342,11 +1342,11 @@
           The <a href="#access-token-def">access token</a> needs to be refreshed periodically, which is determined by the expiry time.
           If the <a href="#access-grant-token-def">access grant token</a> that the <a href="#client-def">client</a> originally used to obtain the now-expired
           <a href="#access-token-def">access token</a> is still valid,
-          then the <a href="#client-def">client</a> can revisit the <a href="#access-token-server-def">access token server</a> with this
+          then the <a href="#client-def">client</a> can revisit the <a href="#access-token-server-def">Access Token Server</a> with this
           <a href="#access-grant-token-def">access grant token</a> to obtain a new <a href="#access-token-def">access token</a>.<br>
           However, if the <a href="#access-grant-token-def">access grant token</a> is also expired, then the <a href="#client-def">client</a> MUST obtain a new
           <a href="#access-grant-token-def">access grant token</a> first,
-          before revisiting the <a href="#access-token-server-def">access token server</a>.<br>
+          before revisiting the <a href="#access-token-server-def">Access Token Server</a>.<br>
           The server SHOULD support caching of a limited number of <a href="#access-token-def">access tokens</a>.
           The <a href="#access-token-def">access token</a> MUST be added to the cache after a first successful request and
           it MUST be removed once they expire.
@@ -1486,7 +1486,7 @@
           <h2>Access Token</h2>
           <p>
           Except for the vehicle identity (vin), and client context (clx) claims, which are optional,
-          the Access token SHALL include the following claims in both the header and the payload.<br>
+          the access token SHALL include the following claims in both the header and the payload.<br>
           <pre class="highlight hljs javascript" aria-busy="false"><span class="hljs-function"></span>
           {
             "alg": "HS256",
@@ -1576,12 +1576,12 @@
           <a href="#ecosystem-manager-def">ecosystem manager</a>, hopefully in a cooperative effort.<br>
           Using an RBAC model provides the following main purposes in the VISSv3 access control model:
           <ul>
-            <li>Input to the <a href="#access-grant-server-def">access grant token server</a> during
+            <li>Input to the <a href="#access-grant-server-def">Access Grant Token Server</a> during
             <a href="#client-def">client</a> authentication process.</li>
-            <li>Input to the <a href="#access-token-server-def">access token server</a> during <a>purpose</a> validation.</li>
+            <li>Input to the <a href="#access-token-server-def">Access Token Server</a> during <a>purpose</a> validation.</li>
           </ul>
-        During authentication, the <a href="#access-grant-server-def">access grant token server</a> MAY need to authenticate each sub-actor individually.
-        For the <a href="#access-grant-server-def">access grant token server</a> to decide on which authentication method to use per sub-actor
+        During authentication, the <a href="#access-grant-server-def">Access Grant Token Server</a> MAY need to authenticate each sub-actor individually.
+        For the <a href="#access-grant-server-def">Access Grant Token Server</a> to decide on which authentication method to use per sub-actor
         can be quite complex. However, this complexity can be reduced if the <a href="#client-def">client</a> explicitly requests specific roles for each sub-actor.
         Following the principle of least priviledge, a <a href="#client-def">client</a> should not have access to more vehicle signals than necessary.
         This is achieved by the <a href="#purpose-list-def">purpose list</a>, that assigns only the for the
@@ -1617,7 +1617,7 @@
           VISSv3 defines the following minimum set of roles for applications:
           <ul>
             <li>OEM</li>
-            <li>Third party</li>
+            <li>Third Party</li>
           </ul>
           An OEM application role is used for applications that are pre-installed in the vehicle by the OEM, or later OEM-provisioned to the vehicle.<br>
           A Third party application role is used for applications that
@@ -1649,7 +1649,7 @@
         The Policy documents are typically owned and created by the <a href="#ecosystem-manager-def">ecosystem manager</a>.
         They MUST be handled securely to protect their integrity.
         The <a href="#ecosystem-manager-def">ecosystem manager</a> SHALL securely provision them to the
-        <a href="#access-token-server-def">access token servers</a> in the access control ecosystem.
+        <a href="#access-token-server-def">Access Token Servers</a> in the access control ecosystem.
         </p>
 
           <dfn id="purpose-list-def"></dfn>
@@ -1680,9 +1680,9 @@
             {}]
         }
         </code></pre>
-        The purpose list SHALL be securely provisioned to the <a href="#access-token-server-def">access token server</a>.
+        The purpose list SHALL be securely provisioned to the <a href="#access-token-server-def">Access Token Server</a>.
         The provisioning protocol is out of scope for this specification.
-        If the <a href="#access-token-server-def">access token server</a> does not possess a valid purpose list, 
+        If the <a href="#access-token-server-def">Access Token Server</a> does not possess a valid purpose list, 
         it MUST reject all <a href="#access-token-def">access tokens</a> requests.
             </p>
           </section>
@@ -1714,9 +1714,9 @@
             {}]
         }
         </code></pre>
-        The scope list SHALL be securely provisioned to the <a href="#access-token-server-def">access token server</a>.
+        The scope list SHALL be securely provisioned to the <a href="#access-token-server-def">Access Token Server</a>.
         The provisioning protocol is out of scope for this specification.
-        If the <a href="#access-token-server-def">access token server</a> does not have access to a scope list, it SHALL NOT apply any scope restrictions for
+        If the <a href="#access-token-server-def">Access Token Server</a> does not have access to a scope list, it SHALL NOT apply any scope restrictions for
         <a href="#client-context-def">client context</a>.
             </p>
           </section>
@@ -1797,7 +1797,7 @@
       It shall be possible for the <a>ECF</a> to cancel a valid consent, which shall lead to the consent status being set to NOT_SET.
       Any consequences to the data provided to the client prior to the cancelling is out of scope for this specification.<br>
       In the case of a client request requiring a consent for data to be returned, it is the responsibility of the
-      <a href="#access-token-server-def">access token server</a> to obtain it from the <a>ECF</a> during the dialogue with a client requesting an access token.
+      <a href="#access-token-server-def">Access Token Server</a> to obtain it from the <a>ECF</a> during the dialogue with a client requesting an access token.
       This is done by issuing a request to the <a>ECF</a> which SHALL contain the following information:
         <ul>
             <li>The requested data.</li>
@@ -1806,9 +1806,9 @@
         </ul>
       The response from the <a>ECF</a> SHALL contain:
         <ul>
-            <li>Consent status.</li>
+            <li>Consent Status.</li>
         </ul>
-      If the received consent status is set to NO or NOT_SET, then the access token server must not provide a valid access token to the requesting client.
+      If the received consent status is set to NO or NOT_SET, then the Access Token Server must not provide a valid access token to the requesting client.
       The server must store the consent status that it receives from the <a>ECF</a>, together with the data from the request for the duration of the associated service,
       or until a consent cancellation is received.<br>
       Whether a server shall take action to obtain a consent or not shall be signalled in the VSS tree.
@@ -1836,7 +1836,7 @@
           <h2>JSON Schema</h2>
           <p>
           The primary payloads that are sent over any transport protocol SHALL conform with the JSON schema in this appendix,
-          unless otherwise specified in the VISSv3 TRANSPORT-EXAMPLE or VISSv3 PAYLOAD-ENCODING specifications.<br>
+          unless otherwise specified in the VISSv3 [[TRANSPORT]] or VISSv3 [[PAYLOAD ENCODING]] specifications.<br>
           </p>
               <pre><code>
               <embed type="text/json" src="resources/vissv3.0-schema.json" width="700" height="500">
@@ -1846,13 +1846,13 @@
     <section id="server-capabilities" class="appendix">
         <h2>Server Capabilities</h2>
         <p>
-        A client that wants to connect to a server may be interested in what capabilities the server offers.
-        The server shall maintain a separate Server tree which the client can access for this purpose to find out about optional features.
-        However, for the client to access this information it must have information about at least one transport protocol that the server supports.
+        A client that intends to connect to a server may be interested in what capabilities the server offers.
+        The server shall expose this information via a dedicated Server tree, which the client can access to discover supported optional features.
+        However, for the client to retrieve this information, it must have information about at least one transport protocol that the server supports.
         The VISS API should not make any assumptions on the communication network topology.
-        Therefore it should not mandate any transport protocol, instead it should assume that a client can obtain necessary information via out-of-band means
+        Therefore it should not mandate any transport protocol, instead it should assume that a client can obtain necessary information via out-of-band mechanisms
         to configure its communication in order to successfully connect to the vehicle server.
-        How that is done is out-of-scope for this specification,
+        How that is done is out of scope for this specification,
         but as an example a solution may be designed around a cloud based repository to which servers can register their capabilities,
         and clients can inquire about obtaining this information.
         When a client has obtained the information how to connect to the server, then the server MUST respond to read requests for data from the Server tree.
@@ -1860,7 +1860,7 @@
 
         <h3>Server Tree</h3>
         <p>
-        The tree MUST contain the structures listed below, other parts are optional.
+        The Server tree MUST contain the structures listed below. Additional parts are optional.
         Server capabilities that extends this specification, or change anything defined in this specification SHALL be declared in the Server tree.
         </p>
        <ul>
@@ -1884,26 +1884,26 @@
         <p>
         The feature names that are used in the Server tree should for the features described in this specification use the names listed below.
 
-        <table  style="width:50%">
+        <table  style="width:80%">
           <tr>
             <th>Protocol</th>
             <th>Description</th>
           </tr>
           <tr>
-            <td>http</td>
-            <td>[[TRANSPORT]], Transport Protocol:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https">HTTPS</a> chapter</td>
+            <td>ws</td>
+            <td>[[TRANSPORT]], Transport Protocols: <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#secure-websocket">chapter 5.1 Secure WebSocket</a></td>
           </tr>
           <tr>
-            <td>ws</td>
-            <td>[[TRANSPORT]], Transport Protocol:<a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#secure-websockets">Secure Websocket</a> chapter</td>
+            <td>http</td>
+            <td>[[TRANSPORT]], Transport Protocols: <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https">chapter 5.2 HTTPS</a></td>
           </tr>
           <tr>
             <td>mqtt</td>
-            <td>[[TRANSPORT]], Transport Protocols:MQTT chapter</td>
+            <td>[[TRANSPORT]], Transport Protocols: <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#mqtt">chapter 5.3 MQTT</a></td>
           </tr>
           <tr>
             <td>grpc</td>
-            <td>[[TRANSPORT]], Transport Protocols:gRPC chapter</td>
+            <td>[[TRANSPORT]], Transport Protocols: <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#grpc">chapter 5.4 gRPC</a></td>
           </tr>
         </table><br>
 
