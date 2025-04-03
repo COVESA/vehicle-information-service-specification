@@ -63,3 +63,12 @@ The Adaptive AUTOSAR R24-11 official publication.
 
 ### JavaScript Style Guidelines
 JavaScript should be written using the [JSCS](http://jscs.info/) rule set defined by [Echidna](https://github.com/w3c/echidna/blob/master/.jscs.json).
+
+## Contributors
+VISS is an open standard and we invite anybody to contribute. Currently VISS contains - among others - significant  contributions from
+
+ - [Volvo Cars](https://www.volvocars.com/)
+ - [Geotab Inc](https://www.geotab.com/about/)
+ - [Ford Motor Company](https://www.ford.com/)
+ - [ETRI](https://etri.re.kr/eng/main/main.etri)
+ - [Jaguar Land Rover](https://www.jaguarlandrover.com/)
