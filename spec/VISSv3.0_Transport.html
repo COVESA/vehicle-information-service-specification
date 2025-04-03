@@ -1583,20 +1583,21 @@
       <section id="security-aspects">
         <h2>Security Aspects</h2>
         <p>
-          The MQTT architecture mandates a "broker" that acts as a middleman in between the client and server endpoints
-          (the subscriber and the publisher in MQTT terminology).
-          This broker has full access to the plaintext communication between the two endpoints as each of the endpoint's
-          TLS channel terminates at the broker. This aspect should be considered when selecting to use the MQTT protocol.
+          The MQTT architecture requires the use of a broker, which serves as an intermediary between the client and server endpoints 
+          (referred to as the subscriber and publisher in MQTT terminology).
+          Since each TLS channel terminates at the broker, it has full access to all plaintext communication 
+          between these endpoints. 
+          This security consideration SHALL be taken into account when selecting MQTT as a transport protocol.
         </p>
       </section>
 
       <section id="transport-messages">
         <h2>Transport Messages</h2>
         <p>
-          As mentioned in the "Application Level Protocol" chapter, the "request" messages issued to the broker contains two
-          JSON formatted key-value pairs, where the value of the "request" key is a string that contains the request the vehicle server
-          will respond to.
-          The format of this request MUST follow the primary payload format of this specification.
+          As described in the "Application Level Protocol" section, each request message sent to the broker SHALL include 
+          two JSON-formatted key-value pairs.
+          The value of the request key MUST be a string containing the client request intended for the vehicle server.
+          This request MUST strictly adhere to the primary payload format defined in this specification.
         </p>
       </section>
     </section>
@@ -1604,13 +1605,13 @@
     <section id="grpc">
       <h2>gRPC</h2>
       <p>
-      The gRPC protocol uses protobuf for the serialization.
-      The definition of protobuf messages shall be expressed in a .proto-file.
-      The proto file defining the encoding of the VISS primary payload format is found in the [[PAYLOAD ENCODING]] document.
-      A protobuf compiler is used to generate code from the .proto-file that can then be called by the code executing the actual encoding/decoding
-      between the two payload formats.
-      This code can be implemented in different languages, and is out-of-scope for VISS standardization.
-      An example of it in Go language can be found 
+      The gRPC protocol uses Protocol Buffers (Protobuf) for message serialization.
+      The Protobuf message definitions SHALL be specified in a .proto file.
+      The .proto file that defines the encoding of the VISS primary payload format is provided in the [[PAYLOAD ENCODING]] document.
+      A Protobuf compiler (e.g., protoc) is used to generate source code from the .proto file.
+      This generated code facilitates the encoding and decoding between Protobuf and JSON payload formats.
+      This code can be implemented in different languages, and is out of scope for the VISS standardization.
+      An example implementation in the Go programming language can be found
       <a href="https://github.com/COVESA/vissr/blob/master/utils/grcputils.go">here</a>.
       </p>
     </section>
@@ -1641,44 +1642,44 @@
 	  <tr>
 	    <td> <dfn data-dfn-type="dfn" id="dfn-requestid">requestId</dfn></td>
             <td>string</td>
-	    <td> Unique id value specified by the client. Returned by the server in
+	    <td> Unique id value assigned by the client. Returned by the server in
 	    the response and used by the client to link the request and response
 	    messages. The value <em class="rfc2119" title="MAY">MAY</em> be an integer or a Universally Unique Identifier (UUID).</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn data-dfn-type="dfn" id="dfn-subscriptionid">subscriptionId</dfn> </td>
             <td>string</td>
-	    <td>Value returned by the server to uniquely identify each subscription.</td>
+	    <td>Value returned by the server to uniquely identify each subscription session.</td>
 	  </tr>
 	  <tr>
 	    <td><dfn data-dfn-type="dfn" id="dfn-authorization">authorization</dfn> </td>
 	    <td>string</td>
-	    <td>A JWT formatted security token.</td>
+	    <td>A JSON Web Token (JWT) formatted security token.</td>
 	  </tr>
 	  <tr>
 	    <td><b>data</b> </td>
 	    <td>object / array</td>
-	    <td>Data contains one or more objects each consisting of a path and a data point.</td>
+	    <td>Data contains one or more objects each consisting of a path and a dp (data point).</td>
 	  </tr>
 	  <tr>
 	    <td><b>dp</b> </td>
 	    <td>object / array</td>
-	    <td>A data point contains one or more objects each consisting of a value and a timestamp.</td>
+	    <td>A data point contains one or more objects each consisting of a value and a ts (timestamp).</td>
 	  </tr>
 	  <tr>
 	    <td><dfn data-dfn-type="dfn" id="dfn-ts">ts</dfn> </td>
 	    <td>string</td>
-	    <td>The Coordinated Universal Time (UTC) time stamp that represents the capture of the value.</td>
+	    <td>The Coordinated Universal Time (UTC) timestamp that represents the capture of the value.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn data-dfn-type="dfn" id="dfn-value">value</dfn> </td>
 	    <td>string/ object / array</td>
-	    <td> The data value associated with the path.</td>
+	    <td> The actual value associated with the signal path.</td>
 	  </tr>
     <tr>
       <td> <dfn data-dfn-type="dfn" id="dfn-filter">filter</dfn> </td>
       <td> string </td>
-      <td>Provides a filtering mechanism to reduce the demands of a subscription on the server. Query format, see [[CORE]], <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#filter-request">Filter Request</a> chapter.</td>
+      <td>A query string defining a filter to optimize subscriptions. Refer to the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#filter-request">chapter 7. Filter Request</a> of the [[CORE]] specification.</td>
     </tr>
     <tr>
       <td><dfn data-dfn-type="dfn" id="dfn-data-compression">data compression</dfn> </td>
@@ -1693,7 +1694,7 @@
 	  <tr>
 	    <td id="dfn-error"><strong>error</strong></td>
 	    <td> <a href="#error-def">Error</a> </td>
-	    <td> Returns an error code, reason and description.</td>
+	    <td> An object containing error code, reason, and description.</td>
 	  </tr>
 	</tbody></table>
         </section>
