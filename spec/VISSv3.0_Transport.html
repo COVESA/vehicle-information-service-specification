@@ -1461,11 +1461,11 @@
         <section id="https-update">
           <h2>Update</h2>
           <p>
-          The client may request that the server sets the value of a signal.
-          If the server is able to satisfy the request it <em class="rfc2119" title="SHALL">SHALL</em> return a
+          The client MAY send a request to update the value of a signal.
+          If the server can fulfill the request, it SHALL return a
           <a href="#dfn-setsuccessresponse" class="internalDFN" data-link-type="dfn">setSuccessResponse</a> message.
-          If an error occurs e.g. because the client is not authorized to set the requested value, or the value is read-only,
-          the server <em class="rfc2119" title="SHALL">SHALL</em> return a
+          If an error occurs, e.g. because the client is not authorized to set the requested value, or the value is read-only,
+          the server SHALL return a
           <a href="#dfn-seterrorresponse" class="internalDFN" data-link-type="dfn">setErrorResponse</a> message.
           </p>
           <p>
@@ -1503,12 +1503,12 @@
         <section id="https-authorized-update">
           <h2>Authorized Update</h2>
           <p>
-          JWT tokens will be sent in the <code>Authorization</code> header, following with term <code>Bearer</code> and a space character.
+            JWT tokens MUST be included in the <code>Authorization</code> header, prefixed with <code>Bearer</code> followed by a space character.
           </p>
           <p>
           The following example assumes
           <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.xuEv8qrfXu424LZk8bVgr9MQJUIrp1rHcPyZw_KSsds</code>
-          is the actual token. A token header can be combined with all types of update requests.
+          is the actual token. A token header MAY be used with all types of update requests.
           </p>
           <pre><code>
           POST /Vehicle/Powertrain/Transmission/PerformanceMode   HTTP/1.1
@@ -1526,51 +1526,52 @@
     <section id="mqtt">
       <h2>MQTT</h2>
       <p>
-      As the MQTT protocol is based on a pub-sub model, while VISS is based on a client-server model, it is necessary to apply a thin application level protocol
-      on top of MQTT to abstract the client-server specific behavior. This is done by embedding the VISS messages in the MQTT messages,
-      together with supplementary information that makes this abstraction possible, see the next chapter.<br>
-      The VISS messages are adhering to the primary payload format without any deviations.
+        The MQTT protocol operates on a publish-subscribe communication model, whereas the VISS is designed around a client-server interaction model.
+        To reconcile these differences, a lightweight application-level protocol is introduced on top of MQTT.
+        This protocol encapsulates VISS messages within MQTT messages and includes additional metadata required to support client-server semantics.
+        Details of this abstraction mechanism are provided in the following chapter.<br>
+        The VISS messages transmitted over MQTT SHALL conform to the primary payload format without modification.
       </p>
 
       <section id="application-level-protocol">
         <h2>Application Level Protocol</h2>
         <p>
-          For MQTT to support the complete VISSv3 interface, as decribed in the <a data-link-type="dfn" href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html#interface">chapter 5. Interface</a> of the [[CORE]] specification,
-          an application level protocol that runs on top of MQTT is added.
-          It is described in the following, please also see the sequence diagram below.
-          To emulate the client-server pattern that is described in the [[CORE]] specification, the vehicle server, via its vehicle client,
-          issues a subscribe request to the broker on a topic named VID/Vehicle,
-          where VID is an identity that uniquely links to the vehicle in the access control ecosystem.
-          This vehicle identity is not necessarily the manufacturer's Vehicle Identification Number (VIN).<br>
-          The client on the "cloud side" of the broker is expected to have access to this vehicle identity.
+          For MQTT to support the full VISSv3 interface, as decribed in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#interface">chapter 5. Interface</a> of the [[CORE]] specification,
+          an application-level protocol that runs on top of MQTT is required.
+          This protocol is described below and illustrated in the accompanying sequence diagram.
+          To emulate the client-server pattern that is described in the [[CORE]] specification, 
+          the vehicle server—via its vehicle-side client—MUST subscribe to the broker on a topic named VID/Vehicle, 
+          where VID represents a unique identifier that links the vehicle to the access control ecosystem.
+          This vehicle identifier is not necessarily the manufacturer's Vehicle Identification Number (VIN).<br>
+          The cloud-side client is expected to have access to this vehicle identifier.
           How it obtains it is out of scope for this specification.
-          When the cloud client wants to issue a request to the vehicle server it first generates a unique topic name,
-          which it subscribes to at the broker. It then generates a JSON formatted payload with the general structure
+          When the cloud client intends to send a request to the vehicle server, 
+          it first generates a unique topic name and subscribes to it via the broker. 
+          The client then generates a JSON formatted payload with the following structure:
           <pre><code>
           {"topic":"aUniqueTopic", "request":"VISSv3Request"}
           </code></pre>
-          where "aUniqueTopic" is the uniques topic name it just subscribed to, and "VISSv3Request" is the request for the vehicle server.
+          Here, "aUniqueTopic" is the topic name just subscribed to, and "VISSv3Request" is the actual request directed to the vehicle server.
           This request MUST follow the primary payload format of this specification.
-          This JSON message is then issued to the broker, associated to the topic VID/Vehicle.
-          This message will then be forwarded by the broker to the vehicle client, which forwards the string being the value of the
-          "request" key in the message to the vehicle server. When the vehicle client receives the response to this request,
-          it publishes it to the broker associated with the topic name that was the string value of the "topic" key name in the
-          message it previously received from the broker.<br>
-          The broker will then forward this message to the cloud side client that earlier subscribed to this topic name,
-          which concludes the client-server based request-response as described in the [[CORE]] specification.<br>
-          In the case of subscription requests the vehicle client needs to save the subscriptionId found in the subscribe response,
+          This JSON message is then published to the broker under the VID/Vehicle topic.
+          The broker forwards the message to the vehicle client, which extracts the value of the "request" field and forwards it 
+          to the vehicle server. Upon receiving a response, the vehicle client publishes the response message to the topic specified 
+          by the original "topic" field in the received message.
+          The broker then forwards this response to the cloud client, completing the client-server request-response cycle
+          as described in the [[CORE]] specification.<br>
+          For subscription requests, the vehicle client MUST store the subscriptionId from the subscribe response,
           together with the topic name associated to the subscribe request. When the vehicle server later issues event messages,
-          the vehicle client must parse the subscriptionId from it, and retrieve the topic name associated to it.
-          The vehicle client shall delete the saved topic name and subscriptionId when it receives
+          the vehicle client SHALL extract the subscriptionId from it, and retrieve the topic name associated to it.
+          The vehicle client SHALL delete the saved topic name and subscriptionId when it receives
           an unsubscribe request in a message from the broker.<br>
-          In following requests from the cloud side client, the unique topic name may be reused from the previous request-response cycle,
-          or a new unique topic name may be generated. If a new topic name is generated, an unsubscribe should be issued on the old topic name.
-          The vehicle client can continue to use the topic name it subscribes to.<br>
-          The payload format of the response/event messages SHALL follow the primary payload format of this specification.
-          The access control model is applicable also over this transport alternative.
-          The Access Token server should then implement its own version of the application level protocol described here,
-          using the topic name "VID/ATS". The Access Grant Token server may also do the same, with the topic name "VID/AGTS",
-          or if it is deployed in the cloud it may expose the HTTPS interface that is defined in this specification.
+          In subsequent requests from the cloud client, the unique topic name MAY be reused from the previous request-response cycle,
+          or a new unique topic name MAY be generated. If a new topic name is used, the previous one SHOULD be unsubscribed.
+          The vehicle client MAY continue using the topic name to which it initially subscribed.<br>
+          The payload format of all response and event messages SHALL conform to the primary payload format defined in this specification.
+          The access control model is also applicable to this transport mechanism.
+          The Access Token Server SHOULD implement its own version of the application-level protocol described here,
+          using the topic name "VID/ATS". Similarly, the Access Grant Token Server MAY implement the same mechanism using the topic "VID/AGTS",
+          or if it is deployed in the cloud it MAY expose the HTTPS interface defined in this specification.
 
         <figure id="VISSv3-over-mqtt">
           <img src="images/mqtt_vissv3_protocol.jpg" alt="VISSv3 over MQTT">
