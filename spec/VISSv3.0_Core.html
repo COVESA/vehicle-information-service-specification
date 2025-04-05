@@ -161,7 +161,7 @@
           <figcaption> <span class="fig-title">VISSv3 payload encoding overview.</span></figcaption>
         </figure>
       <p>
-        The VISSv3.0 messaging layer builds on RESTful principles for the method exchange via the interface (Refer to the <a href="#interface">chapter 5. Interface</a>).
+        The VISSv3.0 messaging layer builds on RESTful principles for the method exchange via the interface (refer to the <a href="#interface">section 5. Interface</a>).
       </p>
       <p>
         The VISSv3.0 data structuring rules (<a href="https://covesa.github.io/vehicle_signal_specification/rule_set/">VSS Rule set</a>)
@@ -202,7 +202,7 @@
           <dd>The data that is associated with one or more VSS nodes. Regardless of its data type,
           a single data item is always represented as a string in message payloads.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-timestamp">timestamp</dfn></dt>
-          <dd>A date and time representation. See chapter <a href="#timestamp"></a>.</dd>
+          <dd>A date and time representation. Refer to the section <a href="#timestamp"></a>.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-filter">filter</dfn></dt>
           <dd>Additional information to help the server in the selection of data for the client.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-authorization">authorization</dfn></dt>
@@ -242,7 +242,7 @@
         <p>Resource addressing is performed using URIs as defined in [[RFC3987]].<br>
         <blockquote><a>scheme</a>://<a>authority</a>/<a>path</a>?<a>query</a></blockquote>
         The <dfn>scheme</dfn> describes the protocol to use to reach the addressed resource.
-        For supported protocols, refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">chapter 5. Transport Protocols</a> in [[TRANSPORT]] specification.<br>
+        For supported protocols, refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">section 5. Transport Protocols</a> in [[TRANSPORT]] specification.<br>
         The <dfn>authority</dfn> describes where to reach the resource, for more details see <a href="#authority-component"></a>.<br>
         The <dfn>path</dfn> addresses a specific service within the resource, for more details see <a href="#path-component"></a>.<br>
         The <dfn>query</dfn> contains further information related to the addressed service, see <a href="#filter-request"></a>.<br>
@@ -340,7 +340,7 @@
     <section id="interface">
       <h2>Interface</h2>
       <p>
-        This chapter describes the different methods and their arguments that govern the communication between a client and the server.
+        This section describes the different methods and their arguments that govern the communication between a client and the server.
       </p>
 
       <section id="methods">
@@ -484,9 +484,9 @@
           <p>The error information consists of three components: number, reason, and description.
           All the three components MUST be part of the error information.
             <ul>
-              <li><b>number</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">chapter 4.1 Status Codes</a> defined in [[TRANSPORT]].</li>
-              <li><b>reason</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">chapter 4.1 Status Codes</a> defined in [[TRANSPORT]].</li>
-              <li><b>description</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">chapter 4.1 Status Codes</a> defined in [[TRANSPORT]].</li>
+              <li><b>number</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">section 4.1 Status Codes</a> defined in [[TRANSPORT]].</li>
+              <li><b>reason</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">section 4.1 Status Codes</a> defined in [[TRANSPORT]].</li>
+              <li><b>description</b> Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#status-codes">section 4.1 Status Codes</a> defined in [[TRANSPORT]].</li>
             </ul>
           </p>
           </section>
@@ -640,8 +640,8 @@
                 Every path element in a value array must address at least one node in the tree. If no matching node is found, the server SHALL return an error message.<br>
                 Different elements of the value array MAY address the same node,
                 in which case it is the responsibility of the server to resolve this to a singleton in the event messages.<br>
-                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#wss-search-read">chapter 5.1.2.1.2 Search Read</a> and
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-search-read">chapter 5.2.2.1.2 Search Read</a> in [[TRANSPORT]] specification.
+                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#wss-search-read">section 5.1.2.1.2 Search Read</a> and
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-search-read">section 5.2.2.1.2 Search Read</a> in [[TRANSPORT]] specification.
                 </p>
         </section>
 
@@ -661,8 +661,8 @@
                 The period MUST conform to the [[ISO8601]] duration format, expressed in days, hours, minutes, and seconds. 
                 For example: "parameter": "PdddDThhHmmMssS".
                 The number of days MUST be less than 999. Only a single period can be specified.<br>
-                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-history-read">chapter 5.1.2.1.3 History Read</a> and
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-history-read">chapter 5.2.2.1.3 History Read</a> in [[TRANSPORT]] specification.
+                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-history-read">section 5.1.2.1.3 History Read</a> and
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-history-read">section 5.2.2.1.3 History Read</a> in [[TRANSPORT]] specification.
                 </p>
         </section>
 
@@ -671,14 +671,14 @@
                 <p>
                 The parameter object contains the period time X in between captures, {"period":"X"}.
                 X is an integer and represents the period time in milliseconds.
-                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#subscribe">chapter 5.1.2.3 Subscribe</a> in [[TRANSPORT]] specification.
+                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#subscribe">section 5.1.2.3 Subscribe</a> in [[TRANSPORT]] specification.
                </p>
         </section>
 
      <section id="range-filter-operation">
           <h2>Range Filter Operation</h2>
                 <p>
-                The range filter operation supports two types of ranges, as described in the following subchapters<br>
+                The range filter operation supports two types of ranges, as described in the following sub-sections<br>
                 The values MUST be of a numeric data type.
                 </p>
                 <section id="single-boundary-range">
@@ -711,8 +711,8 @@
                 (**)The supported boundary operators are ["eq", "ne", "gt", "gte", "lt", "lte"],
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal", "lt" is "less than",
                 "lte" is "less than or equal".<br>
-                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#authorized-subscribe">chapter 5.1.2.3.1 Authorized Subscribe</a> and
-                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#range-subscribe">chapter 5.1.2.3.3 Range Subscribe</a> in [[TRANSPORT]] specification.
+                Examples can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#authorized-subscribe">section 5.1.2.3.1 Authorized Subscribe</a> and
+                <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#range-subscribe">section 5.1.2.3.3 Range Subscribe</a> in [[TRANSPORT]] specification.
                </p>
         </section>
 
@@ -735,7 +735,7 @@
                 (**)The supported logic operators are ["eq", "ne", "gt", "gte", "lt", "lte"],
                 where "eq" is "equal", "ne" is "not equal", "gt" is "greater than", "gte" is "greater than or equal",
                 "lt" is "less than", "lte" is "less than or equal".<br>
-                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#change-subscribe">chapter 5.1.2.3.4 Change Subscribe</a>
+                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#change-subscribe">section 5.1.2.3.4 Change Subscribe</a>
                  in [[TRANSPORT]] specification.
                </p>
         </section>
@@ -748,7 +748,7 @@
                 where X is a floating-point value representing the maximum allowable error between any sampled data point and the simplified curve,
                 and Y is the number of buffer elements. The data is processed when the buffer becomes full, 
                 and only the essential data points are returned as a time series per signal.<br>
-                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#curve-logging-subscribe">chapter 5.1.2.3.2 Curve Logging Subscribe</a>
+                Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#curve-logging-subscribe">section 5.1.2.3.2 Curve Logging Subscribe</a>
                  in [[TRANSPORT]] specification.
                </p>
         </section>
@@ -769,7 +769,7 @@
         If it is combined with any other filter variant an error message is returned.<br>
         The response is a JSON formatted object containing key-value pairs for each addressed node.
         The server MAY support the metadata request.<br>
-        Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-service-discovery-read">chapter 5.2.2.1.4 Signal Discovery Read</a> in [[TRANSPORT]] specification.
+        Example can be found in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https-service-discovery-read">section 5.2.2.1.4 Signal Discovery Read</a> in [[TRANSPORT]] specification.
         </p>
     </section>
 
@@ -785,8 +785,8 @@
             <p>
             Error messages for multiple-signal requests are handled the same way as for single-signal requests, 
             except when one or more signals are temporarily unavailable.
-            In such cases, the server MAY use in-line error reporting, see
-            <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#in-line-error-reporting">chapter 4.1.1 In-line Error Reporting</a> in [[TRANSPORT]] specification.
+            In such cases, the server MAY use in-line error reporting, Refer to the
+            <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#in-line-error-reporting">section 4.1.1 In-line Error Reporting</a> in [[TRANSPORT]] specification.
             </p>
      </section>
 
@@ -905,13 +905,13 @@
     <section id="access-control-model">
       <h2>Access Control Model</h2>
       <p>
-      This chapter defines an access control model aligned with the <a href="https://gdpr-info.eu">General Data Protection Regulation (GDPR)</a>.
+      This section defines an access control model aligned with the <a href="https://gdpr-info.eu">General Data Protection Regulation (GDPR)</a>.
       The general process begins with a client authenticating for a specific role with the Access Grant Token Server.
       If this is successful it receives an access grant token. This token can then be used one or more times when making access requests to the Access Token Server.
       These requests contain the AGT and a purpose. It is assumed that the Ecosystem Manager has published a list of approved purposes that the ecosystem serves, 
       and any other purpose must be denied access. If the request to the ATS is successful, the client receives an access token, 
       which can then be used in requests to the VISSv3 server to access one or more signals associated with the approved purpose.<br>
-      Access control MUST be supported. However, in this chapter only the sections that describe interactions between the
+      Access control MUST be supported. However, in this section, only the parts that describe interactions between the
       <a href="#client-def">client</a> and the VISSv3 server are mandatory.<br>
       Access control SHALL NOT be applied to the VSS nodes containing the VSS version data, nor to client requests 
       for dynamic metadata about server capabilities or access control selection tags applied to the VSS tree.
@@ -922,7 +922,7 @@
         <em>This section is non-normative.</em>
         <p>
         The VISSv3 access control model is inspired by OAuth2.0 [[RFC6749]],
-        but includes some deviations, which are described in the following chapters.<br><br>
+        but includes some deviations, which are described in the following sections.<br><br>
         The architecture defines four primary actors:<br>
         <ul>
         <li><b>Client: </b>
@@ -950,7 +950,7 @@
         The entity manages the access control ecosystem. It controls the Policy documents,
         and manages the PKI ecosystem that the other actors may utilize.<br><br>
         </ul>
-        The abstract protocol flow is implemented through two different flows, which are described in the following chapters.<br>
+        The abstract protocol flow is implemented through two different flows, which are described in the following sections.<br>
         The process of obtaining credentials for <a href="#client-def">client</a> authentication is out-of-scope, 
         along with the installation procedures for the <a href="#application-roles-def">applications</a>.
         </p>
@@ -981,7 +981,7 @@
         <h2>Protocol Messages</h2>
         <em>This section is non-normative.</em>
         <p>
-        This chapter describes the payload structures of the messages used in the protocol flow.
+        This section describes the payload structures of the messages used in the protocol flow.
         </p>
 
         <dfn id="access-grant-request-def"></dfn>
@@ -1129,7 +1129,7 @@
           There are three responses possible to an inquiry access token request.
           <ol>
             <li>Consent reply not yet received from <a>ECF</a></li>
-            If the External Consent Framework (ECF) has not yet provided a consent response, the reply is identical to the initial access token response(see <a href="#access-token-response-to-initial-access-token-request">section 8.3.4.2.1</a>).       
+            If the External Consent Framework (ECF) has not yet provided a consent response, the reply is identical to the initial access token response(refer to the <a href="#access-token-response-to-initial-access-token-request">section 8.3.4.2.1</a>).       
             <li>Negative consent reply from <a>ECF</a></li>
             If the consent reply is negative, the response SHALL contain the following parameter:
               <ul><li>Consent status: The consent was denied, so the consent status is set to NO.</li></ul>
@@ -1150,7 +1150,7 @@
           <h2>Protected Resource Request</h2>
           <p>
           This is a VISSv3 request including an <a href="#access-token-def">access token</a> as described in general in the
-          <a href="#methods">Chapter 5.1 Methods</a>,
+          <a href="#methods">section 5.1 Methods</a>,
           and in detail for various <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">
           transport protocols</a> in the [[TRANSPORT]] specification.
           The first time a token is submitted in a request, it MUST be included in full. 
@@ -1162,7 +1162,7 @@
         <section id="protected-resource-response">
           <h2>Protected Resource Response</h2>
           <p>
-          This is a VISSv3 response as described in general in the <a href="#methods">Chapter 5.1 Methods</a>,
+          This is a VISSv3 response as described in general in the <a href="#methods">section 5.1 Methods</a>,
           and in detail for various <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#transport-protocols">
           transport protocols</a> in the [[TRANSPORT]] specification.
           It is identical to the response for an unprotected resource request, with no differences in structure or content.
@@ -1238,7 +1238,7 @@
           In such cases, as part of the authentication protocol,
           the <a href="#access-grant-server-def">Access Grant Token Server</a> SHALL also validate the certificates signatures.<br>
           The <a href="#access-grant-server-def">Access Grant Token Server</a> may contact the <a href="#ecosystem-manager-def">ecosystem manager</a> to validate the VIN.<br>
-          Details regarding <a href="#access-grant-token-def">access grant token</a> generation are defined in the corresponding chapter.          .
+          Details regarding <a href="#access-grant-token-def">access grant token</a> generation are defined in the corresponding section.          .
         </p>
           </p>
         </section>
@@ -1291,7 +1291,7 @@
         <h2>Access Control Server</h2>
         <p>
         The VISSv3 server MUST support validation of <a href="#access-token-def">access tokens</a>.
-        The functionality required for this validation is described in this chapter.
+        The functionality required for this validation is described in this section.
         This includes, at a minimum, validation of the following elements:
           <ul>
             <li>Token Signature.</li>
@@ -1726,7 +1726,7 @@
         <h2>Access Control Selection</h2>
         <em>This section is non-normative.</em>
         <p>
-        This chapter describes a complementary feature to the access control model: 
+        This section describes a complementary feature to the access control model: 
         the ability to selectively apply access control to specific parts of the VSS tree.
         This functionality is useful in cases where:
         <ul>
@@ -1738,7 +1738,7 @@
         <a href="#client-def">client</a> to a signal is read-only, or read-write.
         It also requires that the metadata for the node in the VSS tree contains data specifying whether
         the access control verification should be carried out only for write request, or for both read and write requests.<br>
-        The former requirement is realized as described in earlier chapters by that the <a href="#access-token-def">access token</a>
+        The former requirement is realized as described in earlier sections by that the <a href="#access-token-def">access token</a>
         scope claim links to a <a>purpose</a> where the signals and their respective access permission are found.<br>
         The latter requirement is realized by adding to nodes in the VSS tree the key-value pair "validate":'access-control-mode',
         where 'access-control-mode' is either the string "write-only", or "read-write".<br>
@@ -1764,7 +1764,7 @@
           <figcaption> <span class="fig-title">Access control selection model.</span></figcaption>
         </figure>
         If the VSS tree used by a VISSv3 server contains access control selection tags,
-        the server MUST support their usage as described in this chapter.<br>
+        the server MUST support their usage as described in this section.<br>
         If access control selection tags are not present, the server MAY implement access control for the entire tree.<br>
         </p>
       </section>
@@ -1825,7 +1825,7 @@
         <p>
          A server receiving a client request that involves obtaining a consent status SHALL send a request to the <a>ECF</a>
          on which it SHALL receive a response containing the consent status.
-         The request SHALL contain the data from the list in the previous chapter.
+         The request SHALL contain the data from the list in the previous section.
          The response SHALL contain the data shown in the table above.
          This communication SHALL be carried out using a secure channel (e.g., TLS).
         </p>
@@ -1891,19 +1891,19 @@
           </tr>
           <tr>
             <td>ws</td>
-            <td>[[TRANSPORT]], Transport Protocols: <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#secure-websocket">chapter 5.1 Secure WebSocket</a></td>
+            <td>[[TRANSPORT]], Transport Protocols: <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#secure-websocket">section 5.1 Secure WebSocket</a></td>
           </tr>
           <tr>
             <td>http</td>
-            <td>[[TRANSPORT]], Transport Protocols: <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https">chapter 5.2 HTTPS</a></td>
+            <td>[[TRANSPORT]], Transport Protocols: <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#https">section 5.2 HTTPS</a></td>
           </tr>
           <tr>
             <td>mqtt</td>
-            <td>[[TRANSPORT]], Transport Protocols: <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#mqtt">chapter 5.3 MQTT</a></td>
+            <td>[[TRANSPORT]], Transport Protocols: <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#mqtt">section 5.3 MQTT</a></td>
           </tr>
           <tr>
             <td>grpc</td>
-            <td>[[TRANSPORT]], Transport Protocols: <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#grpc">chapter 5.4 gRPC</a></td>
+            <td>[[TRANSPORT]], Transport Protocols: <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html#grpc">section 5.4 gRPC</a></td>
           </tr>
         </table><br>
 
@@ -2210,7 +2210,7 @@
         <img src="images/data-compression-scheme-coding.jpg" alt="Consent architecture.">
         <figcaption> <span class="fig-title">Data compression scheme coding.</span></figcaption>
       </figure>
-      The bits shown in the figure above are assigned to the data compression schemes shown in the list below and described in the following chapters.<br>
+      The bits shown in the figure above are assigned to the data compression schemes shown in the list below and described in the following sections.<br>
       For path compression:
         <ul>
             <li>Bit 0: Static UID path compression.</li>
@@ -2222,7 +2222,7 @@
             <li>Bit 0: Request relative timestamp compression.</li>
             <li>Bit 1-3: Reserved for other timestamp compression schemes.</li>
         </ul>
-        See the following chapters for description of the supported compression schemes.<br>
+        Refer to the following sections for description of the supported compression schemes.<br>
         If the server supports data compression it SHALL declare the compression schemes it supports in its server capabilities tree
         with an expression A+B where A and B are the sum of the values representing the supported schemes, respectively.<br>
         If a client request for data compression is not supported, or impossible to realize, the server shall respond with an error message.
