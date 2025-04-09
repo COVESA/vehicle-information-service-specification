@@ -1844,9 +1844,812 @@
           The primary payloads that are sent over any transport protocol SHALL conform with the JSON schema in this appendix,
           unless otherwise specified in the VISSv3 [[TRANSPORT]] or VISSv3 [[PAYLOAD ENCODING]] specifications.<br>
           </p>
-              <pre><code>
-              <embed type="text/json" src="resources/vissv3.0-schema.json" width="700" height="500">
-              </code></pre>
+          <pre>
+            {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "$id": "https://covesa.global/vissv3.0.bundled.schema.json",
+              "title": "VISSv3",
+              "description": "VISS version 3.0 bundled schema",
+              "type": "object",
+              "properties": {
+                  "action": {
+                      "type": "string"
+                  }
+              },
+              "required": [
+                  "action"
+              ],
+              "oneOf": [
+                  {
+                      "properties": {
+                          "action": {
+                              "const": "get"
+                          }
+                      },
+                      "$ref": "/vissv3.0/get-message.schema.json"
+                  },
+                  {
+                      "properties": {
+                          "action": {
+                              "const": "set"
+                          }
+                      },
+                      "$ref": "/vissv3.0/set-message.schema.json"
+                  },
+                  {
+                      "properties": {
+                          "action": {
+                              "const": "subscribe"
+                          }
+                      },
+                      "$ref": "/vissv3.0/subscribe-message.schema.json"
+                  },
+                  {
+                      "properties": {
+                          "action": {
+                              "const": "unsubscribe"
+                          }
+                      },
+                      "$ref": "/vissv3.0/unsubscribe-message.schema.json"
+                  },
+                  {
+                      "properties": {
+                          "action": {
+                              "const": "subscription"
+                          }
+                      },
+                      "$ref": "/vissv3.0/subscription-event.schema.json"
+                  }
+              ],
+              "$defs": {
+                  "https://covesa.global/vissv3.0/get-message.schema.json": {
+                      "$id": "https://covesa.global/vissv3.0/get-message.schema.json",
+                      "$schema": "https://json-schema.org/draft/2020-12/schema",
+                      "title": "VISSv3-get-message",
+                      "description": "VISSv3 get request and response messages",
+                      "type": "object",
+                      "oneOf": [
+                          {
+                              "properties": {
+                                  "path": {
+                                      "description": "The path",
+                                      "type": "string"
+                                  },
+                                  "filter": {
+                                      "$ref": "https://covesa.global/vissv3.0/filter.schema.json"
+                                  },
+                                  "authorization": {
+                                      "description": "The access token",
+                                      "type": "string"
+                                  },
+                                  "dc": {
+                                      "description": "The data compression scheme",
+                                      "type": "string"
+                                  },
+                                  "requestId": {
+                                      "description": "The request id",
+                                      "type": "string"
+                                  }
+                              },
+                              "required": [
+                                  "path"
+                              ]
+                          },
+                          {
+                              "properties": {
+                                  "data": {
+                                      "$ref": "https://covesa.global/vissv3.0/data.schema.json"
+                                  },
+                                  "ts": {
+                                      "description": "The time stamp",
+                                      "type": "string"
+                                  },
+                                  "requestId": {
+                                      "description": "The request id",
+                                      "type": "string"
+                                  }
+                              },
+                              "required": [
+                                  "data",
+                                  "ts"
+                              ]
+                          },
+                          {
+                              "properties": {
+                                  "metadata": {
+                                      "type": "object",
+                                      "description": "The metadata"
+                                  },
+                                  "ts": {
+                                      "description": "The time stamp",
+                                      "type": "string"
+                                  },
+                                  "requestId": {
+                                      "description": "The request id",
+                                      "type": "string"
+                                  }
+                              },
+                              "required": [
+                                  "metadata",
+                                  "ts"
+                              ]
+                          },
+                          {
+                              "properties": {
+                                  "error": {
+                                      "$ref": "https://covesa.global/vissv3.0/error.schema.json"
+                                  },
+                                  "ts": {
+                                      "description": "The time stamp",
+                                      "type": "string"
+                                  },
+                                  "requestId": {
+                                      "description": "The request id",
+                                      "type": "string"
+                                  }
+                              },
+                              "required": [
+                                  "error",
+                                  "ts"
+                              ]
+                          }
+                      ]
+                  },
+                  "https://covesa.global/vissv3.0/set-message.schema.json": {
+                      "$id": "https://covesa.global/vissv3.0/set-message.schema.json",
+                      "$schema": "https://json-schema.org/draft/2020-12/schema",
+                      "title": "VISSv3-set-message",
+                      "description": "VISSv3 set request and response messages",
+                      "type": "object",
+                      "oneOf": [
+                          {
+                              "properties": {
+                                  "path": {
+                                      "description": "The path",
+                                      "type": "string"
+                                  },
+                                  "value": {
+                                      "description": "The value",
+                                      "$ref": "https://covesa.global/vissv3.0/value.schema.json"
+                                  },
+                                  "authorization": {
+                                      "description": "The access token",
+                                      "type": "string"
+                                  },
+                                  "requestId": {
+                                      "description": "The request id",
+                                      "type": "string"
+                                  }
+                              },
+                              "required": [
+                                  "path",
+                                  "value"
+                              ]
+                          },
+                          {
+                              "properties": {
+                                  "ts": {
+                                      "description": "The time stamp",
+                                      "type": "string"
+                                  },
+                                  "requestId": {
+                                      "description": "The request id",
+                                      "type": "string"
+                                  }
+                              },
+                              "required": [
+                                  "ts"
+                              ]
+                          },
+                          {
+                              "properties": {
+                                  "error": {
+                                      "$ref": "https://covesa.global/vissv3.0/error.schema.json"
+                                  },
+                                  "ts": {
+                                      "description": "The time stamp",
+                                      "type": "string"
+                                  },
+                                  "requestId": {
+                                      "description": "The request id",
+                                      "type": "string"
+                                  }
+                              },
+                              "required": [
+                                  "error",
+                                  "ts"
+                              ]
+                          }
+                      ]
+                  },
+                  "https://covesa.global/vissv3.0/subscribe-message.schema.json": {
+                      "$id": "https://covesa.global/vissv3.0/subscribe-message.schema.json",
+                      "$schema": "https://json-schema.org/draft/2020-12/schema",
+                      "title": "VISSv3-subscribe-message",
+                      "description": "VISSv3 subscribe request and response messages",
+                      "type": "object",
+                      "oneOf": [
+                          {
+                              "properties": {
+                                  "path": {
+                                      "description": "The path",
+                                      "type": "string"
+                                  },
+                                  "filter": {
+                                      "oneOf": [
+                                          {
+                                              "$ref": "/vissv3.0/filter.schema.json"
+                                          },
+                                          {
+                                              "type": "array",
+                                              "items": {
+                                                  "$ref": "/vissv3.0/filter.schema.json"
+                                              },
+                                              "minItems": 1,
+                                              "maxItems": 2
+                                          }
+                                      ]
+                                  },
+                                  "authorization": {
+                                      "description": "The access token",
+                                      "type": "string"
+                                  },
+                                  "dc": {
+                                      "description": "The data compression scheme",
+                                      "type": "string"
+                                  },
+                                  "requestId": {
+                                      "description": "The request id",
+                                      "type": "string"
+                                  }
+                              },
+                              "required": [
+                                  "path",
+                                  "filter"
+                              ]
+                          },
+                          {
+                              "properties": {
+                                  "authorization": {
+                                      "description": "The access token handle",
+                                      "type": "string"
+                                  },
+                                  "subscriptionId": {
+                                      "description": "The subscription Id",
+                                      "type": "string"
+                                  },
+                                  "ts": {
+                                      "description": "The time stamp",
+                                      "type": "string"
+                                  },
+                                  "requestId": {
+                                      "description": "The request id",
+                                      "type": "string"
+                                  }
+                              },
+                              "required": [
+                                  "subscriptionId",
+                                  "ts"
+                              ]
+                          },
+                          {
+                              "properties": {
+                                  "error": {
+                                      "$ref": "https://covesa.global/vissv3.0/error.schema.json"
+                                  },
+                                  "ts": {
+                                      "description": "The time stamp",
+                                      "type": "string"
+                                  },
+                                  "requestId": {
+                                      "description": "The request id",
+                                      "type": "string"
+                                  }
+                              },
+                              "required": [
+                                  "error",
+                                  "ts"
+                              ]
+                          }
+                      ]
+                  },
+                  "https://covesa.global/vissv3.0/unsubscribe-message.schema.json": {
+                      "$id": "https://covesa.global/vissv3.0/unsubscribe-message.schema.json",
+                      "$schema": "https://json-schema.org/draft/2020-12/schema",
+                      "title": "VISSv3-unsubscribe-message",
+                      "description": "VISSv3 unsubscribe request and response messages",
+                      "type": "object",
+                      "oneOf": [
+                          {
+                              "properties": {
+                                  "subscriptionId": {
+                                      "description": "The subscription Id",
+                                      "type": "string"
+                                  },
+                                  "requestId": {
+                                      "description": "The request id",
+                                      "type": "string"
+                                  }
+                              },
+                              "required": [
+                                  "subscriptionId"
+                              ]
+                          },
+                          {
+                              "properties": {
+                                  "ts": {
+                                      "description": "The time stamp",
+                                      "type": "string"
+                                  },
+                                  "requestId": {
+                                      "description": "The request id",
+                                      "type": "string"
+                                  }
+                              },
+                              "required": [
+                                  "ts"
+                              ]
+                          },
+                          {
+                              "properties": {
+                                  "error": {
+                                      "$ref": "https://covesa.global/vissv3.0/error.schema.json"
+                                  },
+                                  "ts": {
+                                      "description": "The time stamp",
+                                      "type": "string"
+                                  },
+                                  "requestId": {
+                                      "description": "The request id",
+                                      "type": "string"
+                                  }
+                              },
+                              "required": [
+                                  "error",
+                                  "ts"
+                              ]
+                          }
+                      ]
+                  },
+                  "https://covesa.global/vissv3.0/subscription-event.schema.json": {
+                      "$id": "https://covesa.global/vissv3.0/subscription-event.schema.json",
+                      "$schema": "https://json-schema.org/draft/2020-12/schema",
+                      "title": "VISSv3-subscription-event",
+                      "description": "VISSv3 subscription event",
+                      "type": "object",
+                      "oneOf": [
+                          {
+                              "properties": {
+                                  "subscriptionId": {
+                                      "description": "The subscription Id",
+                                      "type": "string"
+                                  },
+                                  "data": {
+                                      "$ref": "https://covesa.global/vissv3.0/data.schema.json"
+                                  },
+                                  "ts": {
+                                      "description": "The time stamp",
+                                      "type": "string"
+                                  },
+                                  "requestId": {
+                                      "description": "The request id",
+                                      "type": "string"
+                                  }
+                              },
+                              "required": [
+                                  "subscriptionId",
+                                  "data",
+                                  "ts"
+                              ]
+                          },
+                          {
+                              "properties": {
+                                  "subscriptionId": {
+                                      "description": "The subscription Id",
+                                      "type": "string"
+                                  },
+                                  "error": {
+                                      "$ref": "https://covesa.global/vissv3.0/error.schema.json"
+                                  },
+                                  "ts": {
+                                      "description": "The time stamp",
+                                      "type": "string"
+                                  },
+                                  "requestId": {
+                                      "description": "The request id",
+                                      "type": "string"
+                                  }
+                              },
+                              "required": [
+                                  "subscriptionId",
+                                  "error",
+                                  "ts"
+                              ]
+                          }
+                      ]
+                  },
+                  "https://covesa.global/vissv3.0/filter.schema.json": {
+                      "$schema": "https://json-schema.org/draft/2020-12/schema",
+                      "$id": "https://covesa.global/vissv3.0/filter.schema.json",
+                      "title": "VISSv3.0-filter",
+                      "description": "VISS version 3.0 filter",
+                      "type": "object",
+                      "properties": {
+                          "variant": {
+                              "type": "string"
+                          }
+                      },
+                      "required": [
+                          "variant"
+                      ],
+                      "oneOf": [
+                          {
+                              "properties": {
+                                  "variant": {
+                                      "const": "paths"
+                                  },
+                                  "parameter": {
+                                      "type": "array",
+                                      "items": {
+                                          "type": "string"
+                                      }
+                                  }
+                              },
+                              "required": [
+                                  "parameter"
+                              ]
+                          },
+                          {
+                              "properties": {
+                                  "variant": {
+                                      "const": "timebased"
+                                  },
+                                  "parameter": {
+                                      "properties": {
+                                          "period": {
+                                              "type": "string"
+                                          }
+                                      },
+                                      "required": [
+                                          "period"
+                                      ]
+                                  }
+                              },
+                              "required": [
+                                  "parameter"
+                              ]
+                          },
+                          {
+                              "oneOf": [
+                                  {
+                                      "properties": {
+                                          "variant": {
+                                              "const": "range"
+                                          },
+                                          "parameter": {
+                                              "type": "object",
+                                              "properties": {
+                                                  "logic-op": {
+                                                      "type": "string",
+                                                      "enum": [
+                                                          "eq",
+                                                          "ne",
+                                                          "gt",
+                                                          "gte",
+                                                          "lt",
+                                                          "lte"
+                                                      ]
+                                                  },
+                                                  "boundary": {
+                                                      "type": "string"
+                                                  }
+                                              },
+                                              "required": [
+                                                  "logic-op",
+                                                  "boundary"
+                                              ]
+                                          }
+                                      },
+                                      "required": [
+                                          "parameter"
+                                      ]
+                                  },
+                                  {
+                                      "properties": {
+                                          "variant": {
+                                              "const": "range"
+                                          },
+                                          "parameter": {
+                                              "type": "array",
+                                              "items": {
+                                                  "type": "object",
+                                                  "properties": {
+                                                      "logic-op": {
+                                                          "type": "string",
+                                                          "enum": [
+                                                              "eq",
+                                                              "ne",
+                                                              "gt",
+                                                              "gte",
+                                                              "lt",
+                                                              "lte"
+                                                          ]
+                                                      },
+                                                      "boundary": {
+                                                          "type": "string"
+                                                      },
+                                                      "combination-op": {
+                                                          "type": "string",
+                                                          "enum": [
+                                                              "AND",
+                                                              "OR"
+                                                          ]
+                                                      }
+                                                  },
+                                                  "required": [
+                                                      "logic-op",
+                                                      "boundary"
+                                                  ]
+                                              },
+                                              "minItems": 2,
+                                              "maxItems": 2
+                                          }
+                                      },
+                                      "required": [
+                                          "parameter"
+                                      ]
+                                  }
+                              ]
+                          },
+                          {
+                              "properties": {
+                                  "variant": {
+                                      "const": "change"
+                                  },
+                                  "parameter": {
+                                      "properties": {
+                                          "logic-op": {
+                                              "type": "string",
+                                              "enum": [
+                                                  "eq",
+                                                  "ne",
+                                                  "gt",
+                                                  "gte",
+                                                  "lt",
+                                                  "lte"
+                                              ]
+                                          },
+                                          "diff": {
+                                              "type": "string"
+                                          }
+                                      },
+                                      "required": [
+                                          "logic-op",
+                                          "diff"
+                                      ]
+                                  }
+                              },
+                              "required": [
+                                  "parameter"
+                              ]
+                          },
+                          {
+                              "properties": {
+                                  "variant": {
+                                      "const": "curvelog"
+                                  },
+                                  "parameter": {
+                                      "properties": {
+                                          "maxerr": {
+                                              "type": "string"
+                                          },
+                                          "bufsize": {
+                                              "type": "string"
+                                          }
+                                      },
+                                      "required": [
+                                          "maxerr",
+                                          "bufsize"
+                                      ]
+                                  }
+                              },
+                              "required": [
+                                  "parameter"
+                              ]
+                          },
+                          {
+                              "properties": {
+                                  "variant": {
+                                      "const": "history"
+                                  },
+                                  "parameter": {
+                                      "type": "string"
+                                  }
+                              },
+                              "required": [
+                                  "parameter"
+                              ]
+                          },
+                          {
+                              "oneOf": [
+                                  {
+                                      "properties": {
+                                          "variant": {
+                                              "const": "metadata"
+                                          },
+                                          "parameter": {
+                                              "type": "string"
+                                          }
+                                      },
+                                      "required": [
+                                          "parameter"
+                                      ]
+                                  },
+                                  {
+                                      "properties": {
+                                          "variant": {
+                                              "const": "metadata"
+                                          },
+                                          "parameter": {
+                                              "type": "array",
+                                              "items": {
+                                                  "type": "string"
+                                              }
+                                          }
+                                      },
+                                      "required": [
+                                          "parameter"
+                                      ]
+                                  }
+                              ]
+                          }
+                      ]
+                  },
+                  "https://covesa.global/vissv3.0/data.schema.json": {
+                      "$id": "https://covesa.global/vissv3.0/data.schema.json",
+                      "$schema": "https://json-schema.org/draft/2020-12/schema",
+                      "title": "VISSv3-data-representation",
+                      "description": "VISSv3 data representation",
+                      "oneOf": [
+                          {
+                              "type": "object",
+                              "$ref": "/vissv3.0/data-object.schema.json"
+                          },
+                          {
+                              "type": "array",
+                              "items": {
+                                  "$ref": "/vissv3.0/data-object.schema.json"
+                              }
+                          }
+                      ]
+                  },
+                      "https://covesa.global/vissv3.0/data-object.schema.json": {
+                          "$id": "https://covesa.global/vissv3.0/data-object.schema.json",
+                          "$schema": "https://json-schema.org/draft/2020-12/schema",
+                          "title": "VISSv3-data-object",
+                          "description": "VISSv3 data object",
+                          "properties": {
+                              "path": {
+                                  "description": "The path",
+                                  "type": "string"
+                              },
+                              "dp": {
+                                  "description": "The data point",
+                                  "oneOf": [
+                                      {
+                                          "$ref": "/vissv3.0/datapoint.schema.json"
+                                      },
+                                      {
+                                          "type": "array",
+                                          "items": {
+                                              "$ref": "/vissv3.0/datapoint.schema.json"
+                                          },
+                                          "minItems": 1
+                                      }
+                                  ]
+                              }
+                          }
+                      },
+                      "https://covesa.global/vissv3.0/datapoint.schema.json": {
+                          "$id": "https://covesa.global/vissv3.0/datapoint.schema.json",
+                          "$schema": "https://json-schema.org/draft/2020-12/schema",
+                          "title": "VISSv3-datapoint",
+                          "description": "VISSv3 datapoint",
+                          "type": "object",
+                          "properties": {
+                              "value": {
+                                  "description": "The value",
+                                  "$ref": "https://covesa.global/vissv3.0/value.schema.json"
+                              },
+                              "ts": {
+                                  "description": "The time stamp",
+                                  "type": "string"
+                              }
+                          },
+                          "required": [
+                              "value",
+                              "ts"
+                            ]
+                      },
+                      "https://covesa.global/vissv3.0/error.schema.json": {
+                          "$id": "https://covesa.global/vissv3.0/error.schema.json",
+                          "$schema": "https://json-schema.org/draft/2020-12/schema",
+                          "title": "VISSv3-error",
+                          "description": "VISSv3 error data",
+                          "type": "object",
+                          "properties": {
+                              "number": {
+                                  "description": "The status code",
+                                  "type": "string",
+                                  "enum": [
+                                      "400",
+                                      "401",
+                                      "403",
+                                      "404",
+                                      "408",
+                                      "429",
+                                      "502",
+                                      "503",
+                                      "504"
+                                  ]
+                              },
+                              "reason": {
+                                  "description": "The reason",
+                                  "type": "string",
+                                  "enum": [
+                                      "bad_request",
+                                      "invalid_data",
+                                      "invalid_token",
+                                      "forbidden_request",
+                                      "unavailable_data",
+                                      "request_timeout",
+                                      "too_many_requests",
+                                      "bad_gateway",
+                                      "service_unavailable",
+                                      "gateway_timeout"
+                                  ]
+                              },
+                              "description": {
+                                  "description": "The access token",
+                                  "type": "string"
+                              }
+                          },
+                          "required": [
+                              "number",
+                              "reason",
+                              "description"
+                          ]
+                      },
+                      "https://covesa.global/vissv3.0/value.schema.json": {
+                          "$id": "https://covesa.global/vissv3.0/value.schema.json",
+                          "$schema": "https://json-schema.org/draft/2020-12/schema",
+                          "title": "VISSv3-value",
+                          "description": "VISSv3 value data",
+                          "oneOf": [
+                              {
+                                  "type": "string"
+                              },
+                              {
+                                  "type": "array",
+                                  "items": {
+                                      "type": "string"
+                                  },
+                                  "minItems": 1
+                              },
+                              {
+                                  "type": "object",
+                                  "patternProperties": {
+                                      ".*": {
+                                          "type": "string"
+                                      }
+                                  },
+                                  "minItems": 1
+                              }
+                          ]
+                      }
+              }
+            }
+          </pre>
     </section>
 
     <section id="server-capabilities" class="appendix">
@@ -1869,16 +2672,171 @@
         The Server tree MUST contain the structures listed below. Additional parts are optional.
         Server capabilities that extends this specification, or change anything defined in this specification SHALL be declared in the Server tree.
         </p>
-       <ul>
+        <ul>
             <li>The root node name MUST be Server.</li>
             <li>The Server node MUST have at least have two children named Support and Config.</li>
             <li>The Support node MUST have at least one child named Protocol.</li>
             <li>The Protocol node MUST be an attribute with a string array datatype with members defining the supported transport protocols.</li>
         </ul>
         Below follows an example of a server capabilities tree.
-          <pre><code>
-              <embed type="text/yaml" src="resources/server.yml.txt" width="700" height="500">
-          </code></pre>
+        <pre>
+          #
+          # The server capabilities declaration.
+          #
+          Server:
+            type: branch
+            description: Root for the server capabilities.
+          
+          Server.Support:
+            type: branch
+            description: Top branch declaring the server supported features.
+            
+          Server.Support.Protocol:
+            type: attribute
+            datatype: string[]
+            description: List of supported transport protocols.
+          
+          Server.Support.Security:
+            type: attribute
+            datatype: string[]
+            description: List of supported security related features.
+          
+          Server.Support.Filter:
+            type: attribute
+            datatype: string[]
+            description: List of supported filter features.
+          
+          Server.Support.Encoding:
+            type: attribute
+            datatype: string[]
+            description: List of supported payload encoding features.
+          
+          Server.Support.Filetransfer:
+            type: attribute
+            datatype: string[]
+            description: List of supported file transfer features.
+          
+          Server.Support.DataCompression:
+            type: attribute
+            datatype: string[]
+            description: List of supported data compression features.
+          
+          Server.Config:
+            type: branch
+            description: Top branch declaring the configuration of server supported features.
+            
+          Server.Config.Protocol:
+            type: branch
+            description: Top branch declaring the configuration of server supported protocols.
+            
+          Server.Config.Protocol.Http:
+            type: branch
+            description: Top branch for the server supported HTTP protocol.
+          
+          Server.Config.Protocol.Http.Primary:
+            type: branch
+            description: HTTP configuration for the primary payload format.
+          
+          Server.Config.Protocol.Http.Primary.PortNum:
+            type: attribute
+            datatype: uint32
+            description: HTTP port number for the primary payload format.
+          
+          Server.Config.Protocol.Websocket:
+            type: branch
+            description: Top branch for the server supported Websocket protocol.
+          
+          Server.Config.Protocol.Websocket.Primary:
+            type: branch
+            description: Websocket configuration for the primary payload format.
+          
+          Server.Config.Protocol.Websocket.Primary.PortNum:
+            type: attribute
+            datatype: uint32
+            description: Websocket protocol port number for the primary payload format.
+          
+          Server.Config.Protocol.Websocket.Protobuf:
+            type: branch
+            description: Websocket configuration for the protobuf encoded payload format.
+          
+          Server.Config.Protocol.Websocket.Protobuf.PortNum:
+            type: attribute
+            datatype: uint32
+            description: Websocket protocol port number for the protobuf encoded payload format.
+          
+          Server.Config.Protocol.Mqtt:
+            type: branch
+            description: Top branch for the server supported MQTT protocol.
+          
+          Server.Config.Protocol.Mqtt.PortNum:
+            type: attribute
+            datatype: uint32
+            description: MQTT port number.
+          
+          Server.Config.Protocol.Mqtt.Primary:
+            type: branch
+            description: MQTT configuration for the primary payload format.
+          
+          Server.Config.Protocol.Mqtt.Primary.Topic:
+            type: attribute
+            datatype: string
+            description: MQTT topic name for the primary payload format.
+          
+          Server.Config.Protocol.Mqtt.Protobuf:
+            type: branch
+            description: MQTT configuration for the protobuf encoded payload format.
+          
+          Server.Config.Protocol.Mqtt.Protobuf.Topic:
+            type: attribute
+            datatype: string
+            description: MQTT topic name for the protobuf encoded payload format.
+          
+          Server.Config.Protocol.Mqtt.Protobuf.DataCompression:
+            type: attribute
+            datatype: string[]
+            description: List of supported data compression variants.
+          
+          Server.Config.Protocol.Grpc:
+            type: branch
+            description: Top branch for the server supported gRPC protocol.
+          
+          Server.Config.Protocol.Grpc.Protobuf:
+            type: branch
+            description: gRPC configuration with the protobuf encoded payload format.
+          
+          Server.Config.Protocol.Grpc.Protobuf.PortNum:
+            type: attribute
+            datatype: uint32
+            description: gRPC port number for the protobuf encoded payload format.
+          
+          Server.Config.AccessControl:
+            type: branch
+            description: Access control configuration.
+          
+          Server.Config.AccessControl.AgtsUrl:
+            type: attribute
+            datatype: string
+            description: Access Grant Token Server URL including port number and path.
+          
+          Server.Config.AccessControl.AtsPortNum:
+            type: attribute
+            datatype: uint32
+            description: Access Token Server port number.
+          
+          Server.Config.AccessControl.Flow:
+            type: attribute
+            datatype: string
+            description: Supported access control flows.
+          
+          Server.Config.Consent:
+            type: branch
+            description: Consent configuration.
+          
+          Server.Config.Consent.Ecf:
+            type: attribute
+            datatype: string
+            description: External Consent Framework description.
+        </pre>
           A feature that is supported in at least one configuration shall be registered on the Support branch.
           The Config branch shall contain the information needed for a client to utilize the feature,
           for all configurations that has the feature supported.
