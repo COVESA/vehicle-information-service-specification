@@ -12,7 +12,7 @@ Ted Guild - Geotab Inc.
 
 Peter Winzell - Volvo Cars
 
-Wonsuk Lee - ETRI
+Wonsuk Lee - 한국전자통신연구원(ETRI)
  
 ### Lead editors
 
@@ -70,6 +70,6 @@ VISS is an open standard and we invite anybody to contribute. Currently VISS con
  - [Volvo Cars](https://www.volvocars.com/)
  - [Geotab Inc](https://www.geotab.com/about/)
  - [Ford Motor Company](https://www.ford.com/)
- - [ETRI](https://etri.re.kr/eng/main/main.etri)
+ - [한국전자통신연구원(ETRI)](https://etri.re.kr/eng/main/main.etri)
  - [Mitsubishi Electric](https://www.mitsubishielectric.com/en/)
  - [Jaguar Land Rover](https://www.jaguarlandrover.com/)
