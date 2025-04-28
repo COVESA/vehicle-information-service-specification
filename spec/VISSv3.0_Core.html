@@ -627,9 +627,17 @@
           </ul>
           The server MUST support the timebased and change variants, the other variants are optional.<br>
           In the JSON object, the key-value pairs "variant" and "parameter" MUST always be present.
+          Multiple filter expressions may be combined in one subscribe request.<br>
+          The following SHALL be supported.<br>
           The JSON expression may consist of maximum one object with variant "paths", plus maximum one object with any other supported variant,
           which are then logically combined as with an AND operator.<br>
-          The variants timebased, range, change, and curvelog can only be used in subscription requests.
+          The variants timebased, range, change, and curvelog can only be used in subscription requests.<br>
+          A server may optionally support other filter combinations on top of the mandatory support.
+          In that case these combinations MUST be expressed in the <a href="#server-capabilities"></a> Server.Support.Filter tree node string array by
+          the filter variant names combined with a plus sign (+) as delimiter.
+          A combination of e. g. a timebased filter and a change filter would be represented in the array as “timebased+change”.
+          For the combined trigger condition to lead to an issued event message a logical AND operation combines the evaluated results of the respective conditions,
+          which SHALL be evaluated at the same point in time.<br>
           Subscription requests are NOT supported by the HTTP transport protocol.<br>
           The restriction on how many objects that can be combined is also set by the URL size restriction on 1k characters (*).<br>
           (*) 1k is the "conservative limit, which should always be supported, a more liberal limit is 2k, which is supported in most cases.
