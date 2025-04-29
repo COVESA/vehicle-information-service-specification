@@ -628,10 +628,12 @@
           The server MUST support the timebased and change variants, the other variants are optional.<br>
           In the JSON object, the key-value pairs "variant" and "parameter" MUST always be present.
           Multiple filter expressions may be combined in one subscribe request.<br>
-          The following SHALL be supported.<br>
-          The JSON expression may consist of maximum one object with variant "paths", plus maximum one object with any other supported variant,
-          which are then logically combined as with an AND operator.<br>
-          The variants timebased, range, change, and curvelog can only be used in subscription requests.<br>
+          The following SHALL be supported.
+          <ul>
+          <li>A JSON expression that may consist of maximum one object with variant "paths", plus maximum one object with any other supported variant,
+          which are then logically combined as with an AND operator.</li>
+          <li>The variants timebased, range, change, and curvelog can only be used in subscription requests.</li>
+          </ul>
           A server may optionally support other filter combinations on top of the mandatory support.
           In that case these combinations MUST be expressed in the <a href="#server-capabilities"></a> Server.Support.Filter tree node string array by
           the filter variant names combined with a plus sign (+) as delimiter.
