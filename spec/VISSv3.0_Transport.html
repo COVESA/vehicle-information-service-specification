@@ -28,17 +28,17 @@
           companyURL: "https://etri.re.kr/eng/main/main.etri",
           w3cid: 34457
         }],
-        edDraftURI: "https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Transport.html",
+        edDraftURI: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Transport.html",
         shortName: "viss3-transport",
         localBiblio: {
           "PAYLOAD ENCODING": {
             title: "COVESA VISS version 3.0-Payload Encoding",
-            href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_PayloadEncoding.html",
+            href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_PayloadEncoding.html",
             publisher: "Ulf Bjorkengren; Wonsuk Lee"
           },
           "CORE": {
             title: "COVESA VISS version 3.0-Core",
-            href: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html",
+            href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Core.html",
             publisher: "Ulf Bjorkengren; Wonsuk Lee"
           }
         }
@@ -104,7 +104,7 @@
   </style>
   </head>
   <body>
-    <p class="copyright">Copyright © 2024 COVESA®. This document includes material copied from or derived from <a href="https://github.com/COVESA/vehicle-information-service-specification/blob/gh-pages/spec/VISSv3.0_Core.html">W3C VISS version 2 - Core</a>.</p>
+    <p class="copyright">Copyright © 2025 COVESA®.</p>
     <section id='abstract'>
       <p>
         The Vehicle Information Service Specification (VISS) is a
@@ -415,7 +415,7 @@
         <h2>Transport Payload</h2>
         <p>
           The payload SHALL be formatted in JSON.
-          Refer to the <a href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#json-schema">section A. JSON Schema</a> of appendix in the [[CORE]] specification for details on the primary payload format.
+          Refer to the <a href="https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Core.html#json-schema">section A. JSON Schema</a> of appendix in the [[CORE]] specification for details on the primary payload format.
         </p>
       </section>
 
@@ -658,7 +658,7 @@
           <section id="wss-search-read">
             <h2>Search Read</h2>
             <p>The client MAY issue a search read request to retrieve multiple signal values in one request message.
-               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#paths-filter-operation">section 7.1 Paths Filter Operation</a> described in the [[CORE]] specification.
+               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Core.html#paths-filter-operation">section 7.1 Paths Filter Operation</a> described in the [[CORE]] specification.
             </p>
             <p>
               <b>Example:</b><br>
@@ -690,7 +690,7 @@
           <section id="wss-history-read">
             <h2>History Read</h2>
             <p>A client MAY issue a history read request to retrieve previously recorded data points.
-               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#history-filter-operation">section 7.2 History Filter Operation</a> described in the [[CORE]] specification.
+               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Core.html#history-filter-operation">section 7.2 History Filter Operation</a> described in the [[CORE]] specification.
             </p>
             <p>
               <b>Example:</b><br>
@@ -719,7 +719,7 @@
             <h2>Signal Discovery Read</h2>
             <p>
               To retrieve metadata about the VSS tree, the client MAY issue a signal discovery read request.
-              This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#metadata-request">section 7.7 Metadata Filter Operation</a> described in the [[CORE]] specification.
+              This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Core.html#metadata-request">section 7.7 Metadata Filter Operation</a> described in the [[CORE]] specification.
               The response includes metadata for all nodes in the subtree rooted at the node specified by the path, 
               limited to the number of generations set by the "parameter" value.
             </p>
@@ -861,7 +861,7 @@
             The client MAY send a <a href="#dfn-subscriberequest" class="internalDFN" data-link-type="dfn">subscribeRequest</a> message
             to request a subscription to one or more signals,
             thereby requesting the server to repeatedly return subscription event messages based on
-	          the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#filter-request">section 7. Filter Request</a> described in the [[CORE]] specification.
+	          the <a data-link-type="dfn" href="https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Core.html#filter-request">section 7. Filter Request</a> described in the [[CORE]] specification.
             To reduce processing load, the server MAY limit the number of
             <a href="#dfn-subscriptionevent" class="internalDFN" data-link-type="dfn">subcriptionEvent</a> messages sent.<br>
             If the server can fulfill the request, it SHALL return a
@@ -1042,7 +1042,7 @@
             <p>
             Curve logging data compression by eliminating data points that are within a set error margin is activated via a subscription request.
             Event messages will be issued when the buffer becomes full, after insignificant data points have been eliminated,
-            refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#curvelog-filter-operation">section 7.6 Curve logging Filter Operation</a> in the [[CORE]] specification.
+            refer to the <a data-link-type="dfn" href="https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Core.html#curvelog-filter-operation">section 7.6 Curve logging Filter Operation</a> in the [[CORE]] specification.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1083,7 +1083,7 @@
             <p>
               Subscription to a range of values, 
               that can have either a single boundary, or multipe boundaries as in the example below.
-              For a more information how to use range of values, refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#range-filter-operation">section 7.4 Range Filter Operation</a> in the [[CORE]] specification.
+              For a more information how to use range of values, refer to the <a data-link-type="dfn" href="https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Core.html#range-filter-operation">section 7.4 Range Filter Operation</a> in the [[CORE]] specification.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1122,7 +1122,7 @@
             <h2>Change Subscribe</h2>
             <p>
             Subscription to when a signal has changed between two sequential captures.
-            For a more information how to use change of values, refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#change-filter-operation">section 7.5 Change Filter Operation</a> in the [[CORE]] specification.
+            For a more information how to use change of values, refer to the <a data-link-type="dfn" href="https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Core.html#change-filter-operation">section 7.5 Change Filter Operation</a> in the [[CORE]] specification.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1369,7 +1369,7 @@
           <section id="https-search-read">
             <h2>Search Read</h2>
             <p>
-              The search read request uses the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#paths-filter-operation">section 7.1 Paths Filter Operation</a> 
+              The search read request uses the <a data-link-type="dfn" href="https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Core.html#paths-filter-operation">section 7.1 Paths Filter Operation</a> 
               described in the [[CORE]] specification to define one or more path expressions, relative to the path in the GET URL.<br>
               <b>Example:</b>
               Request:
@@ -1408,7 +1408,7 @@
           <section id="https-history-read">
             <h2>History Read</h2>
             <p>
-              The history read request uses the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#history-filter-operation">section 7.2 History Filter Operation</a> 
+              The history read request uses the <a data-link-type="dfn" href="https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Core.html#history-filter-operation">section 7.2 History Filter Operation</a> 
               described in the [[CORE]] specification to read recorded values
               for a specific past duration.<br>
               <b>Example:</b>
@@ -1435,7 +1435,7 @@
           <section id="https-service-discovery-read">
             <h2>Signal Discovery Read</h2>
             <p>
-              The signal discovery request uses the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#metadata-request">section 7.7 Metadata Filter Operation</a> 
+              The signal discovery request uses the <a data-link-type="dfn" href="https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Core.html#metadata-request">section 7.7 Metadata Filter Operation</a> 
               described in the [[CORE]] specification to retrieve metadata from a specified subtree in the VSS tree.
               A successful response will contain the requested metadata from all nodes of the subtree defined by 
               the subtree root node addressed by the path. 
@@ -1540,7 +1540,7 @@
       <section id="application-level-protocol">
         <h2>Application Level Protocol</h2>
         <p>
-          For MQTT to support the full VISSv3 interface, as decribed in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html#interface">section 5. Interface</a> of the [[CORE]] specification,
+          For MQTT to support the full VISSv3 interface, as decribed in the <a data-link-type="dfn" href="https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Core.html#interface">section 5. Interface</a> of the [[CORE]] specification,
           an application-level protocol that runs on top of MQTT is required.
           This protocol is described below and illustrated in the accompanying sequence diagram.
           To emulate the client-server pattern that is described in the [[CORE]] specification, 
