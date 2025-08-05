@@ -29,16 +29,17 @@ Minutes of meetings is found [here](https://wiki.covesa.global/display/WIK4/VISS
 
 To see the most recent HTML rendered version of the specifications from this repository can be found at the following:
 
-- [COVESA VISS version 3.0 - Core](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Core.html)
-- [COVESA VISS version 3.0-Payload Encoding](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_PayloadEncoding.html)
-- [COVESA VISS version 3.0-Transport](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.0_Transport.html)
+- [COVESA VISS version 3.1 - Core](https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Core.html)
+- [COVESA VISS version 3.1-Payload Encoding](https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_PayloadEncoding.html)
+- [COVESA VISS version 3.1-Transport](https://github.com/COVESA/vehicle-information-service-specification/blob/v3.1/spec/VISSv3.1_Transport.html)
 
 The [VISS explainer](./VISS-explainer.md) gives some background and rationale to this interface.
 
 ## Latest version
-[VISS version 2.0](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v2.0)
+[VISS version 3.0](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.0)
 
 ## Previous versions
+[VISS version 2.0](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v2.0)
 [VISS version 1](https://www.w3.org/TR/vehicle-information-service/)
 
 ## Reference Implementation
