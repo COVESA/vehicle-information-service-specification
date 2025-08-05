@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>COVESA VISS version 3.0-Transport</title>
+    <title>COVESA VISS version 3.1-Transport</title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
     <script class='remove'>
       var respecConfig = {
@@ -32,12 +32,12 @@
         shortName: "viss3-transport",
         localBiblio: {
           "PAYLOAD ENCODING": {
-            title: "COVESA VISS version 3.0-Payload Encoding",
+            title: "COVESA VISS version 3.1-Payload Encoding",
             href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_PayloadEncoding.html",
             publisher: "Ulf Bjorkengren; Wonsuk Lee"
           },
           "CORE": {
-            title: "COVESA VISS version 3.0-Core",
+            title: "COVESA VISS version 3.1-Core",
             href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Core.html",
             publisher: "Ulf Bjorkengren; Wonsuk Lee"
           }
@@ -110,7 +110,7 @@
         The Vehicle Information Service Specification (VISS) is a
         service for accessing vehicle information, including signals from sensors
         on control units within a vehicle's network. This information is exposed through a hierarchical, 
-        tree-like taxonomy as defined in the COVESA Vehicle Signal Specification (VSS), 
+        tree-like taxonomy as defined in the COVESA <a href="https://github.com/COVESA/hierarchical_information_model">Hierarchical Information Model</a> (HIM), 
         and is provided in JSON format. The VISS service may be hosted within the vehicle or on external servers, 
         using data that has already been off-boarded.
       </p>
@@ -122,20 +122,23 @@
         driver behavior analysis, energy optimization, and contextual decision-making.
       </p>
       <p>
-        This specification describes the third version of VISS, which
-        has been implemented and deployed in production vehicles.
-        The first version of VISS supported only WebSocket as a
-        transport protocol, the second version is generalized to work
-        across different protocols as some are better suited for
-        different use cases.
-        The second version added support for the HTTP and MQTT transport
-        protocols, improved subscription capabilities and added an
-        access control mechanism.
-      </p>
-
+        The first version of VISS, which has been implemented and deployed in production vehicles,
+        supported only WebSocket as a transport protocol.<br>
+        The <a href="https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v2.0">second version</a>
+        is generalized to work across also the HTTP and MQTT transport protocols to improve the support for different use cases.
+        It also contains improved subscription capabilities and added an access control mechanism.<br>
+        The <a href="https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.0">third version</a>
+        included the gRPC transport protocol but also simplified addition of other transport protocols by placing the normative requirement
+        on the message payload only, and not also on what transport protocol to use.
+        Several new features were added such as file transfer, payload encoding, and improved server capabilities representation.<br>
+        This specification, the version 3.1, is a backwards compatible extension of the third version of VISS.
+        Instead of referencing to the VSS rule set for how to define the content of a tree it refers to the HIM data profile rule set.
+        This enables also other trees than the VSS tree to be used, a server may manage a set of trees, a forest, that a client can access.
+        Other changes are minor adaptations to support the concept of having a forest of trees, such as adding support for a client to do a forest inquiry.
+      </p>     
       <p>
-        This specification consists of three parts, [[CORE]], [[PAYLOAD ENCODING]], and TRANSPORT. This document, the VISS version 3.0 TRANSPORT specification,
-        describes the VISSv3 transport protocols, and how the message layer is mapped to each transport.
+        This specification consists of three parts, [[CORE]], [[PAYLOAD ENCODING]], and TRANSPORT. This document, the VISS version 3.1 TRANSPORT specification,
+        describes the VISSv3.1 transport protocols, and how the message layer is mapped to each transport.
         The companion specification [[CORE]] describes the messaging layer, and [[PAYLOAD ENCODING]] describes payload encodings to/from the primary JSON payload format.
       </p>
     </section>
@@ -145,7 +148,7 @@
       <p>This specification provides examples of how the message payloads defined in [[CORE]] are used together with different transport protocols.
       The Websocket protocol([[RFC6455]]) is used to give an example of how the JSON primary payload format is directly used.
       This is followed by examples of other transport protocols that introduce exceptions or transformations to the primary payload format.<br>
-      The Vehicle Information Service Specification, version 3.0, allows the use of any transport protocol that can carry the unaltered primary payload format.
+      The Vehicle Information Service Specification, version 3.1, allows the use of any transport protocol that can carry the unaltered primary payload format.
       If a transport protocol requires modifications or transformations, those MUST be specified either in this document or in the [[PAYLOAD ENCODING]] document.
       The transport protocols that define such deviations in this document are listed below.
         <table id="errorDefs" class="parameters">
@@ -175,7 +178,9 @@
     <section id="terminology">
       <h2>Terminology</h2>
       <p>
-      The acronym 'VISSv3.0' refer to this document, the VISS version 3.0 specification.
+      The acronym 'VISSv3.1' refer to this document, the VISS version 3.1 specification.
+      The acronym 'HIM' is used to refer to the <a href="https://github.com/COVESA/hierarchical_information_model">'Hierarchical Information Model'</a>
+      which is hosted by COVESA.
       The acronym 'VSS' refer to the <a href="https://github.com/COVESA/vehicle_signal_specification">'Vehicle Signal Specification'</a>
       which is maintained by COVESA.
       The term 'WebSocket', as used in this specification, follows the definition in the
@@ -313,7 +318,7 @@
 	  <tr>
 	    <td>Incorrect datatype</td>
 	    <td>400 - invalid_data - Incorrect data type</td>
-	    <td>Mismatch with the datatype in the VSS tree</td>
+	    <td>Mismatch with the datatype in the tree</td>
 	  </tr>
 	  <tr>
 	    <td>Signal currently not available</td>
@@ -323,7 +328,7 @@
 	  <tr>
 	    <td>Unknown signal</td>
 	    <td>404 - unavailable_data - Data is unknown</td>
-	    <td>Signal is not part of the VSS tree</td>
+	    <td>Signal is not part of the tree</td>
 	  </tr>
 	  <tr>
 	    <td>Misused filter</td>
@@ -372,7 +377,7 @@
         <h2>400 Invalid Data Error Descriptions</h2>
         <p>
         The 400 Invalid Data error code and reason SHALL be used for errors that are not covered by 
-        the JSON schema, but instead violate rules defined by a VSS property.
+        the JSON schema, but instead violate rules defined by a HIM property.
         The default error description is provided in the table above. However, the server MAY dynamically replace 
         it with one of the following descriptions, or with any other relevant error message:
         </p>
@@ -434,7 +439,7 @@
     <section id="transport-protocols">
       <h2>Transport Protocols</h2>
       <p>
-      The VISSv3.0 specification lists the transport protocols HTTP, WebSocket, gRPC, and MQTT as supported.
+      The VISSv3.1 specification lists the transport protocols HTTP, WebSocket, gRPC, and MQTT as supported.
       However, this is not necessarily a final list as says that any protocol that transport the primary payloads of this specification,
       or an encoded version of the primary payloads, can be included on this list.<br>
       The specification does not mandate the use of a specific transport protocol,
@@ -623,7 +628,7 @@
           <section id="wss-authorized-read">
             <h2>Authorized Read</h2>
             <p> 
-              If the operation on the addressed VSS node requires authorization, the request MUST include 
+              If the operation on the addressed tree node requires authorization, the request MUST include 
               the "authorization" field, containing a valid JWT token as its value.
               The token validation MUST be successful for a
               <a href="#dfn-getsuccessresponse" class="internalDFN" data-link-type="dfn">getSuccessResponse</a>
@@ -718,7 +723,7 @@
           <section id="wss-signal-discovery-read">
             <h2>Signal Discovery Read</h2>
             <p>
-              To retrieve metadata about the VSS tree, the client MAY issue a signal discovery read request.
+              To retrieve metadata about the tree, the client MAY issue a signal discovery read request.
               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Core.html#metadata-request">section 7.7 Metadata Filter Operation</a> described in the [[CORE]] specification.
               The response includes metadata for all nodes in the subtree rooted at the node specified by the path, 
               limited to the number of generations set by the "parameter" value.
@@ -824,7 +829,7 @@
          <section id="wss-authorized-update">
             <h2>Authorized Update</h2>
             <p>
-              If the operation on the targeted VSS node requires authorization, 
+              If the operation on the targeted tree node requires authorization, 
               the request MUST include the "authorization" field, containing a valid JWT token.
               The token MUST be successfully validated by the server to return a
               <a href="#dfn-setsuccessresponse" class="internalDFN" data-link-type="dfn">setSuccessResponse</a>.
@@ -995,7 +1000,7 @@
           <section id="authorized-subscribe">
             <h2>Authorized Subscribe</h2>
             <p>
-              If the operation on the addressed VSS node requires authorization, 
+              If the operation on the addressed tree node requires authorization, 
               the request MUST include the "authorization" field with a valid JWT token as its value.
               The token MUST be successfully validated for a
               <a href="#dfn-subscribesuccessresponse" class="internalDFN" data-link-type="dfn">subscribeSuccessResponse</a> to be returned.
@@ -1436,7 +1441,7 @@
             <h2>Signal Discovery Read</h2>
             <p>
               The signal discovery request uses the <a data-link-type="dfn" href="https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Core.html#metadata-request">section 7.7 Metadata Filter Operation</a> 
-              described in the [[CORE]] specification to retrieve metadata from a specified subtree in the VSS tree.
+              described in the [[CORE]] specification to retrieve metadata from a specified subtree in the tree.
               A successful response will contain the requested metadata from all nodes of the subtree defined by 
               the subtree root node addressed by the path. 
               The depth of metadata retrieval is controlled by the "parameter" value.<br><br>
@@ -1640,8 +1645,8 @@
 	  <tr>
 	    <td> <dfn data-dfn-type="dfn" id="dfn-path">path</dfn></td>
 	    <td>string</td>
-	    <td>The path to a node in the VSS tree, as defined by the
-	    <a href="https://github.com/COVESA/vehicle_signal_specification">Vehicle Signal Specification (VSS)</a>.</td>
+	    <td>The path to a node in the tree, as defined by the
+	    <a href="https://github.com/COVESA/hierarchical_information_model">HIM</a>.</td>
 	  </tr>
 	  <tr>
 	    <td> <dfn data-dfn-type="dfn" id="dfn-requestid">requestId</dfn></td>

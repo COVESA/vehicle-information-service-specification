@@ -793,7 +793,14 @@
                         "type": "object",
                         "patternProperties": {
                             ".*": {
-                                "type": "string"
+		                "oneOf": [
+		                    {
+                                	"type": "string"
+                                    },
+                                    {
+		                        "type": "object"
+                                    }
+                                ]
                             }
                         },
                         "minItems": 1

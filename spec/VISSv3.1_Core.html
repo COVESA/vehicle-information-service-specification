@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>COVESA VISS version 3.0 - Core</title>
+    <title>COVESA VISS version 3.1 - Core</title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
     <script class='remove'>
       var respecConfig = {
@@ -33,12 +33,12 @@
         shortName: "viss3.0-core",
         localBiblio: {
           "PAYLOAD ENCODING": {
-            title: "COVESA VISS version 3.0-Payload Encoding",
+            title: "COVESA VISS version 3.1-Payload Encoding",
             href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_PayloadEncoding.html",
             publisher: "Ulf Bjorkengren; Wonsuk Lee"
           },
           "TRANSPORT": {
-            title: "COVESA VISS version 3.0-Transport",
+            title: "COVESA VISS version 3.1-Transport",
             href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Transport.html",
             publisher: "Ulf Bjorkengren; Wonsuk Lee"
           }
@@ -111,7 +111,7 @@
         The Vehicle Information Service Specification (VISS) is a
         service for accessing vehicle information, including signals from sensors
         on control units within a vehicle's network. This information is exposed through a hierarchical, 
-        tree-like taxonomy as defined in the COVESA Vehicle Signal Specification (VSS), 
+        tree-like taxonomy as defined in the COVESA <a href="https://github.com/COVESA/hierarchical_information_model">Hierarchical Information Model</a> (HIM), 
         and is provided in JSON format. The VISS service may be hosted within the vehicle or on external servers, 
         using data that has already been off-boarded.
       </p>
@@ -123,23 +123,26 @@
         driver behavior analysis, energy optimization, and contextual decision-making.
       </p>
       <p>
-        This specification describes the third version of VISS, which
-        has been implemented and deployed in production vehicles.
-        The first version of VISS supported only WebSocket as a
-        transport protocol, the second version is generalized to work
-        across different protocols as some are better suited for
-        different use cases.
-        The second version added support for the HTTP and MQTT transport
-        protocols, improved subscription capabilities and added an
-        access control mechanism.
+        The first version of VISS, which has been implemented and deployed in production vehicles,
+        supported only WebSocket as a transport protocol.<br>
+        The <a href="https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v2.0">second version</a>
+        is generalized to work across also the HTTP and MQTT transport protocols to improve the support for different use cases.
+        It also contains improved subscription capabilities and added an access control mechanism.<br>
+        The <a href="https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.0">third version</a>
+        included the gRPC transport protocol but also simplified addition of other transport protocols by placing the normative requirement
+        on the message payload only, and not also on what transport protocol to use.
+        Several new features were added such as file transfer, payload encoding, and improved server capabilities representation.<br>
+        This specification, the version 3.1, is a backwards compatible extension of the third version of VISS.
+        Instead of referencing to the VSS rule set for how to define the content of a tree it refers to the HIM data profile rule set.
+        This enables also other trees than the VSS tree to be used, a server may manage a set of trees, a forest, that a client can access.
+        Other changes are minor adaptations to support the concept of having a forest of trees, such as adding support for a client to do a forest inquiry.
       </p>
-
       <p>
-        There are three parts to this specification, CORE, [[TRANSPORT]], and [[PAYLOAD ENCODING]]. This document, the VISS version 3.0 CORE specification,
-        describes the VISSv3.0 messaging layer.<br>
-        The VISSv3.0 transport protocol specification describes the deviations from the CORE definitions that are used in some transport protocols.
+        There are three parts to this specification, CORE, [[TRANSPORT]], and [[PAYLOAD ENCODING]]. This document, the VISS version 3.1 CORE specification,
+        describes the VISSv3.1 messaging layer.<br>
+        The VISSv3.1 transport protocol specification describes the deviations from the CORE definitions that are used in some transport protocols.
         It also examplifies the JSON primary payload format using the Websocket payloads.
-        The VISSv3.0 payload encoding specification describes payload encoding designs that may be applied e. g. for payloads in transit.
+        The VISSv3.1 payload encoding specification describes payload encoding designs that may be applied e. g. for payloads in transit.
       </p>
     </section>
 
@@ -166,10 +169,10 @@
           <figcaption> <span class="fig-title">VISSv3 payload encoding overview.</span></figcaption>
         </figure>
       <p>
-        The VISSv3.0 messaging layer builds on RESTful principles for the method exchange via the interface (refer to the <a href="#interface">section 5. Interface</a>).
+        The VISSv3.1 messaging layer builds on RESTful principles for the method exchange via the interface (refer to the <a href="#interface">section 5. Interface</a>).
       </p>
       <p>
-        The VISSv3.0 data structuring rules (<a href="https://covesa.github.io/vehicle_signal_specification/rule_set/">VSS Rule set</a>)
+        The VISSv3.1 data structuring rules (<a href="https://covesa.github.io/hierarchical_information_model/data_rule_set/">HIM data profile rule set</a>)
         are the same through all transport protocols.
         The basis for structuring data held by a server is a tree structure.
       </p>
@@ -180,7 +183,9 @@
     <section id="terms">
       <h2>Terminology</h2>
       <p>
-      The acronym 'VISSv3.0' is used to refer to this document, the VISS version 3.0 specification.
+      The acronym 'VISSv3.1' is used to refer to this document, the VISS version 3.1 specification.
+      The acronym 'HIM' is used to refer to the <a href="https://github.com/COVESA/hierarchical_information_model">'Hierarchical Information Model'</a>
+      which is hosted by COVESA.
       The acronym 'VSS' is used to refer to the <a href="https://github.com/COVESA/vehicle_signal_specification">'Vehicle Signal Specification'</a>
       which is hosted by COVESA.
       The term 'WebSocket' when used in this specification, is as defined in the
@@ -204,7 +209,7 @@
           <dt><dfn data-dfn-type="dfn" id="dfn-data-point">data point</dfn></dt>
           <dd>A structure containing one or more value-timestamp tuples.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-value">value</dfn></dt>
-          <dd>The data that is associated with one or more VSS nodes. Regardless of its data type,
+          <dd>The data that is associated with one or more tree node. Regardless of its data type,
           a single data item is always represented as a string in message payloads.</dd>
           <dt><dfn data-dfn-type="dfn" id="dfn-timestamp">timestamp</dfn></dt>
           <dd>A date and time representation. Refer to the section <a href="#timestamp"></a>.</dd>
@@ -231,16 +236,40 @@
       <h2>Data Model</h2>
                 <p>The service is designed to use with a tree-like logical taxonomy to represent the vehicle data.
                 An illustrative example of such a tree structure is shown in <a href="#fig-example-vss-tree">Figure 2</a>.
-                While it is meant to support conforming taxonomies it was created principally with the
-                <a href="https://github.com/COVESA/vehicle_signal_specification">Vehicle Signal Specification</a> (VSS) in mind.
-                For more details, see the <a href="http://covesa.github.io/vehicle_signal_specification/">VSS documentation</a>.<br>
+                <figure id="fig-example-vss-tree">
+                <img src="images/vss-tree.jpg" alt="example-vss-tree">
+                <figcaption> <span class="fig-title">Example tree.</span></figcaption>
+                </figure><br>
+                Previous VISS versions have been using the <a href="https://github.com/COVESA/vehicle_signal_specification">VSS</a>
+                rule set and definition of the content of the tree
+                but in VISSv3.1 the <a href="https://github.com/COVESA/hierarchical_information_model">HIM</a> data profile rule set is instead used.
+                This enables other trees than the VSS tree also to be used.
+                A server may manage a set of trees, a so called forest, that a client can access.<br>
+                Typically at least three trees are used in a VISS-based server implementation:<br>
+                <ul>
+                  <li>A vehicle tree: This tree contains the vehicle signals that are accessible to a client.</li>
+                  <li>A datatype definition tree: This tree contains the definitions of structs that are used in the vehicle tree.
+                  It may also contain allowed definitions.</li>
+                  <li>A server capabilities tree: This tree contains the data describing the VISS features that the server implementation supports.</li>
+                </ul>
+                If the vehicle tree contains any struct definitions, or references to allowed definitions, then all three of the trees above are mandatory.
+                If the vehicle tree does not contain any of the mentioned datatype references then the datatype definition tree may be omitted.<br>
+                The server capabilities tree shall only be represented by one tree,
+                while both the vehicle tree and the datatype definition tree can be represented by multiple trees.
+                An example could be a scenario with a truck pulling one or more trailers, where the truck vehicle signals are repesented in one tree,
+                and the signals of each trailer is represented in a separate tree. Each of these trees may use a separate datatype definition tree.<br>
+                The different trees must have unique root node names as specified in HIM.<br>
+                The "main" vehicle tree should have the root node name "Vehicle".
+                This name is a must if compatibility with <a href="https://github.com/COVESA/vehicle_signal_specification">VSS</a> is to be achieved.<br>
+                HIM specifies that a datatype definition tree must have a root node name that starts with "Types",
+                which may be appended e. g. to distinguish between multiple trees.<br>
+                The server capabilities tree must have the root  node name "Server".<br>
+                The set of trees, the forest,
+                that is managed by a server are defined in the
+                <a href="https://covesa.github.io/hierarchical_information_model/configuration_rule_set/">HIM configuration</a> file.<br><br>
                 An implementation of a VISS compliant server can be deployed either in-vehicle or off-vehicle.
                 In the off-vehicle case it would typically reside in the cloud, serving data that has already been off-boarded.
                 </p>
-        <figure id="fig-example-vss-tree">
-          <img src="images/vss-tree.jpg" alt="example-vss-tree">
-          <figcaption> <span class="fig-title">Example VSS 2.0 tree.</span></figcaption>
-        </figure>
 
       <section id="address">
         <h2>Addressing</h2>
@@ -298,7 +327,7 @@
         <p>
           The path URI component definition differs between the three resources.<br>
           For the <b>VISSv3 server</b> the definition is as follows.<br>
-          The path consists of a sequence of VSS node names separated by a delimiter. VSS specifies the dot (.) as delimiter,
+          The path consists of a sequence of tree node names separated by a delimiter. HIM specifies the dot (.) as delimiter,
           which therefore is the recommended choice also in this specification.
           However, in HTTP URLs the conventional delimiter is slash (/), therefore also this delimiter is supported.
           To exemplify, the path expression from traversing the nodes Vehicle, Car, Engine, RPM can  be "Vehicle.Car.Engine.RPM",
@@ -319,7 +348,7 @@
           The "value" value MUST be represented as a string for simple datatypes.
           If the value is an array it MUST be represented as a JSON array of strings.
           In the case the value is a struct complex datatype it MUST be represented as a JSON object, see below.
-          For supported datatypes see <a href="https://covesa.github.io/vehicle_signal_specification/rule_set/data_entry/data_types/">VSS Data Types</a>.<br>
+          For supported datatypes see <a href="https://covesa.github.io/hierarchical_information_model/common_rule_set/data_entry/datatypes/">HIM Data Types</a>.<br>
           Number values MUST follow the number formats as specified in [[RFC8259]], but as stated above represented as a string.
           Boolean values MUST be represented by either of the strings "true" or "false".<br>
           The struct complex datatype MUST be represented as a JSON object as shown below.
@@ -335,7 +364,7 @@
           {"field1":"X", "field2":"Y"}
           </code></pre>
           where X and Y are the actual values of respective datatype.
-          The datatype of a field of the struct may be any datatype supported by VSS, including a struct.<br>
+          The datatype of a field of the struct may be any datatype supported by HIM, including a struct.<br>
           For representation of multiple data points, see <a href="#response-syntax"></a>.<br>
           If data is represented incorrectly, then an error message with number 400, and reason "invalid_data" MUST be returned.
         </p>
@@ -362,7 +391,7 @@
              If the server fails to fulfill the request, then the server MUST return an <a href="#error-message">error message</a>.</p>
           <p>Arguments, of which path is mandatory:
           <ul>
-            <li><a>path</a> The VSS-defined path to a node in the VSS tree.</li>
+            <li><a>path</a> The HIM-defined path to a node in the tree.</li>
             <li><a>filter</a> Additional parameters to refine the requested data.</li>
             <li><a>authorization</a> The authorization token.</li>
             <li><a>data compression</a> The compression scheme(s) used for transmitted data.</li>
@@ -371,7 +400,7 @@
           <p>Success response, of which authorization is optional:
             <ul>
               <li><a>data</a> A structure containing one or more sets of a path and data point.</li>
-              <li style="margin-left: 40px"><a>path</a> The VSS-defined path for the associated data point.</li>
+              <li style="margin-left: 40px"><a>path</a> The HIM-defined path for the associated data point.</li>
               <li style="margin-left: 40px"><a>data point</a> A structure containing one or more value-timestamp tuples.</li>
               <li style="margin-left: 80px"><a>value</a> The latest available value.
               Please note that also for actuators this returns the current value, and not a target value that might have been set.</li>
@@ -393,7 +422,7 @@
           </p>
           <p>Arguments, of which path and value are mandatory:
             <ul>
-              <li><a>path</a> The VSS-defined path to a leaf node in the VSS tree.</li>
+              <li><a>path</a> The HIM-defined path to a leaf node in the tree.</li>
               <li><a>value</a> The new value to update the vehicle signal at the specified path.</li>
               <li><a>authorization</a> The authorization token.</li>
             </ul>
@@ -417,7 +446,7 @@
              If an error occurs during the subscription period, the server SHOULD return an <a href="#error-message">error message</a>.</p>
           <p>Arguments, of which path and filter are mandatory:
             <ul>
-              <li><a>path</a> The VSS-defined path to a node in the VSS tree.</li>
+              <li><a>path</a> The HIM-defined path to a node in the tree.</li>
               <li><a>filter</a> A rule set defining the triggering criteria for asynchronous event messages.</li>
               <li><a>authorization</a> The authorization token.</li>
               <li><a>data compression</a> The compression scheme(s) used for transmitted data.</li>
@@ -459,7 +488,7 @@
             <ul>
               <li><a>subscriptionId</a> A unique identifier for the subscription session.</li>
               <li><a>data</a> A structure containing one or more sets of a path and data point.</li>
-              <li style="margin-left: 40px"><a>path</a> The VSS-defined path for the associated data point.</li>
+              <li style="margin-left: 40px"><a>path</a> The HIM-defined path for the associated data point.</li>
               <li style="margin-left: 40px"><a>data point</a> A structure containing one or more value-timestamp tuples.</li>
               <li style="margin-left: 80px"><a>value</a> The current value associated with the filter expression.</li>
               <li style="margin-left: 80px"><a>timestamp</a> The capture time of the value.</li>
@@ -566,17 +595,17 @@
           <ul>
           <li>For HTTP protocol:
           <ul>
-          <li>GET /&lt;vsspath&gt;?filter=&lt;filter-expression&gt;</li>
+          <li>GET /&lt;himpath&gt;?filter=&lt;filter-expression&gt;</li>
           </ul></li>
           <li>For any protocol using the primary JSON payload format:
           <ul>
-          <li>{"action":"get", "path":"&lt;vsspath&gt;", "filter":"&lt;filter-expression&gt;"}</li>
+          <li>{"action":"get", "path":"&lt;himpath&gt;", "filter":"&lt;filter-expression&gt;"}</li>
           </ul></li>
           </ul>
           where<br>
           <ul>
           <li>get: the transport protocol method.</li>
-          <li>vsspath: The VSS path, starting from the tree root.</li>
+          <li>himpath: The HIM path, starting from the tree root.</li>
           <li>filter: The key name for the filter expression.</li>
           <li>filter-expression: The filter instructions.</li>
           </ul>
@@ -617,7 +646,7 @@
           </ul></li>
           <li><u>metadata</u>:
           <ul>
-          <li>The response contains the VSS metadata of the addressed sub-tree.</li>
+          <li>The response contains the metadata of the addressed sub-tree.</li>
           </ul></li>
           </ul></li>
           <li><b>parameter</b>: The key name for optional configuration data required by the filter operation.
@@ -647,8 +676,8 @@
      <section id="paths-filter-operation">
         <h2>Paths Filter Operation</h2>
                 <p>
-                The paths filter operation allows a single request to retrieve signal data from multiple data points in the VSS tree.
-                The vsspath SHALL point to the last node in the tree that is common for the relative paths in the filter parameter object,
+                The paths filter operation allows a single request to retrieve signal data from multiple data points in the tree.
+                The himpath SHALL point to the last node in the tree that is common for the relative paths in the filter parameter object,
                 that start off from this node.
                 If a path endpoint in the filter value is a branch, all leaf nodes in the sub-tree below that branch SHALL be included.
                 A path in the filter value MAY contain the wildcard character (*), which represents a single path segment.<br>
@@ -771,9 +800,9 @@
    <section id="metadata-request">
      <h2>Metadata Filter Operation</h2>
         <p>
-        A metadata request allows a client to retrieve metadata associated with VSS node(s), 
+        A metadata request allows a client to do a so called "signal inquiry", i. e. to retrieve metadata associated with tree node(s), 
         rather than the actual signal data.<br>
-        The metadata is retrieved from the VSS tree that is deployed in the vehicle.
+        The metadata is retrieved from the tree that is deployed in the vehicle.
         This request variant is sometimes referred to as a signal discovery request.<br>
         The path in the request MAY point to either a leaf node or a branch node.
         The "parameter" value in the filter expression sets the number of descendant generations that
@@ -784,14 +813,27 @@
         If it is combined with any other filter variant an error message is returned.<br>
         The response is a JSON formatted object containing key-value pairs for each addressed node.
         The server MAY support the metadata request.<br>
-        Example can be found in the <a data-link-type="dfn" href="https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Transport.html#https-service-discovery-read">section 5.2.2.1.4 Signal Discovery Read</a> in [[TRANSPORT]] specification.
+        Example can be found in the <a data-link-type="dfn" href="https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Transport.html#https-service-discovery-read">section 5.2.2.1.4 Signal Discovery Read</a> in [[TRANSPORT]] specification.<br>
+
+        <section  id="forest-inquiry">
+        <h2>Forest Inquiry</h2>
+        <p>
+        A metadata request can also be used by the client to retrive information about the set of trees that the server manages, a so called "forest inquiry".
+        This request must have a path starting with the root node name "HIM"
+        which may be appended with one dot delimited segment name to address a specific tree in the forest.
+        The response contains all the addressed metadata in the HIM configuration file
+        except for the "local" property which holds the path to the tree in the local file system.<br>
+        The forest inquiry request is the only request type that is allowed on the HIM configuration file data, all others will be returned by an error response.
+        </p>
+        </section>
+        
         </p>
     </section>
 
      <section id="multiple-signals-request">
           <h2>Multiple Signals Request</h2>
             <p>
-            Filtering operations MAY be used to address multiple nodes in the VSS tree within a single request.
+            Filtering operations MAY be used to address multiple nodes in the tree within a single request.
             However, this MAY lead to specific issues in certain situations, as described below.
             </p>
 
@@ -928,8 +970,8 @@
       which can then be used in requests to the VISSv3 server to access one or more signals associated with the approved purpose.<br>
       Access control MUST be supported. However, in this section, only the parts that describe interactions between the
       <a href="#client-def">client</a> and the VISSv3 server are mandatory.<br>
-      Access control SHALL NOT be applied to the VSS nodes containing the VSS version data, nor to client requests 
-      for dynamic metadata about server capabilities or access control selection tags applied to the VSS tree.
+      Access control SHALL NOT be applied to the tree nodes containing the tree version data, nor to client requests 
+      for dynamic metadata about server capabilities or access control selection tags applied to the tree.
       </p>
 
       <section id="architecture">
@@ -1528,7 +1570,7 @@
               which logically links to the signal scope as defined in the <a href="#purpose-list-def">purpose list</a>,
               or to a set of signals that the token permits access to.
               Each signal is defined as a JSON object containing the signal path, and the signal permission as shown below.<br>
-              {"path":"vss-path", "access_permission":"permission"}<br>
+              {"path":"him-path", "access_permission":"permission"}<br>
               If the scope claim is set to a purpose, the client context claim MUST be present in the token.</li>
             <li>The clx (<a href="#client-context-def">Client context</a>) SHALL be set to the client’s assigned role triplet 
               (user, app, device), with each role separated by a plus sign (+).</li>
@@ -1705,7 +1747,7 @@
           <section id="scope-list">
             <h2>Scope List</h2>
             <p>
-              The Scope List defines the VSS tree nodes to which access SHALL be prohibited for specific
+              The Scope List defines the tree nodes to which access SHALL be prohibited for specific
             <a href="#client-context-def">client context</a>, regardless of whether the <a href="#client-def">client</a> 
             possesses a valid <a href="#access-token-def">access token</a>.<br>
             In addition to access control, the scope list MAY also be used to restrict metadata visibility when a client sends a signal discovery request.<br>
@@ -1742,7 +1784,7 @@
         <em>This section is non-normative.</em>
         <p>
         This section describes a complementary feature to the access control model: 
-        the ability to selectively apply access control to specific parts of the VSS tree.
+        the ability to selectively apply access control to specific parts of the tree.
         This functionality is useful in cases where:
         <ul>
           <li>Not all nodes are considered to require access control, or</li>
@@ -1751,11 +1793,11 @@
 
         This functionality requires that the <a href="#access-token-def">access token</a> specifies whether the access permission granted to the
         <a href="#client-def">client</a> to a signal is read-only, or read-write.
-        It also requires that the metadata for the node in the VSS tree contains data specifying whether
+        It also requires that the metadata for the node in the tree contains data specifying whether
         the access control verification should be carried out only for write request, or for both read and write requests.<br>
         The former requirement is realized as described in earlier sections by that the <a href="#access-token-def">access token</a>
         scope claim links to a <a>purpose</a> where the signals and their respective access permission are found.<br>
-        The latter requirement is realized by adding to nodes in the VSS tree the key-value pair "validate":'access-control-mode',
+        The latter requirement is realized by adding to nodes in the tree the key-value pair "validate":'access-control-mode',
         where 'access-control-mode' is either the string "write-only", or "read-write".<br>
         <figure id="fig-access-control-selection">
           <img src="images/access-control-selection.jpg" alt="Access control selection tagging.">
@@ -1764,21 +1806,22 @@
         The figure above shows an example where both read and write requests to the three leftmost leaf nodes will be access controlled,
         while the two rightmost leaf nodes only will be access controlled for write requests.
         An inheritance rule leads to that any nodes below a tagged node are assigned the same access control, if they are untagged.<br>
-        This metadata is not likely to be applied to the standardised VSS tree,
+        This metadata is not likely to be applied to the publicly standardised tree,
         as different implementers of this standard may have different views on which nodes to apply it to.
-        Instead it is anticipated that it is applied at a "deployment" stage, possibly using the VSS layering concept.<br>
+        Instead it is anticipated that it is applied at a "deployment" stage, possibly using the
+        <a href="https://github.com/COVESA/vss-tools">VSS-Tools</a> layering concept.<br>
         The inheritance model, which says that if access-control-mode data is added to a node,
         then all nodes in the subtree for which this node is the root inherits the setting,
         unless there is access-control-mode data added to any node in this subtree,
         makes possible a reduction of the number of nodes this metadata have to be added to.<br>
-        This allows for example an entire VSS tree to be assigned an access-control-mode by merely applying it in the root of the tree.<br>
+        This allows for example an entire tree to be assigned an access-control-mode by merely applying it in the root of the tree.<br>
         The figure below shows an overview of the access control selection model,
         and a table showing the required access control tagging of a node for the VISSv3 server to grant the requested access.
         <figure id="fig-access-control-selection-model">
           <img src="images/access-control-selection-model.jpg" alt="Access control selection model.">
           <figcaption> <span class="fig-title">Access control selection model.</span></figcaption>
         </figure>
-        If the VSS tree used by a VISSv3 server contains access control selection tags,
+        If the tree used by a VISSv3 server contains access control selection tags,
         the server MUST support their usage as described in this section.<br>
         If access control selection tags are not present, the server MAY implement access control for the entire tree.<br>
         </p>
@@ -1826,8 +1869,8 @@
       If the received consent status is set to NO or NOT_SET, then the Access Token Server must not provide a valid access token to the requesting client.
       The server must store the consent status that it receives from the <a>ECF</a>, together with the data from the request for the duration of the associated service,
       or until a consent cancellation is received.<br>
-      Whether a server shall take action to obtain a consent or not shall be signalled in the VSS tree.
-      This is done by tagging appropriate nodes in the VSS tree extending the model used for access control selection.
+      Whether a server shall take action to obtain a consent or not shall be signalled in the tree.
+      This is done by tagging appropriate nodes in the tree extending the model used for access control selection.
       The key-value pair used for tagging of access control is suffixed with "+consent" as shown in the example below:
         <ul>
             <li>"validate":"read-write+consent"</li>
@@ -2992,7 +3035,7 @@
           <p>
           File transfer use cases, where a client either sends or receives a file from the vehicle server,
           can e. g. be a client that wants to push a map to the vehicle (download), or a client that wants to receive a video recording clip from the vehicle (upload).<br>
-          File resources represented in the VSS tree can either be read-only, represented by the sensor node type,
+          File resources represented in the tree can either be read-only, represented by the sensor node type,
           or write-only, represented by the actuator node type. In either case the node datatype MUST be a reference to a struct datatype with the following fixed definition:
           <pre><code>
           typedef FileDescriptor struct {
@@ -3008,7 +3051,7 @@
           and by the server for upload sessions.<br><br>
           File transfer from client to server, or in the other direction, follows the model shown in the two sequence diagrams below.
           The server exposes two communication channels, a control channel and a data channel.
-          The control channel is the channel where the primary VISSv3.0 payloads are communicated, 
+          The control channel is the channel where the primary VISSv3.1 payloads are communicated, 
           while the data channel is a channel over which the file transfer data is communicated.
           As is seen in the sequence diagrams the messages sent on the data channel have the same structure in both the download and upload
           sequences, but interchanged between the client and the server.<br>
@@ -3151,7 +3194,7 @@
           Filename is the file name of the file to be transferred. It shall include a file extension that defines the format of the file.<br>
           The node type of this tree node shall be "sensor" for files that can only be uploaded to a client, and "actuator" for the file download case.<br>
           Information about the vehicle file system structure, such as the file path information, shall not be exposed to the client.
-          The server may use the VSS path as a key into a lookup table for accessing the file in the vehicle file system.
+          The server may use the path as a key into a lookup table for accessing the file in the vehicle file system.
         </p>
     </section>
 
@@ -3203,12 +3246,12 @@
 
         <h3>Static UID Path Compression</h3>
         <p>
-        To enable the server to support this path compression the VSS tree must include the static UIDs for each node.
+        To enable the server to support this path compression the tree must include the static UIDs for each node.
         The VSS-Tools exporter tools can be used to assign a static UID to each tree node as described
         <a data-link-type="dfn" href="https://github.com/COVESA/vss-tools/blob/master/docs/id.md">here</a>.<br>
-        The server will then in the response message(s) replace the VSS path with the static UID value.
+        The server will then in the response message(s) replace the path with the static UID value.
         The static UID is represented as a hex value string starting with the characters "0x" then followed by 8 hexadecimal values.
-        The client needs to obtain means for decoding the static UIDs into corresponding VSS paths, see the 
+        The client needs to obtain means for decoding the static UIDs into corresponding paths, see the 
         <a data-link-type="dfn" href="https://github.com/COVESA/vss-tools/blob/master/docs/id.md">VSS-tools description</a>.<br>
         The server shall respond with an error message if the client applies the path compression in its request.
         </p>
