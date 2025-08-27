@@ -21,7 +21,7 @@ Ulf Björkengren - Ford Motor Company
 ### Working group meetings
 The VISS working group meets every other Monday at 16.00 CET.
 The schedule and link to meeting can be found [here](https://wiki.covesa.global/display/WIK4/COVESA+Common+Meeting+Schedule).<br>
-Minutes of meetings is found [here](https://wiki.covesa.global/display/WIK4/VISS+Meeting+Topics+and+Meeting+Notes).
+Minutes of meetings is found [here](https://covesa.atlassian.net/wiki/spaces/WIK4/pages/39068133/VISS+Meeting+Topics+and+Meeting+Notes).
 
 ## Overview
 
