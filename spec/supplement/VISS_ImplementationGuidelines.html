@@ -1,215 +1,368 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <title>COVESA VISS - Implementation Guidelines</title>
-    <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
-    <script class='remove'>
-      var respecConfig = {
-        latestVersion: null,
-        github: "https://github.com/COVESA/vehicle-information-service-specification",
-        specStatus: "base",
-	logos: [{
-	  src: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/images/covesa.jpg",
-          url: "https://covesa.global",
-          alt: "COVESA",
-          height: 50,
-          id: "covesa-logo",
-        }],
-        editors: [{
-          name: "Ulf Bjorkengren",
-          company: "Ford Motor Company",
-          url: "mailto:ubjorken@ford.com",
-          companyURL: "https://www.ford.com",
+
+<head>
+  <meta charset='utf-8'>
+  <title>COVESA VISS - Implementation Guidelines</title>
+  <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
+  <script class='remove'>
+    var respecConfig = {
+      latestVersion: null,
+      github: "https://github.com/COVESA/vehicle-information-service-specification",
+      specStatus: "base",
+      logos: [{
+        src: "https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/images/covesa.jpg",
+        url: "https://covesa.global",
+        alt: "COVESA",
+        height: 50,
+        id: "covesa-logo",
+      }],
+      editors: [{
+        name: "Ulf Bjorkengren",
+        company: "Ford Motor Company",
+        url: "mailto:ubjorken@ford.com",
+        companyURL: "https://www.ford.com",
+      },
+      {
+        name: "Abdelkader Sellami",
+        company: "Volvo Group",
+        url: "mailto:abdelkader.sellami.2@volvo.com",
+        companyURL: "https://www.volvogroup.com/en/"
+      },
+      {
+        name: "Sergej Saibel",
+        company: "Traton Group",
+        url: "mailto:sergej.saibel@scania.com",
+        companyURL: "https://traton.com/en.html"
+      }],
+      edDraftURI: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/supplement/VISS_ImplementationGuidelines.html",
+      shortName: "viss-implementation-guidelines",
+      localBiblio: {
+        "CORE": {
+          title: "COVESA VISS version 3.1 - Core",
+          href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.1_Core.html",
+          publisher: "Ulf Bjorkengren; Wonsuk Lee"
         },
-        {
-          name: "Sergej Saibel",
-          company: "Traton",
-          url: "mailto:sergej.saibel@scania.com",
-          companyURL: "https://traton.com/en.html"
-        }],
-        edDraftURI: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/supplement/VISS_ImplementationGuidelines.html",
-        shortName: "viss-implementation-guidelines",
-        localBiblio: {
-          "CORE": {
-            title: "COVESA VISS version 3.1 - Core",
-            href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.1_Core.html",
-            publisher: "Ulf Bjorkengren; Wonsuk Lee"
-          },
-          "TRANSPORT": {
-            title: "COVESA VISS version 3.1-Transport",
-            href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.1_Transport.html",
-            publisher: "Ulf Bjorkengren; Wonsuk Lee"
-          },
-          "PAYLOAD_ENCODING": {
-             title: "COVESA VISS version 3.1-Payload Encoding",
-             href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.1_PayloadEncoding.html",
-             publisher: "Ulf Bjorkengren; Wonsuk Lee",
-          },
+        "TRANSPORT": {
+          title: "COVESA VISS version 3.1-Transport",
+          href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.1_Transport.html",
+          publisher: "Ulf Bjorkengren; Wonsuk Lee"
         },
-      };
-    </script>
-    <style>
-      table.parameters, table.exceptions {
-          border-spacing: 0;
-          border-collapse:    collapse;
-          margin: 0.5em 0;
-          width:  100%;
-      }
-      table.parameters { border-bottom:  1px solid #90b8de; }
-      table.exceptions { border-bottom:  1px solid #deb890; }
+        "PAYLOAD_ENCODING": {
+          title: "COVESA VISS version 3.1-Payload Encoding",
+          href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.1_PayloadEncoding.html",
+          publisher: "Ulf Bjorkengren; Wonsuk Lee",
+        }
+      },
+    };
+  </script>
+  <style>
+    table.parameters,
+    table.exceptions {
+      border-spacing: 0;
+      border-collapse: collapse;
+      margin: 0.5em 0;
+      width: 100%;
+    }
 
-      .parameters th, .exceptions th {
-          color:  inherit;
-          padding:    3px 5px;
-          text-align: left;
-          font-weight:    normal;
-      }
-      .parameters th { color: #fff; background: #005a9c; }
-      .exceptions th { background: #deb890; }
+    table.parameters {
+      border-bottom: 1px solid #90b8de;
+    }
 
-      .parameters td, .exceptions td {
-          padding:    3px 10px;
-          border-top: 1px solid #ddd;
-          vertical-align: top;
-      }
+    table.exceptions {
+      border-bottom: 1px solid #deb890;
+    }
 
-      .parameters tr:first-child td, .exceptions tr:first-child td {
-          border-top: none;
-      }
+    .parameters th,
+    .exceptions th {
+      color: inherit;
+      padding: 3px 5px;
+      text-align: left;
+      font-weight: normal;
+    }
 
-      .parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {
-          width:  100px;
-      }
+    .parameters th {
+      color: #fff;
+      background: #005a9c;
+    }
 
-      .parameters td.prmType {
-          width:  120px;
-      }
+    .exceptions th {
+      background: #deb890;
+    }
 
-      table.exceptions table {
-          border-spacing: 0;
-          border-collapse:    collapse;
-          width:  100%;
-      }
+    .parameters td,
+    .exceptions td {
+      padding: 3px 10px;
+      border-top: 1px solid #ddd;
+      vertical-align: top;
+    }
 
-      .simple {
-        width:100%;
-      }
+    .parameters tr:first-child td,
+    .exceptions tr:first-child td {
+      border-top: none;
+    }
 
-      thead th{
-        border-bottom: 1px solid black;
-      }
+    .parameters td.prmName,
+    .exceptions td.excName,
+    .exceptions td.excCodeName {
+      width: 100px;
+    }
 
-      .simple tbody th{
-        width:33%;
-        background: white;
-        color: black;        
-      }
-      pre { white-space: pre-wrap;}
-  </style>    
-  </head>
-  <body>
-    <p class="copyright">Copyright © 2026 COVESA®.</p>
-    <section id='abstract'>
-      <p>
-        The Vehicle Information Service Specification (VISS) is a
-        service for accessing vehicle information, including signals from sensors
-        on control units within a vehicle's network. This information is exposed through a hierarchical,
-        tree-like taxonomy as defined in the COVESA <a href="https://github.com/COVESA/hierarchical_information_model">Hierarchical Information Model</a> (HIM),
-        and is provided in JSON format. The VISS service may be hosted within the vehicle or on external servers,
-        using data that has already been off-boarded.
-      </p>
-      <p>
-        VISS enables a broad range of use cases, including predictive maintenance, usage-based insurance, fleet management,
-        and real-time driver assistance services.
-        In the context of artificial intelligence, VISS serves as a critical data access layer, providing high-quality,
-        real-time vehicle data that can be utilized by AI algorithms for tasks such as anomaly detection,
-        driver behavior analysis, energy optimization, and contextual decision-making.
-      </p>
-      <p>
-        The first version of VISS, which has been implemented and deployed in production vehicles,
-        supported only WebSocket as a transport protocol.<br>
-        The <a href="https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v2.0">second version</a>
-        is generalized to work across also the HTTP and MQTT transport protocols to improve the support for different use cases.
-        It also contains improved subscription capabilities and added an access control mechanism.<br>
-        The <a href="https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.0">third version</a>
-        included the gRPC transport protocol but also simplified addition of other transport protocols by placing the normative requirement
-        on the message payload only, and not also on what transport protocol to use.
-        Several new features were added such as file transfer, payload encoding, and improved server capabilities representation.<br>
-        The version 3.1 specification is a backwards compatible extension of the third version of VISS.
-        Instead of referencing to the VSS rule set for how to define the content of a tree it refers to the HIM data profile rule set.
-        This enables also other trees than the VSS tree to be used, a server may manage a set of trees, a forest, that a client can access.
-        Other changes are minor adaptations to support the concept of having a forest of trees, such as adding support for a client to do a forest inquiry.
-        It also includes support for the Unix domain socket transport protocol.<br>
-        There are three parts to the VISS specification, [[CORE]], [[TRANSPORT]], and [[PAYLOAD_ENCODING]].
-        The [[CORE]] document describes the messaging layer,
-        the [[TRANSPORT]] document describes the deviations form the CORE specification that are used by some transport protocols,
-        and the [[PAYLOAD_ENCODING]] document describes payload encodings that are supported.<br>
-      </p>
-      <p>
-        This document, the VISS Implementation Guideline version,
-        provides recommendations on how to implement certain features to ensure implementation interoperability.
-        The versioning of this document is decoupled from the versioning of the VISS specification.
-        For guideline chapters that are not applicable to older versions of VISS, this shall be mentioned in the chapter.
-      </p>
-    </section>
+    .parameters td.prmType {
+      width: 120px;
+    }
 
-    <section id="revision-history">
-      <h2>Revision history</h2>
-        <table style="border:1px solid black; width:100%">
-          <tr>
-            <th>Version</th>
-            <th>Date</th>
-            <th>Author(s)</th>
-            <th>Revision reason</th>
-          </tr>
-          <tr>
-            <td>0.5</td>
-            <td>2026-03-25</td>
-            <td>Ulf Björkengren, Ford Motor Company</td>
-            <td>Initial document layout</td>
-          </tr>
-          <tr>
-            <td>1.0</td>
-            <td>2026-mm-dd</td>
-            <td></td>
-            <td>Chapter 5 created</td>
-          </tr>
-        </table>
-    </section>
+    table.exceptions table {
+      border-spacing: 0;
+      border-collapse: collapse;
+      width: 100%;
+    }
 
-    <section id="introduction">
-      <h2>Introduction</h2>
-      <p>
-      This document supplements the VISS specification by providing recommendations on how to implement certain aspects of the specification.
-      Thesa aspects are typically not explicitly exposed in the VISS interface but different implementations may lead to different behaviors
+    .simple {
+      width: 100%;
+    }
+
+    thead th {
+      border-bottom: 1px solid black;
+    }
+
+    .simple tbody th {
+      width: 33%;
+      background: white;
+      color: black;
+    }
+
+    pre {
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <p class="copyright">Copyright © 2026 COVESA®.</p>
+  <section id='abstract'>
+    <p>
+      The Vehicle Information Service Specification (VISS) is a
+      service for accessing vehicle information, including signals from sensors
+      on control units within a vehicle's network. This information is exposed through a hierarchical,
+      tree-like taxonomy as defined in the COVESA <a
+        href="https://github.com/COVESA/hierarchical_information_model">Hierarchical Information Model</a> (HIM),
+      and is provided in JSON format. The VISS service may be hosted within the vehicle or on external servers,
+      using data that has already been off-boarded.
+    </p>
+    <p>
+      VISS enables a broad range of use cases, including predictive maintenance, usage-based insurance, fleet
+      management,
+      and real-time driver assistance services.
+      In the context of artificial intelligence, VISS serves as a critical data access layer, providing high-quality,
+      real-time vehicle data that can be utilized by AI algorithms for tasks such as anomaly detection,
+      driver behavior analysis, energy optimization, and contextual decision-making.
+    </p>
+    <p>
+      The first version of VISS, which has been implemented and deployed in production vehicles,
+      supported only WebSocket as a transport protocol.<br>
+      The <a href="https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v2.0">second
+        version</a>
+      is generalized to work across also the HTTP and MQTT transport protocols to improve the support for different use
+      cases.
+      It also contains improved subscription capabilities and added an access control mechanism.<br>
+      The <a href="https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.0">third
+        version</a>
+      included the gRPC transport protocol but also simplified addition of other transport protocols by placing the
+      normative requirement
+      on the message payload only, and not also on what transport protocol to use.
+      Several new features were added such as file transfer, payload encoding, and improved server capabilities
+      representation.<br>
+      The version 3.1 specification is a backwards compatible extension of the third version of VISS.
+      Instead of referencing to the VSS rule set for how to define the content of a tree it refers to the HIM data
+      profile rule set.
+      This enables also other trees than the VSS tree to be used, a server may manage a set of trees, a forest, that a
+      client can access.
+      Other changes are minor adaptations to support the concept of having a forest of trees, such as adding support for
+      a client to do a forest inquiry.
+      It also includes support for the Unix domain socket transport protocol.<br>
+      There are three parts to the VISS specification, [[CORE]], [[TRANSPORT]], and [[PAYLOAD_ENCODING]].
+      The [[CORE]] document describes the messaging layer,
+      the [[TRANSPORT]] document describes the deviations form the CORE specification that are used by some transport
+      protocols,
+      and the [[PAYLOAD_ENCODING]] document describes payload encodings that are supported.<br>
+    </p>
+    <p>
+      This document, the VISS Implementation Guideline version,
+      provides recommendations on how to implement certain features to ensure implementation interoperability.
+      The versioning of this document is decoupled from the versioning of the VISS specification.
+      For guideline chapters that are not applicable to older versions of VISS, this shall be mentioned in the chapter.
+    </p>
+  </section>
+
+  <section id="revision-history">
+    <h2>Revision history</h2>
+    <table style="border:1px solid black; width:100%">
+      <tr>
+        <th>Version</th>
+        <th>Date</th>
+        <th>Author(s)</th>
+        <th>Revision reason</th>
+      </tr>
+      <tr>
+        <td>0.5</td>
+        <td>2026-03-25</td>
+        <td>Ulf Björkengren, Ford Motor Company</td>
+        <td>Initial document layout</td>
+      </tr>
+      <tr>
+        <td>1.0</td>
+        <td>2026-04-16</td>
+        <td>Abdelkader Sellami, Volvo Group</td>
+        <td>Chapter 5 CAN Bus Specific value reporting</td>
+      </tr>
+    </table>
+  </section>
+
+  <section id="introduction">
+    <h2>Introduction</h2>
+    <p>
+      This document supplements the VISS specification by providing recommendations on how to implement certain aspects
+      of the specification.
+      Thesa aspects are typically not explicitly exposed in the VISS interface but different implementations may lead to
+      different behaviors
       leading to clients receiving different responses from different implementations.
       This may make interoperability more complicated to achieve,
       i. e. that a client shall be able to exercise the interface with any implementation of it.
-      </p>
-    </section>
+    </p>
+  </section>
 
-    <section id="conformance"></section>
+  <section id="conformance"></section>
 
-    <section id="terminology">
-      <h2>Terminology</h2>
-      <p>
+  <section id="terminology">
+    <h2>Terminology</h2>
+    <p>
       The acronym 'VISSv3.1' is used to refer to this document, the VISS version 3.1 specification.
-      The acronym 'HIM' is used to refer to the <a href="https://github.com/COVESA/hierarchical_information_model">'Hierarchical Information Model'</a>
+      The acronym 'HIM' is used to refer to the <a
+        href="https://github.com/COVESA/hierarchical_information_model">'Hierarchical Information Model'</a>
       which is hosted by COVESA.
-      The acronym 'VSS' is used to refer to the <a href="https://github.com/COVESA/vehicle_signal_specification">'Vehicle Signal Specification'</a>
+      The acronym 'VSS' is used to refer to the <a
+        href="https://github.com/COVESA/vehicle_signal_specification">'Vehicle Signal Specification'</a>
       which is hosted by COVESA.
       The term 'WebSocket' when used in this specification, is as defined in the
       <a href="https://www.w3.org/TR/websockets/">W3C WebSocket API</a> and [[RFC6455]], the WebSocket Protocol.
+    </p>
+  </section>
+
+  <section id="can-bus-specific-reporting">
+    <h2>CAN Bus specific value reporting</h2>
+    <p>
+      In CAN standard, parameter (signal) values are often segmented into defined
+      value ranges. These segments typically include a range representing valid parameter values, one or more
+      segments indicating error or not available parameter states, and a reserved range intended for future extension.
+      While the CAN standard [[ISO 11898]] defines only frame transmission and bus‑level error handling, the
+      segmentation of parameter values is defined by higher‑layer CAN protocols.<br>
+      For example, in [[SAE J1939]], which standardizes how parameter values are segmented, including the use of
+      specific encoded values to represent Not Available or Error data [[SAE J1939-71]].
+    </p>
+    <p>
+      When a VISS server implementation retrieves signal values from a CAN bus, these higher‑layer, protocol‑specific
+      value encodings SHALL be translated into appropriate error codes. This translation ensures that clients
+      receive consistent and meaningful error responses, independent of the underlying CAN transport or the specific CAN
+      protocol used on the vehicle network.
+    </p>
+    <p>
+      A server implementing this specification SHALL support the error codes, reasons, and
+      descriptions listed in the table below, across all supported transport protocols.
+    </p>
+
+    <table id="canErrorReporting" class="parameters">
+      <tbody>
+        <tr>
+          <th>CAN Signal Status</th>
+          <th>Error Number (Code)</th>
+          <th>Error Reason</th>
+          <th>Error Description</th>
+        </tr>
+        <tr>
+          <td>NOT_AVAILABLE</td>
+          <td>503 (Service Unavailable)</td>
+          <td>service_unavailable</td>
+          <td>The value from the upstream ECU or sensor on the CAN bus is currently not available.</td>
+        </tr>
+        <tr>
+          <td>ERROR</td>
+          <td>502 (Bad Gateway)</td>
+          <td>bad_gateway</td>
+          <td>The upstream ECU or sensor on the CAN bus reported an error condition for the signal.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      The server MAY dynamically replace the error description to provide additional
+      diagnostic context where possible, such as the specific CAN signal identifier or a description of the fault
+      condition, to assist clients during debugging and integration.
+    </p>
+    <section id="can-not-available-mapping">
+      <h3>NOT_AVAILABLE</h3>
+      <p>
+        A CAN signal may carry a special value that indicates NOT_AVAILABLE.
+        This status typically means that the ECU responsible for producing the signal is not currently providing a
+        value,
+        for example because the corresponding subsystem is inactive, the sensor is disconnected,
+        or the signal has not yet been initialized on the bus.
       </p>
+      <p>
+        When the VISS server detects a NOT_AVAILABLE value on a CAN signal that has been requested by a
+        client,
+        it SHALL map this to the VISS error code 503(Service Unavailable) [[TRANSPORT]].<br>
+        This communicates to the client that the requested data point could not be retrieved
+        because no valid value is currently available on the vehicle CAN network.
+      </p>
+      <p>
+        An example error response is shown below:
+      </p>
+      <pre class="example" title="VISS error response for CAN value 'NOT_AVAILABLE'">
+            {
+              "action": "get",
+              "requestId": "123",
+              "error": {
+                "number": 503,
+                "reason": "service_unavailable",
+                "description": "The value from the upstream ECU or sensor on the CAN bus is currently not available."
+              },
+              "ts": "2025-06-20T12:00:00.000Z"
+            }
+      </pre>
     </section>
 
-      <section id="can-bus-specific-error-reorting">
-        <h2>CAN Bus Specific Error Reporting</h2>
-        <p>
-        xxx.
-        </p>
-      </section>
+    <section id="can-error-mapping">
+      <h3>ERROR</h3>
+      <p>
+        A CAN signal may carry a special value that indicates an ERROR condition.
+        This status typically means that the ECU or sensor producing the signal has detected a fault,
+        for example a hardware malfunction, a communication timeout on the bus,
+        or an internal diagnostic failure that renders the signal value unreliable.
+      </p>
+      <p>
+        When the VISS server detects an ERROR value on a CAN signal that has been requested by a client,
+        it SHALL map this to the VISS error code 502 (Bad Gateway) [[TRANSPORT]].<br>
+        This communicates to the client that the upstream data source (the CAN bus / ECU)
+        reported an error condition.
+      </p>
+      <p>
+        An example error response is shown below:
+      </p>
+      <pre class="example" title="VISS error response for CAN value 'ERROR'">
+            {
+              "action": "get",
+              "requestId": "456",
+              "error": {
+                "number": 502,
+                "reason": "bad_gateway",
+                "description": "The upstream ECU or sensor on the CAN bus reported an error condition for the signal."
+              },
+              "ts": "2025-06-20T12:00:00.000Z"
+            }
+      </pre>
+    </section>
+  </section>
+</body>
 
-  </body>
 </html>
