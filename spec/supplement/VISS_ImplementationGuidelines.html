@@ -52,6 +52,21 @@
           title: "COVESA VISS version 3.1-Payload Encoding",
           href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.1_PayloadEncoding.html",
           publisher: "Ulf Bjorkengren; Wonsuk Lee",
+        },
+        "ISO 11898": {
+          title: "Road vehicles — Controller area network (CAN)",
+          href: "https://www.iso.org/standard/86384.html",
+          publisher: "International Organization for Standardization"
+        },
+        "SAE J1939": {
+          title: "Serial Control and Communications Heavy-Duty Vehicle Network - Top-Level Document",
+          href: "https://doi.org/10.4271/J1939_202306",
+          publisher: "SAE International"
+        },
+        "SAE J1939-71": {
+          title: "Serial Control and Communications Heavy-Duty Vehicle Network - Vehicle Application Layer",
+          href: "https://doi.org/10.4271/J1939/71_202502",
+          publisher: "SAE International"
         }
       },
     };
@@ -224,7 +239,7 @@
     <p>
       This document supplements the VISS specification by providing recommendations on how to implement certain aspects
       of the specification.
-      Thesa aspects are typically not explicitly exposed in the VISS interface but different implementations may lead to
+      These aspects are typically not explicitly exposed in the VISS interface but different implementations may lead to
       different behaviors
       leading to clients receiving different responses from different implementations.
       This may make interoperability more complicated to achieve,
@@ -246,13 +261,14 @@
       which is hosted by COVESA.
       The term 'WebSocket' when used in this specification, is as defined in the
       <a href="https://www.w3.org/TR/websockets/">W3C WebSocket API</a> and [[RFC6455]], the WebSocket Protocol.
+      The term 'CAN' when used in this specification, is as defined in [[ISO 11898]].
     </p>
   </section>
 
   <section id="can-bus-specific-reporting">
     <h2>CAN Bus specific value reporting</h2>
     <p>
-      In CAN standard, parameter (signal) values are often segmented into defined
+      In the CAN standard, parameter (signal) values are often segmented into defined
       value ranges. These segments typically include a range representing valid parameter values, one or more
       segments indicating error or not available parameter states, and a reserved range intended for future extension.
       While the CAN standard [[ISO 11898]] defines only frame transmission and bus‑level error handling, the
@@ -287,8 +303,8 @@
         </tr>
         <tr>
           <td>ERROR</td>
-          <td>502 (Bad Gateway)</td>
-          <td>bad_gateway</td>
+          <td>500 (Internal Server Error)</td>
+          <td>internal_server_error</td>
           <td>The upstream ECU or sensor on the CAN bus reported an error condition for the signal.</td>
         </tr>
       </tbody>
@@ -300,7 +316,7 @@
       condition, to assist clients during debugging and integration.
     </p>
     <section id="can-not-available-mapping">
-      <h3>NOT_AVAILABLE</h3>
+      <h3>CAN "NOT_AVAILABLE" value</h3>
       <p>
         A CAN signal may carry a special value that indicates NOT_AVAILABLE.
         This status typically means that the ECU responsible for producing the signal is not currently providing a
@@ -333,7 +349,7 @@
     </section>
 
     <section id="can-error-mapping">
-      <h3>ERROR</h3>
+      <h3>CAN "ERROR" value</h3>
       <p>
         A CAN signal may carry a special value that indicates an ERROR condition.
         This status typically means that the ECU or sensor producing the signal has detected a fault,
@@ -342,7 +358,7 @@
       </p>
       <p>
         When the VISS server detects an ERROR value on a CAN signal that has been requested by a client,
-        it SHALL map this to the VISS error code 502 (Bad Gateway) [[TRANSPORT]].<br>
+        it SHALL map this to the VISS error code 500 (Internal Server Error) [[TRANSPORT]].<br>
         This communicates to the client that the upstream data source (the CAN bus / ECU)
         reported an error condition.
       </p>
@@ -354,8 +370,8 @@
               "action": "get",
               "requestId": "456",
               "error": {
-                "number": 502,
-                "reason": "bad_gateway",
+                "number": 500,
+                "reason": "internal_server_error",
                 "description": "The upstream ECU or sensor on the CAN bus reported an error condition for the signal."
               },
               "ts": "2025-06-20T12:00:00.000Z"
