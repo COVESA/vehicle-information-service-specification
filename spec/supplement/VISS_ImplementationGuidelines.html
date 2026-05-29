@@ -159,11 +159,7 @@
     <p>
       The Vehicle Information Service Specification (VISS) is a
       service for accessing vehicle information, including signals from sensors
-      on control units within a vehicle's network. This information is exposed through a hierarchical,
-      tree-like taxonomy as defined in the COVESA <a
-        href="https://github.com/COVESA/hierarchical_information_model">Hierarchical Information Model</a> (HIM),
-      and is provided in JSON format. The VISS service may be hosted within the vehicle or on external servers,
-      using data that has already been off-boarded.
+      on control units within a vehicle's network.
     </p>
     <p>
       VISS enables a broad range of use cases, including predictive maintenance, usage-based insurance, fleet
@@ -174,28 +170,6 @@
       driver behavior analysis, energy optimization, and contextual decision-making.
     </p>
     <p>
-      The first version of VISS, which has been implemented and deployed in production vehicles,
-      supported only WebSocket as a transport protocol.<br>
-      The <a href="https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v2.0">second
-        version</a>
-      is generalized to work across also the HTTP and MQTT transport protocols to improve the support for different use
-      cases.
-      It also contains improved subscription capabilities and added an access control mechanism.<br>
-      The <a href="https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.0">third
-        version</a>
-      included the gRPC transport protocol but also simplified addition of other transport protocols by placing the
-      normative requirement
-      on the message payload only, and not also on what transport protocol to use.
-      Several new features were added such as file transfer, payload encoding, and improved server capabilities
-      representation.<br>
-      The version 3.1 specification is a backwards compatible extension of the third version of VISS.
-      Instead of referencing to the VSS rule set for how to define the content of a tree it refers to the HIM data
-      profile rule set.
-      This enables also other trees than the VSS tree to be used, a server may manage a set of trees, a forest, that a
-      client can access.
-      Other changes are minor adaptations to support the concept of having a forest of trees, such as adding support for
-      a client to do a forest inquiry.
-      It also includes support for the Unix domain socket transport protocol.<br>
       There are three parts to the VISS specification, [[CORE]], [[TRANSPORT]], and [[PAYLOAD_ENCODING]].
       The [[CORE]] document describes the messaging layer,
       the [[TRANSPORT]] document describes the deviations form the CORE specification that are used by some transport
@@ -253,15 +227,12 @@
     <h2>Terminology</h2>
     <p>
       The acronym 'VISSv3.1' is used to refer to this document, the VISS version 3.1 specification.
-      The acronym 'HIM' is used to refer to the <a
-        href="https://github.com/COVESA/hierarchical_information_model">'Hierarchical Information Model'</a>
-      which is hosted by COVESA.
       The acronym 'VSS' is used to refer to the <a
         href="https://github.com/COVESA/vehicle_signal_specification">'Vehicle Signal Specification'</a>
       which is hosted by COVESA.
-      The term 'WebSocket' when used in this specification, is as defined in the
+      The term 'WebSocket' when used in this document, is as defined in the
       <a href="https://www.w3.org/TR/websockets/">W3C WebSocket API</a> and [[RFC6455]], the WebSocket Protocol.
-      The term 'CAN' when used in this specification, is as defined in [[ISO 11898]].
+      The term 'CAN' when used in this document, is as defined in [[ISO 11898]].
     </p>
   </section>
 
