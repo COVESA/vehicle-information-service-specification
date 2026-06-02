@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
    <meta charset="utf-8" />
-   <title>COVESA VISS version 3.1 - Core</title>
+   <title>COVESA VISS version 3.2 - Core</title>
    <script
       src="https://www.w3.org/Tools/respec/respec-w3c"
       class="remove"
@@ -38,17 +38,17 @@
             },
          ],
          edDraftURI:
-            "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.1_Core.html",
-         shortName: "viss3.1-core",
+            "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.2_Core.html",
+         shortName: "viss3.2-core",
          localBiblio: {
             "TRANSPORT": {
-               title: "COVESA VISS version 3.1-Transport",
-               href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.1_Transport.html",
+               title: "COVESA VISS version 3.2-Transport",
+               href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.2_Transport.html",
                publisher: "Ulf Bjorkengren; Wonsuk Lee",
             },
             "PAYLOAD ENCODING": {
-               title: "COVESA VISS version 3.1-Payload Encoding",
-               href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.1_PayloadEncoding.html",
+               title: "COVESA VISS version 3.2-Payload Encoding",
+               href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.2_PayloadEncoding.html",
                publisher: "Ulf Bjorkengren; Wonsuk Lee",
             },
             "IMPLEMENTATION_GUIDELINES": {
@@ -181,7 +181,7 @@
          message payload only, and not also on what transport protocol to use.
          Several new features were added such as file transfer, payload
          encoding, and improved server capabilities representation.<br>
-         This specification, the version 3.1, is a backwards compatible
+         This specification, the version 3.2, is a backwards compatible
          extension of the third version of VISS. Instead of referencing to the
          VSS rule set for how to define the content of a tree it refers to the
          rule sets of the HIM vehicle data profile.This enables also other trees than the VSS
@@ -192,12 +192,12 @@
       </p>
       <p>
          There are three parts to this specification, CORE, [[TRANSPORT]], and
-         [[PAYLOAD ENCODING]]. This document, the VISS version 3.1 CORE
-         specification, describes the VISSv3.1 messaging layer.<br>
-         The VISSv3.1 transport protocol specification describes the deviations
+         [[PAYLOAD ENCODING]]. This document, the VISS version 3.2 CORE
+         specification, describes the VISSv3.2 messaging layer.<br>
+         The VISSv3.2 transport protocol specification describes the deviations
          from the CORE definitions that are used in some transport protocols. It
          also examplifies the JSON primary payload format using the Websocket
-         payloads. The VISSv3.1 payload encoding specification describes payload
+         payloads. The VISSv3.2 payload encoding specification describes payload
          encoding designs that may be applied e. g. for payloads in transit.<br>
          The specification is supplemented by the [[IMPLEMENTATION_GUIDELINES]]
          document which provides recommendations on how to implement certain
@@ -243,12 +243,12 @@
          </figcaption>
       </figure>
       <p>
-         The VISSv3.1 messaging layer builds on RESTful principles for the
+         The VISSv3.2 messaging layer builds on RESTful principles for the
          method exchange via the interface (refer to the
          <a href="#interface">section 5. Interface</a>).
       </p>
       <p>
-         The VISSv3.1 data structuring rules (<a
+         The VISSv3.2 data structuring rules (<a
             href="https://covesa.github.io/hierarchical_information_model/vehicle_data_rule_set/"
             >HIM vehicle data profile rule set</a
          >) are the same through all transport protocols. The basis for
@@ -261,8 +261,8 @@
    <section id="terms">
       <h2>Terminology</h2>
       <p>
-         The acronym 'VISSv3.1' is used to refer to this document, the VISS
-         version 3.1 specification. The acronym 'HIM' is used to refer to the
+         The acronym 'VISSv3.2' is used to refer to this document, the VISS
+         version 3.2 specification. The acronym 'HIM' is used to refer to the
          <a href="https://github.com/COVESA/hierarchical_information_model"
             >'Hierarchical Information Model version 1.0 Vehicle Data profile'</a
          >
@@ -308,7 +308,7 @@
             <dd>A structure containing one or more value-timestamp tuples.</dd>
             <dt><dfn data-dfn-type="dfn" id="dfn-value">value</dfn></dt>
             <dd>
-               The data that is associated with one or more tree node.
+               The data that is associated with a tree node.
                Regardless of its data type, a single data item is always
                represented as a string in message payloads.
             </dd>
@@ -376,7 +376,7 @@
       <br>
       Previous VISS versions have been using the
       <a href="https://github.com/COVESA/vehicle_signal_specification">VSS</a>
-      rule set and definition of the content of the tree but in VISSv3.1 the rule sets of the
+      rule set and definition of the content of the tree but in VISSv3.2 the rule sets of the
       <a href="https://github.com/COVESA/hierarchical_information_model">HIM</a>
       vehicle data profile are instead used. This enables other trees than the
       VSS tree also to be used. A server may manage a set of trees, a so-called
@@ -440,7 +440,7 @@
          addressed resource. For supported protocols, refer to the
          <a
             data-link-type="dfn"
-            href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#transport-protocols"
+            href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#transport-protocols"
             >section 5. Transport Protocols</a
          >
          in [[TRANSPORT]] specification.<br>
@@ -578,105 +578,226 @@
          </p>
          <section id="read">
             <h2>Read</h2>
-            <p>Purpose: Get one or more values addressed by the given path.</p>
-            <p>
-               The client MAY have to obtain an <a>authorization</a> token
-               before accessing the requested values. If the server successfully
-               processes the request, it MUST return a <a>success response</a>.
-               If the server fails to fulfill the request, then the server MUST
-               return an <a href="#error-message">error message</a>.
-            </p>
-            Arguments, of which path is mandatory:
-            <ul>
-               <li><a>path</a> The HIM-defined path to a node in the tree.</li>
-               <li>
-                  <a>filter</a> Additional parameters to refine the requested
-                  data.
-               </li>
-               <li><a>authorization</a> The authorization token.</li>
-               <li>
-                  <a>dc</a> The compression scheme(s) used for
-                  transmitted data.
-               </li>
-            </ul>
-            Success response, of which authorization is optional:
-            <ul>
-               <li>
-                  data A structure containing one or more sets of a path and
-                  data point.
-               </li>
-               <li style="margin-left: 40px">
-                  <a>path</a> The HIM-defined path for the associated data
-                  point.
-               </li>
-               <li style="margin-left: 40px">
-                  <a>data point</a> A structure containing one or more
-                  value-timestamp tuples.
-               </li>
-               <li style="margin-left: 80px">
-                  <a>value</a> The latest available value. Please note that also
-                  for actuators this returns the current value, and not a target
-                  value that might have been set.
-               </li>
-               <li style="margin-left: 80px">
-                  <a>timestamp</a> The capture time of the value.
-               </li>
-               <li>
-                  <a>authorization</a> A handle representing the authorization
-                  token.
-               </li>
-               <li>
-                  <a>timestamp</a> The server execution time of the request.
-               </li>
-            </ul>
+            The Read method is supported by two variants,
+            a single tree adressability variant and a multiple tree adressability variant.
+            Both variants can address one of more signals.
+            The former supports wild card usage but cannot address signals in multiple trees.
+            The latter does not support wild card usage but can address signals in multiple trees.
+
+           <section id="single-tree-read">
+              <h2>Single Tree Addressability Read</h2>
+              <p>Purpose: Get one or more values addressed by the given path.</p>
+              <p>
+                 The client MAY have to obtain an <a>authorization</a> token
+                 before accessing the requested values. If the server successfully
+                 processes the request, it MUST return a <a>success response</a>.
+                 If the server fails to fulfill the request, then the server MUST
+                 return an <a href="#error-message">error message</a>.
+              </p>
+              Arguments, of which path is mandatory:
+              <ul>
+                 <li><a>path</a> The HIM-defined path to a node in the tree.</li>
+                 <li>
+                   <a>filter</a> Additional parameters to refine the requested
+                    data.
+                 </li>
+                 <li><a>authorization</a> The authorization token.</li>
+                 <li>
+                    <a>dc</a> The compression scheme(s) used for
+                    transmitted data.
+                 </li>
+              </ul>
+              Success response, of which authorization is optional:
+              <ul>
+                 <li>
+                    data A structure containing one or more sets of a path and
+                    data point.
+                 </li>
+                 <li style="margin-left: 40px">
+                    <a>path</a> The HIM-defined path for the associated data
+                    point.
+                 </li>
+                 <li style="margin-left: 40px">
+                    <a>data point</a> A structure containing one or more
+                    value-timestamp tuples.
+                 </li>
+                 <li style="margin-left: 80px">
+                    <a>value</a> The latest available value. Please note that also
+                    for actuators this returns the current value, and not a target
+                    value that might have been set.
+                 </li>
+                 <li style="margin-left: 80px">
+                    <a>timestamp</a> The capture time of the value.
+                 </li>
+                 <li>
+                    <a>authorization</a> A handle representing the authorization
+                    token.
+                 </li>
+                 <li>
+                    <a>timestamp</a> The server execution time of the request.
+                 </li>
+              </ul>
+           </section>
+
+           <section id="multiple-tree-read">
+              <h2>Multiple Tree Addressability Read</h2>
+              <p>Purpose: Get one or more values addressed by the array of paths.</p>
+              <p>
+                 If one or more of the vehicle signals that are to be read require
+                 a valid authorization token then the client MUST obtain a token
+                 that grants permission to all of the signals.
+                 If the server successfully processes
+                 the request, it MUST return a <a>success response</a>. If it
+                 cannot, it MUST return an <a>error message</a>.
+                 The error message shall be associated with the first element in the array
+                 that the server fails in validating.
+              </p>
+              Arguments, of which data is mandatory:
+              <ul>
+                 <li>data An array of one or more HIM-defined paths.</li>
+                 <li><a>authorization</a> The authorization token.</li>
+                 <li>
+                    <a>dc</a> The compression scheme(s) used for
+                    transmitted data.
+                 </li>
+              </ul>
+              Success response, of which authorization is optional:
+              <ul>
+                 <li>
+                    data A structure containing one or more sets of a path and
+                    data point.
+                 </li>
+                 <li style="margin-left: 40px">
+                    <a>path</a> The HIM-defined path for the associated data
+                    point.
+                 </li>
+                 <li style="margin-left: 40px">
+                    <a>data point</a> A structure containing one or more
+                    value-timestamp tuples.
+                 </li>
+                 <li style="margin-left: 80px">
+                    <a>value</a> The latest available value. Please note that also
+                    for actuators this returns the current value, and not a target
+                    value that might have been set.
+                 </li>
+                 <li style="margin-left: 80px">
+                    <a>timestamp</a> The capture time of the value.
+                 </li>
+                 <li>
+                    <a>authorization</a> A handle representing the authorization
+                    token.
+                 </li>
+                 <li>
+                    <a>timestamp</a> The server execution time of the request.
+                 </li>
+              </ul>
+           </section>
          </section>
 
          <section id="update">
             <h2>Update</h2>
-            <p>
-               Purpose: Provide an altered value to the vehicle signal addressed
-               by the <a>path</a>.
-            </p>
-            <p>
-               The client MAY have to obtain an authorization token before
-               updating a vehicle signal. If the server successfully processes
-               the request, it MUST return a <a>success response</a>. If it
-               cannot, it MUST return an <a>error message</a>. Only actuator
-               type signals can be updated. Please note that a success response
-               does not guarantee that the actuation attempt to change to the
-               updated target value has, or will, succeed. A client may monitor
-               the actuation progress through subsequent reads of the actuator
-               value.<br>
-               The server MAY use the timestamp from the request to discard requests
-               that are older than the latest previously received request,
-               followed by an error response. For more information, refer to the <a href="#out-of-order-request"></a>.
-            </p>
-            Arguments, of which path and value are mandatory:
-            <ul>
-               <li>
-                  <a>path</a> The HIM-defined path to a leaf node in the tree.
-               </li>
-               <li>
-                  <a>value</a> The new value to update the vehicle signal at the
-                  specified path.
-               </li>
-               <li><a>authorization</a> The authorization token.</li>
-               <li>
-                  <a>timestamp</a> The client dispatch time of the request.
-               </li>
-            </ul>
-            Success response, of which authorization is optional:
-            <ul>
-               <li>
-                  <a>authorization</a> A handle representing the authorization
-                  token.
-               </li>
-               <li>
-                  <a>timestamp</a> The server execution time of the request.
-                  This may not be the same as the final update time of the
-                  signal.
-               </li>
-            </ul>
+            The Update method is supported by two variants, a single data variant and a multiple data variant,
+            the latter is not supported over HTTP.
+
+           <section id="single-data-update">
+              <h2>Single Data Update</h2>
+              <p>
+                 Purpose: Provide an altered value to a vehicle signal.
+              </p>
+              <p>
+                 The client MAY have to obtain an authorization token before
+                 updating a vehicle signal. If the server successfully processes
+                 the request, it MUST return a <a>success response</a>. If it
+                 cannot, it MUST return an <a>error message</a>. Only actuator
+                 type signals can be updated. Please note that a success response
+                 does not guarantee that the actuation attempt to change to the
+                 updated target value has, or will, succeed. A client may monitor
+                 the actuation progress through subsequent reads of the actuator
+                 value.<br>
+                 The server MAY use the timestamp from the request to discard requests
+                 that are older than the latest previously received request,
+                 followed by an error response. For more information, refer to the <a href="#out-of-order-request"></a>.
+              </p>
+              Arguments, of which path and value are mandatory:
+              <ul>
+                 <li>
+                    <a>path</a> The HIM-defined path to a leaf node in the tree.
+                 </li>
+                 <li>
+                    <a>value</a> The target value to update the vehicle signal at the
+                    specified path.
+                 </li>
+                 <li><a>authorization</a> The authorization token.</li>
+                 <li>
+                    <a>timestamp</a> The client dispatch time of the request.
+                 </li>
+              </ul>
+              Success response, of which authorization is optional:
+              <ul>
+                 <li>
+                    <a>authorization</a> A handle representing the authorization
+                    token.
+                 </li>
+                 <li>
+                    <a>timestamp</a> The server execution time of the request.
+                    This may not be the same as the final update time of the
+                    signal.
+                 </li>
+              </ul>
+           </section>
+
+           <section id="multiple-data-update">
+              <h2>Multiple Data Update</h2>
+              <p>
+                 Purpose: Provide altered value to one or more vehicle signals.
+              </p>
+              <p>
+                 If one or more of the vehicle signals that are to be updated require
+                 a valid authorization token then the client MUST obtain a token
+                 that grants permission to all of the signals.
+                 If the server successfully processes
+                 the request, it MUST return a <a>success response</a>. If it
+                 cannot, it MUST return an <a>error message</a>.
+                 The error message shall be associated with the first element in the array
+                 that the server fails in validating. Only actuator
+                 type signals can be updated. Please note that a success response
+                 does not guarantee that the actuation attempts to change to the
+                 updated target values have, or will, succeed. A client may monitor
+                 the actuation progress through subsequent reads of the actuators.<br>
+                 The server MAY use the timestamp from the request to discard requests
+                 that are older than the latest previously received request,
+                 followed by an error response. For more information, refer to the <a href="#out-of-order-request"></a>.
+              </p>
+              Arguments, of which data is mandatory:
+              <ul>
+                 <li>
+                  data An array containing one or more sets of a path and a value.
+                 </li>
+                 <li style="margin-left: 40px">
+                    <a>path</a> The HIM-defined path for the associated value.
+                 </li>
+                 <li style="margin-left: 40px">
+                    <a>value</a> The target value to update the vehicle signal at the
+                    associated path.
+                 </li>
+                 <li><a>authorization</a> The authorization token.</li>
+                 <li>
+                    <a>timestamp</a> The client dispatch time of the request.
+                 </li>
+              </ul>
+              Success response, of which authorization is optional:
+              <ul>
+                 <li>
+                    <a>authorization</a> A handle representing the authorization
+                    token.
+                 </li>
+                 <li>
+                    <a>timestamp</a> The server execution time of the request.
+                    This may not be the same as the final update time of the
+                    signal.
+                 </li>
+              </ul>
+           </section>
          </section>
 
          <section id="subscribe">
@@ -830,7 +951,7 @@
                   <b>number</b> Refer to the
                   <a
                      data-link-type="dfn"
-                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#status-codes"
+                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#status-codes"
                      >section 4.1 Status Codes</a
                   >
                   defined in [[TRANSPORT]].
@@ -839,7 +960,7 @@
                   <b>reason</b> Refer to the
                   <a
                      data-link-type="dfn"
-                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#status-codes"
+                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#status-codes"
                      >section 4.1 Status Codes</a
                   >
                   defined in [[TRANSPORT]].
@@ -848,7 +969,7 @@
                   <b>description</b> Refer to the
                   <a
                      data-link-type="dfn"
-                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#status-codes"
+                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#status-codes"
                      >section 4.1 Status Codes</a
                   >
                   defined in [[TRANSPORT]].
@@ -1097,13 +1218,13 @@
             Examples can be found in the
             <a
                data-link-type="dfn"
-               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#wss-search-read"
+               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#wss-search-read"
                >section 5.1.2.1.2 Search Read</a
             >
             and
             <a
                data-link-type="dfn"
-               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#https-search-read"
+               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#https-search-read"
                >section 5.2.2.1.2 Search Read</a
             >
             in [[TRANSPORT]] specification.
@@ -1137,13 +1258,13 @@
             Examples can be found in the
             <a
                data-link-type="dfn"
-               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#https-history-read"
+               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#https-history-read"
                >section 5.1.2.1.3 History Read</a
             >
             and
             <a
                data-link-type="dfn"
-               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#https-history-read"
+               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#https-history-read"
                >section 5.2.2.1.3 History Read</a
             >
             in [[TRANSPORT]] specification.
@@ -1158,7 +1279,7 @@
             milliseconds. Example can be found in the
             <a
                data-link-type="dfn"
-               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#subscribe"
+               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#subscribe"
                >section 5.1.2.3 Subscribe</a
             >
             in [[TRANSPORT]] specification.
@@ -1215,13 +1336,13 @@
          Examples can be found in the
          <a
             data-link-type="dfn"
-            href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#authorized-subscribe"
-            >section 5.1.2.3.1 Authorized Subscribe</a
+            href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#authorized-subscribe"
+            >section 5.1.2.3.2 Authorized Subscribe</a
          >
          and
          <a
             data-link-type="dfn"
-            href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#range-subscribe"
+            href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#range-subscribe"
             >section 5.1.2.3.3 Range Subscribe</a
          >
          in [[TRANSPORT]] specification.
@@ -1262,7 +1383,7 @@
          Example can be found in the
          <a
             data-link-type="dfn"
-            href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#change-subscribe"
+            href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#change-subscribe"
             >section 5.1.2.3.4 Change Subscribe</a
          >
          in [[TRANSPORT]] specification.
@@ -1283,7 +1404,7 @@
             Example can be found in the
             <a
                data-link-type="dfn"
-               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#curve-logging-subscribe"
+               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#curve-logging-subscribe"
                >section 5.1.2.3.2 Curve Logging Subscribe</a
             >
             in [[TRANSPORT]] specification.
@@ -1315,7 +1436,7 @@
             Example can be found in the
             <a
                data-link-type="dfn"
-               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#https-service-discovery-read"
+               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#https-service-discovery-read"
                >section 5.2.2.1.4 Signal Discovery Read</a
             >
             in [[TRANSPORT]] specification.<br>
@@ -1362,7 +1483,7 @@
                MAY use in-line error reporting, Refer to the
                <a
                   data-link-type="dfn"
-                  href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#in-line-error-reporting"
+                  href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#in-line-error-reporting"
                   >section 4.1.1 In-line Error Reporting</a
                >
                in [[TRANSPORT]] specification.
@@ -1895,7 +2016,7 @@
                detail for various
                <a
                   data-link-type="dfn"
-                  href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#transport-protocols"
+                  href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#transport-protocols"
                >
                   transport protocols</a
                >
@@ -1915,7 +2036,7 @@
                various
                <a
                   data-link-type="dfn"
-                  href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#transport-protocols"
+                  href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#transport-protocols"
                >
                   transport protocols</a
                >
@@ -2986,9 +3107,9 @@
       <pre>
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://covesa.global/vissv3.1.bundled.schema.json",
+    "$id": "https://covesa.global/vissv3.2.bundled.schema.json",
     "title": "VISSv3",
-    "description": "VISS version 3.1 bundled schema",
+    "description": "VISS version 3.2 bundled schema",
     "type": "object",
     "properties": {
         "action": {
@@ -3005,7 +3126,7 @@
                     "const": "get"
                 }
             },
-            "$ref": "/vissv3.1/get-message.schema.json"
+            "$ref": "/vissv3.2/get-message.schema.json"
         },
         {
             "properties": {
@@ -3013,7 +3134,7 @@
                     "const": "set"
                 }
             },
-            "$ref": "/vissv3.1/set-message.schema.json"
+            "$ref": "/vissv3.2/set-message.schema.json"
         },
         {
             "properties": {
@@ -3021,7 +3142,7 @@
                     "const": "subscribe"
                 }
             },
-            "$ref": "/vissv3.1/subscribe-message.schema.json"
+            "$ref": "/vissv3.2/subscribe-message.schema.json"
         },
         {
             "properties": {
@@ -3029,7 +3150,7 @@
                     "const": "unsubscribe"
                 }
             },
-            "$ref": "/vissv3.1/unsubscribe-message.schema.json"
+            "$ref": "/vissv3.2/unsubscribe-message.schema.json"
         },
         {
             "properties": {
@@ -3037,12 +3158,12 @@
                     "const": "subscription"
                 }
             },
-            "$ref": "/vissv3.1/subscription-event.schema.json"
+            "$ref": "/vissv3.2/subscription-event.schema.json"
         }
     ],
     "$defs": {
-        "https://covesa.global/vissv3.1/get-message.schema.json": {
-            "$id": "https://covesa.global/vissv3.1/get-message.schema.json",
+        "https://covesa.global/vissv3.2/get-message.schema.json": {
+            "$id": "https://covesa.global/vissv3.2/get-message.schema.json",
             "$schema": "https://json-schema.org/draft/2020-12/schema",
             "title": "VISSv3-get-message",
             "description": "VISSv3 get request and response messages",
@@ -3055,7 +3176,7 @@
                             "type": "string"
                         },
                         "filter": {
-                            "$ref": "https://covesa.global/vissv3.1/filter.schema.json"
+                            "$ref": "https://covesa.global/vissv3.2/filter.schema.json"
                         },
                         "authorization": {
                             "description": "The access token",
@@ -3077,7 +3198,7 @@
                 {
                     "properties": {
                         "data": {
-                            "$ref": "https://covesa.global/vissv3.1/data.schema.json"
+                            "$ref": "https://covesa.global/vissv3.2/data.schema.json"
                         },
                         "ts": {
                             "description": "The time stamp",
@@ -3116,7 +3237,7 @@
                 {
                     "properties": {
                         "error": {
-                            "$ref": "https://covesa.global/vissv3.1/error.schema.json"
+                            "$ref": "https://covesa.global/vissv3.2/error.schema.json"
                         },
                         "ts": {
                             "description": "The time stamp",
@@ -3134,8 +3255,8 @@
                 }
             ]
         },
-        "https://covesa.global/vissv3.1/set-message.schema.json": {
-            "$id": "https://covesa.global/vissv3.1/set-message.schema.json",
+        "https://covesa.global/vissv3.2/set-message.schema.json": {
+            "$id": "https://covesa.global/vissv3.2/set-message.schema.json",
             "$schema": "https://json-schema.org/draft/2020-12/schema",
             "title": "VISSv3-set-message",
             "description": "VISSv3 set request and response messages",
@@ -3149,7 +3270,7 @@
                         },
                         "value": {
                             "description": "The value",
-                            "$ref": "https://covesa.global/vissv3.1/value.schema.json"
+                            "$ref": "https://covesa.global/vissv3.2/value.schema.json"
                         },
                         "authorization": {
                             "description": "The access token",
@@ -3187,7 +3308,7 @@
                 {
                     "properties": {
                         "error": {
-                            "$ref": "https://covesa.global/vissv3.1/error.schema.json"
+                            "$ref": "https://covesa.global/vissv3.2/error.schema.json"
                         },
                         "ts": {
                             "description": "The time stamp",
@@ -3205,8 +3326,8 @@
                 }
             ]
         },
-        "https://covesa.global/vissv3.1/subscribe-message.schema.json": {
-            "$id": "https://covesa.global/vissv3.1/subscribe-message.schema.json",
+        "https://covesa.global/vissv3.2/subscribe-message.schema.json": {
+            "$id": "https://covesa.global/vissv3.2/subscribe-message.schema.json",
             "$schema": "https://json-schema.org/draft/2020-12/schema",
             "title": "VISSv3-subscribe-message",
             "description": "VISSv3 subscribe request and response messages",
@@ -3221,12 +3342,12 @@
                         "filter": {
                             "oneOf": [
                                 {
-                                    "$ref": "/vissv3.1/filter.schema.json"
+                                    "$ref": "/vissv3.2/filter.schema.json"
                                 },
                                 {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "/vissv3.1/filter.schema.json"
+                                        "$ref": "/vissv3.2/filter.schema.json"
                                     },
                                     "minItems": 1,
                                     "maxItems": 2
@@ -3278,7 +3399,7 @@
                 {
                     "properties": {
                         "error": {
-                            "$ref": "https://covesa.global/vissv3.1/error.schema.json"
+                            "$ref": "https://covesa.global/vissv3.2/error.schema.json"
                         },
                         "ts": {
                             "description": "The time stamp",
@@ -3296,8 +3417,8 @@
                 }
             ]
         },
-        "https://covesa.global/vissv3.1/unsubscribe-message.schema.json": {
-            "$id": "https://covesa.global/vissv3.1/unsubscribe-message.schema.json",
+        "https://covesa.global/vissv3.2/unsubscribe-message.schema.json": {
+            "$id": "https://covesa.global/vissv3.2/unsubscribe-message.schema.json",
             "$schema": "https://json-schema.org/draft/2020-12/schema",
             "title": "VISSv3-unsubscribe-message",
             "description": "VISSv3 unsubscribe request and response messages",
@@ -3336,7 +3457,7 @@
                 {
                     "properties": {
                         "error": {
-                            "$ref": "https://covesa.global/vissv3.1/error.schema.json"
+                            "$ref": "https://covesa.global/vissv3.2/error.schema.json"
                         },
                         "ts": {
                             "description": "The time stamp",
@@ -3354,8 +3475,8 @@
                 }
             ]
         },
-        "https://covesa.global/vissv3.1/subscription-event.schema.json": {
-            "$id": "https://covesa.global/vissv3.1/subscription-event.schema.json",
+        "https://covesa.global/vissv3.2/subscription-event.schema.json": {
+            "$id": "https://covesa.global/vissv3.2/subscription-event.schema.json",
             "$schema": "https://json-schema.org/draft/2020-12/schema",
             "title": "VISSv3-subscription-event",
             "description": "VISSv3 subscription event",
@@ -3368,7 +3489,7 @@
                             "type": "string"
                         },
                         "data": {
-                            "$ref": "https://covesa.global/vissv3.1/data.schema.json"
+                            "$ref": "https://covesa.global/vissv3.2/data.schema.json"
                         },
                         "ts": {
                             "description": "The time stamp",
@@ -3392,7 +3513,7 @@
                             "type": "string"
                         },
                         "error": {
-                            "$ref": "https://covesa.global/vissv3.1/error.schema.json"
+                            "$ref": "https://covesa.global/vissv3.2/error.schema.json"
                         },
                         "ts": {
                             "description": "The time stamp",
@@ -3411,11 +3532,11 @@
                 }
             ]
         },
-        "https://covesa.global/vissv3.1/filter.schema.json": {
+        "https://covesa.global/vissv3.2/filter.schema.json": {
             "$schema": "https://json-schema.org/draft/2020-12/schema",
-            "$id": "https://covesa.global/vissv3.1/filter.schema.json",
-            "title": "VISSv3.1-filter",
-            "description": "VISS version 3.1 filter",
+            "$id": "https://covesa.global/vissv3.2/filter.schema.json",
+            "title": "VISSv3.2-filter",
+            "description": "VISS version 3.2 filter",
             "type": "object",
             "properties": {
                 "variant": {
@@ -3648,26 +3769,26 @@
                 }
             ]
         },
-        "https://covesa.global/vissv3.1/data.schema.json": {
-            "$id": "https://covesa.global/vissv3.1/data.schema.json",
+        "https://covesa.global/vissv3.2/data.schema.json": {
+            "$id": "https://covesa.global/vissv3.2/data.schema.json",
             "$schema": "https://json-schema.org/draft/2020-12/schema",
             "title": "VISSv3-data-representation",
             "description": "VISSv3 data representation",
             "oneOf": [
                 {
                     "type": "object",
-                    "$ref": "/vissv3.1/data-object.schema.json"
+                    "$ref": "/vissv3.2/data-object.schema.json"
                 },
                 {
                     "type": "array",
                     "items": {
-                        "$ref": "/vissv3.1/data-object.schema.json"
+                        "$ref": "/vissv3.2/data-object.schema.json"
                     }
                 }
             ]
         },
-            "https://covesa.global/vissv3.1/data-object.schema.json": {
-                "$id": "https://covesa.global/vissv3.1/data-object.schema.json",
+            "https://covesa.global/vissv3.2/data-object.schema.json": {
+                "$id": "https://covesa.global/vissv3.2/data-object.schema.json",
                 "$schema": "https://json-schema.org/draft/2020-12/schema",
                 "title": "VISSv3-data-object",
                 "description": "VISSv3 data object",
@@ -3680,12 +3801,12 @@
                         "description": "The data point",
                         "oneOf": [
                             {
-                                "$ref": "/vissv3.1/datapoint.schema.json"
+                                "$ref": "/vissv3.2/datapoint.schema.json"
                             },
                             {
                                 "type": "array",
                                 "items": {
-                                    "$ref": "/vissv3.1/datapoint.schema.json"
+                                    "$ref": "/vissv3.2/datapoint.schema.json"
                                 },
                                 "minItems": 1
                             }
@@ -3693,8 +3814,8 @@
                     }
                 }
             },
-            "https://covesa.global/vissv3.1/datapoint.schema.json": {
-                "$id": "https://covesa.global/vissv3.1/datapoint.schema.json",
+            "https://covesa.global/vissv3.2/datapoint.schema.json": {
+                "$id": "https://covesa.global/vissv3.2/datapoint.schema.json",
                 "$schema": "https://json-schema.org/draft/2020-12/schema",
                 "title": "VISSv3-datapoint",
                 "description": "VISSv3 datapoint",
@@ -3702,7 +3823,7 @@
                 "properties": {
                     "value": {
                         "description": "The value",
-                        "$ref": "https://covesa.global/vissv3.1/value.schema.json"
+                        "$ref": "https://covesa.global/vissv3.2/value.schema.json"
                     },
                     "ts": {
                         "description": "The time stamp",
@@ -3714,8 +3835,8 @@
                     "ts"
                   ]
             },
-            "https://covesa.global/vissv3.1/error.schema.json": {
-                "$id": "https://covesa.global/vissv3.1/error.schema.json",
+            "https://covesa.global/vissv3.2/error.schema.json": {
+                "$id": "https://covesa.global/vissv3.2/error.schema.json",
                 "$schema": "https://json-schema.org/draft/2020-12/schema",
                 "title": "VISSv3-error",
                 "description": "VISSv3 error data",
@@ -3763,8 +3884,8 @@
                     "description"
                 ]
             },
-            "https://covesa.global/vissv3.1/value.schema.json": {
-                "$id": "https://covesa.global/vissv3.1/value.schema.json",
+            "https://covesa.global/vissv3.2/value.schema.json": {
+                "$id": "https://covesa.global/vissv3.2/value.schema.json",
                 "$schema": "https://json-schema.org/draft/2020-12/schema",
                 "title": "VISSv3-value",
                 "description": "VISSv3 value data",
@@ -4043,7 +4164,7 @@
                   [[TRANSPORT]], Transport Protocols:
                   <a
                      data-link-type="dfn"
-                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#secure-websocket"
+                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#secure-websocket"
                      >section 5.1 Secure WebSocket</a
                   >
                </td>
@@ -4054,7 +4175,7 @@
                   [[TRANSPORT]], Transport Protocols:
                   <a
                      data-link-type="dfn"
-                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#https"
+                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#https"
                      >section 5.2 HTTPS</a
                   >
                </td>
@@ -4065,7 +4186,7 @@
                   [[TRANSPORT]], Transport Protocols:
                   <a
                      data-link-type="dfn"
-                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#mqtt"
+                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#mqtt"
                      >section 5.3 MQTT</a
                   >
                </td>
@@ -4076,7 +4197,7 @@
                   [[TRANSPORT]], Transport Protocols:
                   <a
                      data-link-type="dfn"
-                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#grpc"
+                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#grpc"
                      >section 5.4 gRPC</a
                   >
                </td>
@@ -4087,7 +4208,7 @@
                   [[TRANSPORT]], Transport Protocols:
                   <a
                      data-link-type="dfn"
-                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.1/spec/VISSv3.1_Transport.html#uds"
+                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#uds"
                      >section 5.5 Unix Domain Sockets</a
                   >
                </td>
@@ -4232,7 +4353,7 @@
          File transfer from client to server, or in the other direction, follows
          the model shown in the two sequence diagrams below. The server exposes
          two communication channels, a control channel and a data channel. The
-         control channel is the channel where the primary VISSv3.1 payloads are
+         control channel is the channel where the primary VISSv3.2 payloads are
          communicated, while the data channel is a channel over which the file
          transfer data is communicated. As is seen in the sequence diagrams the
          messages sent on the data channel have the same structure in both the
