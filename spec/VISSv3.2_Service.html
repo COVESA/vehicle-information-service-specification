@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COVESA VISS version 3.2-Services</title>
+<style>
+  body { font-family: sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
+  h1 { color: #003A6E; border-bottom: 2px solid #003A6E; padding-bottom: 0.3em; }
+  h2 { color: #003A6E; margin-top: 2em; }
+  h3 { color: #005A9C; margin-top: 1.5em; }
+  .date { color: #666; font-size: 1.1em; }
+  .metadata { background: #f5f5f5; border: 1px solid #ddd; padding: 1em; margin: 1em 0; }
+  .metadata dt { font-weight: bold; }
+  .metadata dd { margin-left: 2em; margin-bottom: 0.5em; }
+  pre, code { font-family: monospace; }
+  pre { background: #f8f8f8; border: 1px solid #ddd; padding: 1em; overflow-x: auto; }
+  pre .k  { color: #007700; font-weight: bold; }
+  pre .s  { color: #CC6600; }
+  table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+  th { background: #003A6E; color: white; padding: 0.5em 1em; text-align: left; }
+  td { border: 1px solid #ddd; padding: 0.5em 1em; }
+  tr:nth-child(even) td { background: #f9f9f9; }
+  td:first-child { font-weight: bold; }
+  figure { text-align: center; margin: 2em 0; }
+  figcaption { font-style: italic; margin-top: 0.5em; }
+  figcaption a { color: #005A9C; }
+  .note { background: #fffbe6; border-left: 4px solid #e6a800; padding: 0.5em 1em; margin: 1em 0; }
+  .non-normative { background: #f0f4ff; border-left: 4px solid #005A9C; padding: 0.5em 1em; margin: 1em 0; }
+  a { color: #005A9C; }
+  .req-star { font-size: 0.85em; }
+  hr { border: 0; border-top: 1px solid #ccc; margin: 2em 0; }
+  .toc { background: #f5f5f5; border: 1px solid #ddd; padding: 1em 2em; display: inline-block; min-width: 300px; }
+  .toc ul { margin: 0.3em 0; }
+  .toc li { margin: 0.2em 0; }
+  /* ASCII figure box */
+  .ascii-fig { font-family: monospace; font-size: 0.9em; display: inline-block; text-align: left; white-space: pre; }
+</style>
+</head>
+<body>
+
+<h1>COVESA VISS version 3.2-Services</h1>
+<p class="date">13 May 2026</p>
+<!-- Corrections applied to source PDF during conversion to HTML (SoundMatt/vissr v3.2beta):
+     1. "vehice domain" → "vehicle domain" (Figure 1 caption)
+     2. "exends" → "extends" (Abstract)
+     3. "differencies" → "differences" (Service Interface section)
+     4. "The ervice implementation" → "The service implementation" (Filters section)
+     5. "non-neglible" → "non-negligible" (throughout)
+     6. "repot" → "report" (Operations section)
+     7. "invokation" → "invocation" (Status section)
+     8. "has been used" → "have been used" (Monitor section grammar)
+     9. Copyright year 2025 → 2026 (document dated May 2026)
+    10. Editor's draft URL corrected: was pointing to VISSv3.0_PayloadEncoding.html
+    11. Invoke response text: "serviceId and timestamp are mandatory" corrected —
+        serviceId is conditional (omitted when monitoring session not started).
+    12. Discovery response example: duplicate "procedure" JSON keys (invalid JSON) corrected
+        to map of {name: {type:procedure}} entries.
+-->
+
+<details>
+<summary><strong>More details about this document</strong></summary>
+<dl class="metadata">
+  <dt>Latest published version:</dt>
+  <dd>none</dd>
+  <dt>Latest editor's draft:</dt>
+  <dd><a href="https://raw.githack.com/COVESA/vehicle-information-service-specification/master/spec/VISSv3.2_Service.html">
+    VISSv3.2_Service.html</a></dd>
+  <dt>History:</dt>
+  <dd><a href="https://github.com/COVESA/vehicle-information-service-specification/commits/master/spec/VISSv3.2_Service.html">Commit history</a></dd>
+  <dt>Editors:</dt>
+  <dd>Ulf Bjorkengren (<a href="https://www.ford.com">Ford Motor Company</a>)</dd>
+  <dd>이원석(Wonsuk Lee) (<a href="https://www.etri.re.kr">한국전자통신연구원(ETRI)</a>)</dd>
+  <dt>Feedback:</dt>
+  <dd><a href="https://github.com/COVESA/vehicle-information-service-specification">GitHub COVESA/vehicle-information-service-specification</a>
+    (<a href="https://github.com/COVESA/vehicle-information-service-specification/pulls">pull requests</a>,
+     <a href="https://github.com/COVESA/vehicle-information-service-specification/issues/new">new issue</a>,
+     <a href="https://github.com/COVESA/vehicle-information-service-specification/issues">open issues</a>)</dd>
+</dl>
+<p>Copyright &copy; 2026 COVESA&reg;.</p>
+</details>
+
+<hr>
+
+<h2 id="abstract">Abstract</h2>
+
+<p>The Vehicle Information Service Specification (VISS) is a specification for access to vehicle
+information, including signals from sensors on control units within a vehicle's network, and services
+in the form of software applications that utilize vehicle signals for the service execution and are
+invoked by calling a procedure having input and output parameters. This information is exposed through
+a hierarchical, tree-like taxonomy as defined in the COVESA <a href="https://covesa.global/projects/hierarchical-information-model/">Hierarchical Information Model</a>
+(HIM), and is provided in JSON format. A server implementing VISS may be hosted within the vehicle or
+on external platforms.</p>
+
+<p>VISS enables a broad range of use cases, including predictive maintenance, usage-based insurance,
+fleet management, and real-time driver assistance services. In the context of artificial intelligence,
+VISS serves as a critical data access layer, providing high-quality, real-time vehicle data that can be
+utilized by AI algorithms for tasks such as anomaly detection, driver behavior analysis, energy
+optimization, and contextual decision-making.</p>
+
+<p>The first version of VISS, which has been implemented and deployed in production vehicles, supported
+only WebSocket as a transport protocol.<br>
+The <a href="https://raw.githack.com/COVESA/vehicle-information-service-specification/master/spec/VISSv2.0_Core.html">version 2.0</a>
+is generalized to work across also the HTTP and MQTT transport protocols to improve the support for
+different use cases. It also contains improved subscription capabilities and added an access control
+mechanism.<br>
+The <a href="https://raw.githack.com/COVESA/vehicle-information-service-specification/master/spec/VISSv3.0_Core.html">version 3.0</a>
+included the gRPC transport protocol but also simplified addition of other transport protocols by
+placing the normative requirement on the message payload only, and not also on what transport protocol
+to use. Several new features were added such as file transfer, payload encoding, and improved server
+capabilities representation.<br>
+The <a href="https://raw.githack.com/COVESA/vehicle-information-service-specification/master/spec/VISSv3.1_Core.html">version 3.1</a>
+replaced the VSS rule set for how to define the content of a tree with the HIM data profile rule set
+and included support for the Unix domain socket transport protocol.<br>
+This specification, version 3.2, extends the usage of the HIM data model to also include the HIM
+service profile.</p>
+
+<p>There are four parts to this specification, [[CORE]], [[TRANSPORT]], [[PAYLOAD ENCODING]], and
+SERVICES. This document, the VISS version 3.2 SERVICES specification, describes the service related
+parts of the interface. The companion specification [[CORE]] describes the messaging layer,
+[[TRANSPORT]] describes the deviations from the CORE specification that are used by some transport
+protocols, and [[PAYLOAD ENCODING]] describes payload encodings that are used in some cases.</p>
+
+<p>This specification describes the service related parts of the VISS interface. Services are typically
+realized as software components that are deployed as shown in the figure below.</p>
+
+<figure id="fig-service-architecture">
+<div class="ascii-fig">
+         +----------+
+         |  Client  |
+         +-----+----+
+               |          +---------------+
+               |          | MQTT broker   |
+               |          +------+--------+      Cloud
+     - - - - - | - - - - - - - -|- - - - - - - - - - - -
+               |                |
+         +-----+----+           |           Proximity
+         |  Client  |           |
+         +-----------+          |
+               |                |
+     - - - - - | - - - - - - - -|- - - - - - - - - - - -
+               |                |
+         +-----+----+           |
+         |  Client  |     +-----+------+               Vehicle
+         +----------+     | VISS server|
+                          +--+-+--+----+
+                             | |  |
+                  +----------+ |  +----------+
+                  |            |             |
+           +------+---+  +-----+----+  +-----+----+
+           | Service1 |  | Service2 |  | ServiceN |
+           +----------+  +----------+  +----------+
+        - - - - - - - - - - - - - - - - - - - - - - -
+                  Signal-based vehicle domain
+</div>
+<figcaption><a href="#fig-service-architecture">Figure 1</a> Service architecture.</figcaption>
+</figure>
+
+<p>The service is the logical end point of the client request; the service implementation then uses
+signals in the vehicle signal domain to execute the service. The signal access can either be directly
+to the native signals or it can use the VISS signal abstraction; the latter may enable the service to
+be interoperable on different vehicle models and brands.</p>
+
+<p>The VISS Service profile follows the model from VISS Vehicledata profile in that the data describing
+the service signature (procedure name, input, output) is handled as data in the interface. Any changes
+to the service signature will thus not require any changes of the interface. This is true for all
+changes all the way to a complete switch to another service domain tree.</p>
+
+<p>As well as sections marked as non-normative, all authoring guidelines, diagrams, examples, and notes
+in this specification are non-normative. Everything else in this specification is normative.</p>
+
+<p>The acronym 'VISSv3.2' is used to refer to this document, the VISS version 3.2 specification.<br>
+The acronym 'HIM' is used to refer to the <a href="https://covesa.global/projects/hierarchical-information-model/">'Hierarchical Information Model'</a>
+which is hosted by COVESA.<br>
+The acronym 'VSS' is used to refer to the <a href="https://covesa.global/projects/vehicle-signal-specification/">'Vehicle Signal Specification'</a>
+which is hosted by COVESA.<br>
+The term 'WebSocket' when used in this specification is as defined in the
+<a href="https://www.w3.org/TR/websockets/">W3C WebSocket API</a> and [[RFC6455]], the WebSocket Protocol.</p>
+
+<nav class="toc">
+<strong>Table of Contents</strong>
+<ul>
+  <li><a href="#abstract">Abstract</a></li>
+  <li><a href="#service-definition">1. Service Definition</a></li>
+  <li><a href="#service-states">2. Service States</a></li>
+  <li><a href="#actions">3. Actions</a></li>
+  <li><a href="#data-formats">4. Data Formats</a></li>
+  <li><a href="#service-interface">5. Service Interface</a></li>
+  <li><a href="#operations">6. Operations</a>
+    <ul>
+      <li><a href="#invoke">6.1 Invoke</a></li>
+      <li><a href="#monitor">6.2 Monitor</a></li>
+      <li><a href="#cancel">6.3 Cancel</a></li>
+      <li><a href="#discover">6.4 Service Discovery</a></li>
+    </ul>
+  </li>
+  <li><a href="#filters">7. Filters</a></li>
+  <li><a href="#errors">8. Error Messages</a></li>
+  <li><a href="#examples">9. Examples</a></li>
+  <li><a href="#appendix-schema">Appendix A: JSON Schema</a></li>
+  <li><a href="#appendix-him-config">Appendix B: HIM Configuration</a></li>
+</ul>
+</nav>
+
+<hr>
+
+<h2 id="service-definition">1. Service Definition</h2>
+
+<p>A service is in this specification defined as a software application that utilizes vehicle signals
+for the service execution and a client invokes it by calling a procedure having input and output
+parameters. A service is defined by a service signature as shown below.</p>
+
+<pre>ProcedureName(input1: datatype1, ..., inputN: datatypeN): (outputA: datatypeA, ..., outputM: datatypeM)</pre>
+
+<p>where ProcedureName is the name of the procedure, inputX is the X:th input parameter, datatypeX is
+the datatype of the X:th input parameter, outputY is the Y:th output parameter, datatypeY is the
+datatype of the Y:th output parameter.<br>
+The procedure shall have zero or more input parameters and one or more output parameters.<br>
+The signature components are mapped to nodes in a HIM service tree as shown below.</p>
+
+<ul>
+  <li><strong>ProcedureName</strong>: The procedure name is mapped to a node with the name ProcedureName
+    and the node type <code>'procedure'</code>.</li>
+  <li><strong>inputX</strong>: An input parameter is mapped to a node with the name InputX and the node type
+    <code>'property'</code> or <code>'symlink'</code>. This node must be a child to a node with the name Input and the
+    node type <code>'iostruct'</code>, which in its turn must be a child to the node with the name ProcedureName.</li>
+  <li><strong>outputY</strong>: An output parameter is mapped to a node with the name OutputY and the node type
+    <code>'property'</code> or <code>'symlink'</code>. This node must be a child to a node with the name Output and the
+    node type <code>'iostruct'</code>, which in its turn must be a child to the node with the name ProcedureName.</li>
+</ul>
+
+<p>The described tree structure is shown in the figure below.</p>
+
+<figure id="fig-service-tree">
+<div class="ascii-fig">
+                    |
+             (ProcedureName)    procedure
+             /             \
+          (Input)        (Output)    iostruct
+          /    \          /    \
+    (Input1) (InputN) (Output1) (OutputM)    property/symlink
+</div>
+<figcaption><a href="#fig-service-tree">Figure 2</a> Service tree structure.</figcaption>
+</figure>
+
+<p>The service data model is defined by the <a href="https://covesa.global/projects/hierarchical-information-model/">HIM service profile</a>.</p>
+
+<h2 id="service-states">2. Service States</h2>
+
+<p>The status of a service is a stateful parameter and shall be preserved by the server. It must be
+one of the following states:</p>
+
+<ul>
+  <li><strong>UNKNOWN</strong>: The status of the service is unknown.</li>
+  <li><strong>ONGOING</strong>: The service has been invoked but has not yet reached a successful termination,
+    or terminated due to being canceled or ending in failure.</li>
+  <li><strong>SUCCESSFUL</strong>: The service is not ONGOING and the latest invocation of the service
+    terminated successfully.</li>
+  <li><strong>CANCELED</strong>: The service is not ONGOING and the latest invocation of the service
+    terminated due to being canceled.</li>
+  <li><strong>FAILED</strong>: The service is not ONGOING and the latest invocation of the service terminated
+    due to a failure.</li>
+</ul>
+
+<p>The Status string datatype is restricted to the allowed values from the list above. The Status
+parameter shall be included in all response and event messages, set to the current value. At server
+startup it may not have information about the status of a service. It shall then be set to UNKNOWN.
+Input and output data in response or event messages are undefined if the status is set to UNKNOWN or
+FAILED.</p>
+
+<h2 id="actions">3. Actions</h2>
+
+<p>The Action parameter shall be included in all request, response and event messages. For transport
+protocols with methods that do not define a payload the 'action' parameter shall be omitted.<br>
+The different requests shall use the action values shown in the list below. The same action value
+shall be used in the response message.</p>
+
+<ul>
+  <li>Invoke: <code>"action": "invoke"</code></li>
+  <li>Monitor: <code>"action": "monitor"</code></li>
+  <li>Cancel: <code>"action": "cancel"</code></li>
+  <li>Service Discovery: <code>"action": "discover"</code></li>
+</ul>
+
+<p>Event messages shall have the following action value:</p>
+
+<ul>
+  <li>Event: <code>"action": "monitoring"</code></li>
+</ul>
+
+<h2 id="data-formats">4. Data Formats</h2>
+
+<p>The VISS signal profile defines a <code>"data"</code> object for the JSON representation of the output
+signal(s). This data represents the current value of the signal(s) together with capture time
+stamp(s).<br>
+The VISS service profile data model has separate definitions for input and output data which then each
+are correspondingly defined below.<br>
+The definition of the service input data is shown below.</p>
+
+<pre><span class="s">"indata"</span>: {<span class="k">"input"</span>: {<span class="k">input</span>-params}, <span class="s">"ts"</span>: <span class="s">"ddtt"</span>}</pre>
+
+<p>where <code>"input-params"</code> is the JSON representation of the service input parameters with their
+corresponding values and <code>"ddtt"</code> is the timestamp value associated with the server reception of the
+input parameters.<br>
+The definition of the service output data is shown below.</p>
+
+<pre><span class="s">"outdata"</span>: {<span class="k">"output"</span>: {<span class="k">output</span>-params}, <span class="s">"ts"</span>: <span class="s">"ddtt"</span>}</pre>
+
+<p>where <code>"output-params"</code> is the JSON representation of the service output parameters with their
+corresponding values and <code>"ddtt"</code> is the timestamp value associated with the capture of the output
+parameters.</p>
+
+<ul>
+  <li>For HTTP the POST method is used for all request actions except for Service Discovery that uses
+    the GET method.</li>
+  <li>The Invoke and the Monitor requests will if sent over HTTP only return the response message.</li>
+</ul>
+
+<h2 id="service-interface">5. Service Interface</h2>
+
+<p>The service interface builds on the syntax and concepts used in the CORE:Data Interface for access
+to vehicle signals. The differences are listed below.</p>
+
+<ul>
+  <li>The service interface must only be used on trees that have a 'domain' metadata value with a
+    right-most segment named 'Service', as defined in the
+    <a href="#appendix-him-config">HIM configuration file (Appendix B)</a>.</li>
+  <li>The available methods are: invoke / monitor / cancel / discover.</li>
+  <li>A request can only invoke one service.</li>
+  <li>All response, event and error messages shall include a <a href="#service-states">Status</a> parameter.</li>
+  <li>The requests defined in the service interface shall only be issued using paths addressing nodes
+    of node type <code>'procedure'</code>, except for service discovery requests that may use a path addressing
+    nodes of type <code>'branch'</code>.</li>
+  <li>The available filter variants are: timebased / status / all / none.</li>
+  <li>If an invoke or monitor request leads to that an event session is started then it is
+    automatically terminated when the service is successfully terminated, or terminated due to being
+    cancelled or ending in failure. The server must then issue an event or error message with the
+    <a href="#service-states">Status</a> set appropriately.</li>
+  <li>The client that invoked a service and has access to the serviceId of the ONGOING service may
+    terminate the service at any point by calling Cancel.</li>
+  <li>A client monitoring an ONGOING service without having invoked it cannot terminate the service
+    by calling Cancel, but the Cancel call will terminate its monitoring session.</li>
+  <li>A monitor request returns the latest input values that have been used to invoke the service in
+    the response. If the response Status has the value ONGOING then events will be issued until the
+    Status value is changed to either SUCCESSFUL, CANCELED or FAILED.</li>
+</ul>
+
+<p>A client can apply the following types of operations on a service:</p>
+
+<ul>
+  <li><strong>Invoke</strong>: A request to execute a service.</li>
+  <li><strong>Monitor</strong>: A request to get monitoring data of a service.</li>
+  <li><strong>Cancel</strong>: A request to cancel the session started by a previous invoke or monitor request.</li>
+  <li><strong>Discovery</strong>: A request to get metadata describing one or more services.</li>
+</ul>
+
+<p>The service signature is declared in the tree following the HIM Service profile syntax; a client
+request must conform to the service signature. A service shall have zero or more input parameters,
+and one or more output parameters. If the request does not conform to the signature the server shall
+reply with an <a href="#errors">error message</a> and shall not begin execution of the service. The server must also
+issue an error message if it during the service execution enters into a failure state.</p>
+
+<p>The time duration that a service requires for its execution may be negligible in terms of the total
+time between that the request was issued and that a response was received. In such cases the service
+is not expected to issue any asynchronous event messages to report its execution progress. Services
+that have a non-negligible time duration shall issue event messages to report its execution progress.
+The rate of event messages is an implementation decision, but the service must as a minimum issue an
+event at the successful termination of the execution, or if it enters into a failure state.</p>
+
+<p>To realize these operations the methods described in the following chapters are available.</p>
+
+<h2 id="operations">6. Operations</h2>
+
+<h3 id="invoke">6.1 Invoke</h3>
+
+<p>Purpose: Invoke a service addressed by the given path. Depending on filter variant selection and
+service duration a monitoring session may be initiated.<br>
+The Invoke request will return a synchronous response. If its execution duration is non-negligible
+and the filter variant is not set to <code>"none"</code> then the service will issue one or more event messages.<br>
+Request arguments, of which path and filter are mandatory and input is mandatory in case the service
+signature specifies it:</p>
+
+<ul>
+  <li><strong>path</strong>: The path to a node with the node type procedure.</li>
+  <li><strong>input</strong>: The input parameters as specified by the service signature.</li>
+  <li><strong>filter</strong>: Additional parameters configuring the type of monitoring.</li>
+  <li><strong>authorization</strong>: The authorization token.</li>
+</ul>
+
+<p>Success response arguments of which path, status, and timestamp are mandatory; outdata is mandatory
+in case the service signature specifies it; serviceId is present only when a monitoring session is
+started (see <code>(**)</code> footnote in the table below).</p>
+
+<table>
+<thead><tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr></thead>
+<tbody>
+<tr><td rowspan="6"><strong>invokeRequest</strong></td><td>action</td><td>Action</td><td>Yes</td></tr>
+<tr><td>path</td><td>string</td><td>Yes</td></tr>
+<tr><td>input</td><td>object</td><td>Yes (*)</td></tr>
+<tr><td>filter</td><td>object</td><td>Yes</td></tr>
+<tr><td>authorization</td><td>string</td><td>Optional</td></tr>
+<tr><td>requestId</td><td>string</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<table>
+<thead><tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr></thead>
+<tbody>
+<tr><td rowspan="8"><strong>invokeSuccessResponse</strong></td><td>action</td><td>Action</td><td>Yes</td></tr>
+<tr><td>path</td><td>string</td><td>Yes</td></tr>
+<tr><td>outdata</td><td>object</td><td>Yes (*)</td></tr>
+<tr><td>serviceId</td><td>string</td><td>Yes (**)</td></tr>
+<tr><td>status</td><td><a href="#service-states">Status</a></td><td>Yes</td></tr>
+<tr><td>authorization</td><td>string</td><td>Optional</td></tr>
+<tr><td>requestId</td><td>string</td><td>Yes</td></tr>
+<tr><td>ts</td><td>string</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<table>
+<thead><tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr></thead>
+<tbody>
+<tr><td rowspan="6"><strong>monitorEvent</strong></td><td>action</td><td>Action</td><td>Yes</td></tr>
+<tr><td>path</td><td>string</td><td>Yes</td></tr>
+<tr><td>outdata</td><td>object</td><td>Yes (*)</td></tr>
+<tr><td>serviceId</td><td>string</td><td>Yes</td></tr>
+<tr><td>status</td><td><a href="#service-states">Status</a></td><td>Yes</td></tr>
+<tr><td>ts</td><td>string</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<p class="req-star">(*) : If it is not specified in the service signature then the parameter shall be omitted.<br>
+(**) : If a monitoring session is not started then the parameter shall be omitted.</p>
+
+<h3 id="monitor">6.2 Monitor</h3>
+
+<p>Purpose: Initiate a monitoring session of a service.<br>
+If the service execution is ongoing and the filter variant is not set to <code>"none"</code> then a monitoring
+session is initiated, else only the synchronous response will be issued.<br>
+The monitor request starts a monitoring session of the service. The monitoring session is directly
+terminated if the service is not in the ONGOING state, initiated by a previous request by some
+client. A synchronous response is sent back to the client, which is then followed by asynchronous
+monitoring event messages. The response contains the input parameters that were used when the service
+was initiated. In the case of a service that completes its execution instantaneously the monitoring
+session is not initiated. The monitoring session is terminated when the service terminates
+successfully, or enters into a failure state.<br>
+Request arguments, of which path and filter are mandatory:</p>
+
+<ul>
+  <li><strong>path</strong>: The path to a node with the node type procedure.</li>
+  <li><strong>filter</strong>: Additional parameters configuring the type of monitoring.</li>
+  <li><strong>authorization</strong>: The authorization token.</li>
+</ul>
+
+<p>Success response arguments of which path, status, and timestamp are mandatory. serviceId is
+mandatory if the service execution duration is non-negligible, else it shall not be present. Indata
+and outdata are mandatory in case the service signature specifies it:</p>
+
+<ul>
+  <li><strong>path</strong>: The path to the service.</li>
+  <li><strong>indata</strong>: The input parameters as specified by the service signature. The input parameters
+    contain the values from the latest invocation of the service.</li>
+  <li><strong>outdata</strong>: The service output parameters as specified in the service signature.</li>
+  <li><strong>status</strong>: The execution <a href="#service-states">Status</a>.</li>
+  <li><strong>serviceId</strong>: A reference Id for the monitoring session.</li>
+  <li><strong>timestamp</strong>: The time stamp represents the time at which the status and output values were
+    captured.</li>
+</ul>
+
+<table>
+<thead><tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr></thead>
+<tbody>
+<tr><td rowspan="5"><strong>monitorRequest</strong></td><td>action</td><td>Action</td><td>Yes</td></tr>
+<tr><td>path</td><td>string</td><td>Yes</td></tr>
+<tr><td>filter</td><td>object</td><td>Yes</td></tr>
+<tr><td>authorization</td><td>string</td><td>Optional</td></tr>
+<tr><td>requestId</td><td>string</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<table>
+<thead><tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr></thead>
+<tbody>
+<tr><td rowspan="9"><strong>monitorSuccessResponse</strong></td><td>action</td><td>Action</td><td>Yes</td></tr>
+<tr><td>path</td><td>string</td><td>Yes</td></tr>
+<tr><td>indata</td><td>object</td><td>Yes (*)</td></tr>
+<tr><td>outdata</td><td>object</td><td>Yes (*)</td></tr>
+<tr><td>serviceId</td><td>string</td><td>Yes (**)</td></tr>
+<tr><td>status</td><td><a href="#service-states">Status</a></td><td>Yes</td></tr>
+<tr><td>authorization</td><td>string</td><td>Optional</td></tr>
+<tr><td>requestId</td><td>string</td><td>Yes</td></tr>
+<tr><td>ts</td><td>string</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<table>
+<thead><tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr></thead>
+<tbody>
+<tr><td rowspan="6"><strong>monitorEvent</strong></td><td>action</td><td>Action</td><td>Yes</td></tr>
+<tr><td>path</td><td>string</td><td>Yes</td></tr>
+<tr><td>outdata</td><td>object</td><td>Yes (*)</td></tr>
+<tr><td>serviceId</td><td>string</td><td>Yes</td></tr>
+<tr><td>status</td><td><a href="#service-states">Status</a></td><td>Yes</td></tr>
+<tr><td>ts</td><td>string</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<p class="req-star">(*) : If it is not specified in the service signature then the parameter shall be omitted.<br>
+(**) : If a monitoring session is not started then the parameter shall be omitted.</p>
+
+<h3 id="cancel">6.3 Cancel</h3>
+
+<p>Purpose: Cancels either an ongoing service or a monitoring session.<br>
+Cancels an ongoing service if the service Id was obtained in the response of an Invoke request. If
+it was obtained in the response of a Monitor request then that monitoring session is cancelled but the
+service execution is unaffected.<br>
+Request arguments, of which serviceId is mandatory:</p>
+
+<ul>
+  <li><strong>serviceId</strong>: The Id of an ongoing session.</li>
+</ul>
+
+<p>Success response arguments of which status, serviceId and timestamp are mandatory. Outdata is
+mandatory in case the service signature specifies it:</p>
+
+<ul>
+  <li><strong>status</strong>: The execution <a href="#service-states">Status</a>.</li>
+  <li><strong>outdata</strong>: The service output parameters as specified in the service signature.</li>
+  <li><strong>serviceId</strong>: The Id of the canceled session.</li>
+  <li><strong>timestamp</strong>: The time stamp represents the time at which the session was cancelled.</li>
+</ul>
+
+<table>
+<thead><tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr></thead>
+<tbody>
+<tr><td rowspan="2"><strong>cancelRequest</strong></td><td>action</td><td>Action</td><td>Yes</td></tr>
+<tr><td>serviceId</td><td>string</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<table>
+<thead><tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr></thead>
+<tbody>
+<tr><td rowspan="5"><strong>cancelSuccessResponse</strong></td><td>action</td><td>Action</td><td>Yes</td></tr>
+<tr><td>outdata</td><td>object</td><td>Yes (*)</td></tr>
+<tr><td>status</td><td><a href="#service-states">Status</a></td><td>Yes</td></tr>
+<tr><td>serviceId</td><td>string</td><td>Yes</td></tr>
+<tr><td>ts</td><td>string</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<p class="req-star">(*) : If it is not specified in the service signature then the parameter shall be omitted.</p>
+
+<h3 id="discover">6.4 Service Discovery</h3>
+
+<p>Purpose: Retrieve metadata describing one or more services.<br>
+The metadata describes a service and declares its signature.<br>
+Request arguments, of which path is mandatory:</p>
+
+<ul>
+  <li><strong>path</strong>: The path to a node with the node type branch or procedure.</li>
+  <li><strong>authorization</strong>: The authorization token.</li>
+</ul>
+
+<p>Success response arguments of which metadata and timestamp are mandatory:</p>
+
+<ul>
+  <li><strong>metadata</strong>: A JSON representation of the content of the addressed subtree.</li>
+  <li><strong>timestamp</strong>: The time stamp represents the time at which the response was submitted.</li>
+</ul>
+
+<table>
+<thead><tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr></thead>
+<tbody>
+<tr><td rowspan="4"><strong>discoveryRequest</strong></td><td>action</td><td>Action</td><td>Yes</td></tr>
+<tr><td>path</td><td>string</td><td>Yes</td></tr>
+<tr><td>authorization</td><td>string</td><td>Optional</td></tr>
+<tr><td>requestId</td><td>string</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<table>
+<thead><tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr></thead>
+<tbody>
+<tr><td rowspan="4"><strong>discoverySuccessResponse</strong></td><td>action</td><td>Action</td><td>Yes</td></tr>
+<tr><td>metadata</td><td>object</td><td>Yes</td></tr>
+<tr><td>requestId</td><td>string</td><td>Yes</td></tr>
+<tr><td>ts</td><td>string</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<h2 id="filters">7. Filters</h2>
+
+<p>The service filter is used to configure the event message triggering during the service monitoring
+session. The rate at which a service updates its output parameters is implementation specific and it
+is typically different for different services. The service implementation shall update its
+<a href="#service-states">Status</a> parameter directly when the state of the service changes. The filter
+settings do not affect this "native" rate of the service implementation; it can only reduce the rate
+of events being issued to the client. If the filter setting requests a higher rate than the native
+rate it will get events at the native rate. Services that do not issue any events will ignore the
+filter and act as if the variant is set to <code>"none"</code>. Information on what is the native rate should be
+available in documentation of the service.<br>
+The syntax follows the Data profile filter syntax with variant and parameter keys as shown below.</p>
+
+<pre>"filter": {"variant": "name", "parameter": {"param-name": "param-value"}}</pre>
+
+<p>There is one difference in that the "parameter" key-value pair is optional as it is not used in
+some variants. The supported variants are defined in the following.</p>
+
+<h3 id="filter-timebased">7.1 Timebased Filter</h3>
+
+<p>This filter variant issues events with a fixed time period between the events. The syntax is shown
+below.</p>
+
+<pre>"filter": {"variant": "timebased", "parameter": {"period": "param-value"}}</pre>
+
+<p>where <code>"param-value"</code> is an integer and represents the period time in milliseconds. Events will also
+be issued if the <a href="#service-states">Status</a> parameter changes.</p>
+
+<h3 id="filter-status">7.2 Status Filter</h3>
+
+<p>This filter variant issues events when the <a href="#service-states">Status</a> parameter changes. The syntax is
+shown below.</p>
+
+<pre>"filter": {"variant": "status"}</pre>
+
+<p>The "parameter" key-value pair shall not be present.</p>
+
+<h3 id="filter-all">7.3 All Filter</h3>
+
+<p>This filter variant issues events when either the <a href="#service-states">Status</a> parameter changes, or any
+output parameter changes. This is the same as the service native rate. The syntax is shown below.</p>
+
+<pre>"filter": {"variant": "all"}</pre>
+
+<p>The "parameter" key-value pair shall not be present.</p>
+
+<h3 id="filter-none">7.4 None Filter</h3>
+
+<p>This filter variant does not issue any events. The syntax is shown below.</p>
+
+<pre>"filter": {"variant": "none"}</pre>
+
+<p>The "parameter" key-value pair shall not be present.</p>
+
+<h2 id="errors">8. Error Messages</h2>
+
+<p>A service error message shall contain error information as defined in CORE:Error Information and
+the service <a href="#service-states">Status</a> parameter.</p>
+
+<p>The error message has the same principal format for all the different requests. The difference
+between an error response message and an error event message is that in the former the key name
+'requestId' is used, in the latter the key name 'serviceId' is used.</p>
+
+<table>
+<thead><tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr></thead>
+<tbody>
+<tr><td rowspan="5"><strong>ErrorMessage</strong></td><td>action</td><td>Action</td><td>Yes</td></tr>
+<tr><td>status</td><td><a href="#service-states">Status</a></td><td>Yes</td></tr>
+<tr><td>error</td><td>CORE:Error Information</td><td>Yes</td></tr>
+<tr><td>requestId</td><td>string</td><td>Yes</td></tr>
+<tr><td>ts</td><td>string</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<h2 id="examples">9. Examples</h2>
+
+<p>The service examples are shown using JSON, the primary payload format. The payloads include the
+parameters 'action' and 'requestId' which are needed if transported over e.g. WebSocket, or MQTT.
+See <a href="#actions">Section 3: Actions</a> for the 'action' values.</p>
+
+<h3 id="example-invoke">9.1 Invoke Example</h3>
+
+<p>The invoke request initiates the service execution and starts a monitoring session of the service
+execution. A synchronous response is sent back to the client, which is then followed by asynchronous
+monitoring event messages. In the case of a service that completes its execution instantaneously the
+monitoring session is not initiated. If the execution has a longer duration then at least one event
+message will be issued, when the service terminates successfully, or enters into a failure state.</p>
+
+<p><strong>Request:</strong></p>
+<pre>{
+    "action": "invoke",
+    "path": "VehicleService.Seating.MoveSeat",
+    "input": {"SeatId": {"Row":"Row1", "Column": "DriverSide"},
+"Position": "40"},
+    "filter": {"variant": "timebased", "parameter": {"period": "250"}},
+    "requestId": "8756"
+}</pre>
+
+<p><strong>Successful response:</strong></p>
+<pre>{
+    "action": "invoke",
+    "path": "VehicleService.Seating.MoveSeat",
+    "outdata": {"output": {"Position": "20"}, "ts": "2025-04-15T13:37:04Z"},
+    "serviceId": "123",
+    "status": "ONGOING",
+    "requestId": "8756",
+    "ts":"2025-04-15T13:37:05Z"
+}</pre>
+
+<p><strong>Event message:</strong></p>
+<pre>{
+    "action": "monitoring",
+    "path": "VehicleService.Seating.MoveSeat",
+    "outdata": {"output": {"Position": "30"}, "ts": "2025-04-15T13:37:05Z"},
+    "serviceId": "123",
+    "status": "ONGOING",
+    "ts":"2025-04-15T13:37:06Z"
+}</pre>
+
+<h3 id="example-monitor">9.2 Monitor Example</h3>
+
+<p>For services that do not complete their execution instantaneously an invoke or monitor request may
+lead to that a monitoring session is started. This session can be canceled by the client that started it.</p>
+
+<p><strong>Request:</strong></p>
+<pre>{
+    "action": "monitor",
+    "path": "VehicleService.Seating.MoveSeat",
+    "filter": {"variant": "all"},
+    "requestId": "8756"
+}</pre>
+
+<p><strong>Successful response:</strong></p>
+<pre>{
+    "action": "monitor",
+    "path": "VehicleService.Seating.MoveSeat",
+    "indata": {"input": {"SeatId": {"Row":"Row1", "Column": "DriverSide"}, "Position": "40"}, "ts": "2025-04-15T13:37:02Z"},
+    "outdata": {"output": {"Position": "20"}, "ts": "2025-04-15T13:37:04Z"},
+    "serviceId": "123",
+    "status": "ONGOING",
+    "requestId": "8756",
+    "ts":"2025-04-15T13:37:05Z"
+}</pre>
+
+<p><strong>Event message:</strong></p>
+<pre>{
+    "action": "monitoring",
+    "path": "VehicleService.Seating.MoveSeat",
+    "outdata": {"output": {"Position": "30"}, "ts": "2025-04-15T13:37:05Z"},
+    "serviceId": "123",
+    "status": "ONGOING",
+    "ts":"2025-04-15T13:37:06Z"
+}</pre>
+
+<h3 id="example-cancel">9.3 Cancel Example</h3>
+
+<p><strong>Request:</strong></p>
+<pre>{
+    "action": "cancel",
+    "serviceId": "8756"
+}</pre>
+
+<p><strong>Successful response:</strong></p>
+<pre>{
+    "action": "cancel",
+    "outdata": {"output": {"Position": "35"}, "ts": "2025-04-15T13:37:04Z"},
+    "status": "CANCELED",
+    "serviceId": "8756",
+    "ts":"2025-04-15T13:37:05Z"
+}</pre>
+
+<h3 id="example-discover">9.4 Service Discovery Example</h3>
+
+<p>The service discovery request returns metadata describing one or more services.</p>
+
+<p><strong>Request:</strong></p>
+<pre>{
+    "action": "discover",
+    "path": "VehicleService.Seating",
+    "requestId": "5687"
+}</pre>
+
+<p><strong>Successful response:</strong></p>
+<pre>{
+    "action": "discover",
+    "metadata": {
+        "MoveSeat": {
+            "type": "procedure",
+            "Input": {
+                "SeatId":   {"type": 4, "datatype": "uint8"},
+                "Position": {"type": 4, "datatype": "uint8"}
+            },
+            "Output": {
+                "Position": {"type": 4, "datatype": "uint8"}
+            }
+        },
+        "ActivateMassage": {
+            "type": "procedure",
+            "Input":  {"Intensity": {"type": 4, "datatype": "uint8"}},
+            "Output": {}
+        }
+    },
+    "requestId": "5687",
+    "ts":"2025-04-15T13:37:05Z"
+}</pre>
+
+<h3 id="example-error">9.5 Error Response Example</h3>
+
+<p><strong>Invoke error response:</strong></p>
+<pre>{
+    "action": "invoke",
+    "status": "FAILED",
+    "error": {"number": "400", "reason": "bad_request", "description": "The request is malformed"},
+    "requestId": "8756",
+    "ts": "2025-04-15T13:37:00Z"
+}</pre>
+
+<h2 id="appendix-schema">Appendix A: JSON Schema</h2>
+
+<p>The primary payloads that are sent over any transport protocol SHALL conform with the JSON schema
+in this appendix, unless otherwise specified in the VISSv3.2 [[TRANSPORT]] or VISSv3.2 [[PAYLOAD
+ENCODING]] specifications.</p>
+
+<p class="note"><strong>Note:</strong> The schema below uses <code>$ref</code> to external sub-schema
+files (filter, status, indata, outdata, error, etc.) that are not reproduced inline. The complete
+self-contained (bundled) schema, including all sub-schema definitions for cancel, discover, and
+monitoring-event messages, is available in the reference implementation at
+<code>server/vissv2server/vissv3.2-service-schema.json</code>.</p>
+
+<pre id="json-schema">{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://covesa.global/vissv3.2.service.bundled.schema.json",
+    "title": "VISSv3.2 Service",
+    "description": "VISS version 3.2 service bundled schema",
+    "type": "object",
+    "properties": {
+        "action": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "action"
+    ],
+    "oneOf": [
+        {
+            "properties": {
+                "action": {
+                    "const": "invoke"
+                }
+            },
+            "$ref": "/vissv3.2.service/invoke-message.schema.json"
+        },
+        {
+            "properties": {
+                "action": {
+                    "const": "monitor"
+                }
+            },
+            "$ref": "/vissv3.2.service/monitor-message.schema.json"
+        },
+        {
+            "properties": {
+                "action": {
+                    "const": "cancel"
+                }
+            },
+            "$ref": "/vissv3.2.service/cancel-message.schema.json"
+        },
+        {
+            "properties": {
+                "action": {
+                    "const": "discover"
+                }
+            },
+            "$ref": "/vissv3.2.service/discover-message.schema.json"
+        },
+        {
+            "properties": {
+                "action": {
+                    "const": "monitoring"
+                }
+            },
+            "$ref": "/vissv3.2.service/monitoring-event.schema.json"
+        }
+    ],
+    "$defs": {
+        "https://covesa.global/vissv3.2.service/invoke-message.schema.json": {
+            "$id": "https://covesa.global/vissv3.2.service/invoke-message.schema.json",
+            "$schema": "https://json-schema.org/draft/2020-12",
+            "title": "VISSv3.2.service-invoke-message",
+            "description": "VISSv3.2 service invoke request and response messages",
+            "type": "object",
+            "oneOf": [
+                {
+                    "properties": {
+                        "path": {
+                            "description": "The service path",
+                            "type": "string"
+                        },
+                        "input": {
+                            "description": "The service input parameters",
+                            "$ref": "https://covesa.global/vissv3.2.service/input.schema.json"
+                        },
+                        "filter": {
+                            "$ref": "https://covesa.global/vissv3.2.service/filter.schema.json"
+                        },
+                        "authorization": {
+                            "description": "The access token",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": ["path", "filter"]
+                },
+                {
+                    "properties": {
+                        "path": {
+                            "description": "The service path",
+                            "type": "string"
+                        },
+                        "outdata": {
+                            "description": "The service outdata parameters",
+                            "$ref": "https://covesa.global/vissv3.2.service/outdata.schema.json"
+                        },
+                        "status": {
+                            "description": "The service execution status",
+                            "$ref": "https://covesa.global/vissv3.2.service/status.schema.json"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        },
+                        "serviceId": {
+                            "description": "The Id of the monitoring session",
+                            "type": "string"
+                        },
+                        "ts": {
+                            "description": "The time stamp",
+                            "type": "string"
+                        }
+                    },
+                    "required": ["path", "status", "ts"]
+                },
+                {
+                    "properties": {
+                        "error": {
+                            "$ref": "https://covesa.global/vissv3.2.service/error.schema.json"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        },
+                        "ts": {
+                            "description": "The time stamp",
+                            "type": "string"
+                        }
+                    },
+                    "required": ["error", "ts"]
+                }
+            ]
+        },
+        "https://covesa.global/vissv3.2.service/monitor-message.schema.json": {
+            "$id": "https://covesa.global/vissv3.2.service/monitor-message.schema.json",
+            "$schema": "https://json-schema.org/draft/2020-12",
+            "title": "VISSv3.2.service-monitor-message",
+            "description": "VISSv3.2 service monitor request, response and event messages",
+            "type": "object",
+            "oneOf": [
+                {
+                    "properties": {
+                        "path": {
+                            "description": "The service path",
+                            "type": "string"
+                        },
+                        "filter": {
+                            "$ref": "/vissv3.2.service/filter.schema.json"
+                        },
+                        "authorization": {
+                            "description": "The access token",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": ["path", "filter"]
+                },
+                {
+                    "properties": {
+                        "path": {
+                            "description": "The service path",
+                            "type": "string"
+                        },
+                        "indata": {
+                            "$ref": "/vissv3.2.service/indata.schema.json"
+                        },
+                        "outdata": {
+                            "$ref": "/vissv3.2.service/outdata.schema.json"
+                        },
+                        "status": {
+                            "$ref": "/vissv3.2.service/status.schema.json"
+                        },
+                        "authorization": {
+                            "description": "The access token handle",
+                            "type": "string"
+                        },
+                        "serviceId": {
+                            "description": "The Id of the monitoring session",
+                            "type": "string"
+                        },
+                        "ts": {
+                            "description": "The time stamp",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": ["path", "status", "ts"]
+                },
+                {
+                    "properties": {
+                        "error": {
+                            "$ref": "https://covesa.global/vissv3.2.service/error.schema.json"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        },
+                        "ts": {
+                            "description": "The time stamp",
+                            "type": "string"
+                        }
+                    },
+                    "required": ["error", "ts"]
+                }
+            ]
+        }
+    }
+}</pre>
+
+<h2 id="appendix-him-config">Appendix B: HIM Configuration for Service Trees</h2>
+
+<p>A server determines whether a given HIM tree is a <em>service tree</em> (and therefore eligible
+for the service interface operations) by inspecting the <code>domain</code> metadata value in its
+HIM forest configuration file (<code>viss.him</code>). A tree is a service tree if and only if the
+right-most dot-separated segment of its <code>domain</code> value is the literal string
+<code>Service</code>.</p>
+
+<p>Example <code>viss.him</code> entry for a service tree:</p>
+
+<pre>HIM.VehicleService:
+type: direct
+domain: VehicleService.Car.Service
+version: 1.0
+local: forest/vservice.v1.0.binary
+description: Vehicle seating service tree (HIM service profile).</pre>
+
+<p>The server exposes the right-most segment via its internal <code>GetInfoType()</code> function.
+Any tree for which <code>GetInfoType()</code> returns <code>"Service"</code> is routed through the
+service interface described in this specification; all other trees are handled by the standard
+data interface.</p>
+
+<p>The HIM configuration file format, including the syntax for <code>type</code>,
+<code>domain</code>, <code>version</code>, <code>local</code>, and <code>public</code> keys, is
+defined in the VISSv3.1 [[CORE]] specification.</p>
+
+<hr>
+<p><em>This document is the VISS version 3.2 Services specification. Copyright &copy; 2026 COVESA&reg;.
+All rights reserved.</em></p>
+
+</body>
+</html>
