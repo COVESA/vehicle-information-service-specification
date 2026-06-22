@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset='utf-8'>
+    <meta charset='UTF-8'>
     <title>COVESA VISS version 3.2-Services</title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
     <script class='remove'>
@@ -109,7 +109,7 @@
   </style>    
   </head>
   <body>
-    <p class="copyright">Copyright © 2025 COVESA®.</p>
+    <p class="copyright">Copyright © 2026 COVESA®.</p>
     <section id='abstract'>
       <p>
         The Vehicle Information Service Specification (VISS) is a
@@ -140,7 +140,7 @@
         The <a href="https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.1">version 3.1</a>
         replaced the VSS rule set for how to define the content of a tree with the HIM data profile rule set
         and included support for the Unix domain socket transport protocol.<br>
-        This specification, version 3.2, exends the usage of the HIM data model to also include the HIM service profile.
+        This specification, version 3.2, extends the usage of the HIM data model to also include the HIM service profile.
       </p>     
       <p>
         There are four parts to this specification, [[CORE]], [[TRANSPORT]], [[PAYLOAD ENCODING]], and SERVICES.
@@ -210,11 +210,11 @@
           which in its turn must be a child to the node with the name ProcedureName.</li>
         </ul>
         For more information about service node types, see the <a href="#data-model">Service Data Model</a> chapter.<br>
-        The described tree structure is shown in the figure below.
-        <figure id="fig-microservice-tree-structure">
-          <img src="images/microservice_tree_structure.png" alt="Microservice tree structure">
-          <figcaption> <span class="fig-title">Service tree structure.</span></figcaption>
-        </figure>
+        The tree structure defining a service depends on whether the service manages one or multiple resources,
+        see the HIM specification
+        <a href="https://covesa.github.io/hierarchical_information_model/service_rule_set/basics/#microservice-tree-structure">HIM: Single resource</a>
+        and
+        <a href="https://covesa.github.io/hierarchical_information_model/service_rule_set/basics/#multiplexed-microservice-tree-structure">HIM: Multiple resources</a>.
         </p>
       </section>
 
@@ -233,9 +233,9 @@
                 <li>UNKNOWN: The status of the service is unknown.</li>
                 <li>ONGOING: The service has been invoked but has not yet reached a successful termination,
                 or terminated due to being canceled or ending in failure.</li>
-                <li>SUCCESSFUL: The service is not ONGOING and the latest invokation of the service terminated successfully.</li>
-                <li>CANCELED: The service is not ONGOING and the latest invokation of the service terminated due to being canceled.</li>
-                <li>FAILED: The service is not ONGOING and the latest invokation of the service terminated due to a failure.</li>
+                <li>SUCCESSFUL: The service is not ONGOING and the latest invocation of the service terminated successfully.</li>
+                <li>CANCELED: The service is not ONGOING and the latest invocation of the service terminated due to being canceled.</li>
+                <li>FAILED: The service is not ONGOING and the latest invocation of the service terminated due to a failure.</li>
               </ul>
               The Status string datatype is restricted to the allowed values from the list above.
               The Status parameter shall be included in all response and event messages, set to the current value.
@@ -284,12 +284,27 @@
 
               <section id="data-output">
                 <h2>Output Data</h2>
-                The definition of the service output data is shown below.
-                <pre>
-                  "outdata": {"output": {output-params}, "ts": "ddtt"}
-                </pre>
-                where "output-params" is the JSON representation of the service output parameters with their corresponding values
-                and "ddtt" is the timestamp value associated with the capture of the output parameters.<br>
+
+                <section id="data-output-single">
+                  <h2>Output Data Single Resource</h2>
+                  The definition of the service output data is shown below for services that manage a single resource.
+                  <pre>
+                    "outdata": {"output": {output-params}, "ts": "ddtt"}
+                  </pre>
+                  where "output-params" is the JSON representation of the service output parameters with their corresponding values
+                  and "ddtt" is the timestamp value associated with the capture of the output parameters.<br>
+                </section>
+
+                <section id="data-output-multiple">
+                  <h2>Output Data Multiple Resources</h2>
+                  The definition of the service output data is shown below for services that manage multiple resources.
+                  <pre>
+                    "outdata": [{"path-snippet1":{"output": {output-params}, "ts": "ddtt"}}, {"path-snippetN":{"output": {output-params}, "ts": "ddtt"}}]
+                  </pre>
+                  where "path-snippetX" are the path snippets that were declared by the <a href="#filter-variant-resource">filter expression</a> in the request,
+                  and "output-params" and "ddtt" represent the same semantics as in the single resource case.<br>
+                  The "path-snippetX" expressions must not contain wildcards.
+                </section>
               </section>
 
             </section>
@@ -312,7 +327,7 @@
           The service interface builds on the syntax and concepts used in the
           <a href="https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/cd130fddc04ab7806c779201cf5ba33a5299a3f0/spec/VISSv3.0_Core.html#interface">CORE:Data Interface</a>
           for access to vehicle signals.
-          The differencies are listed below.
+          The differences are listed below.
           <ul>
             <li>The service interface must only be used on trees that have a 'domain' metadata value with a right-most segment named 'Service",
             defined in the <a href="https://covesa.github.io/hierarchical_information_model/configuration_rule_set/">HIM configuration file</a>.</li>
@@ -329,7 +344,7 @@
             <li>An Invoke request to a service that has the Status ONGOING shall be rejected with a response error message set to 503/service_unavailable.</li>
             <li>A client monitoring an ONGOING service without having invoked it cannot terminate the service by calling Cancel,
             but the Cancel call will terminate its monitoring session.</li>
-            <li>A monitor request returns the latest input values that has been used to invoke the service in the response.
+            <li>A monitor request returns the latest input values that have been used to invoke the service in the response.
             If the response Status has the value ONGOING then events will be issued until the Status value is changed to either SUCCESSFUL, CANCELED or FAILED.</li>
           </ul>
           </p>
@@ -352,7 +367,7 @@
             The server must also issue an error message if it during the service execution enters into a failure state.<br>
             The time duration that a service require for its execution may be neglible in terms of the total time between that the request was issued and
             that a response was received. In such cases the service is not expected to issue any asynchronous event messages to report its execution progress.
-            Services that have a non-neglible time duration shall issue event messages to repot its execution progress.
+            Services that have a non-negligible time duration shall issue event messages to report its execution progress.
             The rate of event messages is an implementation decision, but the service must as a minimum issue an event at the successful termination of the execution,
             or if it enters into a failure state.<br>
             To realize these operations the methods described in the following chapters are available.
@@ -364,7 +379,7 @@
             Purpose: Invoke a service addressed by the given path. Depending on filter variant selection and service duration a monitoring session
             may be initiated.<br>
             The Invoke request will return a synchronous response.
-            If its execution duration is non-neglible and the filter variant is not set to "none" then the service will issue one or more event messages.
+            If its execution duration is non-negligible and the filter variant is not set to "none" then the service will issue one or more event messages.
             If a serviceId is returned to the client then it must be unique and it must not be reused in responses to other clients.
             A client that has invoked a service to receive event messages cannot stop receiving the event messages without
             also stopping the service execution through a Cancel request.<br>
@@ -417,7 +432,7 @@
             </p>
             <p>
             Success response arguments of which path, status, and timestamp are mandatory.
-            serviceId is mandatory if the service execution duration is non-neglible, else it shall not be present.
+            serviceId is mandatory if the service execution duration is non-negligible, else it shall not be present.
             Indata and outdata are mandatory in case the service signature specifies it:
             <ul>
               <li>path: The path to the service.</li>
@@ -473,8 +488,11 @@
             Request arguments, of which path is mandatory:
             <ul>
               <li>path: The path to a node with the node type branch or procedure.</li>
+              <li>filter: A filter defining the addressed resources.</li>
               <li>authorization: The authorization token.</li>
             </ul>
+            The path must either address a procedure node or a branch node that is not a descendant node to a procedure node.<br>
+            A filter must only be of the variant "resource" and must not be used if the path addresses a branch node.
             </p>
             <p>
             Success response arguments of which metadata and timestamp are mandatory:
@@ -492,7 +510,7 @@
             <p>
             The service filter is used to configure the event message triggering during the service monitoring session.
             The rate at which a service updates its output parameters is implementation specific and it is typically different for different services.
-            The ervice implementation shall update its <a href="#service-status">Status</a> parameter directly when the state of the service changes.
+            The service implementation shall update its <a href="#service-status">Status</a> parameter directly when the state of the service changes.
             The filter settings do not affect this "native" rate of the service implementation, it can only reduce the rate of events being issued to the client.
             If the filter setting requests a higher rate than the native rate it will get events at the native rate.
             Services that do not issue any events will ignore the filter and act as if the variant is set to "none".
@@ -502,7 +520,7 @@
             <pre><code>
             "filter": {"variant": "name", "parameter": {"param-name": "param-value"}}
             </code></pre>
-            There is one difference in that the "parameter" key-value pair is optional as it is not used in some variants.
+            There is one difference in that the "parameter" key-value pair is optional as it is not used in some variants.<br>
             The supported variants are defined in the following.
             
             <section id="filter-variant-timebased">
@@ -553,6 +571,34 @@
               "filter": {"variant": "none"}
               </code></pre>
               The "parameter" key-value pair shall not be present.
+              </p>
+            </section>
+            
+            <section id="filter-variant-resource">
+              <h2>Filter Variant Resource</h2>
+              <p>
+              This filter variant selects the resource(s) that a request shall address when the service manages multiple resources.
+              The syntax is shown below.
+              <pre><code>
+              "filter": {"variant": "resource", "parameter": ["Row1.*"]}
+              </code></pre>
+              The "parameter" value shall be an array containing one or more path snippet(s) that is to be inserted in the full path
+              that points to the respective service Input and Output nodes of the addressed resources.
+              A path segment name in a snippet may be replaced by the wildcard operator "*".<br>
+              If a rsource variant filter is not included in a request addressing a service that is manages multiple resources
+              then the response and any event messages will contain output data from all the resources.
+              </p>
+            </section>
+            
+            <section id="multiple-filters">
+              <h2>Multiple Filters</h2>
+              <p>
+              The Resource variant filter can be combined with any one of the other filter variants.
+              These other filter variants are only allowed to be combined with the Resource filter variant.
+              An array expression shall be used to create a combined filter expression as shown in the example below.
+              <pre><code>
+              "filter": [{"variant": "status"}, {"variant": "resource", "parameter": ["Row1.DriverSide", "Row2.PassengerSide"]}]
+              </code></pre>
               </p>
             </section>
         </section>
@@ -635,8 +681,8 @@
               {
                 "action": "invoke",
                 "path": "VehicleService.Seating.MoveSeat",
-                "input": {"SeatId": {"Row":"Row1", "Column": "DriverSide"}, "Position": "40"},
-                "filter": {"variant": "timebased", "parameter": {"period": "250"}},
+                "input": {"MovementType": "longitudinal", "Position": "40"},
+                "filter": [{"variant": "resource", "parameter": ["Row1.DriverSide"]}, {"variant": "timebased", "parameter": {"period": "250"}}],
                 "requestId": "8756"
               }
               </code></pre>
@@ -645,7 +691,7 @@
               {
                 "action": "invoke",
                 "path": "VehicleService.Seating.MoveSeat",
-                "outdata": {"output": {"Position": "20"}, "ts": "2025-04-15T13:37:04Z"},
+                "outdata": [{"Row1.DriverSide": {"output": {"Position": "20"}, "ts": "2025-04-15T13:37:04Z"}}],
                 "serviceId": "123",
                 "status": "ONGOING",
                 "requestId": "8756",
@@ -657,10 +703,10 @@
               {
                 "action": "monitoring",
                 "path": "VehicleService.Seating.MoveSeat",
-                "outdata": {"output": {"Position": "30"}, "ts": "2025-04-15T13:37:05Z"},
+                "outdata": [{"Row1.DriverSide": {"output": {"Position": "30"}, "ts": "2025-04-15T13:37:07Z"}}],
                 "serviceId": "123",
                 "status": "ONGOING",
-                "ts":"2025-04-15T13:37:06Z"
+                "ts":"2025-04-15T13:37:07Z"
               }
               </code></pre>
         </section>
@@ -726,8 +772,8 @@
               <pre><code>
               {
                 "action": "monitor",
-                "path": "VehicleService.Seating.MoveSeat",
-                "filter": {"variant": "all"},
+                "path": "VehicleService.Seating.ActivateMassage",
+                "filter": [{"variant": "resource", "parameter": ["Row1.DriverSide"]"}, {"variant": "status"}],
                 "requestId": "8756"
               }
               </code></pre>
@@ -735,9 +781,8 @@
               <pre><code>
               {
                 "action": "monitor",
-                "path": "VehicleService.Seating.MoveSeat",
-                "indata": {"input": {"SeatId": {"Row":"Row1", "Column": "DriverSide"}, "Position": "40"}, "ts": "2025-04-15T13:37:02Z"},
-                "outdata": {"output": {"Position": "20"}, "ts": "2025-04-15T13:37:04Z"},
+                "path": "VehicleService.Seating.ActivateMassage",
+                "indata": {"input": {"MassageType": "lumbar", "Duration": "30"}, "ts": "2025-04-15T13:37:02Z"},
                 "serviceId": "123",
                 "status": "ONGOING",
                 "requestId": "8756",
@@ -748,8 +793,7 @@
               <pre><code>
               {
                 "action": "monitoring",
-                "path": "VehicleService.Seating.MoveSeat",
-                "outdata": {"output": {"Position": "30"}, "ts": "2025-04-15T13:37:05Z"},
+                "path": "VehicleService.Seating.ActivateMassage",
                 "serviceId": "123",
                 "status": "ONGOING",
                 "ts":"2025-04-15T13:37:06Z"
@@ -820,6 +864,7 @@
            <tbody>
            <tr><th rowspan="5">discoveryRequest</th><td>action</td><td>Action</td><td>Yes</td></tr>
            <tr><td>path</td><td>string</td><td>Yes</td></tr>
+           <tr><td>filter</td><td>object</td><td>Optional</td></tr>
            <tr><td>authorization</td><td>string</td><td>Optional</td></tr>
            <tr><td>requestId</td><td>string</td><td>Yes</td></tr>
            </tbody>
