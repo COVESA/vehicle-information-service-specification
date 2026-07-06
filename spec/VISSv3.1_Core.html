@@ -518,6 +518,19 @@
                For the <b>Access Grant Token Server</b> the path is "agts".<br>
                For the <b>Access Token Server</b> the path is "ats".<br>
             </p>
+            <p>
+               The formal grammar for a VISSv3 server path is:
+            </p>
+            <pre>
+viss-path    = path-segment *( delimiter path-segment )
+path-segment = ALPHA *( ALPHA / DIGIT / "_" )
+delimiter    = "." / "/"
+            </pre>
+            <p>
+               A path MUST NOT begin with a delimiter character.
+               Implementations that receive a path with a leading delimiter
+               SHOULD return error 400 (bad request).
+            </p>
          </section>
       </section>
 
