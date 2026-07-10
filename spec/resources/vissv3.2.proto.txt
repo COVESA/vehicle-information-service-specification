@@ -20,6 +20,8 @@ service VISS {
   rpc SubscribeRequest (SubscribeRequestMessage) returns (stream SubscribeStreamMessage);
 
   rpc UnsubscribeRequest (UnsubscribeRequestMessage) returns (UnsubscribeResponseMessage);
+
+  rpc DiscoverRequest (DiscoverRequestMessage) returns (DiscoverResponseMessage);
 }
 
 message ErrorResponseMessage {
@@ -99,8 +101,22 @@ message DataPackages {
 }
 
 message GetRequestMessage {
+        oneof getMessageType {
+            SingleGetRequestMessage singleGet = 1;
+            MultipleGetRequestMessage multipleGet = 2;
+        }
+}
+
+message SingleGetRequestMessage {
         string Path = 1;
         optional FilterExpressions Filter = 2;
+        optional string Authorization = 3;
+        optional string DC = 4;
+        string RequestId = 5;
+}
+
+message MultipleGetRequestMessage {
+        repeated string Data = 1;
         optional string Authorization = 3;
         optional string DC = 4;
         string RequestId = 5;
@@ -120,11 +136,29 @@ message GetResponseMessage {
 }
 
 message SetRequestMessage {
+        oneof setMessageType {
+            SingleSetRequestMessage singleSet = 1;
+            MultipleSetRequestMessage multipleSet = 2;
+        }
+}
+
+message SingleSetRequestMessage {
         string Path = 1;
         string Value = 2;
         optional string Authorization = 3;
         string RequestId = 4;
         optional string Ts = 5;
+}
+
+message MultipleSetRequestMessage {
+        message SetData {
+            string Path = 1;
+            string Value = 2;
+        }
+        repeated SetData Data = 1;
+        optional string Authorization = 2;
+        string RequestId = 3;
+        optional string Ts = 4;
 }
 
 message SetResponseMessage {
@@ -180,3 +214,16 @@ message UnsubscribeResponseMessage {
         string Ts = 4;
 }
 
+message DiscoverRequestMessage {
+        string Path = 1;
+        string Depth = 2;
+        string RequestId = 3;
+}
+
+message DiscoverResponseMessage {
+        ResponseStatus Status = 1;
+        string Metadata = 2;
+        optional ErrorResponseMessage ErrorResponse = 3;
+        string RequestId = 4;
+        string Ts = 5;
+}
