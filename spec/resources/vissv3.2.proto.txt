@@ -20,6 +20,8 @@ service VISS {
   rpc SubscribeRequest (SubscribeRequestMessage) returns (stream SubscribeStreamMessage);
 
   rpc UnsubscribeRequest (UnsubscribeRequestMessage) returns (UnsubscribeResponseMessage);
+
+  rpc DiscoverRequest (DiscoverRequestMessage) returns (DiscoverResponseMessage);
 }
 
 message ErrorResponseMessage {
@@ -212,3 +214,16 @@ message UnsubscribeResponseMessage {
         string Ts = 4;
 }
 
+message DiscoverRequestMessage {
+        string Path = 1;
+        string Depth = 2;
+        string RequestId = 3;
+}
+
+message DiscoverResponseMessage {
+        ResponseStatus Status = 1;
+        string Metadata = 2;
+        optional ErrorResponseMessage ErrorResponse = 3;
+        string RequestId = 4;
+        string Ts = 5;
+}

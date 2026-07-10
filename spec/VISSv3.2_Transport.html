@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>COVESA VISS version 3.2.5-Transport</title>
+    <title>COVESA VISS version 3.2-Transport</title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
     <script class='remove'>
       var respecConfig = {
@@ -28,17 +28,17 @@
           companyURL: "https://etri.re.kr/eng/main/main.etri",
           w3cid: 34457
         }],
-        edDraftURI: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.2.5/spec/VISSv3.2.5_Transport.html",
+        edDraftURI: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html",
         shortName: "viss3-transport",
         localBiblio: {
           "PAYLOAD ENCODING": {
             title: "COVESA VISS version 3.2-Payload Encoding",
-            href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.2.5/spec/VISSv3.2.5_PayloadEncoding.html",
+            href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_PayloadEncoding.html",
             publisher: "Ulf Bjorkengren; Wonsuk Lee"
           },
           "CORE": {
             title: "COVESA VISS version 3.2-Core",
-            href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.2.5/spec/VISSv3.2.5_Core.html",
+            href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html",
             publisher: "Ulf Bjorkengren; Wonsuk Lee"
           }
         }
@@ -134,7 +134,7 @@
         This specification, the version 3.2, is a backwards compatible extension of the third version of VISS.
         Instead of referencing to the VSS rule set for how to define the content of a tree it refers to the HIM vehicle data profile rule set.
         This enables also other trees than the VSS tree to be used, a server may manage a set of trees, a forest, that a client can access.
-        Other changes are minor adaptations to support the concept of having a forest of trees, such as adding support for a client to do a forest inquiry.
+        Other changes are minor adaptations to support the concept of having a forest of trees, such as adding support for a client to do a forest discovery.
       </p>     
       <p>
         This specification consists of three parts, [[CORE]], [[PAYLOAD ENCODING]], and TRANSPORT. This document, the VISS version 3.2 TRANSPORT specification,
@@ -420,7 +420,7 @@
         <h2>Transport Payload</h2>
         <p>
           The payload SHALL be formatted in JSON.
-          Refer to the <a href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2.5/spec/VISSv3.2.5_Core.html#json-schema">section A. JSON Schema</a> of appendix in the [[CORE]] specification for details on the primary payload format.
+          Refer to the <a href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html#json-schema">section A. JSON Schema</a> of appendix in the [[CORE]] specification for details on the primary payload format.
         </p>
       </section>
 
@@ -440,7 +440,7 @@
       <h2>Transport Protocols</h2>
       <p>
       The VISSv3.2 specification lists the transport protocols HTTP, WebSocket, gRPC, UDS, and MQTT as supported.
-      However, this is not necessarily a final list as says that any protocol that transport the primary payloads of this specification,
+      However, this is not necessarily a final list as it says that any protocol that transport the primary payloads of this specification,
       or an encoded version of the primary payloads, can be included on this list.<br>
       The specification does not mandate the use of a specific transport protocol,
       but at least one of the listed transport protocols MUST be supported.
@@ -667,7 +667,7 @@
           <section id="wss-search-read">
             <h2>Search Read</h2>
             <p>The client MAY issue a search read request to retrieve multiple signal values in one request message.
-               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2.5/spec/VISSv3.2.5_Core.html#paths-filter-operation">section 7.1 Paths Filter Operation</a> described in the [[CORE]] specification.
+               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html#paths-filter-operation">section 7.1 Paths Filter Operation</a> described in the [[CORE]] specification.
             </p>
             <p>
               <b>Example:</b><br>
@@ -699,7 +699,7 @@
           <section id="wss-history-read">
             <h2>History Read</h2>
             <p>A client MAY issue a history read request to retrieve previously recorded data points.
-               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2.5/spec/VISSv3.2.5_Core.html#history-filter-operation">section 7.2 History Filter Operation</a> described in the [[CORE]] specification.
+               This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html#history-filter-operation">section 7.2 History Filter Operation</a> described in the [[CORE]] specification.
             </p>
             <p>
               <b>Example:</b><br>
@@ -728,7 +728,7 @@
             <h2>Signal Discovery Read</h2>
             <p>
               To retrieve metadata about the tree, the client MAY issue a signal discovery read request.
-              This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2.5/spec/VISSv3.2.5_Core.html#metadata-request">section 7.7 Metadata Filter Operation</a> described in the [[CORE]] specification.
+              This is realized by adding a "filter" object following the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html#metadata-request">section 7.7 Metadata Filter Operation</a> described in the [[CORE]] specification.
               The response includes metadata for all nodes in the subtree rooted at the node specified by the path, 
               limited to the number of generations set by the "parameter" value.
             </p>
@@ -1032,7 +1032,7 @@
             The client MAY send a <a href="#dfn-subscriberequest" class="internalDFN" data-link-type="dfn">subscribeRequest</a> message
             to request a subscription to one or more signals,
             thereby requesting the server to repeatedly return subscription event messages based on
-	          the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2.5/spec/VISSv3.2.5_Core.html#filter-request">section 7. Filter Request</a> described in the [[CORE]] specification.
+	          the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html#filter-request">section 7. Filter Request</a> described in the [[CORE]] specification.
             To reduce processing load, the server MAY limit the number of
             <a href="#dfn-subscriptionevent" class="internalDFN" data-link-type="dfn">subcriptionEvent</a> messages sent.<br>
             If the server can fulfill the request, it SHALL return a
@@ -1213,7 +1213,7 @@
             <p>
             Curve logging data compression by eliminating data points that are within a set error margin is activated via a subscription request.
             Event messages will be issued when the buffer becomes full, after insignificant data points have been eliminated,
-            refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2.5/spec/VISSv3.2.5_Core.html#curvelog-filter-operation">section 7.6 Curve logging Filter Operation</a> in the [[CORE]] specification.
+            refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html#curvelog-filter-operation">section 7.6 Curve logging Filter Operation</a> in the [[CORE]] specification.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1254,7 +1254,7 @@
             <p>
               Subscription to a range of values, 
               that can have either a single boundary, or multipe boundaries as in the example below.
-              For a more information how to use range of values, refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2.5/spec/VISSv3.2.5_Core.html#range-filter-operation">section 7.4 Range Filter Operation</a> in the [[CORE]] specification.
+              For a more information how to use range of values, refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html#range-filter-operation">section 7.4 Range Filter Operation</a> in the [[CORE]] specification.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1293,7 +1293,7 @@
             <h2>Change Subscribe</h2>
             <p>
             Subscription to when a signal has changed between two sequential captures.
-            For a more information how to use change of values, refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2.5/spec/VISSv3.2.5_Core.html#change-filter-operation">section 7.5 Change Filter Operation</a> in the [[CORE]] specification.
+            For a more information how to use change of values, refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html#change-filter-operation">section 7.5 Change Filter Operation</a> in the [[CORE]] specification.
             </p>
             <p>
               <b>Example:</b><br>
@@ -1403,6 +1403,105 @@
               }
                </code></pre>
             </p>
+          </section>
+
+          <section id="discovery">
+            <h2>Discovery</h2>
+            <p>
+            To retrieve metadata from one or more nodes in a tree a client MAY send a 
+            <a href="#dfn-discoveryrequest" class="internalDFN" data-link-type="dfn">discoveryRequest</a> request message.
+            If the server can fulfill the request successfully, it SHALL returns an
+            <a href="#dfn-discoverysuccessresponse" class="internalDFN" data-link-type="dfn">discoverySuccessResponse</a> message.
+            If an error occurs, an
+            <a href="#dfn-discoveryerrorresponse" class="internalDFN" data-link-type="dfn">discoveryErrorResponse</a> message SHALL be returned.
+            </p>
+	<table class="simple">
+	  <thead>
+	    <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+	  </thead>
+	  <tbody>
+	    <tr><th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-discoveryrequest">discoveryRequest</dfn></th><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+	    <tr><td><a href="#dfn-path">path</a></td><td>string</td><td>Yes</td></tr>
+	    <tr><td><a href="#dfn-depth">depth</a></td><td>string</td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+	  </tbody>
+	  </table>
+	<br>
+	<table class="simple">
+	<thead>
+	  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+	</thead>
+	<tbody>
+	  <tr><th rowspan="3"><dfn data-dfn-type="dfn" id="dfn-discoverysuccessresponse">discoverySuccessResponse</dfn></th><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
+	</tbody>
+	</table>
+	<br>
+	<table class="simple">
+	<thead>
+	  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
+	</thead>
+	<tbody>
+	  <tr><th rowspan="4"><dfn data-dfn-type="dfn" id="dfn-discoveryerrorresponse">discoveryErrorResponse</dfn></th><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-error">error</a></td><td><a href="#error-def">Error</a></td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Yes</td></tr>
+	</tbody>
+	</table>
+            <p>
+              <b>Signal discovery example:</b><br>
+              Request:
+              <pre><code>
+              {
+                "action": "discover",
+                "path": "Vehicle.Powertrain.FuelSystem",
+                "depth": "2",
+                "requestId": "5786"
+              }
+               </code></pre>
+              Successful response:
+              <pre><code>
+              {
+                "action": "discover",
+                "metadata": {"FuelSystem":{"type":"branch","children":["HybridType", ... ]}},
+                "requestId": "5786",
+                "ts": "2020-04-15T13:37:00Z"
+              }
+               </code></pre>
+              Error response:
+              <pre><code>
+              {
+                "action": "discover",
+                "requestId": "5786",
+                "error": {"number": "400", "reason": "invalid_data", "description": "Data present in the request is invalid."},
+                "ts": "2020-04-15T13:37:00Z"
+              }
+               </code></pre>
+            </p>
+            <p>
+              <b>Forest discovery example:</b><br>
+              Request:
+              <pre><code>
+              {
+                "action": "discover",
+                "path": "HIM",
+                "depth": "0",
+                "requestId": "5786"
+              }
+               </code></pre>
+              Successful response:
+              <pre><code>
+              {
+                "action": "discover",
+                "metadata": {"HIM":{"Vehicle":{"domain": "Vehicle.Truck.VehicleData", ...}, "Trailer1":{"domain": "Vehicle.Trailer.VehicleData" ...}, ... }},
+                "requestId": "5786",
+                "ts": "2020-04-15T13:37:00Z"
+              }
+               </code></pre>
+            </p>
+            Both signal and forest discovery can also be performed using the Read method together with a metadata filter variant as shown in
+            <a href="#wss-signal-discovery-read"></a>.
           </section>
         </section>
       </section>
@@ -1540,7 +1639,7 @@
           <section id="https-search-read">
             <h2>Search Read</h2>
             <p>
-              The search read request uses the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2.5/spec/VISSv3.2.5_Core.html#paths-filter-operation">section 7.1 Paths Filter Operation</a> 
+              The search read request uses the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html#paths-filter-operation">section 7.1 Paths Filter Operation</a> 
               described in the [[CORE]] specification to define one or more path expressions, relative to the path in the GET URL.<br>
               <b>Example:</b>
               Request:
@@ -1579,7 +1678,7 @@
           <section id="https-history-read">
             <h2>History Read</h2>
             <p>
-              The history read request uses the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2.5/spec/VISSv3.2.5_Core.html#history-filter-operation">section 7.2 History Filter Operation</a> 
+              The history read request uses the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html#history-filter-operation">section 7.2 History Filter Operation</a> 
               described in the [[CORE]] specification to read recorded values
               for a specific past duration.<br>
               <b>Example:</b>
@@ -1606,7 +1705,7 @@
           <section id="https-service-discovery-read">
             <h2>Signal Discovery Read</h2>
             <p>
-              The signal discovery request uses the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2.5/spec/VISSv3.2.5_Core.html#metadata-request">section 7.7 Metadata Filter Operation</a> 
+              The signal discovery request uses the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html#metadata-request">section 7.7 Metadata Filter Operation</a> 
               described in the [[CORE]] specification to retrieve metadata from a specified subtree in the tree.
               A successful response will contain the requested metadata from all nodes of the subtree defined by 
               the subtree root node addressed by the path. 
@@ -1711,7 +1810,7 @@
       <section id="application-level-protocol">
         <h2>Application Level Protocol</h2>
         <p>
-          For MQTT to support the full VISSv3 interface, as decribed in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2.5/spec/VISSv3.2.5_Core.html#interface">section 5. Interface</a> of the [[CORE]] specification,
+          For MQTT to support the full VISSv3 interface, as decribed in the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html#interface">section 5. Interface</a> of the [[CORE]] specification,
           an application-level protocol that runs on top of MQTT is required.
           This protocol is described below and illustrated in the accompanying sequence diagram.
           To emulate the client-server pattern that is described in the [[CORE]] specification, 
@@ -1842,6 +1941,11 @@
 	    <td>A JSON Web Token (JWT) formatted security token.</td>
 	  </tr>
 	  <tr>
+	    <td> <dfn data-dfn-type="dfn" id="dfn-depth">depth</dfn></td>
+	    <td>string</td>
+	    <td>The number of descendant generations that metadata will maximally be returned from the discovery request.</td>
+	  </tr>
+	  <tr>
 	    <td><b>data</b> </td>
 	    <td>object / array</td>
 	    <td>Data contains one or more objects each consisting of a path and a dp (data point).</td>
@@ -1864,7 +1968,7 @@
     <tr>
       <td> <dfn data-dfn-type="dfn" id="dfn-filter">filter</dfn> </td>
       <td> string </td>
-      <td>A query string defining a filter to optimize subscriptions. Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2.5/spec/VISSv3.2.5_Core.html#filter-request">section 7. Filter Request</a> of the [[CORE]] specification.</td>
+      <td>A query string defining a filter to optimize subscriptions. Refer to the <a data-link-type="dfn" href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html#filter-request">section 7. Filter Request</a> of the [[CORE]] specification.</td>
     </tr>
     <tr>
       <td><dfn data-dfn-type="dfn" id="dfn-data-compression">dc</dfn> </td>
@@ -1903,6 +2007,8 @@
 	  <dd>Enables the client to request that it should no longer receive event messages based on that subscription.</dd>
 	  <dt><b>subscription</b></dt>
 	  <dd>Enables the server to send event messages to the client containing a JSON data structure with values for one or more vehicle signals.</dd>
+	  <dt><b>discovery</b></dt>
+	  <dd>Enables the client to read metadata associated with tree node(s) rather than the signal data associated with the node(s).</dd>
 	  </dl>
         </section>
 
