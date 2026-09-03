@@ -580,8 +580,8 @@
          <section id="read">
             <h2>Read</h2>
             The Read method is supported by two variants,
-            a single tree adressability variant and a multiple tree adressability variant.
-            Both variants can address one of more signals.
+            a single tree addressability variant and a multiple tree addressability variant.
+            Both variants can address one or more signals.
             The former supports wild card usage but cannot address signals in multiple trees.
             The latter does not support wild card usage but can address signals in multiple trees.
 
@@ -925,7 +925,7 @@
                This operation is in this specification named "discovery" as a major use case for it is for a client to retrieve
                information about the resources that the server manages, i. e. to "discover" the resources.<br>
                Resources can be of two conceptually different types - vehicle signals or "signal domains".
-               In former case the response contains metadata about vehicle signals, while in the latter case it contains metadata about
+               In the former case the response contains metadata about vehicle signals, while in the latter case it contains metadata about
                the set of trees that the server manages.<br>
                In addition to the two discovery methods described below it is also possible to retrieve this metadata by using
                the <a href="#metadata-request">metadata</a> filter in a Read request. This alternative is likely to be deprecated in a coming major version update.
@@ -973,12 +973,12 @@
                Purpose: Retrieve metadata about the set of trees that the server manages.
             </p>
             <p>
-               The server MUST issue an event message when a triggering rule
-               associated with the subscription is met. If the server cannot
-               fulfill the triggering rules it MUST issue an error message and
-               terminate the subscription.
+               If the server successfully processes the request, it MUST return
+               a <a>success response</a>. If the server
+               fails to fulfill the request, then the server MUST return an
+               <a href="#error-message">error message</a>.
             </p>
-            Arguments, of which all are mandatory:
+            Arguments, of which path and depth are mandatory:
             <ul>
                <li>
                   <a>path</a> The path to the node that will act as root for the sub-tree
@@ -988,7 +988,6 @@
                <li>
                   depth The number of descendant generations that metadata will maximally be returned from.
                   If set to zero metadata from all descendants will be returned.
-               </li>
                </li>
             </ul>
             Success response:
@@ -3640,7 +3639,7 @@
                             "type": "string"
                         },
                         "depth": {
-                            "description": "The data compression scheme",
+                            "description": "The number of descendant generations that metadata will maximally be returned from",
                             "type": "string"
                         },
                         "requestId": {

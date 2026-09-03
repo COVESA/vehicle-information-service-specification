@@ -544,7 +544,7 @@
       <section id="wss-transport-messages">
           <h2>Transport Messages</h2>
 
-          <section id="wss-read-message">
+          <section id="wss-read">
             <h2>Read</h2>
             Examples are shown for both variants of the Read method.
 
@@ -773,7 +773,7 @@
             </thead>
             <tbody>
                 <tr><th rowspan="5">getRequest</th><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
-                <tr><td><a href="#dfn-path">data</a></td><td>array</td><td>Yes</td></tr>
+                <tr><td><a href="#dfn-data">data</a></td><td>array</td><td>Yes</td></tr>
                 <tr><td><a href="#dfn-authorization">authorization</a></td><td>string</td><td>Optional</td></tr>
                 <tr><td><a href="#dfn-data-compression">dc</a></td><td>string</td><td>Optional</td></tr>
                 <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
@@ -840,7 +840,7 @@
 
           <section id="wss-update">
             <h2>Update</h2>
-            Examples are shown for both variants of the Read method.
+            Examples are shown for both variants of the Update method.
 
           <section id="wss-single-update">
             <h2>Single Data Update</h2>
@@ -966,8 +966,8 @@
 	  <tr><th>Object Name</th><th>Attribute</th><th>Type</th><th>Required</th></tr>
 	</thead>
 	<tbody>
-	  <tr><th rowspan="6">setRequest</dfn></th><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
-	  <tr><td><a href="#dfn-path">data</a></td><td>array</td><td>Yes</td></tr>
+	  <tr><th rowspan="6">setRequest</th><td><a href="#dfn-action">action</a></td><td><a href="#action-def">Action</a></td><td>Yes</td></tr>
+	  <tr><td><a href="#dfn-data">data</a></td><td>array</td><td>Yes</td></tr>
 	  <tr><td><a href="#dfn-authorization">authorization</a></td><td>string</td><td>Optional</td></tr>
 	  <tr><td><a href="#dfn-requestid">requestId</a></td><td>string</td><td>Yes</td></tr>
 	  <tr><td><a href="#dfn-ts">ts</a></td><td>string</td><td>Optional</td></tr>
@@ -1946,9 +1946,9 @@
 	    <td>The number of descendant generations that metadata will maximally be returned from the discovery request.</td>
 	  </tr>
 	  <tr>
-	    <td><b>data</b> </td>
+	    <td><dfn data-dfn-type="dfn" id="dfn-data">data</dfn> </td>
 	    <td>object / array</td>
-	    <td>Data contains one or more objects each consisting of a path and a dp (data point).</td>
+	    <td>Data contains one or more objects each consisting of a path and a dp (data point). In the Multiple Tree Addressability Read request, and in the Multiple Data Update request, data is instead an array of paths, or an array of path/value objects, respectively.</td>
 	  </tr>
 	  <tr>
 	    <td><b>dp</b> </td>
@@ -2007,7 +2007,7 @@
 	  <dd>Enables the client to request that it should no longer receive event messages based on that subscription.</dd>
 	  <dt><b>subscription</b></dt>
 	  <dd>Enables the server to send event messages to the client containing a JSON data structure with values for one or more vehicle signals.</dd>
-	  <dt><b>discovery</b></dt>
+	  <dt><b>discover</b></dt>
 	  <dd>Enables the client to read metadata associated with tree node(s) rather than the signal data associated with the node(s).</dd>
 	  </dl>
         </section>

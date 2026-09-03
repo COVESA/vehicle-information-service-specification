@@ -447,7 +447,7 @@
                             "type": "string"
                         },
                         "depth": {
-                            "description": "The data compression scheme",
+                            "description": "The number of descendant generations that metadata will maximally be returned from",
                             "type": "string"
                         },
                         "requestId": {
