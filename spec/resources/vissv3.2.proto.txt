@@ -15,7 +15,11 @@ enum SubscribeResponseType {
 service VISS {
   rpc GetRequest (GetRequestMessage) returns (GetResponseMessage);
 
+  rpc MultiGetRequest (MultiGetRequestMessage) returns (MultiGetResponseMessage);
+
   rpc SetRequest (SetRequestMessage) returns (SetResponseMessage);
+
+  rpc MultiSetRequest (MultiSetRequestMessage) returns (SetResponseMessage);
 
   rpc SubscribeRequest (SubscribeRequestMessage) returns (stream SubscribeStreamMessage);
 
@@ -101,22 +105,8 @@ message DataPackages {
 }
 
 message GetRequestMessage {
-        oneof getMessageType {
-            SingleGetRequestMessage singleGet = 1;
-            MultipleGetRequestMessage multipleGet = 2;
-        }
-}
-
-message SingleGetRequestMessage {
         string Path = 1;
         optional FilterExpressions Filter = 2;
-        optional string Authorization = 3;
-        optional string DC = 4;
-        string RequestId = 5;
-}
-
-message MultipleGetRequestMessage {
-        repeated string Data = 1;
         optional string Authorization = 3;
         optional string DC = 4;
         string RequestId = 5;
@@ -135,14 +125,29 @@ message GetResponseMessage {
         optional string Authorization = 6;
 }
 
-message SetRequestMessage {
-        oneof setMessageType {
-            SingleSetRequestMessage singleSet = 1;
-            MultipleSetRequestMessage multipleSet = 2;
-        }
+// Multiple Tree Addressability Read, see CORE section 5.1.1.2.
+// Defined as a separate message/rpc, additive to GetRequestMessage/GetRequest,
+// so that existing v3.1 GetRequestMessage clients and servers remain wire compatible.
+message MultiGetRequestMessage {
+        repeated string Data = 1;
+        optional string Authorization = 2;
+        optional string DC = 3;
+        string RequestId = 4;
 }
 
-message SingleSetRequestMessage {
+message MultiGetResponseMessage {
+        ResponseStatus Status = 1;
+        message SuccessResponseMessage {
+            DataPackages DataPack = 1;
+        }
+        optional SuccessResponseMessage SuccessResponse = 2;
+        optional ErrorResponseMessage ErrorResponse = 3;
+        string RequestId = 4;
+        string Ts = 5;
+        optional string Authorization = 6;
+}
+
+message SetRequestMessage {
         string Path = 1;
         string Value = 2;
         optional string Authorization = 3;
@@ -150,7 +155,11 @@ message SingleSetRequestMessage {
         optional string Ts = 5;
 }
 
-message MultipleSetRequestMessage {
+// Multiple Data Update, see CORE section 5.2.2.
+// Defined as a separate message/rpc, additive to SetRequestMessage/SetRequest,
+// so that existing v3.1 SetRequestMessage clients and servers remain wire compatible.
+// Not supported over HTTP, see CORE section 5.2.
+message MultiSetRequestMessage {
         message SetData {
             string Path = 1;
             string Value = 2;
