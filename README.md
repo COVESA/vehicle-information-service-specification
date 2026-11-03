@@ -21,7 +21,9 @@ Minutes of meetings is found [here](https://covesa.atlassian.net/wiki/spaces/WIK
 
 ## Overview
 
-Vehicle Information Service Specification (VISS) is an API for accessing the COVESA Vehicle Signal Specification (VSS) data. The work started at [The World Wide Web Consortium (W3C)](https://www.w3.org) in collaboration with GENIVI and its successor COVESA. The W3C Automotive Working Group closed in February of 2024 and the work is continuing at COVESA.
+Vehicle Information Service Specification (VISS) is an API that was initially developed for accessing the COVESA Vehicle Signal Specification (VSS) data. The work started at [The World Wide Web Consortium (W3C)](https://www.w3.org) in collaboration with GENIVI and its successor COVESA. The W3C Automotive Working Group closed in February of 2024 and the work is continuing at COVESA.
+
+The access scope of the API was extended in version 3.1 to support vehicle data trees defined for also other types of vehicles such as trucks, trailers, etc.
 
 The VISS specification consists of the following documents:
 * Core
@@ -33,17 +35,19 @@ The specification is supplemented with the following documents:
 
 To see the most recent HTML rendered version of the specifications from this repository can be found at the following:
 
-- [COVESA VISS version 3.1 - Core](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.1_Core.html)
-- [COVESA VISS version 3.1-Transport](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.1_Transport.html)
-- [COVESA VISS version 3.1-Payload Encoding](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.1_PayloadEncoding.html)
+- [COVESA VISS version 3.2 - Core](https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html)
+- [COVESA VISS version 3.2-Transport](https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html)
+- [COVESA VISS version 3.2-Payload Encoding](https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_PayloadEncoding.html)
 - [COVESA VISS-Implementation Guidelines](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/supplement/VISS_ImplementationGuidelines.html)
 
 The [VISS explainer](./VISS-explainer.md) gives some background and rationale to this interface.
 
 ## Latest version
-[VISS version 3.1](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.1)
+[VISS version 3.2](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.2)
 
 ## Previous versions
+[VISS version 3.1](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.1)
+
 [VISS version 3.0](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.0)
 
 [VISS version 2.0](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v2.0)
@@ -54,7 +58,7 @@ The [VISS explainer](./VISS-explainer.md) gives some background and rationale to
 [http://github.com/COVESA/vissr](http://github.com/COVESA/vissr)
 
 ## Specification references
-The Adaptive AUTOSAR R24-11 official publication.
+**The Adaptive AUTOSAR R24-11 official publication.**
 
 [AUTOSAR](https://www.autosar.org/) released the [Adaptive AUTOSAR R24-11](https://www.autosar.org/search?tx_solr%5Bfilter%5D%5B1%5D=platform%3AAP&tx_solr%5Bfilter%5D%5B2%5D=category%3AR24-11&tx_solr%5Bq%5D=) including Automotive API Gateway specification at the end of December 2024. Automotive API Gateway specification is developed based on the [COVESA VISS v2-Core](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v2.0) and [COVESA VISS v2-Transport](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v2.0) specifications. The related standards and technical documents are as follows:
 - [Explanation of Automotive API](https://www.autosar.org/fileadmin/standards/R24-11/AP/AUTOSAR_AP_EXP_AutomotiveAPI.pdf)
@@ -63,8 +67,12 @@ The Adaptive AUTOSAR R24-11 official publication.
 - [Technical Report on VSS Representation](https://www.autosar.org/fileadmin/standards/R24-11/AP/AUTOSAR_AP_TR_VSSRepresentation.pdf)
 - [Adaptive Platform Release Overview](https://www.autosar.org/fileadmin/standards/R24-11/AP/AUTOSAR_AP_TR_ReleaseOverview.pdf)
 
-COVESA EU Data Act: [Recommendation](https://github.com/COVESA/eu-data-act/blob/main/arguments/covesa-specifications-for-eu-data-act.md)
-## Implementation references
+**JASPAR Yoriito API**
+- [Architecture Overview](https://docs.yoriito.dev/design/architecture_overview/)
+
+**COVESA EU Data Act** 
+- [Recommendation](https://github.com/COVESA/eu-data-act/blob/main/arguments/covesa-specifications-for-eu-data-act.md)
+
 - [VISSR references](https://covesa.github.io/vissr/xtra/references/#references)
 
 ## Tools

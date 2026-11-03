@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>COVESA VISS version 3.1-Payload Encoding</title>
+    <title>COVESA VISS version 3.2-Payload Encoding</title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
     <script class='remove'>
       var respecConfig = {
@@ -28,17 +28,17 @@
           companyURL: "https://etri.re.kr/eng/main/main.etri",
           w3cid: 34457
         }],
-        edDraftURI: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.1_PayloadEncoding.html",
+        edDraftURI: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_PayloadEncoding.html",
         shortName: "viss3.1-payload-encoding",
         localBiblio: {
           "CORE": {
             title: "COVESA VISS version 3.1 - Core",
-            href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.1_Core.html",
+            href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html",
             publisher: "Ulf Bjorkengren; Wonsuk Lee"
           },
           "TRANSPORT": {
             title: "COVESA VISS version 3.1-Transport",
-            href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/main/spec/VISSv3.1_Transport.html",
+            href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html",
             publisher: "Ulf Bjorkengren; Wonsuk Lee"
           }
         }
@@ -134,11 +134,11 @@
         This specification, the version 3.1, is a backwards compatible extension of the third version of VISS.
         Instead of referencing to the VSS rule set for how to define the content of a tree it refers to the HIM vehicle data profile rule set.
         This enables also other trees than the VSS tree to be used, a server may manage a set of trees, a forest, that a client can access.
-        Other changes are minor adaptations to support the concept of having a forest of trees, such as adding support for a client to do a forest inquiry.
+        Other changes are minor adaptations to support the concept of having a forest of trees, such as adding support for a client to do a forest discovery.
       </p>     
       <p>
-        There are three parts to this specification, [[CORE]], [[TRANSPORT]], and PAYLOAD ENCODING. This document, the VISS version 3.1 PAYLOAD ENCODING specification, 
-        describes the VISSv3.1 payload encodings that is used in some cases. 
+        There are three parts to this specification, [[CORE]], [[TRANSPORT]], and PAYLOAD ENCODING. This document, the VISS version 3.2 PAYLOAD ENCODING specification, 
+        describes the VISSv3.2 payload encodings that is used in some cases. 
         The companion specifications [[CORE]] describes the messaging layer,
         and [[TRANSPORT]] describes the deviations form the CORE specification that are used by some transport protocols.
       </p>
@@ -155,7 +155,7 @@
     <section id="terminology">
       <h2>Terminology</h2>
       <p>
-      The acronym 'VISSv3.1' is used to refer to this document, the VISS version 3.1 specification.
+      The acronym 'VISSv3.2' is used to refer to the VISS version 3.2 specification document suite.
       The acronym 'HIM' is used to refer to the <a href="https://github.com/COVESA/hierarchical_information_model">'Hierarchical Information Model version 1.0 Vehicle data profile'</a>
       which is hosted by COVESA.
       The acronym 'VSS' is used to refer to the <a href="https://github.com/COVESA/vehicle_signal_specification">'Vehicle Signal Specification'</a>
@@ -213,12 +213,18 @@
               
               service VISS {
                 rpc GetRequest (GetRequestMessage) returns (GetResponseMessage);
+
+                rpc MultiGetRequest (MultiGetRequestMessage) returns (MultiGetResponseMessage);
               
                 rpc SetRequest (SetRequestMessage) returns (SetResponseMessage);
+
+                rpc MultiSetRequest (MultiSetRequestMessage) returns (SetResponseMessage);
               
                 rpc SubscribeRequest (SubscribeRequestMessage) returns (stream SubscribeStreamMessage);
               
                 rpc UnsubscribeRequest (UnsubscribeRequestMessage) returns (UnsubscribeResponseMessage);
+
+                rpc DiscoverRequest (DiscoverRequestMessage) returns (DiscoverResponseMessage);
               }
               
               message ErrorResponseMessage {
@@ -317,6 +323,28 @@
                       string Ts = 5;
                       optional string Authorization = 6;
               }
+
+              // Multiple Tree Addressability Read, see CORE section 5.1.1.2.
+              // Defined as a separate message/rpc, additive to GetRequestMessage/GetRequest,
+              // so that existing v3.1 GetRequestMessage clients and servers remain wire compatible.
+              message MultiGetRequestMessage {
+                      repeated string Data = 1;
+                      optional string Authorization = 2;
+                      optional string DC = 3;
+                      string RequestId = 4;
+              }
+
+              message MultiGetResponseMessage {
+                      ResponseStatus Status = 1;
+                      message SuccessResponseMessage {
+                          DataPackages DataPack = 1;
+                      }
+                      optional SuccessResponseMessage SuccessResponse = 2;
+                      optional ErrorResponseMessage ErrorResponse = 3;
+                      string RequestId = 4;
+                      string Ts = 5;
+                      optional string Authorization = 6;
+              }
               
               message SetRequestMessage {
                       string Path = 1;
@@ -324,6 +352,21 @@
                       optional string Authorization = 3;
                       string RequestId = 4;
                       optional string Ts = 5;
+              }
+
+              // Multiple Data Update, see CORE section 5.2.2.
+              // Defined as a separate message/rpc, additive to SetRequestMessage/SetRequest,
+              // so that existing v3.1 SetRequestMessage clients and servers remain wire compatible.
+              // Not supported over HTTP, see CORE section 5.2.
+              message MultiSetRequestMessage {
+                      message SetData {
+                          string Path = 1;
+                          string Value = 2;
+                      }
+                      repeated SetData Data = 1;
+                      optional string Authorization = 2;
+                      string RequestId = 3;
+                      optional string Ts = 4;
               }
               
               message SetResponseMessage {
@@ -377,6 +420,20 @@
                       optional ErrorResponseMessage ErrorResponse = 2;
                       string RequestId = 3;
                       string Ts = 4;
+              }
+
+              message DiscoverRequestMessage {
+                      string Path = 1;
+                      string Depth = 2;
+                      string RequestId = 3;
+              }
+
+              message DiscoverResponseMessage {
+                      ResponseStatus Status = 1;
+                      string Metadata = 2;
+                      optional ErrorResponseMessage ErrorResponse = 3;
+                      string RequestId = 4;
+                      string Ts = 5;
               }
             </pre>
             <figure>
@@ -436,7 +493,7 @@
             <h2>JSON schema based encoding</h2>
             <p>
               Several Interface Definition Languages (IDLs), such as OpenAPI and AsyncAPI, can utilize a JSON Schema representation as input.
-              The JSON scheme representation of the VISSv3.1 interface in the [[CORE]] specification can be used for such a purpose.
+              The JSON scheme representation of the VISSv3.2 interface in the [[CORE]] specification can be used for such a purpose.
             </p>
           </section>
 
