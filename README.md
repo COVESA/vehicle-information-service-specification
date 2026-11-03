@@ -73,6 +73,7 @@ The [VISS explainer](./VISS-explainer.md) gives some background and rationale to
 **COVESA EU Data Act** 
 - [Recommendation](https://github.com/COVESA/eu-data-act/blob/main/arguments/covesa-specifications-for-eu-data-act.md)
 
+**Implementation References** 
 - [VISSR references](https://covesa.github.io/vissr/xtra/references/#references)
 
 ## Tools
