@@ -76,6 +76,9 @@ The [VISS explainer](./VISS-explainer.md) gives some background and rationale to
 - [Recommendation](https://github.com/COVESA/eu-data-act/blob/main/arguments/covesa-specifications-for-eu-data-act.md)
 - [Getting started](https://github.com/COVESA/eu-data-act/blob/main/arguments/Improve%20Your%20EU%20Data%20Act%20Implementation%20with%20COVESA%20Specifications.md)
 
+**Implementation References** 
+- [VISSR references](https://covesa.github.io/vissr/xtra/references/#references)
+
 ## Tools
 
 - [ReSpec](https://www.w3.org/respec/) has been used to style the specifications allowing the editors to focus on functionality and ensure consistency and referential integrity
