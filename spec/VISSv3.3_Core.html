@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
    <meta charset="utf-8" />
-   <title>COVESA VISS version 3.2 - Core</title>
+   <title>COVESA VISS version 3.3 - Core</title>
    <script
       src="https://www.w3.org/Tools/respec/respec-w3c"
       class="remove"
@@ -38,17 +38,17 @@
             },
          ],
          edDraftURI:
-            "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html",
-         shortName: "viss3.2-core",
+            "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Core.html",
+         shortName: "viss3.3-core",
          localBiblio: {
             "TRANSPORT": {
-               title: "COVESA VISS version 3.2-Transport",
-               href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html",
+               title: "COVESA VISS version 3.3-Transport",
+               href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html",
                publisher: "Ulf Bjorkengren; Wonsuk Lee",
             },
             "PAYLOAD ENCODING": {
-               title: "COVESA VISS version 3.2-Payload Encoding",
-               href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_PayloadEncoding.html",
+               title: "COVESA VISS version 3.3-Payload Encoding",
+               href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_PayloadEncoding.html",
                publisher: "Ulf Bjorkengren; Wonsuk Lee",
             },
             "IMPLEMENTATION_GUIDELINES": {
@@ -186,19 +186,25 @@
             href="https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.1"
             >fourth version</a>
          includes support for the
-         <a href= "https://covesa.github.io/hierarchical_information_model/#him-data-profile">HIM vehicle data profile</a>
+         <a href= "https://covesa.github.io/hierarchical_information_model/#him-vehicledata-profile">HIM vehicle data profile</a>
          and the Unix Domain Sockets transport protocol.<br>
-         This specification, the version 3.2, adds support for writing multiple signals in a single request message,
-         and it also adds a separate request method for signal and forest discovery.
+         The
+         <a
+            href="https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.2"
+            >fifth version</a>
+         adds support for writing multiple signals in a single request message,
+         and it also adds a separate request method for signal and forest discovery.<br>
+         This specification, the version 3.3, adds support for the
+         <a href= "https://covesa.github.io/hierarchical_information_model/#him-data-profile">HIM data profile</a>.
       </p>
       <p>
          There are three parts to this specification, CORE, [[TRANSPORT]], and
-         [[PAYLOAD ENCODING]]. This document, the VISS version 3.2 CORE
-         specification, describes the VISSv3.2 messaging layer.<br>
-         The VISSv3.2 transport protocol specification describes the deviations
+         [[PAYLOAD ENCODING]]. This document, the VISS version 3.3 CORE
+         specification, describes the VISSv3.3 messaging layer.<br>
+         The VISSv3.3 transport protocol specification describes the deviations
          from the CORE definitions that are used in some transport protocols. It
          also examplifies the JSON primary payload format using the Websocket
-         payloads. The VISSv3.2 payload encoding specification describes payload
+         payloads. The VISSv3.3 payload encoding specification describes payload
          encoding designs that may be applied e. g. for payloads in transit.<br>
          The specification is supplemented by the [[IMPLEMENTATION_GUIDELINES]]
          document which provides recommendations on how to implement certain
@@ -236,25 +242,78 @@
       </p>
       <figure id="fig-payload-encoding">
          <img
-            src="images/VISSv3.2-payload-encoding.jpg"
-            alt="VISSv3.2 paylod encoding overview."
+            src="images/VISSv3.3-payload-encoding.jpg"
+            alt="VISSv3.3 paylod encoding overview."
          />
          <figcaption>
-            <span class="fig-title">VISSv3.2 payload encoding overview.</span>
+            <span class="fig-title">VISSv3.3 payload encoding overview.</span>
          </figcaption>
       </figure>
       <p>
-         The VISSv3.2 messaging layer builds on RESTful principles for the
+         The VISSv3.3 messaging layer builds on RESTful principles for the
          method exchange via the interface (refer to the
          <a href="#interface">section 5. Interface</a>).
       </p>
       <p>
-         The VISSv3.2 data structuring rules (<a
+         The VISSv3.3 data structuring rules (<a
             href="https://covesa.github.io/hierarchical_information_model/vehicle_data_rule_set/"
             >HIM vehicle data profile rule set</a
          >) are the same through all transport protocols. The basis for
          structuring data held by a server is a tree structure.
       </p>
+     <section id="profiles">
+        <h2>Profiles</h2>
+        <p>
+        VISSv3.1 introduced support for the HIM VehicleData profile, earlier versions supported the rule set defined in the VSS project.
+        These two models are plugin compatible, so it did not lead to any substantial changes of the specification.
+        This version introduces support for another of the HIM information profiles, the Data profile.
+        The VISS documents Core, Transport and Payload Encoding refer to the VehicleData profile.
+        The <a href="#data-profile">Data Profile</a> chapter describes the difference to these documents when referring to the Data profile instead.<br>
+        A VISS server must support at least one profile. The server profile support is shown in the <a href="#server-capabilities">server capabilities tree</a>.<br>
+        A tree must define its domain using only one profile. A server may manage a set of trees with mixed profiles.
+        </p>
+       <section id="vehicledata-profile">
+          <h2>VehicleData Profile</h2>
+          <p>
+          The vehicle data profile uses the HIM vehicle data profile which is plugin-compatible with the
+          <a href="https://covesa.github.io/vehicle_signal_specification/rule_set/index.html">VSS rule set</a>.
+          </p>
+       </section>
+       <section id="data-profile">
+          <h2>Data Profile</h2>
+          <p>
+          The Data profile makes it possible to characterize data with the more generic terminology “read-only” and “read-write”
+          instead of using the more technically oriented terminology “sensor”, “actuator”, “attribute”.
+          The former may be preferrable for non-vehicle related domains, e.g. a domain that defines persons,
+          or emergency related data, see e.g. the COVESA CVED tree.
+          The two profiles are in all aspects identical except for the mentioned node type naming.
+          The VISS documentation, which refers to the VehicleData profile, will describe the Data profile with the following mapping of the node types:
+            <table class="simple">
+               <thead>
+                  <tr>
+                     <th>VehicleData profile</th>
+                     <th>Data profile</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <th>attribute</th>
+                     <td>ro</td>
+                  </tr>
+                  <tr>
+                     <th>sensor</th>
+                     <td>ro</td>
+                  </tr>
+                  <tr>
+                     <th>actuator</th>
+                     <td>rw</td>
+                  </tr>
+               </tbody>
+            </table>
+          A server supporting both the VehicleData profile and the Data profile must support the same set of capabilities for both profiles.
+          </p>
+       </section>
+     </section>
    </section>
 
    <section id="conformance"></section>
@@ -262,8 +321,8 @@
    <section id="terms">
       <h2>Terminology</h2>
       <p>
-         The acronym 'VISSv3.2' is used to refer to this document, the VISS
-         version 3.2 specification. The acronym 'HIM' is used to refer to the
+         The acronym 'VISSv3.3' is used to refer to this document, the VISS
+         version 3.3 specification. The acronym 'HIM' is used to refer to the
          <a href="https://github.com/COVESA/hierarchical_information_model"
             >'Hierarchical Information Model version 1.0 Vehicle Data profile'</a
          >
@@ -377,7 +436,7 @@
       <br>
       Previous VISS versions have been using the
       <a href="https://github.com/COVESA/vehicle_signal_specification">VSS</a>
-      rule set and definition of the content of the tree but in VISSv3.2 the rule sets of the
+      rule set and definition of the content of the tree but in VISSv3.3 the rule sets of the
       <a href="https://github.com/COVESA/hierarchical_information_model">HIM</a>
       vehicle data profile are instead used. This enables other trees than the
       VSS tree also to be used. A server may manage a set of trees, a so-called
@@ -441,7 +500,7 @@
          addressed resource. For supported protocols, refer to the
          <a
             data-link-type="dfn"
-            href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#transport-protocols"
+            href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#transport-protocols"
             >section 5. Transport Protocols</a
          >
          in [[TRANSPORT]] specification.<br>
@@ -454,7 +513,7 @@
          There are potentially three resources for which a client needs a URI,
          see <a href="#architecture"></a>:<br>
          <ul>
-            <li>VISSv3.2 Server.</li>
+            <li>VISSv3.3 Server.</li>
             <li>Access Grant Token Server.</li>
             <li>Access Token Server.</li>
          </ul>
@@ -482,7 +541,7 @@
             <section id="port-number">
                <h2>Port number</h2>
                <em>This section is non-normative.</em>
-               The VISSv3.2 server shall use the following port numbers for the
+               The VISSv3.3 server shall use the following port numbers for the
                different transport protocols.
                <ul>
                   <li>HTTP port number = 443</li>
@@ -504,7 +563,7 @@
             <p>
                The path URI component definition differs between the three
                resources.<br>
-               For the <b>VISSv3.2 server</b> the definition is as follows.<br>
+               For the <b>VISSv3.3 server</b> the definition is as follows.<br>
                The path consists of a sequence of tree node names separated by a
                delimiter. HIM specifies the dot (.) as delimiter, which
                therefore is the recommended choice also in this specification.
@@ -951,12 +1010,11 @@ delimiter    = "." / "/"
             </p>
             <p>
                If the server successfully processes the request, it MUST return
-               a <a>success response</a>, and it MUST stop issuing event
-               messages associated to the subscription handle. If the server
+               a <a>success response</a>. If the server
                fails to fulfill the request, then the server MUST return an
                <a href="#error-message">error message</a>.
             </p>
-            Arguments, of which path and depth is mandatory:
+            Arguments, of which path and depth are mandatory:
             <ul>
                <li>
                   <a>path</a> The path to the node that will act as root for the sub-tree
@@ -1049,7 +1107,7 @@ delimiter    = "." / "/"
                   <b>number</b> Refer to the
                   <a
                      data-link-type="dfn"
-                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#status-codes"
+                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#status-codes"
                      >section 4.1 Status Codes</a
                   >
                   defined in [[TRANSPORT]].
@@ -1058,7 +1116,7 @@ delimiter    = "." / "/"
                   <b>reason</b> Refer to the
                   <a
                      data-link-type="dfn"
-                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#status-codes"
+                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#status-codes"
                      >section 4.1 Status Codes</a
                   >
                   defined in [[TRANSPORT]].
@@ -1067,7 +1125,7 @@ delimiter    = "." / "/"
                   <b>description</b> Refer to the
                   <a
                      data-link-type="dfn"
-                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#status-codes"
+                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#status-codes"
                      >section 4.1 Status Codes</a
                   >
                   defined in [[TRANSPORT]].
@@ -1316,13 +1374,13 @@ delimiter    = "." / "/"
             Examples can be found in the
             <a
                data-link-type="dfn"
-               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#wss-search-read"
+               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#wss-search-read"
                >section 5.1.2.1.2 Search Read</a
             >
             and
             <a
                data-link-type="dfn"
-               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#https-search-read"
+               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#https-search-read"
                >section 5.2.2.1.2 Search Read</a
             >
             in [[TRANSPORT]] specification.
@@ -1356,13 +1414,13 @@ delimiter    = "." / "/"
             Examples can be found in the
             <a
                data-link-type="dfn"
-               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#https-history-read"
+               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#https-history-read"
                >section 5.1.2.1.3 History Read</a
             >
             and
             <a
                data-link-type="dfn"
-               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#https-history-read"
+               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#https-history-read"
                >section 5.2.2.1.3 History Read</a
             >
             in [[TRANSPORT]] specification.
@@ -1377,7 +1435,7 @@ delimiter    = "." / "/"
             milliseconds. Example can be found in the
             <a
                data-link-type="dfn"
-               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#subscribe"
+               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#subscribe"
                >section 5.1.2.3 Subscribe</a
             >
             in [[TRANSPORT]] specification.
@@ -1434,13 +1492,13 @@ delimiter    = "." / "/"
          Examples can be found in the
          <a
             data-link-type="dfn"
-            href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#authorized-subscribe"
-            >section 5.1.2.3.2 Authorized Subscribe</a
+            href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#authorized-subscribe"
+            >section 5.1.2.3.3 Authorized Subscribe</a
          >
          and
          <a
             data-link-type="dfn"
-            href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#range-subscribe"
+            href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#range-subscribe"
             >section 5.1.2.3.3 Range Subscribe</a
          >
          in [[TRANSPORT]] specification.
@@ -1481,7 +1539,7 @@ delimiter    = "." / "/"
          Example can be found in the
          <a
             data-link-type="dfn"
-            href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#change-subscribe"
+            href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#change-subscribe"
             >section 5.1.2.3.4 Change Subscribe</a
          >
          in [[TRANSPORT]] specification.
@@ -1502,8 +1560,8 @@ delimiter    = "." / "/"
             Example can be found in the
             <a
                data-link-type="dfn"
-               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#curve-logging-subscribe"
-               >section 5.1.2.3.2 Curve Logging Subscribe</a
+               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#curve-logging-subscribe"
+               >section 5.1.2.3.3 Curve Logging Subscribe</a
             >
             in [[TRANSPORT]] specification.
          </p>
@@ -1534,7 +1592,7 @@ delimiter    = "." / "/"
             Example can be found in the
             <a
                data-link-type="dfn"
-               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#https-service-discovery-read"
+               href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#https-service-discovery-read"
                >section 5.2.2.1.4 Signal Discovery Read</a
             >
             in [[TRANSPORT]] specification.<br>
@@ -1581,7 +1639,7 @@ delimiter    = "." / "/"
                MAY use in-line error reporting, Refer to the
                <a
                   data-link-type="dfn"
-                  href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#in-line-error-reporting"
+                  href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#in-line-error-reporting"
                   >section 4.1.1 In-line Error Reporting</a
                >
                in [[TRANSPORT]] specification.
@@ -1726,11 +1784,11 @@ delimiter    = "." / "/"
          Ecosystem Manager has published a list of approved purposes that the
          ecosystem serves, and any other purpose must be denied access. If the
          request to the ATS is successful, the client receives an access token,
-         which can then be used in requests to the VISSv3.2 server to access one
+         which can then be used in requests to the VISSv3.3 server to access one
          or more signals associated with the approved purpose.<br>
          Access control MUST be supported. However, in this section, only the
          parts that describe interactions between the
-         <a href="#client-def">client</a> and the VISSv3.2 server are
+         <a href="#client-def">client</a> and the VISSv3.3 server are
          mandatory.<br>
          Access control SHALL NOT be applied to the tree nodes containing the
          tree version data, nor to client requests for dynamic metadata about
@@ -1741,7 +1799,7 @@ delimiter    = "." / "/"
       <section id="architecture">
          <h2>Architecture</h2>
          <em>This section is non-normative.</em>
-         The VISSv3.2 access control model is inspired by OAuth2.0 [[RFC6749]],
+         The VISSv3.3 access control model is inspired by OAuth2.0 [[RFC6749]],
          but includes some deviations, which are described in the following
          sections.<br><br>
          The architecture defines four primary actors:<br>
@@ -1767,7 +1825,7 @@ delimiter    = "." / "/"
             </li>
 
             <li>
-               <b>VISSv3.2 Server:</b>
+               <b>VISSv3.3 Server:</b>
                The server hosting the protected resources, capable of accepting
                and responding to protected resource requests using
                <a href="#access-token-def">access tokens</a>.<br><br>
@@ -1777,8 +1835,8 @@ delimiter    = "." / "/"
          the interaction between the four actors.<br>
          <figure id="fig-oauth2.0-flow">
             <img
-               src="images/VISSv3.2-abstract-flow.jpg"
-               alt="VISSv3.2 abstract protocol flow."
+               src="images/VISSv3.3-abstract-flow.jpg"
+               alt="VISSv3.3 abstract protocol flow."
             />
             <figcaption>
                <span class="fig-title">The abstract protocol flow.</span>
@@ -2022,7 +2080,7 @@ delimiter    = "." / "/"
                   <li>
                      <a href="#access-token-def">Access Token</a>: The token to
                      be used in <a href="#client-def">client</a> requests to the
-                     VISSv3.2 server for accessing Protected Resources.
+                     VISSv3.3 server for accessing Protected Resources.
                   </li>
                </ul>
                In the case of an error, the response SHALL contain the following
@@ -2093,7 +2151,7 @@ delimiter    = "." / "/"
                            <a href="#access-token-def">Access Token</a>: The
                            token to be used in
                            <a href="#client-def">client</a> requests to the
-                           VISSv3.2 server for accessing Protected Resources.
+                           VISSv3.3 server for accessing Protected Resources.
                         </li>
                         <li>
                            Consent status: The consent was granted, so the
@@ -2108,13 +2166,13 @@ delimiter    = "." / "/"
          <section id="protected-resource-request">
             <h2>Protected Resource Request</h2>
             <p>
-               This is a VISSv3.2 request including an
+               This is a VISSv3.3 request including an
                <a href="#access-token-def">access token</a> as described in
                general in the <a href="#methods">section 5.1 Methods</a>, and in
                detail for various
                <a
                   data-link-type="dfn"
-                  href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#transport-protocols"
+                  href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#transport-protocols"
                >
                   transport protocols</a
                >
@@ -2129,12 +2187,12 @@ delimiter    = "." / "/"
          <section id="protected-resource-response">
             <h2>Protected Resource Response</h2>
             <p>
-               This is a VISSv3.2 response as described in general in the
+               This is a VISSv3.3 response as described in general in the
                <a href="#methods">section 5.1 Methods</a>, and in detail for
                various
                <a
                   data-link-type="dfn"
-                  href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#transport-protocols"
+                  href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#transport-protocols"
                >
                   transport protocols</a
                >
@@ -2156,7 +2214,7 @@ delimiter    = "." / "/"
             <ul>
                <li>
                   <a href="#device-roles-def">Device</a>: It is responsible for
-                  running the applications that make requests to the VISSv3.2
+                  running the applications that make requests to the VISSv3.3
                   server.
                </li>
                <li>
@@ -2364,7 +2422,7 @@ delimiter    = "." / "/"
 
          <section id="access-control-server">
             <h2>Access Control Server</h2>
-            The VISSv3.2 server MUST support validation of
+            The VISSv3.3 server MUST support validation of
             <a href="#access-token-def">access tokens</a>. The functionality
             required for this validation is described in this section. This
             includes, at a minimum, validation of the following elements:
@@ -2382,7 +2440,7 @@ delimiter    = "." / "/"
             is not possible, then a pre-provisioned common secret may be shared
             with the <a href="#access-token-server-def">Access Token Server</a>,
             or PKI-based solutions MAY be used.<br>
-            The VISSv3.2 server SHALL have access to a secure system time, which
+            The VISSv3.3 server SHALL have access to a secure system time, which
             cannot be modified by actors without system acknowledged
             credentials. Time validation MAY allow for synchronization
             inaccuracies, typically within a range of tens of seconds.<br>
@@ -2483,7 +2541,7 @@ delimiter    = "." / "/"
                the client MUST resend the whole
                <a href="#access-token-def">access token</a>.<br>
                For any <a href="#client-def">client</a> request denied due to
-               access control, the VISSv3.2 server MUST return a "401,
+               access control, the VISSv3.3 server MUST return a "401,
                invalid_token" error message.
             </p>
          </section>
@@ -2817,11 +2875,11 @@ delimiter    = "." / "/"
          <a href="https://en.wikipedia.org/wiki/Role-based_access_control"
             >Role Based Access Control (RBAC) model</a
          >. The set of these three roles is called the Client context.<br>
-         VISSv3.2 specifies a rudimentary list of roles for each sub-actor, it is
+         VISSv3.3 specifies a rudimentary list of roles for each sub-actor, it is
          expected that these lists are augmented by the
          <a href="#ecosystem-manager-def">ecosystem manager</a>, hopefully in a
          cooperative effort.<br>
-         Using an RBAC model provides the following main purposes in the VISSv3.2
+         Using an RBAC model provides the following main purposes in the VISSv3.3
          access control model:
          <ul>
             <li>
@@ -2852,7 +2910,7 @@ delimiter    = "." / "/"
          <dfn id="user-roles-def"></dfn>
          <section id="user-roles">
             <h2>User Roles</h2>
-            VISSv3.2 specifies the following minimum set of roles for users:
+            VISSv3.3 specifies the following minimum set of roles for users:
             <ul>
                <li>OEM</li>
                <li>Dealer</li>
@@ -2877,7 +2935,7 @@ delimiter    = "." / "/"
          <dfn id="application-roles-def"></dfn>
          <section id="application-roles">
             <h2>Application Roles</h2>
-            VISSv3.2 defines the following minimum set of roles for applications:
+            VISSv3.3 defines the following minimum set of roles for applications:
             <ul>
                <li>OEM</li>
                <li>Third Party</li>
@@ -2893,7 +2951,7 @@ delimiter    = "." / "/"
          <dfn id="device-roles-def"></dfn>
          <section id="device-roles">
             <h2>Device Roles</h2>
-            VISSv3.2 defines the following minimum set of roles for devices:
+            VISSv3.3 defines the following minimum set of roles for devices:
             <ul>
                <li>Vehicle</li>
                <li>Nomadic</li>
@@ -3081,7 +3139,7 @@ delimiter    = "." / "/"
          access-control-mode by merely applying it in the root of the tree.<br>
          The figure below shows an overview of the access control selection
          model, and a table showing the required access control tagging of a
-         node for the VISSv3.2 server to grant the requested access.
+         node for the VISSv3.3 server to grant the requested access.
          <figure id="fig-access-control-selection-model">
             <img
                src="images/access-control-selection-model.jpg"
@@ -3091,7 +3149,7 @@ delimiter    = "." / "/"
                <span class="fig-title">Access control selection model.</span>
             </figcaption>
          </figure>
-         If the tree used by a VISSv3.2 server contains access control selection
+         If the tree used by a VISSv3.3 server contains access control selection
          tags, the server MUST support their usage as described in this
          section.<br>
          If access control selection tags are not present, the server MAY
@@ -3103,8 +3161,8 @@ delimiter    = "." / "/"
       <h2>Consent support</h2>
       <em>This section is non-normative.</em>
       The handling of consent involves both vehicle-side and cloud-side
-      architectural subsystems, which are out of scope for VISSv3.2. However, a
-      VISSv3.2 vehicle server is capable of enforcing consent decisions, i. e. to
+      architectural subsystems, which are out of scope for VISSv3.3. However, a
+      VISSv3.3 vehicle server is capable of enforcing consent decisions, i. e. to
       allow or block access to requested data. This capability can be utilized
       in a model where the server receives consent results from an
       <a>ECF</a> and uses that information to either grant client requests, or
@@ -3199,15 +3257,15 @@ delimiter    = "." / "/"
       <p>
          The primary payloads that are sent over any transport protocol SHALL
          conform with the JSON schema in this appendix, unless otherwise
-         specified in the VISSv3.2 [[TRANSPORT]] or VISSv3.2 [[PAYLOAD ENCODING]]
+         specified in the VISSv3.3 [[TRANSPORT]] or VISSv3.3 [[PAYLOAD ENCODING]]
          specifications.<br>
       </p>
       <pre>
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://covesa.global/vissv3.2.bundled.schema.json",
-    "title": "VISSv3.2",
-    "description": "VISS version 3.2 bundled schema",
+    "$id": "https://covesa.global/vissv3.3.bundled.schema.json",
+    "title": "VISSv3.3",
+    "description": "VISS version 3.3 bundled schema",
     "type": "object",
     "properties": {
         "action": {
@@ -3224,7 +3282,7 @@ delimiter    = "." / "/"
                     "const": "get"
                 }
             },
-            "$ref": "/vissv3.2/get-message.schema.json"
+            "$ref": "/vissv3.3/get-message.schema.json"
         },
         {
             "properties": {
@@ -3232,7 +3290,7 @@ delimiter    = "." / "/"
                     "const": "set"
                 }
             },
-            "$ref": "/vissv3.2/set-message.schema.json"
+            "$ref": "/vissv3.3/set-message.schema.json"
         },
         {
             "properties": {
@@ -3240,7 +3298,7 @@ delimiter    = "." / "/"
                     "const": "subscribe"
                 }
             },
-            "$ref": "/vissv3.2/subscribe-message.schema.json"
+            "$ref": "/vissv3.3/subscribe-message.schema.json"
         },
         {
             "properties": {
@@ -3248,7 +3306,7 @@ delimiter    = "." / "/"
                     "const": "unsubscribe"
                 }
             },
-            "$ref": "/vissv3.2/unsubscribe-message.schema.json"
+            "$ref": "/vissv3.3/unsubscribe-message.schema.json"
         },
         {
             "properties": {
@@ -3256,7 +3314,7 @@ delimiter    = "." / "/"
                     "const": "subscription"
                 }
             },
-            "$ref": "/vissv3.2/subscription-event.schema.json"
+            "$ref": "/vissv3.3/subscription-event.schema.json"
         },
         {
             "properties": {
@@ -3264,15 +3322,15 @@ delimiter    = "." / "/"
                     "const": "discover"
                 }
             },
-            "$ref": "/vissv3.2/discover-message.schema.json"
+            "$ref": "/vissv3.3/discover-message.schema.json"
         }
     ],
     "$defs": {
-        "https://covesa.global/vissv3.2/get-message.schema.json": {
-            "$id": "https://covesa.global/vissv3.2/get-message.schema.json",
+        "https://covesa.global/vissv3.3/get-message.schema.json": {
+            "$id": "https://covesa.global/vissv3.3/get-message.schema.json",
             "$schema": "https://json-schema.org/draft/2020-12/schema",
-            "title": "VISSv3.2-get-message",
-            "description": "VISSv3.2 get request and response messages",
+            "title": "VISSv3.3-get-message",
+            "description": "VISSv3.3 get request and response messages",
             "type": "object",
             "oneOf": [
                 {
@@ -3282,7 +3340,7 @@ delimiter    = "." / "/"
                             "type": "string"
                         },
                         "filter": {
-                            "$ref": "https://covesa.global/vissv3.2/filter.schema.json"
+                            "$ref": "https://covesa.global/vissv3.3/filter.schema.json"
                         },
                         "authorization": {
                             "description": "The access token",
@@ -3304,7 +3362,7 @@ delimiter    = "." / "/"
                 {
                     "properties": {
                         "data": {
-                            "$ref": "https://covesa.global/vissv3.2/data.schema.json"
+                            "$ref": "https://covesa.global/vissv3.3/data.schema.json"
                         },
                         "ts": {
                             "description": "The time stamp",
@@ -3343,7 +3401,7 @@ delimiter    = "." / "/"
                 {
                     "properties": {
                         "error": {
-                            "$ref": "https://covesa.global/vissv3.2/error.schema.json"
+                            "$ref": "https://covesa.global/vissv3.3/error.schema.json"
                         },
                         "ts": {
                             "description": "The time stamp",
@@ -3361,11 +3419,11 @@ delimiter    = "." / "/"
                 }
             ]
         },
-        "https://covesa.global/vissv3.2/set-message.schema.json": {
-            "$id": "https://covesa.global/vissv3.2/set-message.schema.json",
+        "https://covesa.global/vissv3.3/set-message.schema.json": {
+            "$id": "https://covesa.global/vissv3.3/set-message.schema.json",
             "$schema": "https://json-schema.org/draft/2020-12/schema",
-            "title": "VISSv3.2-set-message",
-            "description": "VISSv3.2 set request and response messages",
+            "title": "VISSv3.3-set-message",
+            "description": "VISSv3.3 set request and response messages",
             "type": "object",
             "oneOf": [
                 {
@@ -3376,7 +3434,7 @@ delimiter    = "." / "/"
                         },
                         "value": {
                             "description": "The value",
-                            "$ref": "https://covesa.global/vissv3.2/value.schema.json"
+                            "$ref": "https://covesa.global/vissv3.3/value.schema.json"
                         },
                         "authorization": {
                             "description": "The access token",
@@ -3414,7 +3472,7 @@ delimiter    = "." / "/"
                 {
                     "properties": {
                         "error": {
-                            "$ref": "https://covesa.global/vissv3.2/error.schema.json"
+                            "$ref": "https://covesa.global/vissv3.3/error.schema.json"
                         },
                         "ts": {
                             "description": "The time stamp",
@@ -3432,11 +3490,11 @@ delimiter    = "." / "/"
                 }
             ]
         },
-        "https://covesa.global/vissv3.2/subscribe-message.schema.json": {
-            "$id": "https://covesa.global/vissv3.2/subscribe-message.schema.json",
+        "https://covesa.global/vissv3.3/subscribe-message.schema.json": {
+            "$id": "https://covesa.global/vissv3.3/subscribe-message.schema.json",
             "$schema": "https://json-schema.org/draft/2020-12/schema",
-            "title": "VISSv3.2-subscribe-message",
-            "description": "VISSv3.2 subscribe request and response messages",
+            "title": "VISSv3.3-subscribe-message",
+            "description": "VISSv3.3 subscribe request and response messages",
             "type": "object",
             "oneOf": [
                 {
@@ -3448,12 +3506,12 @@ delimiter    = "." / "/"
                         "filter": {
                             "oneOf": [
                                 {
-                                    "$ref": "/vissv3.2/filter.schema.json"
+                                    "$ref": "/vissv3.3/filter.schema.json"
                                 },
                                 {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "/vissv3.2/filter.schema.json"
+                                        "$ref": "/vissv3.3/filter.schema.json"
                                     },
                                     "minItems": 1,
                                     "maxItems": 2
@@ -3505,7 +3563,7 @@ delimiter    = "." / "/"
                 {
                     "properties": {
                         "error": {
-                            "$ref": "https://covesa.global/vissv3.2/error.schema.json"
+                            "$ref": "https://covesa.global/vissv3.3/error.schema.json"
                         },
                         "ts": {
                             "description": "The time stamp",
@@ -3523,11 +3581,11 @@ delimiter    = "." / "/"
                 }
             ]
         },
-        "https://covesa.global/vissv3.2/unsubscribe-message.schema.json": {
-            "$id": "https://covesa.global/vissv3.2/unsubscribe-message.schema.json",
+        "https://covesa.global/vissv3.3/unsubscribe-message.schema.json": {
+            "$id": "https://covesa.global/vissv3.3/unsubscribe-message.schema.json",
             "$schema": "https://json-schema.org/draft/2020-12/schema",
-            "title": "VISSv3.2-unsubscribe-message",
-            "description": "VISSv3.2 unsubscribe request and response messages",
+            "title": "VISSv3.3-unsubscribe-message",
+            "description": "VISSv3.3 unsubscribe request and response messages",
             "type": "object",
             "oneOf": [
                 {
@@ -3563,7 +3621,7 @@ delimiter    = "." / "/"
                 {
                     "properties": {
                         "error": {
-                            "$ref": "https://covesa.global/vissv3.2/error.schema.json"
+                            "$ref": "https://covesa.global/vissv3.3/error.schema.json"
                         },
                         "ts": {
                             "description": "The time stamp",
@@ -3581,11 +3639,11 @@ delimiter    = "." / "/"
                 }
             ]
         },
-        "https://covesa.global/vissv3.2/subscription-event.schema.json": {
-            "$id": "https://covesa.global/vissv3.2/subscription-event.schema.json",
+        "https://covesa.global/vissv3.3/subscription-event.schema.json": {
+            "$id": "https://covesa.global/vissv3.3/subscription-event.schema.json",
             "$schema": "https://json-schema.org/draft/2020-12/schema",
-            "title": "VISSv3.2-subscription-event",
-            "description": "VISSv3.2 subscription event",
+            "title": "VISSv3.3-subscription-event",
+            "description": "VISSv3.3 subscription event",
             "type": "object",
             "oneOf": [
                 {
@@ -3595,7 +3653,7 @@ delimiter    = "." / "/"
                             "type": "string"
                         },
                         "data": {
-                            "$ref": "https://covesa.global/vissv3.2/data.schema.json"
+                            "$ref": "https://covesa.global/vissv3.3/data.schema.json"
                         },
                         "ts": {
                             "description": "The time stamp",
@@ -3619,7 +3677,7 @@ delimiter    = "." / "/"
                             "type": "string"
                         },
                         "error": {
-                            "$ref": "https://covesa.global/vissv3.2/error.schema.json"
+                            "$ref": "https://covesa.global/vissv3.3/error.schema.json"
                         },
                         "ts": {
                             "description": "The time stamp",
@@ -3638,11 +3696,11 @@ delimiter    = "." / "/"
                 }
             ]
         },
-        "https://covesa.global/vissv3.2/discover-message.schema.json": {
-            "$id": "https://covesa.global/vissv3.2/discover-message.schema.json",
+        "https://covesa.global/vissv3.3/discover-message.schema.json": {
+            "$id": "https://covesa.global/vissv3.3/discover-message.schema.json",
             "$schema": "https://json-schema.org/draft/2020-12/schema",
-            "title": "VISSv3.2-discover-message",
-            "description": "VISSv3.2 discover request and response messages",
+            "title": "VISSv3.3-discover-message",
+            "description": "VISSv3.3 discover request and response messages",
             "type": "object",
             "oneOf": [
                 {
@@ -3688,7 +3746,7 @@ delimiter    = "." / "/"
                 {
                     "properties": {
                         "error": {
-                            "$ref": "https://covesa.global/vissv3.2/error.schema.json"
+                            "$ref": "https://covesa.global/vissv3.3/error.schema.json"
                         },
                         "ts": {
                             "description": "The time stamp",
@@ -3706,11 +3764,11 @@ delimiter    = "." / "/"
                 }
             ]
         },
-        "https://covesa.global/vissv3.2/filter.schema.json": {
+        "https://covesa.global/vissv3.3/filter.schema.json": {
             "$schema": "https://json-schema.org/draft/2020-12/schema",
-            "$id": "https://covesa.global/vissv3.2/filter.schema.json",
-            "title": "VISSv3.2-filter",
-            "description": "VISS version 3.2 filter",
+            "$id": "https://covesa.global/vissv3.3/filter.schema.json",
+            "title": "VISSv3.3-filter",
+            "description": "VISS version 3.3 filter",
             "type": "object",
             "properties": {
                 "variant": {
@@ -3943,29 +4001,29 @@ delimiter    = "." / "/"
                 }
             ]
         },
-        "https://covesa.global/vissv3.2/data.schema.json": {
-            "$id": "https://covesa.global/vissv3.2/data.schema.json",
+        "https://covesa.global/vissv3.3/data.schema.json": {
+            "$id": "https://covesa.global/vissv3.3/data.schema.json",
             "$schema": "https://json-schema.org/draft/2020-12/schema",
-            "title": "VISSv3.2-data-representation",
-            "description": "VISSv3.2 data representation",
+            "title": "VISSv3.3-data-representation",
+            "description": "VISSv3.3 data representation",
             "oneOf": [
                 {
                     "type": "object",
-                    "$ref": "/vissv3.2/data-object.schema.json"
+                    "$ref": "/vissv3.3/data-object.schema.json"
                 },
                 {
                     "type": "array",
                     "items": {
-                        "$ref": "/vissv3.2/data-object.schema.json"
+                        "$ref": "/vissv3.3/data-object.schema.json"
                     }
                 }
             ]
         },
-            "https://covesa.global/vissv3.2/data-object.schema.json": {
-                "$id": "https://covesa.global/vissv3.2/data-object.schema.json",
+            "https://covesa.global/vissv3.3/data-object.schema.json": {
+                "$id": "https://covesa.global/vissv3.3/data-object.schema.json",
                 "$schema": "https://json-schema.org/draft/2020-12/schema",
-                "title": "VISSv3.2-data-object",
-                "description": "VISSv3.2 data object",
+                "title": "VISSv3.3-data-object",
+                "description": "VISSv3.3 data object",
                 "properties": {
                     "path": {
                         "description": "The path",
@@ -3975,12 +4033,12 @@ delimiter    = "." / "/"
                         "description": "The data point",
                         "oneOf": [
                             {
-                                "$ref": "/vissv3.2/datapoint.schema.json"
+                                "$ref": "/vissv3.3/datapoint.schema.json"
                             },
                             {
                                 "type": "array",
                                 "items": {
-                                    "$ref": "/vissv3.2/datapoint.schema.json"
+                                    "$ref": "/vissv3.3/datapoint.schema.json"
                                 },
                                 "minItems": 1
                             }
@@ -3988,16 +4046,16 @@ delimiter    = "." / "/"
                     }
                 }
             },
-            "https://covesa.global/vissv3.2/datapoint.schema.json": {
-                "$id": "https://covesa.global/vissv3.2/datapoint.schema.json",
+            "https://covesa.global/vissv3.3/datapoint.schema.json": {
+                "$id": "https://covesa.global/vissv3.3/datapoint.schema.json",
                 "$schema": "https://json-schema.org/draft/2020-12/schema",
-                "title": "VISSv3.2-datapoint",
-                "description": "VISSv3.2 datapoint",
+                "title": "VISSv3.3-datapoint",
+                "description": "VISSv3.3 datapoint",
                 "type": "object",
                 "properties": {
                     "value": {
                         "description": "The value",
-                        "$ref": "https://covesa.global/vissv3.2/value.schema.json"
+                        "$ref": "https://covesa.global/vissv3.3/value.schema.json"
                     },
                     "ts": {
                         "description": "The time stamp",
@@ -4009,11 +4067,11 @@ delimiter    = "." / "/"
                     "ts"
                   ]
             },
-            "https://covesa.global/vissv3.2/error.schema.json": {
-                "$id": "https://covesa.global/vissv3.2/error.schema.json",
+            "https://covesa.global/vissv3.3/error.schema.json": {
+                "$id": "https://covesa.global/vissv3.3/error.schema.json",
                 "$schema": "https://json-schema.org/draft/2020-12/schema",
-                "title": "VISSv3.2-error",
-                "description": "VISSv3.2 error data",
+                "title": "VISSv3.3-error",
+                "description": "VISSv3.3 error data",
                 "type": "object",
                 "properties": {
                     "number": {
@@ -4058,11 +4116,11 @@ delimiter    = "." / "/"
                     "description"
                 ]
             },
-            "https://covesa.global/vissv3.2/value.schema.json": {
-                "$id": "https://covesa.global/vissv3.2/value.schema.json",
+            "https://covesa.global/vissv3.3/value.schema.json": {
+                "$id": "https://covesa.global/vissv3.3/value.schema.json",
                 "$schema": "https://json-schema.org/draft/2020-12/schema",
-                "title": "VISSv3.2-value",
-                "description": "VISSv3.2 value data",
+                "title": "VISSv3.3-value",
+                "description": "VISSv3.3 value data",
                 "oneOf": [
                     {
                         "type": "string"
@@ -4134,7 +4192,13 @@ delimiter    = "." / "/"
                Support and Config.
             </li>
             <li>
-               The Support node MUST have at least one child named Protocol.
+               The Support node MUST have at least two children named Profile
+               and Protocol.
+            </li>
+            <li>
+               The Profile node MUST be an attribute with a string array
+               datatype with members defining the supported <a href="#profiles">profiles</a>,
+               see <a href="#server-feature-naming"></a> for the profile names to use.
             </li>
             <li>
                The Protocol node MUST be an attribute with a string array
@@ -4154,6 +4218,11 @@ delimiter    = "." / "/"
             type: branch
             description: Top branch declaring the server supported features.
             
+          Server.Support.Profile:
+            type: attribute
+            datatype: string[]
+            description: List of supported profiles.
+          
           Server.Support.Protocol:
             type: attribute
             datatype: string[]
@@ -4322,10 +4391,26 @@ delimiter    = "." / "/"
          Config branch.
       </section>
 
-      <section>
+      <section id="server-feature-naming">
          <h3>Server Feature Naming</h3>
          The feature names that are used in the Server tree should for the
          features described in this specification use the names listed below.
+
+         <table style="width: 50%">
+            <tr>
+               <th>Profile</th>
+               <th>Description</th>
+            </tr>
+            <tr>
+               <td>vehicledata</td>
+               <td><a href="#vehicledata-profile">Vehicle data profile</a></td>
+            </tr>
+            <tr>
+               <td>data</td>
+               <td><a href="#data-profile">Data profile</a></td>
+            </tr>
+         </table>
+         <br>
 
          <table style="width: 80%">
             <tr>
@@ -4338,7 +4423,7 @@ delimiter    = "." / "/"
                   [[TRANSPORT]], Transport Protocols:
                   <a
                      data-link-type="dfn"
-                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#secure-websocket"
+                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#secure-websocket"
                      >section 5.1 Secure WebSocket</a
                   >
                </td>
@@ -4349,7 +4434,7 @@ delimiter    = "." / "/"
                   [[TRANSPORT]], Transport Protocols:
                   <a
                      data-link-type="dfn"
-                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#https"
+                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#https"
                      >section 5.2 HTTPS</a
                   >
                </td>
@@ -4360,7 +4445,7 @@ delimiter    = "." / "/"
                   [[TRANSPORT]], Transport Protocols:
                   <a
                      data-link-type="dfn"
-                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#mqtt"
+                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#mqtt"
                      >section 5.3 MQTT</a
                   >
                </td>
@@ -4371,7 +4456,7 @@ delimiter    = "." / "/"
                   [[TRANSPORT]], Transport Protocols:
                   <a
                      data-link-type="dfn"
-                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#grpc"
+                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#grpc"
                      >section 5.4 gRPC</a
                   >
                </td>
@@ -4382,7 +4467,7 @@ delimiter    = "." / "/"
                   [[TRANSPORT]], Transport Protocols:
                   <a
                      data-link-type="dfn"
-                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html#uds"
+                     href="https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html#uds"
                      >section 5.5 Unix Domain Sockets</a
                   >
                </td>
@@ -4527,7 +4612,7 @@ delimiter    = "." / "/"
          File transfer from client to server, or in the other direction, follows
          the model shown in the two sequence diagrams below. The server exposes
          two communication channels, a control channel and a data channel. The
-         control channel is the channel where the primary VISSv3.2 payloads are
+         control channel is the channel where the primary VISSv3.3 payloads are
          communicated, while the data channel is a channel over which the file
          transfer data is communicated. As is seen in the sequence diagrams the
          messages sent on the data channel have the same structure in both the
@@ -4577,10 +4662,10 @@ delimiter    = "." / "/"
          <figure id="fig-file-download">
             <img
                src="images/file-download-sequence-diagram.png"
-               alt="VISSv3.2 file download."
+               alt="VISSv3.3 file download."
             />
             <figcaption>
-               <span class="fig-title">VISSv3.2 file download.</span>
+               <span class="fig-title">VISSv3.3 file download.</span>
             </figcaption>
          </figure>
          The client SET request on the control channel is exemplified below in
@@ -4616,10 +4701,10 @@ delimiter    = "." / "/"
          <figure id="fig-file-upload">
             <img
                src="images/file-upload-sequence-diagram.png"
-               alt="VISSv3.2 file upload."
+               alt="VISSv3.3 file upload."
             />
             <figcaption>
-               <span class="fig-title">VISSv3.2 file upload.</span>
+               <span class="fig-title">VISSv3.3 file upload.</span>
             </figcaption>
          </figure>
          The server GET request on the control channel is exemplified below in

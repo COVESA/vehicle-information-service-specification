@@ -29,12 +29,33 @@ jobs:
 
       - name: Building
         run: |
+          set -euo pipefail
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo dpkg -i google-chrome-stable_current_amd64.deb
-          google-chrome-stable --headless --print-to-pdf=VISSv3.0_Core.pdf spec/VISSv3.0_Core.html
-          google-chrome-stable --headless --print-to-pdf=VISSv3.0_Transport.pdf spec/VISSv3.0_Transport.html
-          google-chrome-stable --headless --print-to-pdf=VISSv3.0_PayloadEncoding.pdf spec/VISSv3.0_PayloadEncoding.html
-          google-chrome-stable --headless --print-to-pdf=VISS_ImplementationGuidelines.pdf spec/supplement/VISS_ImplementationGuidelines.html
+
+          # Build a PDF for every top-level spec document and for the
+          # implementation guidelines. Discovering the files by glob, rather
+          # than hard-coding version-specific names such as VISSv3.0_Core.html,
+          # avoids this workflow silently skipping documents whenever the
+          # spec files are renamed for a new version.
+          shopt -s nullglob
+          files=(spec/VISSv*.html spec/supplement/VISS_ImplementationGuidelines.html)
+          shopt -u nullglob
+
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "::error::No spec HTML files found to build PDFs from."
+            exit 1
+          fi
+
+          for file in "${files[@]}"; do
+            name="$(basename "${file}" .html)"
+            echo "Building ${name}.pdf from ${file}"
+            google-chrome-stable --headless --disable-gpu --no-sandbox --print-to-pdf="${name}.pdf" "$(pwd)/${file}"
+            if [ ! -s "${name}.pdf" ]; then
+              echo "::error::${name}.pdf was not created or is empty."
+              exit 1
+            fi
+          done
 
       - name: "Upload PDFs"
         uses: actions/upload-artifact@v4

@@ -35,17 +35,19 @@ The specification is supplemented with the following documents:
 
 To see the most recent HTML rendered version of the specifications from this repository can be found at the following:
 
-- [COVESA VISS version 3.2 - Core](https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html)
-- [COVESA VISS version 3.2-Transport](https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html)
-- [COVESA VISS version 3.2-Payload Encoding](https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_PayloadEncoding.html)
+- [COVESA VISS version 3.3 - Core](https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Core.html)
+- [COVESA VISS version 3.3-Transport](https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html)
+- [COVESA VISS version 3.3-Payload Encoding](https://raw.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_PayloadEncoding.html)
 - [COVESA VISS-Implementation Guidelines](https://raw.githack.com/COVESA/vehicle-information-service-specification/main/spec/supplement/VISS_ImplementationGuidelines.html)
 
 The [VISS explainer](./VISS-explainer.md) gives some background and rationale to this interface.
 
 ## Latest version
-[VISS version 3.2](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.2)
+[VISS version 3.3](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.3)
 
 ## Previous versions
+[VISS version 3.2](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.2)
+
 [VISS version 3.1](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.1)
 
 [VISS version 3.0](https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.0)
@@ -72,6 +74,7 @@ The [VISS explainer](./VISS-explainer.md) gives some background and rationale to
 
 **COVESA EU Data Act** 
 - [Recommendation](https://github.com/COVESA/eu-data-act/blob/main/arguments/covesa-specifications-for-eu-data-act.md)
+- [Getting started](https://github.com/COVESA/eu-data-act/blob/main/arguments/Improve%20Your%20EU%20Data%20Act%20Implementation%20with%20COVESA%20Specifications.md)
 
 **Implementation References** 
 - [VISSR references](https://covesa.github.io/vissr/xtra/references/#references)

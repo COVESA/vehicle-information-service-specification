@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>COVESA VISS version 3.2-Payload Encoding</title>
+    <title>COVESA VISS version 3.3-Payload Encoding</title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
     <script class='remove'>
       var respecConfig = {
@@ -28,17 +28,17 @@
           companyURL: "https://etri.re.kr/eng/main/main.etri",
           w3cid: 34457
         }],
-        edDraftURI: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_PayloadEncoding.html",
-        shortName: "viss3.1-payload-encoding",
+        edDraftURI: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_PayloadEncoding.html",
+        shortName: "viss3-payload-encoding",
         localBiblio: {
           "CORE": {
-            title: "COVESA VISS version 3.1 - Core",
-            href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Core.html",
+            title: "COVESA VISS version 3.3-Core",
+            href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Core.html",
             publisher: "Ulf Bjorkengren; Wonsuk Lee"
           },
           "TRANSPORT": {
-            title: "COVESA VISS version 3.1-Transport",
-            href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.2/spec/VISSv3.2_Transport.html",
+            title: "COVESA VISS version 3.3-Transport",
+            href: "https://rawcdn.githack.com/COVESA/vehicle-information-service-specification/v3.3/spec/VISSv3.3_Transport.html",
             publisher: "Ulf Bjorkengren; Wonsuk Lee"
           }
         }
@@ -131,14 +131,20 @@
         included the gRPC transport protocol but also simplified addition of other transport protocols by placing the normative requirement
         on the message payload only, and not also on what transport protocol to use.
         Several new features were added such as file transfer, payload encoding, and improved server capabilities representation.<br>
-        This specification, the version 3.1, is a backwards compatible extension of the third version of VISS.
-        Instead of referencing to the VSS rule set for how to define the content of a tree it refers to the HIM vehicle data profile rule set.
+        The <a href="https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.1">fourth version</a>
+        replaced the VSS rule set for how to define the content of a tree with the HIM vehicle data profile rule set.
         This enables also other trees than the VSS tree to be used, a server may manage a set of trees, a forest, that a client can access.
-        Other changes are minor adaptations to support the concept of having a forest of trees, such as adding support for a client to do a forest discovery.
+        Other changes are minor adaptations to support the concept of having a forest of trees, such as adding support for a client to do a forest discovery,
+        and it also adds the Unix Domain Sockets transport protocol.<br>
+        The <a href="https://github.com/COVESA/vehicle-information-service-specification/releases/tag/v3.2">fifth version</a>
+        adds support for writing multiple signals in a single request message,
+        and it also adds a separate request method for signal and forest discovery.<br>
+        This specification, the version 3.3, adds support for the
+        <a href= "https://covesa.github.io/hierarchical_information_model/#him-data-profile">HIM data profile</a>.
       </p>     
       <p>
-        There are three parts to this specification, [[CORE]], [[TRANSPORT]], and PAYLOAD ENCODING. This document, the VISS version 3.2 PAYLOAD ENCODING specification, 
-        describes the VISSv3.2 payload encodings that is used in some cases. 
+        There are three parts to this specification, [[CORE]], [[TRANSPORT]], and PAYLOAD ENCODING. This document, the VISS version 3.3 PAYLOAD ENCODING specification, 
+        describes the VISSv3.3 payload encodings that is used in some cases. 
         The companion specifications [[CORE]] describes the messaging layer,
         and [[TRANSPORT]] describes the deviations form the CORE specification that are used by some transport protocols.
       </p>
@@ -155,7 +161,7 @@
     <section id="terminology">
       <h2>Terminology</h2>
       <p>
-      The acronym 'VISSv3.2' is used to refer to the VISS version 3.2 specification document suite.
+      The acronym 'VISSv3.3' is used to refer to the VISS version 3.3 specification document suite.
       The acronym 'HIM' is used to refer to the <a href="https://github.com/COVESA/hierarchical_information_model">'Hierarchical Information Model version 1.0 Vehicle data profile'</a>
       which is hosted by COVESA.
       The acronym 'VSS' is used to refer to the <a href="https://github.com/COVESA/vehicle_signal_specification">'Vehicle Signal Specification'</a>
@@ -183,7 +189,7 @@
             As vehicles become more connected and data-driven, the need for efficient data exchange methods becomes paramount. 
             Protobuf encoding serves as an optimal solution within VISS due to its compact binary format and schema evolution capabilities.
           </p>
-          <p>In this section, this section outline the integration of Protobuf encoding with VISS version 3.1, providing comprehensive details on schema definitions, 
+          <p>In this section, this section outline the integration of Protobuf encoding with VISS version 3.3, providing comprehensive details on schema definitions, 
             encoding and decoding processes, and practical examples. This will enable seamless implementation and interoperability across different systems and 
             platforms within the automotive ecosystem.
           </p>
@@ -437,7 +443,7 @@
               }
             </pre>
             <figure>
-              <figcaption><span class="fig-title">Protobuf schema file for VISS version 3.1</span></figcaption>
+              <figcaption><span class="fig-title">Protobuf schema file for VISS version 3.3</span></figcaption>
             </figure>
 
           </section>
@@ -493,7 +499,7 @@
             <h2>JSON schema based encoding</h2>
             <p>
               Several Interface Definition Languages (IDLs), such as OpenAPI and AsyncAPI, can utilize a JSON Schema representation as input.
-              The JSON scheme representation of the VISSv3.2 interface in the [[CORE]] specification can be used for such a purpose.
+              The JSON scheme representation of the VISSv3.3 interface in the [[CORE]] specification can be used for such a purpose.
             </p>
           </section>
 

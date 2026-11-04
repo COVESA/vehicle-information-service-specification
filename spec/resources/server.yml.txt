@@ -9,6 +9,11 @@ Server.Support:
   type: branch
   description: Top branch declaring the server supported features.
   
+Server.Support.Profile:
+  type: attribute
+  datatype: string[]
+  description: List of supported profiles.
+
 Server.Support.Protocol:
   type: attribute
   datatype: string[]
