@@ -195,7 +195,9 @@
          adds support for writing multiple signals in a single request message,
          and it also adds a separate request method for signal and forest discovery.<br>
          This specification, the version 3.3, adds support for the
-         <a href= "https://covesa.github.io/hierarchical_information_model/#him-data-profile">HIM data profile</a>.
+         <a href= "https://covesa.github.io/hierarchical_information_model/#him-data-profile">HIM data profile</a>,
+         and it adds support for the multiple tree addressability Read and the multiple data Update
+         over the HTTP transport protocol.
       </p>
       <p>
          There are three parts to this specification, CORE, [[TRANSPORT]], and
@@ -656,6 +658,9 @@ delimiter    = "." / "/"
             Both variants can address one or more signals.
             The former supports wild card usage but cannot address signals in multiple trees.
             The latter does not support wild card usage but can address signals in multiple trees.
+            Both variants are supported also over HTTP, where the multiple tree addressability variant is requested
+            by a POST request to the root path ("/"), see the HTTPS section of the [[TRANSPORT]] specification.
+
 
            <section id="single-tree-read">
               <h2>Single Tree Addressability Read</h2>
@@ -769,8 +774,9 @@ delimiter    = "." / "/"
 
          <section id="update">
             <h2>Update</h2>
-            The Update method is supported by two variants, a single data variant and a multiple data variant,
-            the latter is not supported over HTTP.
+            The Update method is supported by two variants, a single data variant and a multiple data variant.
+            Both variants are supported also over HTTP, where the multiple data variant is requested
+            by a POST request to the root path ("/"), see the HTTPS section of the [[TRANSPORT]] specification.
 
            <section id="single-data-update">
               <h2>Single Data Update</h2>
@@ -3362,6 +3368,33 @@ delimiter    = "." / "/"
                 {
                     "properties": {
                         "data": {
+                            "description": "The paths, multiple tree addressability read request",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "minItems": 1
+                        },
+                        "authorization": {
+                            "description": "The access token",
+                            "type": "string"
+                        },
+                        "dc": {
+                            "description": "The data compression scheme",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "data"
+                    ]
+                },
+                {
+                    "properties": {
+                        "data": {
                             "$ref": "https://covesa.global/vissv3.3/data.schema.json"
                         },
                         "ts": {
@@ -3452,6 +3485,47 @@ delimiter    = "." / "/"
                     "required": [
                         "path",
                         "value"
+                    ]
+                },
+                {
+                    "properties": {
+                        "data": {
+                            "description": "The path/value objects, multiple data update request",
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "path": {
+                                        "description": "The path",
+                                        "type": "string"
+                                    },
+                                    "value": {
+                                        "description": "The value",
+                                        "$ref": "https://covesa.global/vissv3.3/value.schema.json"
+                                    }
+                                },
+                                "required": [
+                                    "path",
+                                    "value"
+                                ]
+                            },
+                            "minItems": 1
+                        },
+                        "authorization": {
+                            "description": "The access token",
+                            "type": "string"
+                        },
+                        "requestId": {
+                            "description": "The request id",
+                            "type": "string"
+                        },
+                        "ts": {
+                            "description": "The time stamp",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "data"
                     ]
                 },
                 {
