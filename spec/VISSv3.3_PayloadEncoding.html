@@ -140,7 +140,8 @@
         adds support for writing multiple signals in a single request message,
         and it also adds a separate request method for signal and forest discovery.<br>
         This specification, the version 3.3, adds support for the
-        <a href= "https://covesa.github.io/hierarchical_information_model/#him-data-profile">HIM data profile</a>.
+        <a href= "https://covesa.github.io/hierarchical_information_model/#him-data-profile">HIM data profile</a>,
+        and it adds support for the multiple tree addressability Read and the multiple data Update over the HTTP transport protocol.
       </p>     
       <p>
         There are three parts to this specification, [[CORE]], [[TRANSPORT]], and PAYLOAD ENCODING. This document, the VISS version 3.3 PAYLOAD ENCODING specification, 
@@ -363,7 +364,8 @@
               // Multiple Data Update, see CORE section 5.2.2.
               // Defined as a separate message/rpc, additive to SetRequestMessage/SetRequest,
               // so that existing v3.1 SetRequestMessage clients and servers remain wire compatible.
-              // Not supported over HTTP, see CORE section 5.2.
+              // Protobuf encoding is not used over HTTP, where the Multiple Data Update is
+              // carried by the JSON payload, see TRANSPORT section 5.2 HTTPS.
               message MultiSetRequestMessage {
                       message SetData {
                           string Path = 1;

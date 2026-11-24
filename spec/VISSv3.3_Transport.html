@@ -140,7 +140,8 @@
         adds support for writing multiple signals in a single request message,
         and it also adds a separate request method for signal and forest discovery.<br>
         This specification, the version 3.3, adds support for the
-        <a href= "https://covesa.github.io/hierarchical_information_model/#him-data-profile">HIM data profile</a>.
+        <a href= "https://covesa.github.io/hierarchical_information_model/#him-data-profile">HIM data profile</a>,
+        and it adds support for the multiple tree addressability Read and the multiple data Update over the HTTPS transport protocol.
       </p>     
       <p>
         This specification consists of three parts, [[CORE]], [[PAYLOAD ENCODING]], and TRANSPORT. This document, the VISS version 3.3 TRANSPORT specification,
@@ -1522,6 +1523,8 @@
           <li>The path is included as part of the URL.</li>
           <li>A filter expression is added to the URL as a query string.</li>
           <li>The HTTP methods GET and POST are used instead of the "action" field.</li>
+          <li>The multiple tree addressability Read and the multiple data Update are requested by a POST request to the root path ("/"),
+              with the "data" array in the request body, see <a href="#https-multiple-read"></a> and <a href="#https-multiple-update"></a>.</li>
         </ul>
         The subscribe/unsubscribe operations are not supported by this transport protocol.
         </p>
@@ -1708,6 +1711,61 @@
             </p>
           </section>
 
+          <section id="https-multiple-read">
+            <h2>Multiple Tree Addressability Read</h2>
+            <p>
+              The client MAY send a HTTPS POST request to the root path ("/") to get the value of one or more vehicle signals,
+              where the signals may be defined in different trees.
+              The request body contains the "data" array defined for the multiple tree addressability Read in the [[CORE]] specification,
+              i.e. an array of paths. The paths in the array SHALL use the dot (.) as delimiter, and SHALL NOT contain wildcards.
+              The HTTP method POST is used for this request instead of GET as the array of paths is carried in the request body.<br>
+              The server SHALL distinguish this request from the multiple data Update request (see <a href="#https-multiple-update"></a>)
+              by the type of the elements in the "data" array. If the elements are strings (paths) the request is a Read request,
+              if the elements are objects containing a path and a value the request is an Update request.
+              The server SHALL NOT base this decision on any other property of the request body, e.g. whether the body contains
+              the character sequence "value".<br>
+              If the server can fulfill the request, it SHALL return a response containing the requested value(s),
+              in the same format as defined for the corresponding WebSocket message, with the "action" and "requestId" attributes omitted.
+              If the server is unable to fulfill the request, e.g. because the client is not authorized to retrieve one or more of the signals,
+              then it SHALL respond with an appropriate error status code. The error is associated with the first element in the array
+              that the server fails in validating.
+              A JWT token in the <code>Authorization</code> header, see <a href="#https-authorized-read"></a>, applies to all the signals in the request.<br>
+              <b>Example:</b>
+              Request:
+              <pre><code>
+              POST /   HTTP/1.1
+              Host: 127.0.0.1:1337
+              Content-Type: application/json
+              Accept: application/json
+	      ...
+              {
+                "data": ["Vehicle.Powertrain.CombustionEngine.RPM", "Trailer1.Cargo.Hold1.Temperature"]
+              }
+              </code></pre>
+              Successful response:
+              <pre><code>
+              HTTP/1.1 200 OK
+              Content-Type: application/json; charset=utf-8
+	      ...
+              {
+                "data":[{"path":"Vehicle.Powertrain.CombustionEngine.RPM", "dp":{"value":"2372", "ts":"2020-04-15T13:37:00Z"}},
+                        {"path":"Trailer1.Cargo.Hold1.Temperature", "dp":{"value":"-1", "ts":"2020-04-15T13:36:00Z"}}],
+                "ts": "2020-04-15T13:37:05Z"
+              }
+              </code></pre>
+              Error response:
+              <pre><code>
+              HTTP/1.1 404 Not Found
+              Content-Type: application/json; charset=utf-8
+	      ...
+              {
+                "error": {"number": "404", "reason": "unavailable_data", "description": "The requested data was not found."},
+                "ts": "2020-04-15T13:37:00Z"
+              }
+              </code></pre>
+            </p>
+          </section>
+
           <section id="https-service-discovery-read">
             <h2>Signal Discovery Read</h2>
             <p>
@@ -1799,6 +1857,60 @@
           }
           </code></pre>
         </section>
+        </section>
+
+        <section id="https-multiple-update">
+          <h2>Multiple Data Update</h2>
+          <p>
+          The client MAY send a HTTPS POST request to the root path ("/") to update the value of one or more signals in one request.
+          The request body contains the "data" array defined for the multiple data Update in the [[CORE]] specification,
+          i.e. an array of objects each containing a path and a value. The paths in the array SHALL use the dot (.) as delimiter.
+          The server SHALL distinguish this request from the multiple tree addressability Read request (see <a href="#https-multiple-read"></a>)
+          by the type of the elements in the "data" array, see <a href="#https-multiple-read"></a>.<br>
+          If the server can fulfill the request, it SHALL return a
+          <a href="#dfn-setsuccessresponse" class="internalDFN" data-link-type="dfn">setSuccessResponse</a> message.
+          If an error occurs, e.g. because the client is not authorized to set one or more of the requested values, or one of the signals is read-only,
+          the server SHALL return a
+          <a href="#dfn-seterrorresponse" class="internalDFN" data-link-type="dfn">setErrorResponse</a> message.
+          The error is associated with the first element in the array that the server fails in validating.
+          </p>
+          <p>
+          If one or more of the signals require a valid authorization token, the client MUST provide a token that grants permission to all of the signals.
+          The token is provided in the <code>Authorization</code> header as described in <a href="#https-authorized-update"></a>.
+          </p>
+          <p>
+            <b>Example:</b>
+            <pre><code>
+            POST /   HTTP/1.1
+            Host: 127.0.0.1:1337
+            Content-Type: application/json
+            Accept: application/json
+      ...
+            {
+              "data": [{"path": "Vehicle.Powertrain.Transmission.PerformanceMode", "value": "sport"},
+                       {"path": "Vehicle.Cabin.HVAC.Station.Row1.Left.Temperature", "value": "22"}]
+            }
+            </code></pre>
+            Successful response:
+            <pre><code>
+            HTTP/1.1 200 OK
+            Content-Type: application/json; charset=utf-8
+      ...
+            {
+              "ts": "2020-04-15T13:37:00Z"
+            }
+            </code></pre>
+            Error response:
+            <pre><code>
+            HTTP/1.1 404 Not Found
+            Content-Type: application/json; charset=utf-8
+      ...
+            {
+              "error": {"number": "404", "reason": "unavailable_data", "description": "The requested data was not found."},
+              "ts": "2020-04-15T13:37:00Z"
+            }
+            </code></pre>
+          </p>
         </section>
       </section>
     </section>
@@ -2006,7 +2118,7 @@
 	  <dt><b>get</b></dt>
 	  <dd>Enables the client to read one or more values.</dd>
 	  <dt><b>set</b></dt>
-	  <dd>Enables the client to update one value.</dd>
+	  <dd>Enables the client to update one or more values.</dd>
 	  <dt><b>subscribe</b></dt>
 	  <dd>Enables the client to request event messages containing a JSON data structure with values for one or more vehicle signal.</dd>
 	  <dt><b>unsubscribe</b></dt>
