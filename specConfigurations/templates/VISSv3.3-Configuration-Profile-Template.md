@@ -21,7 +21,9 @@
     Data profile). A "configuration profile" in this document is something
     different, see the terminology note below the header table.
   - This template was written against the v3.3 branch (identical to the v3.3rc0
-    tag at the time of writing). Re-check it against the final v3.3 release.
+    tag at the time of writing), and updated for the multiple tree addressability
+    Read and multiple data Update over HTTP (added in v3.3rc1). Re-check it
+    against the final v3.3 release.
 -->
 
 # {{CONFIGURATION_PROFILE_NAME}} - A VISS Configuration Profile (based on VISS 3.3)
@@ -134,9 +136,9 @@ No Server.Support identifiers are defined for methods.
 | Feature                         | Base status | Configuration profile status | Constraints / notes |
 |---------------------------------|-------------|------------------------------|---------------------|
 | Read, single tree addressability   | Mandatory (Read) | M | Supports wildcards via filters, cannot address signals in multiple trees. {{}} |
-| Read, multiple tree addressability | Optional (variant of Read) | {{R/O/X}} | No wildcards, can address signals in multiple trees. {{}} |
+| Read, multiple tree addressability | Optional (variant of Read) | {{R/O/X}} | No wildcards, can address signals in multiple trees. Supported over HTTP from VISS 3.3 (POST to the root path). {{}} |
 | Update, single data             | Mandatory (Update)  | M | Only read-write nodes can be updated (node type actuator in the VehicleData profile, rw in the Data profile). {{}} |
-| Update, multiple data           | Optional (variant of Update) | {{R/O/X}} | Not supported over HTTP. {{}} |
+| Update, multiple data           | Optional (variant of Update) | {{R/O/X}} | Supported over HTTP from VISS 3.3 (POST to the root path). {{}} |
 | Subscribe                       | Optional    | {{R/O/X}} | Not supported over HTTP. {{}} |
 | Unsubscribe                     | Optional    | {{R/O/X}} | Must follow Subscribe. |
 | Subscription (event messages)   | Optional    | {{R/O/X}} | Must follow Subscribe. |

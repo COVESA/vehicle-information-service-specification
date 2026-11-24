@@ -39,7 +39,7 @@ Completed configuration profiles are stored directly in this folder. The blank t
    | v3.0 | Baseline for the templates. Uses the VSS rule set, no forest concept. |
    | v3.1 | HIM vehicle data profile rule set, forests of trees, forest inquiry, Unix Domain Sockets, Update `timestamp`. |
    | v3.2 | Multiple tree Read, multiple data Update, Signal Discovery and Forest Discovery methods. |
-   | v3.3 | HIM Data profile support, `Server.Support.Profile` in the Server tree. |
+   | v3.3 | HIM Data profile support, `Server.Support.Profile` in the Server tree, multiple tree Read and multiple data Update over HTTP. |
 
 2. **Copy the template** to this folder and rename it (see the naming convention below).
 3. **Fill in the document.** Replace every `{{PLACEHOLDER}}`, select R (required), O (optional), X (excluded)
@@ -70,8 +70,9 @@ version of the configuration profile.
 
 - A template must follow its base specification. If a VISS version is corrected or re-released, check the
   corresponding template against it.
-- The `VISSv3.3` template was written against the `v3.3` branch (identical to the `v3.3rc0` tag). Check it
-  against the final v3.3 release.
+- The `VISSv3.3` template was written against the `v3.3` branch (identical to the `v3.3rc0` tag) and updated
+  for the HTTP multiple tree Read and multiple data Update added in `v3.3rc1`. Check it against the final
+  v3.3 release.
 - When a new VISS minor or major version is released, create a new template for it by comparing the
   Core, Transport and Payload Encoding documents with the previous version, and add its row to the table above.
 - Fixes that apply to all versions must be applied to every template.
